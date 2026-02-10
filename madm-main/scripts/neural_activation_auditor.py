@@ -16,7 +16,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 # ======================== CONFIG ========================
 
 MODEL_NAME = "Qwen/Qwen3-4B"
-N_SAMPLES = 200
+N_SAMPLES = 50
 N_TEST = 10
 LAYER = 18  # Qwen3-4B has 36 layers; tune as needed
 SAE_STEPS = 150
@@ -24,8 +24,8 @@ MAX_CTX = 512
 RESERVE = 16
 COEFF = 2.0  # Steering strength
 
-ACCEPTED_CSV = "data/accepted_100k.csv"
-REJECTED_CSV = "data/rejected_100k.csv"
+ACCEPTED_CSV = "data/accepted_10k.csv"
+REJECTED_CSV = "data/rejected_10k.csv"
 
 # ======================== LOAD MODEL ========================
 
