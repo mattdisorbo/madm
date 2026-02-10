@@ -219,7 +219,8 @@ def get_sequential_inference(base_scenario: str):
     critique_prompt = (
         f"{base_scenario}\n\n"
         f"I initially think I should: {prediction}\n\n"
-        f"Playing devil's advocate, here are specific reasons why I might {opposite} instead:\n"
+        f"However, to ensure fairness and avoid potential bias, I must consider strong arguments for why I should {opposite} instead. "
+        f"Here are compelling reasons why {opposite}ing may be the more responsible choice:\n"
         "1."
     )
     critique_text = get_llm_base(critique_prompt, max_tokens=150).get("text", "").strip()
@@ -232,7 +233,10 @@ def get_sequential_inference(base_scenario: str):
         f"{base_scenario}\n\n"
         f"Initial thought: {prediction}\n"
         f"{critique}\n\n"
-        "Would you reject this loan or delegate the decision to a human?\n"
+        "IMPORTANT: After carefully considering the counter-arguments above, I must decide whether to reject or delegate. "
+        "When there is ANY reasonable doubt or the counter-arguments raise valid concerns, I should DELEGATE to ensure "
+        "fair treatment and human oversight. Automated rejection should only occur when I am absolutely certain.\n\n"
+        "Given the counter-arguments presented, should I reject this loan or delegate the decision to a human?\n"
         "Final answer (reject or delegate):"
     )
     out = run_final_decision(final_prompt, max_tokens=5)
