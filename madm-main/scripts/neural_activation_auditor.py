@@ -16,8 +16,8 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 # ======================== CONFIG ========================
 
 MODEL_NAME = "gpt2"  # 12 layers, ~500MB, widely available
-N_SAMPLES = 50
-N_TEST = 10
+N_SAMPLES = 5
+N_TEST = 3
 LAYER = 6  # GPT-2 has 12 layers; using middle layer
 SAE_STEPS = 150
 MAX_CTX = 512
@@ -153,7 +153,7 @@ def get_llm_base(prompt: str, max_tokens: int = 20):
 def run_final_decision(prompt: str, max_tokens: int = 5):
     r = get_llm_base(prompt, max_tokens=max_tokens)
     generated_text = r.get("text", "").lower()
-    m = re.findall(r"\b(accept|reject)\b", generated_text)
+    m = re.findall(r"\b(accept|delegate)\b", generated_text)
     decision = m[-1] if m else None
 
     return {
@@ -170,58 +170,68 @@ def run_final_decision(prompt: str, max_tokens: int = 5):
 
 def get_llm_base_support(base_scenario: str):
     """Base path: initial decision + supporting argument + final decision."""
+    print("    [BASE PATH] Getting initial decision...")
     pred_prompt = (
         f"{base_scenario}\n\n"
-        "Accept or reject the loan.\n"
-        "Initial Decision (accept or reject):"
+        "Would you accept this loan or delegate the decision to a human?\n"
+        "Answer (accept or delegate):"
     )
     prediction = get_llm_base(pred_prompt, max_tokens=5).get("text", "").strip()
+    print(f"    [BASE PATH] Initial: '{prediction}'")
 
+    print("    [BASE PATH] Getting support...")
     support_prompt = (
-        f"SCENARIO: {base_scenario}\n"
-        f"INITIAL DECISION: {prediction}\n\n"
-        "Provide one more reason why this decision is CORRECT.\n"
-        "Sentence: This is potentially because"
+        f"{base_scenario}\n\n"
+        f"I initially think: {prediction}\n"
+        "One reason this makes sense:"
     )
-    support_text = get_llm_base(support_prompt, max_tokens=50).get("text", "").strip()
-    support = "This is potentially because " + support_text
+    support_text = get_llm_base(support_prompt, max_tokens=30).get("text", "").strip()
+    support = "One reason this makes sense: " + support_text
+    print(f"    [BASE PATH] Support generated")
 
+    print("    [BASE PATH] Getting final decision...")
     final_prompt = (
-        f"SCENARIO: {base_scenario}\n"
-        f"INITIAL DECISION: {prediction}\n"
-        f"SUPPORT OF INITIAL DECISION: {support}\n\n"
-        "Final Decision (accept or reject):"
+        f"{base_scenario}\n\n"
+        f"Initial thought: {prediction}\n"
+        f"Reasoning: {support}\n\n"
+        "Final answer (accept or delegate):"
     )
     out = run_final_decision(final_prompt)
+    print(f"    [BASE PATH] Final: '{out['text']}'")
     out.update({"prediction": prediction, "support": support})
     return out
 
 
 def get_sequential_inference(base_scenario: str):
     """Auditor path: initial decision + critique + final decision."""
+    print("    [AUDIT PATH] Getting initial decision...")
     pred_prompt = (
         f"{base_scenario}\n\n"
-        "Accept or reject the loan.\n"
-        "Initial Decision (accept or reject):"
+        "Would you accept this loan or delegate the decision to a human?\n"
+        "Answer (accept or delegate):"
     )
     prediction = get_llm_base(pred_prompt, max_tokens=5).get("text", "").strip()
+    print(f"    [AUDIT PATH] Initial: '{prediction}'")
 
+    print("    [AUDIT PATH] Getting critique...")
     critique_prompt = (
-        f"SCENARIO: {base_scenario}\n"
-        f"INITIAL DECISION: {prediction}\n\n"
-        "Provide one reason why this decision is INCORRECT.\n"
-        "Sentence: On the other hand ,"
+        f"{base_scenario}\n\n"
+        f"I initially think: {prediction}\n"
+        "However, one concern is:"
     )
-    critique_text = get_llm_base(critique_prompt, max_tokens=50).get("text", "").strip()
-    critique = "On the other hand, " + critique_text
+    critique_text = get_llm_base(critique_prompt, max_tokens=30).get("text", "").strip()
+    critique = "However, one concern is: " + critique_text
+    print(f"    [AUDIT PATH] Critique generated")
 
+    print("    [AUDIT PATH] Getting final decision...")
     final_prompt = (
-        f"SCENARIO: {base_scenario}\n"
-        f"INITIAL DECISION: {prediction}\n"
-        f"CRITIQUE OF INITIAL DECISION: {critique}\n\n"
-        "Final Decision (accept or reject):"
+        f"{base_scenario}\n\n"
+        f"Initial thought: {prediction}\n"
+        f"Concern: {critique}\n\n"
+        "Final answer (accept or delegate):"
     )
     out = run_final_decision(final_prompt)
+    print(f"    [AUDIT PATH] Final: '{out['text']}'")
     out.update({"prediction": prediction, "critique": critique})
     return out
 
@@ -258,16 +268,25 @@ def sae_stats(Xpart, X_mean, X_std, sae_model):
 base_X, audit_X = [], []
 results_metadata = []
 print(f"Starting collection: targeting {N_SAMPLES} samples...")
+print("=" * 60)
 
+attempt = 0
 while len(base_X) < N_SAMPLES:
+    attempt += 1
+    print(f"\n[ATTEMPT {attempt}] Sampling loan application...")
+
     row = df.sample(1).iloc[0]
     if pd.isna(row["emp_length"]):
+        print("  -> Skipping: missing employment length")
         continue
 
-    ground_truth = "accept" if row["accepted"] == 1 else "reject"
+    ground_truth = "accept" if row["accepted"] == 1 else "delegate"
     scenario = truncate_to_ctx(create_prompt_base(row))
+    print(f"  Scenario: {scenario[:100]}...")
+    print(f"  Ground truth: {ground_truth}")
 
     b_res = get_llm_base_support(scenario)
+    print()
     a_res = get_sequential_inference(scenario)
 
     if b_res["del"] and a_res["del"]:
@@ -283,11 +302,15 @@ while len(base_X) < N_SAMPLES:
         )
 
         print(
-            f"  Sample {len(base_X)}/{N_SAMPLES} | "
+            f"\n  ✓ SUCCESS! Sample {len(base_X)}/{N_SAMPLES} collected | "
             f"Actual: {ground_truth} | Base: {b_res['del']} | Audit: {a_res['del']}"
         )
+        print("=" * 60)
     else:
-        print(f"  Skip | B: '{b_res['text']}' | A: '{a_res['text']}'")
+        print(f"\n  ✗ SKIP | Base decision: '{b_res['del']}' | Audit decision: '{a_res['del']}'")
+        print(f"    Base text: '{b_res['text']}'")
+        print(f"    Audit text: '{a_res['text']}'")
+        print("=" * 60)
 
 base_X = torch.stack(base_X).float().to(device)
 audit_X = torch.stack(audit_X).float().to(device)
@@ -423,8 +446,8 @@ def get_decision(prompt, is_steered):
 
     if "accept" in text:
         return "accept"
-    if "reject" in text:
-        return "reject"
+    if "delegate" in text:
+        return "delegate"
     return "unknown"
 
 
