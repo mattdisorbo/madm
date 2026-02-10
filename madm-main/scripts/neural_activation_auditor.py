@@ -501,7 +501,7 @@ def get_decision(prompt, is_steered):
         handle = target_layer.mlp.register_forward_hook(steering_hook)
 
     with torch.no_grad():
-        out = model.generate(toks, max_new_tokens=5, do_sample=False)
+        out = model.generate(toks, max_new_tokens=15, do_sample=False)  # Increased from 5 to 15
 
     if handle is not None:
         handle.remove()
