@@ -113,11 +113,8 @@ def truncate_to_ctx(prompt: str) -> str:
 
 
 def format_prompt(prompt: str) -> str:
-    """Wrap a raw prompt in the chat template with thinking disabled."""
-    messages = [{"role": "user", "content": prompt}]
-    return tokenizer.apply_chat_template(
-        messages, tokenize=False, add_generation_prompt=True, enable_thinking=False,
-    )
+    """Format prompt for GPT-2 (no chat template needed)."""
+    return prompt
 
 
 def get_llm_base(prompt: str, max_tokens: int = 20):
