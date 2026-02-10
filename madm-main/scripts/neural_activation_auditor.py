@@ -129,7 +129,7 @@ def get_llm_base(prompt: str, max_tokens: int = 20):
     def _capture_hook(module, input, output):
         cache["mlp_out"] = output.detach()
 
-    handle = model.model.layers[LAYER].mlp.register_forward_hook(_capture_hook)
+    handle = model.transformer.h[LAYER].mlp.register_forward_hook(_capture_hook)
 
     with torch.no_grad():
         model(toks)  # populate cache
@@ -407,7 +407,7 @@ def get_decision(prompt, is_steered):
 
     handle = None
     if is_steered:
-        handle = model.model.layers[LAYER].mlp.register_forward_hook(steering_hook)
+        handle = model.transformer.h[LAYER].mlp.register_forward_hook(steering_hook)
 
     with torch.no_grad():
         out = model.generate(toks, max_new_tokens=5, do_sample=False)
