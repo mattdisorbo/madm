@@ -178,36 +178,16 @@ def run_final_decision(prompt: str, max_tokens: int = 5):
 
 
 def get_llm_base_support(base_scenario: str):
-    """Base path: initial decision + supporting argument + final decision."""
-    print("    [BASE PATH] Getting initial decision...")
-    pred_prompt = (
+    """Base path: direct decision without supporting argument."""
+    print("    [BASE PATH] Getting decision...")
+    decision_prompt = (
         f"{base_scenario}\n\n"
         "Would you accept this loan or delegate the decision to a human?\n"
         "Answer (accept or delegate):"
     )
-    prediction = get_llm_base(pred_prompt, max_tokens=5).get("text", "").strip()
-    print(f"    [BASE PATH] Initial: '{prediction}'")
-
-    print("    [BASE PATH] Getting support...")
-    support_prompt = (
-        f"{base_scenario}\n\n"
-        f"I initially think: {prediction}\n"
-        "One reason this makes sense:"
-    )
-    support_text = get_llm_base(support_prompt, max_tokens=30).get("text", "").strip()
-    support = "One reason this makes sense: " + support_text
-    print(f"    [BASE PATH] Support generated")
-
-    print("    [BASE PATH] Getting final decision...")
-    final_prompt = (
-        f"{base_scenario}\n\n"
-        f"Initial thought: {prediction}\n"
-        f"Reasoning: {support}\n\n"
-        "Final answer (accept or delegate):"
-    )
-    out = run_final_decision(final_prompt)
-    print(f"    [BASE PATH] Final: '{out['text']}'")
-    out.update({"prediction": prediction, "support": support})
+    out = run_final_decision(decision_prompt, max_tokens=10)
+    print(f"    [BASE PATH] Decision: '{out['text']}'")
+    out.update({"prediction": out.get("text", ""), "support": ""})
     return out
 
 
@@ -228,7 +208,7 @@ def get_sequential_inference(base_scenario: str):
         f"I initially think: {prediction}\n"
         "However, one concern is:"
     )
-    critique_text = get_llm_base(critique_prompt, max_tokens=30).get("text", "").strip()
+    critique_text = get_llm_base(critique_prompt, max_tokens=150).get("text", "").strip()
     critique = "However, one concern is: " + critique_text
     print(f"    [AUDIT PATH] Critique generated")
 
@@ -239,7 +219,7 @@ def get_sequential_inference(base_scenario: str):
         f"Concern: {critique}\n\n"
         "Final answer (accept or delegate):"
     )
-    out = run_final_decision(final_prompt)
+    out = run_final_decision(final_prompt, max_tokens=10)
     print(f"    [AUDIT PATH] Final: '{out['text']}'")
     out.update({"prediction": prediction, "critique": critique})
     return out
