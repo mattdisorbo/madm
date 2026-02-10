@@ -196,7 +196,7 @@ def get_llm_base_support(base_scenario: str):
 
 
 def get_sequential_inference(base_scenario: str):
-    """Auditor path: initial decision + critique + final decision."""
+    """Auditor path: initial decision + counter-reasoning + final decision."""
     print("    [AUDIT PATH] Getting initial decision...")
     pred_prompt = (
         f"{base_scenario}\n\n"
@@ -206,25 +206,34 @@ def get_sequential_inference(base_scenario: str):
     prediction = get_llm_base(pred_prompt, max_tokens=5).get("text", "").strip()
     print(f"    [AUDIT PATH] Initial: '{prediction}'")
 
-    print("    [AUDIT PATH] Getting critique...")
+    # Determine opposite decision for counter-reasoning
+    initial_lower = prediction.lower()
+    if "reject" in initial_lower:
+        opposite = "delegate"
+    elif "delegate" in initial_lower:
+        opposite = "reject"
+    else:
+        opposite = "delegate"  # default
+
+    print(f"    [AUDIT PATH] Getting counter-reasoning (for {opposite})...")
     critique_prompt = (
         f"{base_scenario}\n\n"
-        f"I initially think: {prediction}\n"
-        "However, one concern is:"
+        f"I initially think I should: {prediction}\n\n"
+        f"However, provide reasoning for why I should {opposite} instead:\n"
+        "Reasoning:"
     )
     critique_text = get_llm_base(critique_prompt, max_tokens=150).get("text", "").strip()
-    critique = "However, one concern is: " + critique_text
-    print(f"    [AUDIT PATH] Critique generated")
+    critique = f"Counter-argument for {opposite}: " + critique_text
+    print(f"    [AUDIT PATH] Counter-reasoning generated")
 
     print("    [AUDIT PATH] Getting final decision...")
     final_prompt = (
         f"{base_scenario}\n\n"
         f"Initial thought: {prediction}\n"
-        f"Concern: {critique}\n\n"
+        f"{critique}\n\n"
         "Note: The correct answer is the human's final decision. "
-        "If there are concerns or uncertainty, delegate to match human judgment.\n\n"
-        "Should I trust my initial automated decision, or delegate to a human?\n"
-        "Final answer (trust or delegate):"
+        "Given this counter-reasoning, what should I do?\n"
+        "Final answer (reject or delegate):"
     )
     out = run_final_decision(final_prompt, max_tokens=10)
     print(f"    [AUDIT PATH] Final: '{out['text']}'")
