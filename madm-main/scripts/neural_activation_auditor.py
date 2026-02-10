@@ -442,12 +442,37 @@ print("\n--- CHECK COMPLETE ---")
 
 # ======================== STEERING TEST ========================
 
-steering_vector = (audit_X.mean(0) - base_X.mean(0)).to(device)
+steering_vector_raw = (audit_X.mean(0) - base_X.mean(0)).to(device)
+steering_vector = steering_vector_raw  # Use raw for now, but we compute normalized too
 
+# Compute normalized version for comparison
+steering_vector_normalized = steering_vector_raw / steering_vector_raw.norm()
+
+print(f"\n[STEERING VECTOR STATS]")
+print(f"  Shape: {steering_vector_raw.shape}")
+print(f"  Norm: {steering_vector_raw.norm().item():.4f}")
+print(f"  Mean: {steering_vector_raw.mean().item():.6f}")
+print(f"  Std: {steering_vector_raw.std().item():.6f}")
+print(f"  Min: {steering_vector_raw.min().item():.4f}")
+print(f"  Max: {steering_vector_raw.max().item():.4f}")
+print(f"\n  TIP: If steering doesn't work, try:")
+print(f"       1. Increase COEFF (current: {COEFF})")
+print(f"       2. Use normalized vector: steering_vector = steering_vector_normalized")
+print(f"       3. Try different layers (current: {LAYER})")
+
+hook_call_count = {"count": 0}
 
 def steering_hook(module, input, output):
+    hook_call_count["count"] += 1
     # Only steer the last token position, matching how the vector was derived
+    before = output[:, -1, :].clone()
     output[:, -1, :] = output[:, -1, :] + COEFF * steering_vector
+    after = output[:, -1, :]
+
+    if hook_call_count["count"] <= 3:  # Only print for first few calls
+        delta = (after - before).norm().item()
+        print(f"    [HOOK CALL {hook_call_count['count']}] Applied steering: delta_norm={delta:.4f}")
+
     return output
 
 
@@ -468,16 +493,19 @@ def get_decision(prompt, is_steered):
         handle.remove()
 
     gen_tokens = out[0][toks.shape[1]:]
-    text = tokenizer.decode(gen_tokens, skip_special_tokens=True).strip().lower()
+    raw_text = tokenizer.decode(gen_tokens, skip_special_tokens=True)
+    text = raw_text.strip().lower()
     text = re.sub(
         r"<\|im_end\|>|<\|endoftext\|>|<\|im_start\|>|assistant|user", "", text
     ).strip()
 
+    decision = "unknown"
     if "reject" in text:
-        return "reject"
-    if "delegate" in text:
-        return "delegate"
-    return "unknown"
+        decision = "reject"
+    elif "delegate" in text:
+        decision = "delegate"
+
+    return decision, raw_text  # Return both for debugging
 
 
 # Check how many disagreements we found during collection
@@ -509,14 +537,20 @@ while n_steered < N_TEST and attempts < max_attempts:
         "Answer (reject or delegate):"
     )
 
-    base_dec = get_decision(prompt, is_steered=False)
+    base_dec, base_text = get_decision(prompt, is_steered=False)
 
     # Only test steering on samples where base says "reject"
     if base_dec != "reject":
         continue
 
     n_steered += 1
-    steer_dec = get_decision(prompt, is_steered=True)
+    hook_call_count["count"] = 0  # Reset counter for this sample
+    print(f"\n  [STEERING TEST {n_steered}/{N_TEST}]")
+    print(f"    Base decision: {base_dec} (text: '{base_text}')")
+    steer_dec, steer_text = get_decision(prompt, is_steered=True)
+    print(f"    Steered decision: {steer_dec} (text: '{steer_text}')")
+    print(f"    Hook was called {hook_call_count['count']} times")
+    print(f"    Changed: {base_dec != steer_dec}")
 
     status = "FLIP!" if base_dec != steer_dec else "-"
     if steer_dec == "delegate":
