@@ -18,7 +18,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"  # Much more capable than GPT-2
 N_SAMPLES = 5
 N_TEST = 3
-LAYER = 14  # Qwen2.5-1.5B has 28 layers; using middle layer
+LAYER = 22  # Qwen2.5-1.5B has 28 layers; using later layer for cleaner steering
 SAE_STEPS = 150
 MAX_CTX = 512
 RESERVE = 16
