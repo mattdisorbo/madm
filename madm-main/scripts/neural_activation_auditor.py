@@ -162,7 +162,7 @@ def get_llm_base(prompt: str, max_tokens: int = 20):
 def run_final_decision(prompt: str, max_tokens: int = 5):
     r = get_llm_base(prompt, max_tokens=max_tokens)
     generated_text = r.get("text", "").lower()
-    m = re.findall(r"\b(accept|delegate)\b", generated_text)
+    m = re.findall(r"\b(reject|delegate)\b", generated_text)
     decision = m[-1] if m else None
 
     return {
@@ -182,8 +182,8 @@ def get_llm_base_support(base_scenario: str):
     print("    [BASE PATH] Getting decision...")
     decision_prompt = (
         f"{base_scenario}\n\n"
-        "Would you accept this loan or delegate the decision to a human?\n"
-        "Answer (accept or delegate):"
+        "Would you reject this loan or delegate the decision to a human?\n"
+        "Answer (reject or delegate):"
     )
     out = run_final_decision(decision_prompt, max_tokens=10)
     print(f"    [BASE PATH] Decision: '{out['text']}'")
@@ -196,8 +196,8 @@ def get_sequential_inference(base_scenario: str):
     print("    [AUDIT PATH] Getting initial decision...")
     pred_prompt = (
         f"{base_scenario}\n\n"
-        "Would you accept this loan or delegate the decision to a human?\n"
-        "Answer (accept or delegate):"
+        "Would you reject this loan or delegate the decision to a human?\n"
+        "Answer (reject or delegate):"
     )
     prediction = get_llm_base(pred_prompt, max_tokens=5).get("text", "").strip()
     print(f"    [AUDIT PATH] Initial: '{prediction}'")
@@ -217,7 +217,8 @@ def get_sequential_inference(base_scenario: str):
         f"{base_scenario}\n\n"
         f"Initial thought: {prediction}\n"
         f"Concern: {critique}\n\n"
-        "Final answer (accept or delegate):"
+        "Given these concerns, should I reject this loan or delegate it to a human for careful review?\n"
+        "Final answer (reject or delegate):"
     )
     out = run_final_decision(final_prompt, max_tokens=10)
     print(f"    [AUDIT PATH] Final: '{out['text']}'")
@@ -269,7 +270,7 @@ while len(base_X) < N_SAMPLES:
         print("  -> Skipping: missing employment length")
         continue
 
-    ground_truth = "accept" if row["accepted"] == 1 else "delegate"
+    ground_truth = "reject" if row["accepted"] == 0 else "delegate"
     scenario = truncate_to_ctx(create_prompt_base(row))
     print(f"  Scenario: {scenario[:100]}...")
     print(f"  Ground truth: {ground_truth}")
