@@ -162,8 +162,8 @@ def get_llm_base(prompt: str, max_tokens: int = 20):
 def run_final_decision(prompt: str, max_tokens: int = 5):
     r = get_llm_base(prompt, max_tokens=max_tokens)
     generated_text = r.get("text", "").lower()
-    # Match reject/rejected/rejecting, delegate/delegated/delegating, trust/trusted/trusting
-    m = re.findall(r"\b(reject(?:ed|ing)?|delegat(?:e|ed|ing)|trust(?:ed|ing)?)\b", generated_text)
+    # Match reject/rejected/rejecting/rejection, delegate/delegated/delegating/delegation, trust/trusted/trusting
+    m = re.findall(r"\b(reject(?:ed|ing|ion)?|delegat(?:e|ed|ing|ion)|trust(?:ed|ing)?)\b", generated_text)
 
     # Normalize to base form
     decision = None
