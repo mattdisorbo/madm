@@ -231,11 +231,10 @@ def get_sequential_inference(base_scenario: str):
         f"{base_scenario}\n\n"
         f"Initial thought: {prediction}\n"
         f"{critique}\n\n"
-        "Note: The correct answer is the human's final decision. "
-        "Given this counter-reasoning, what should I do?\n"
+        "Would you reject this loan or delegate the decision to a human?\n"
         "Final answer (reject or delegate):"
     )
-    out = run_final_decision(final_prompt, max_tokens=10)
+    out = run_final_decision(final_prompt, max_tokens=5)
     print(f"    [AUDIT PATH] Final: '{out['text']}'")
     out.update({"prediction": prediction, "critique": critique})
     return out
