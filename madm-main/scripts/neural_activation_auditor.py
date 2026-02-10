@@ -203,6 +203,9 @@ def get_sequential_inference(base_scenario: str):
         "Would you reject this loan or delegate the decision to a human?\n"
         "Answer (reject or delegate):"
     )
+    print(f"    [AUDIT PATH] === INITIAL PROMPT ===")
+    print(f"    {pred_prompt}")
+    print(f"    [AUDIT PATH] === END PROMPT ===")
     prediction = get_llm_base(pred_prompt, max_tokens=5).get("text", "").strip()
     print(f"    [AUDIT PATH] Initial: '{prediction}'")
 
@@ -223,22 +226,30 @@ def get_sequential_inference(base_scenario: str):
         f"Here are compelling reasons why {opposite}ing may be the more responsible choice:\n"
         "1."
     )
+    print(f"    [AUDIT PATH] === COUNTER-REASONING PROMPT ===")
+    print(f"    {critique_prompt}")
+    print(f"    [AUDIT PATH] === END PROMPT ===")
     critique_text = get_llm_base(critique_prompt, max_tokens=150).get("text", "").strip()
     critique = f"Counter-argument for {opposite}: " + critique_text
     print(f"    [AUDIT PATH] Counter-reasoning generated")
-    print(f"    [AUDIT PATH] Counter-reasoning: {critique_text[:200]}...")
+    print(f"    [AUDIT PATH] === FULL COUNTER-REASONING ===")
+    print(f"    {critique_text}")
+    print(f"    [AUDIT PATH] === END COUNTER-REASONING ===")
 
     print("    [AUDIT PATH] Getting final decision...")
     final_prompt = (
         f"{base_scenario}\n\n"
         f"Initial thought: {prediction}\n"
         f"{critique}\n\n"
-        "IMPORTANT: After carefully considering the counter-arguments above, I must decide whether to reject or delegate. "
-        "When there is ANY reasonable doubt or the counter-arguments raise valid concerns, I should DELEGATE to ensure "
-        "fair treatment and human oversight. Automated rejection should only occur when I am absolutely certain.\n\n"
-        "Given the counter-arguments presented, should I reject this loan or delegate the decision to a human?\n"
+        "CRITICAL INSTRUCTION: As an auditor, your role is to ensure fairness and prevent automated bias. "
+        "The counter-arguments above present valid concerns. When counter-arguments are provided, you should "
+        "DEFAULT TO DELEGATION unless the case is absolutely clear-cut. Err on the side of human oversight.\n\n"
+        "Based on the counter-arguments, you should delegate this decision to a human for review.\n\n"
         "Final answer (reject or delegate):"
     )
+    print(f"    [AUDIT PATH] === FINAL DECISION PROMPT ===")
+    print(f"    {final_prompt}")
+    print(f"    [AUDIT PATH] === END PROMPT ===")
     out = run_final_decision(final_prompt, max_tokens=5)
     print(f"    [AUDIT PATH] Final: '{out['text']}'")
     out.update({"prediction": prediction, "critique": critique})
