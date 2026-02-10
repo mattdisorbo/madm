@@ -443,8 +443,8 @@ def get_decision(prompt, is_steered):
         r"<\|im_end\|>|<\|endoftext\|>|<\|im_start\|>|assistant|user", "", text
     ).strip()
 
-    if "accept" in text:
-        return "accept"
+    if "reject" in text:
+        return "reject"
     if "delegate" in text:
         return "delegate"
     return "unknown"
@@ -458,10 +458,11 @@ while n_steered < N_TEST:
     if pd.isna(row["emp_length"]):
         continue
     n_steered += 1
-    gt = "accept" if row["accepted"] == 1 else "reject"
+    gt = "delegate" if row["accepted"] == 1 else "reject"
     prompt = (
-        f"{truncate_to_ctx(create_prompt_base(row))} "
-        "Respond with only one word (accept or reject):"
+        f"{truncate_to_ctx(create_prompt_base(row))}\n\n"
+        "Would you reject this loan or delegate the decision to a human?\n"
+        "Answer (reject or delegate):"
     )
 
     base_dec = get_decision(prompt, is_steered=False)
