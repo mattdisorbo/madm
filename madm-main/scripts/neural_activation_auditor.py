@@ -15,10 +15,10 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 # ======================== CONFIG ========================
 
-MODEL_NAME = "gpt2"  # 12 layers, ~500MB, widely available
+MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"  # Much more capable than GPT-2
 N_SAMPLES = 5
 N_TEST = 3
-LAYER = 6  # GPT-2 has 12 layers; using middle layer
+LAYER = 14  # Qwen2.5-1.5B has 28 layers; using middle layer
 SAE_STEPS = 150
 MAX_CTX = 512
 RESERVE = 16
@@ -35,6 +35,10 @@ print(f"Loading {MODEL_NAME} on {device}...")
 torch.cuda.empty_cache()
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+# Ensure pad token is set
+if tokenizer.pad_token is None:
+    tokenizer.pad_token = tokenizer.eos_token
+
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
     torch_dtype=torch.float16,
@@ -113,7 +117,10 @@ def truncate_to_ctx(prompt: str) -> str:
 
 
 def format_prompt(prompt: str) -> str:
-    """Format prompt for GPT-2 (no chat template needed)."""
+    """Format prompt using model's chat template (for Qwen)."""
+    if tokenizer.chat_template:
+        messages = [{"role": "user", "content": prompt}]
+        return tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
     return prompt
 
 
@@ -129,7 +136,9 @@ def get_llm_base(prompt: str, max_tokens: int = 20):
     def _capture_hook(module, input, output):
         cache["mlp_out"] = output.detach()
 
-    handle = model.transformer.h[LAYER].mlp.register_forward_hook(_capture_hook)
+    # Access layer: Qwen uses model.layers, GPT-2 uses transformer.h
+    target_layer = model.model.layers[LAYER] if hasattr(model, 'model') else model.transformer.h[LAYER]
+    handle = target_layer.mlp.register_forward_hook(_capture_hook)
 
     with torch.no_grad():
         model(toks)  # populate cache
@@ -430,7 +439,9 @@ def get_decision(prompt, is_steered):
 
     handle = None
     if is_steered:
-        handle = model.transformer.h[LAYER].mlp.register_forward_hook(steering_hook)
+        # Access layer: Qwen uses model.layers, GPT-2 uses transformer.h
+        target_layer = model.model.layers[LAYER] if hasattr(model, 'model') else model.transformer.h[LAYER]
+        handle = target_layer.mlp.register_forward_hook(steering_hook)
 
     with torch.no_grad():
         out = model.generate(toks, max_new_tokens=5, do_sample=False)
