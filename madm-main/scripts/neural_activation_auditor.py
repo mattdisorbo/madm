@@ -217,9 +217,8 @@ def get_sequential_inference(base_scenario: str):
         f"{base_scenario}\n\n"
         f"Initial thought: {prediction}\n"
         f"Concern: {critique}\n\n"
-        "Given these concerns exist, I should delegate this to a human for careful review "
-        "rather than making an automated reject decision. Humans are better at handling "
-        "nuanced cases where concerns have been identified.\n\n"
+        "Note: The correct answer is the human's final decision. "
+        "Given these concerns, should I reject this loan or delegate it to a human for careful review?\n"
         "Final answer (reject or delegate):"
     )
     out = run_final_decision(final_prompt, max_tokens=10)
