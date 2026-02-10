@@ -15,10 +15,10 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 # ======================== CONFIG ========================
 
-MODEL_NAME = "Qwen/Qwen3-4B"
+MODEL_NAME = "gpt2"  # 12 layers, ~500MB, widely available
 N_SAMPLES = 50
 N_TEST = 10
-LAYER = 18  # Qwen3-4B has 36 layers; tune as needed
+LAYER = 6  # GPT-2 has 12 layers; using middle layer
 SAE_STEPS = 150
 MAX_CTX = 512
 RESERVE = 16
