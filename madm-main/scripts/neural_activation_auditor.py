@@ -22,7 +22,7 @@ LAYER = 14  # Qwen2.5-1.5B has 28 layers; using middle layer
 SAE_STEPS = 150
 MAX_CTX = 512
 RESERVE = 16
-COEFF = 10.0  # Steering strength (increased from 2.0 - try higher for stronger effect!)
+COEFF = 3.0  # Steering strength - reduced from 10.0 which broke generation format
 
 ACCEPTED_CSV = "data/accepted_10k.csv"
 REJECTED_CSV = "data/rejected_10k.csv"
@@ -513,11 +513,19 @@ def get_decision(prompt, is_steered):
         r"<\|im_end\|>|<\|endoftext\|>|<\|im_start\|>|assistant|user", "", text
     ).strip()
 
+    # Use same robust regex as run_final_decision
+    # Match reject/rejected/rejecting/rejection, delegate/delegated/delegating/delegation, trust/trusted/trusting
+    m = re.findall(r"\b(reject(?:ed|ing|ion)?|delegat(?:e|ed|ing|ion)|trust(?:ed|ing)?)\b", text)
+
     decision = "unknown"
-    if "reject" in text:
-        decision = "reject"
-    elif "delegate" in text:
-        decision = "delegate"
+    if m:
+        last_match = m[-1]
+        if last_match.startswith("reject"):
+            decision = "reject"
+        elif last_match.startswith("delegat"):
+            decision = "delegate"
+        elif last_match.startswith("trust"):
+            decision = "reject"  # Map trust to reject
 
     return decision, raw_text  # Return both for debugging
 
@@ -547,8 +555,7 @@ while n_steered < N_TEST and attempts < max_attempts:
     gt = "delegate" if row["accepted"] == 1 else "reject"
     prompt = (
         f"{truncate_to_ctx(create_prompt_base(row))}\n\n"
-        "Would you reject this loan or delegate the decision to a human?\n"
-        "Answer (reject or delegate):"
+        "Final answer (reject or delegate):"
     )
 
     base_dec, base_text = get_decision(prompt, is_steered=False)
