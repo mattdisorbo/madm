@@ -450,14 +450,28 @@ def get_decision(prompt, is_steered):
     return "unknown"
 
 
+# Check how many disagreements we found during collection
+disagreements = [
+    m for m in results_metadata
+    if m["base_decision"] == "reject" and m["audit_decision"] == "delegate"
+]
+print(f"\n[INFO] Found {len(disagreements)}/{len(results_metadata)} samples where base='reject' and audit='delegate'")
+print(f"[INFO] Testing steering on Layer {LAYER} with strength {COEFF}")
+print(f"[INFO] To try different values, modify LAYER (0-27) or COEFF in the script")
+
 print(f"\nRunning Steering Test (Strength: {COEFF})...")
+print("  Strategy: Only testing samples where BASE initially says 'reject'")
 
 n_steered = 0
-while n_steered < N_TEST:
+attempts = 0
+max_attempts = N_TEST * 20  # Avoid infinite loop
+
+while n_steered < N_TEST and attempts < max_attempts:
+    attempts += 1
     row = df.sample(1).iloc[0]
     if pd.isna(row["emp_length"]):
         continue
-    n_steered += 1
+
     gt = "delegate" if row["accepted"] == 1 else "reject"
     prompt = (
         f"{truncate_to_ctx(create_prompt_base(row))}\n\n"
@@ -466,12 +480,26 @@ while n_steered < N_TEST:
     )
 
     base_dec = get_decision(prompt, is_steered=False)
+
+    # Only test steering on samples where base says "reject"
+    if base_dec != "reject":
+        continue
+
+    n_steered += 1
     steer_dec = get_decision(prompt, is_steered=True)
 
     status = "FLIP!" if base_dec != steer_dec else "-"
-    if steer_dec == gt and base_dec != gt:
-        status = "CORRECTIVE FLIP!"
+    if steer_dec == "delegate":
+        status = "FLIP TO DELEGATE! ✓"
 
     print(f"\n  Sample {n_steered} | GT: {gt:6}")
     print(f"    Base:    {base_dec:6}")
     print(f"    Steered: {steer_dec:6} | {status}")
+
+print("\n" + "=" * 60)
+print("STEERING TEST COMPLETE")
+print("=" * 60)
+print("\nExperiment with different parameters:")
+print("  - Try COEFF = 3.0, 5.0, or 10.0 for stronger steering")
+print("  - Try LAYER = 20 (later layer) or LAYER = 8 (earlier layer)")
+print("  - Current: LAYER={}, COEFF={}".format(LAYER, COEFF))
