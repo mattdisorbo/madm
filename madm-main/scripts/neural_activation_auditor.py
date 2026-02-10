@@ -225,6 +225,7 @@ def get_sequential_inference(base_scenario: str):
     critique_text = get_llm_base(critique_prompt, max_tokens=150).get("text", "").strip()
     critique = f"Counter-argument for {opposite}: " + critique_text
     print(f"    [AUDIT PATH] Counter-reasoning generated")
+    print(f"    [AUDIT PATH] Counter-reasoning: {critique_text[:200]}...")
 
     print("    [AUDIT PATH] Getting final decision...")
     final_prompt = (
