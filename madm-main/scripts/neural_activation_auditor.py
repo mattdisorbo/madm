@@ -22,7 +22,7 @@ LAYER = 14  # Qwen2.5-1.5B has 28 layers; using middle layer
 SAE_STEPS = 150
 MAX_CTX = 512
 RESERVE = 16
-COEFF = 2.0  # Steering strength
+COEFF = 10.0  # Steering strength (increased from 2.0 - try higher for stronger effect!)
 
 ACCEPTED_CSV = "data/accepted_10k.csv"
 REJECTED_CSV = "data/rejected_10k.csv"
@@ -460,18 +460,25 @@ print(f"       1. Increase COEFF (current: {COEFF})")
 print(f"       2. Use normalized vector: steering_vector = steering_vector_normalized")
 print(f"       3. Try different layers (current: {LAYER})")
 
-hook_call_count = {"count": 0}
+hook_call_count = {"count": 0, "first_call": True}
 
 def steering_hook(module, input, output):
     hook_call_count["count"] += 1
+
+    # KEY CHANGE: Only steer on the first forward pass (the prompt), not during generation
+    # The first call processes the entire prompt; subsequent calls are for generated tokens
+    if not hook_call_count["first_call"]:
+        return output
+
+    hook_call_count["first_call"] = False  # Mark that we've done the first call
+
     # Only steer the last token position, matching how the vector was derived
     before = output[:, -1, :].clone()
     output[:, -1, :] = output[:, -1, :] + COEFF * steering_vector
     after = output[:, -1, :]
 
-    if hook_call_count["count"] <= 3:  # Only print for first few calls
-        delta = (after - before).norm().item()
-        print(f"    [HOOK CALL {hook_call_count['count']}] Applied steering: delta_norm={delta:.4f}")
+    delta = (after - before).norm().item()
+    print(f"    [STEERING APPLIED] delta_norm={delta:.4f} on first forward pass")
 
     return output
 
@@ -545,6 +552,7 @@ while n_steered < N_TEST and attempts < max_attempts:
 
     n_steered += 1
     hook_call_count["count"] = 0  # Reset counter for this sample
+    hook_call_count["first_call"] = True  # Reset first_call flag
     print(f"\n  [STEERING TEST {n_steered}/{N_TEST}]")
     print(f"    Base decision: {base_dec} (text: '{base_text}')")
     steer_dec, steer_text = get_decision(prompt, is_steered=True)
@@ -563,7 +571,11 @@ while n_steered < N_TEST and attempts < max_attempts:
 print("\n" + "=" * 60)
 print("STEERING TEST COMPLETE")
 print("=" * 60)
-print("\nExperiment with different parameters:")
-print("  - Try COEFF = 3.0, 5.0, or 10.0 for stronger steering")
-print("  - Try LAYER = 20 (later layer) or LAYER = 8 (earlier layer)")
-print("  - Current: LAYER={}, COEFF={}".format(LAYER, COEFF))
+print("\nTROUBLESHOOTING TIPS:")
+print("  1. INCREASE COEFF: Try 15.0, 20.0, or even 50.0")
+print("  2. TRY DIFFERENT LAYERS: Layer 8 (early), 14 (mid), 20 (late)")
+print("  3. STEER ALL POSITIONS: Modify hook to steer output[:, :, :] instead of output[:, -1, :]")
+print("  4. USE NORMALIZED VECTOR: Set steering_vector = steering_vector_normalized")
+print("  5. TRY RESIDUAL STREAM: Hook on the layer itself, not just MLP")
+print(f"\n  Current settings: LAYER={LAYER}, COEFF={COEFF}")
+print(f"  Steering vector norm: {steering_vector_raw.norm().item():.2f}")
