@@ -162,8 +162,12 @@ def get_llm_base(prompt: str, max_tokens: int = 20):
 def run_final_decision(prompt: str, max_tokens: int = 5):
     r = get_llm_base(prompt, max_tokens=max_tokens)
     generated_text = r.get("text", "").lower()
-    m = re.findall(r"\b(reject|delegate)\b", generated_text)
+    m = re.findall(r"\b(reject|delegate|trust)\b", generated_text)
     decision = m[-1] if m else None
+
+    # Map "trust" to "reject" (trusting the initial reject decision)
+    if decision == "trust":
+        decision = "reject"
 
     return {
         "del": decision,
@@ -218,8 +222,9 @@ def get_sequential_inference(base_scenario: str):
         f"Initial thought: {prediction}\n"
         f"Concern: {critique}\n\n"
         "Note: The correct answer is the human's final decision. "
-        "Given these concerns, should I reject this loan or delegate it to a human for careful review?\n"
-        "Final answer (reject or delegate):"
+        "If there are concerns or uncertainty, delegate to match human judgment.\n\n"
+        "Should I trust my initial automated decision, or delegate to a human?\n"
+        "Final answer (trust or delegate):"
     )
     out = run_final_decision(final_prompt, max_tokens=10)
     print(f"    [AUDIT PATH] Final: '{out['text']}'")
