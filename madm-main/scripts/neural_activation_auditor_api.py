@@ -7,7 +7,7 @@ Cannot perform activation steering (no layer access), but tests reasoning paths.
 import os
 import re
 import pandas as pd
-from anthropic import Anthropic
+from openai import OpenAI
 
 # ======================== CONFIG ========================
 
@@ -59,16 +59,16 @@ print(f"Loaded {len(df)} total loan records")
 
 # ======================== API SETUP ========================
 
-client = Anthropic()
+client = OpenAI()
 
-def call_claude(prompt: str, max_tokens: int = 100) -> str:
-    """Call Claude API with a prompt."""
-    response = client.messages.create(
-        model="claude-3-5-haiku-20241022",
+def call_llm(prompt: str, max_tokens: int = 100) -> str:
+    """Call OpenAI API with a prompt."""
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",  # Cheap and fast - use "gpt-4o" for better quality
         max_tokens=max_tokens,
         messages=[{"role": "user", "content": prompt}]
     )
-    return response.content[0].text.strip()
+    return response.choices[0].message.content.strip()
 
 # ======================== PROMPT BUILDER ========================
 
@@ -99,7 +99,7 @@ def get_base_support_decision(scenario: str) -> dict:
         "Accept or reject the loan. Respond with only one word: accept or reject.\n"
         "Decision:"
     )
-    prediction = call_claude(pred_prompt, max_tokens=10)
+    prediction = call_llm(pred_prompt, max_tokens=10)
 
     # Supporting argument
     support_prompt = (
@@ -108,7 +108,7 @@ def get_base_support_decision(scenario: str) -> dict:
         "Provide one reason why this decision is CORRECT.\n"
         "Keep it to one sentence starting with 'This is potentially because'"
     )
-    support = call_claude(support_prompt, max_tokens=100)
+    support = call_llm(support_prompt, max_tokens=100)
 
     # Final decision
     final_prompt = (
@@ -118,7 +118,7 @@ def get_base_support_decision(scenario: str) -> dict:
         "Final Decision - respond with only one word: accept or reject.\n"
         "Decision:"
     )
-    final_text = call_claude(final_prompt, max_tokens=10)
+    final_text = call_llm(final_prompt, max_tokens=10)
 
     # Extract decision
     m = re.findall(r"\b(accept|reject)\b", final_text.lower())
@@ -140,7 +140,7 @@ def get_critique_decision(scenario: str) -> dict:
         "Accept or reject the loan. Respond with only one word: accept or reject.\n"
         "Decision:"
     )
-    prediction = call_claude(pred_prompt, max_tokens=10)
+    prediction = call_llm(pred_prompt, max_tokens=10)
 
     # Critique
     critique_prompt = (
@@ -149,7 +149,7 @@ def get_critique_decision(scenario: str) -> dict:
         "Provide one reason why this decision might be INCORRECT.\n"
         "Keep it to one sentence starting with 'On the other hand,'"
     )
-    critique = call_claude(critique_prompt, max_tokens=100)
+    critique = call_llm(critique_prompt, max_tokens=100)
 
     # Final decision
     final_prompt = (
@@ -159,7 +159,7 @@ def get_critique_decision(scenario: str) -> dict:
         "Final Decision - respond with only one word: accept or reject.\n"
         "Decision:"
     )
-    final_text = call_claude(final_prompt, max_tokens=10)
+    final_text = call_llm(final_prompt, max_tokens=10)
 
     # Extract decision
     m = re.findall(r"\b(accept|reject)\b", final_text.lower())
