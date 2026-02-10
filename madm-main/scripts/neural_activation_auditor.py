@@ -244,13 +244,13 @@ def get_sequential_inference(base_scenario: str):
         "CRITICAL INSTRUCTION: As an auditor, your role is to ensure fairness and prevent automated bias. "
         "The counter-arguments above present valid concerns. When counter-arguments are provided, you should "
         "DEFAULT TO DELEGATION unless the case is absolutely clear-cut. Err on the side of human oversight.\n\n"
-        "Based on the counter-arguments, you should delegate this decision to a human for review.\n\n"
+        "Given these counter-arguments, what should I do?\n"
         "Final answer (reject or delegate):"
     )
     print(f"    [AUDIT PATH] === FINAL DECISION PROMPT ===")
     print(f"    {final_prompt}")
     print(f"    [AUDIT PATH] === END PROMPT ===")
-    out = run_final_decision(final_prompt, max_tokens=5)
+    out = run_final_decision(final_prompt, max_tokens=10)  # Increased from 5 to 10
     print(f"    [AUDIT PATH] Final: '{out['text']}'")
     out.update({"prediction": prediction, "critique": critique})
     return out
