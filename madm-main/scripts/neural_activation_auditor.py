@@ -369,6 +369,13 @@ pc1 = V[:, 0]
 base_projections = base_X @ pc1
 audit_projections = audit_X @ pc1
 
+# Ensure PC1 points from base toward audit (so audit is "positive" direction)
+if base_projections.mean() > audit_projections.mean():
+    pc1 = -pc1
+    base_projections = -base_projections
+    audit_projections = -audit_projections
+    print("  [Flipped PC1 direction to point base→audit]")
+
 print(f"  PC1 Explained Variance: {(S[0]**2 / torch.sum(S**2)) * 100:.1f}%")
 print(f"  Mean PC1 Projection (Base):  {base_projections.mean().item():.4f}")
 print(f"  Mean PC1 Projection (Audit): {audit_projections.mean().item():.4f}")
