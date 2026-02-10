@@ -219,7 +219,7 @@ def get_sequential_inference(base_scenario: str):
     critique_prompt = (
         f"{base_scenario}\n\n"
         f"I initially think I should: {prediction}\n\n"
-        f"However, I should {opposite} instead. Here are the specific reasons why {opposite}ing is the better decision:\n"
+        f"Playing devil's advocate, here are specific reasons why I might {opposite} instead:\n"
         "1."
     )
     critique_text = get_llm_base(critique_prompt, max_tokens=150).get("text", "").strip()
