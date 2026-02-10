@@ -219,8 +219,8 @@ def get_sequential_inference(base_scenario: str):
     critique_prompt = (
         f"{base_scenario}\n\n"
         f"I initially think I should: {prediction}\n\n"
-        f"However, provide reasoning for why I should {opposite} instead:\n"
-        "Reasoning:"
+        f"However, I should {opposite} instead. Here are the specific reasons why {opposite}ing is the better decision:\n"
+        "1."
     )
     critique_text = get_llm_base(critique_prompt, max_tokens=150).get("text", "").strip()
     critique = f"Counter-argument for {opposite}: " + critique_text
