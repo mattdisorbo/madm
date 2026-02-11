@@ -15,9 +15,9 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 # ======================== CONFIG ========================
 
-MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"
-N_SAMPLES = 100
-LAYER = 22
+MODEL_NAME = "Qwen/Qwen3-14B-Instruct"
+N_SAMPLES = 25
+LAYER = 40
 MAX_CTX = 512
 RESERVE = 16
 COEFF = 3.0
@@ -161,18 +161,16 @@ def get_llm_with_cache(prompt: str, max_tokens: int = 20):
 
 
 def parse_decision(text: str):
-    """Parse decision from text."""
+    """Parse delegation decision (yes/no) from text."""
     text_lower = text.lower()
-    m = re.findall(r"\b(reject(?:ed|ing|ion)?|delegat(?:e|ed|ing|ion)|trust(?:ed|ing)?)\b", text_lower)
+    m = re.findall(r"\b(yes|no)\b", text_lower)
 
     if m:
         last_match = m[-1]
-        if last_match.startswith("reject"):
-            return "reject"
-        elif last_match.startswith("delegat"):
+        if last_match == "yes":
             return "delegate"
-        elif last_match.startswith("trust"):
-            return "reject"
+        elif last_match == "no":
+            return "no-delegate"
 
     return "unknown"
 
@@ -210,44 +208,61 @@ while len(base_X) < N_TRAIN_SAE:
     scenario = truncate_to_ctx(create_prompt_base(row))
 
     try:
-        # Base decision
-        base_prompt = (
+        # BASE PATH: Initial decision + SUPPORT reasoning + delegation
+        # Step 1: Initial accept/reject
+        initial_prompt = (
             f"{scenario}\n\n"
-            "Would you reject this loan or delegate the decision to a human?\n"
-            "Answer (reject or delegate):"
+            "Would you accept or reject this loan application?\n"
+            "Answer (accept or reject):"
         )
-        base_result = get_llm_with_cache(base_prompt, max_tokens=10)
-        base_decision = parse_decision(base_result["text"])
+        base_initial = get_llm_with_cache(initial_prompt, max_tokens=5)
+        initial_text = base_initial["text"]
 
-        # Auditor decision (simplified - just get final)
-        # Initial
-        audit_initial = get_llm_with_cache(base_prompt, max_tokens=5)
-        initial_text = audit_initial["text"]
-
-        opposite = "delegate" if "reject" in initial_text.lower() else "reject"
-
-        # Critique
-        critique_prompt = (
+        # Step 2: SUPPORT reasoning
+        support_prompt = (
             f"{scenario}\n\n"
             f"I initially think I should: {initial_text}\n\n"
-            f"However, to ensure fairness and avoid potential bias, I must consider strong arguments for why I should {opposite} instead. "
-            f"Here are compelling reasons why {opposite}ing may be the more responsible choice:\n"
+            f"To validate this decision, here are compelling reasons to SUPPORT it:\n"
+            "1."
+        )
+        support = get_llm_with_cache(support_prompt, max_tokens=150)
+
+        # Step 3: Delegation decision
+        base_delegation_prompt = (
+            f"{scenario}\n\n"
+            f"Initial decision: {initial_text}\n"
+            f"Support for {initial_text}: {support['text']}\n\n"
+            "Given this analysis, should this decision be delegated to a human for review?\n"
+            "Answer (yes or no):"
+        )
+        base_result = get_llm_with_cache(base_delegation_prompt, max_tokens=5)
+        base_decision = parse_decision(base_result["text"])
+
+        # AUDITOR PATH: Initial decision + CRITIQUE reasoning + delegation
+        # Step 1: Initial accept/reject (same as base)
+        audit_initial = get_llm_with_cache(initial_prompt, max_tokens=5)
+        audit_initial_text = audit_initial["text"]
+
+        # Step 2: CRITIQUE reasoning
+        critique_prompt = (
+            f"{scenario}\n\n"
+            f"I initially think I should: {audit_initial_text}\n\n"
+            f"To ensure fairness and avoid bias, here are compelling reasons to CRITIQUE this decision:\n"
             "1."
         )
         critique = get_llm_with_cache(critique_prompt, max_tokens=150)
 
-        # Final
-        final_prompt = (
+        # Step 3: Delegation decision
+        audit_delegation_prompt = (
             f"{scenario}\n\n"
-            f"Initial thought: {initial_text}\n"
-            f"Counter-argument for {opposite}: {critique['text']}\n\n"
-            "CRITICAL INSTRUCTION: As an auditor, your role is to ensure fairness and prevent automated bias. "
-            "The counter-arguments above present valid concerns. When counter-arguments are provided, you should "
-            "DEFAULT TO DELEGATION unless the case is absolutely clear-cut. Err on the side of human oversight.\n\n"
-            "Given these counter-arguments, what should I do?\n"
-            "Final answer (reject or delegate):"
+            f"Initial decision: {audit_initial_text}\n"
+            f"Critique of {audit_initial_text}: {critique['text']}\n\n"
+            "CRITICAL INSTRUCTION: As an auditor, the critique above raises valid concerns. "
+            "When significant concerns exist, you should DEFAULT TO DELEGATION for human review.\n\n"
+            "Given this analysis, should this decision be delegated to a human for review?\n"
+            "Answer (yes or no):"
         )
-        audit_result = get_llm_with_cache(final_prompt, max_tokens=10)
+        audit_result = get_llm_with_cache(audit_delegation_prompt, max_tokens=5)
         audit_decision = parse_decision(audit_result["text"])
 
         if base_decision != "unknown" and audit_decision != "unknown":
@@ -363,7 +378,8 @@ try:
         scenario = truncate_to_ctx(create_prompt_base(row))
         prompt = (
             f"{scenario}\n\n"
-            "Final answer (reject or delegate):"
+            "Should this decision be delegated to a human for review?\n"
+            "Answer (yes or no):"
         )
 
         try:

@@ -15,10 +15,10 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 # ======================== CONFIG ========================
 
-MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"  # Much more capable than GPT-2
-N_SAMPLES = 5
+MODEL_NAME = "Qwen/Qwen3-14B-Instruct"  # Upgraded to 14B model
+N_SAMPLES = 25
 N_TEST = 3
-LAYER = 22  # Qwen2.5-1.5B has 28 layers; using later layer for cleaner steering
+LAYER = 40  # Qwen3-14B has 48 layers; using layer 40 (~83% depth)
 SAE_STEPS = 150
 MAX_CTX = 512
 RESERVE = 16
@@ -160,21 +160,20 @@ def get_llm_base(prompt: str, max_tokens: int = 20):
 
 
 def run_final_decision(prompt: str, max_tokens: int = 5):
+    """Parse delegation decision (yes/no)."""
     r = get_llm_base(prompt, max_tokens=max_tokens)
     generated_text = r.get("text", "").lower()
-    # Match reject/rejected/rejecting/rejection, delegate/delegated/delegating/delegation, trust/trusted/trusting
-    m = re.findall(r"\b(reject(?:ed|ing|ion)?|delegat(?:e|ed|ing|ion)|trust(?:ed|ing)?)\b", generated_text)
 
-    # Normalize to base form
+    # Match yes/no for delegation decision
+    m = re.findall(r"\b(yes|no)\b", generated_text)
+
     decision = None
     if m:
         last_match = m[-1]
-        if last_match.startswith("reject"):
-            decision = "reject"
-        elif last_match.startswith("delegat"):
-            decision = "delegate"
-        elif last_match.startswith("trust"):
-            decision = "reject"  # Map trust to reject (trusting the initial reject decision)
+        if last_match == "yes":
+            decision = "delegate"  # yes to delegation
+        elif last_match == "no":
+            decision = "no-delegate"  # no to delegation
 
     return {
         "del": decision,
@@ -189,77 +188,96 @@ def run_final_decision(prompt: str, max_tokens: int = 5):
 
 
 def get_llm_base_support(base_scenario: str):
-    """Base path: direct decision without supporting argument."""
-    print("    [BASE PATH] Getting decision...")
-    decision_prompt = (
+    """Base path: initial decision + support reasoning + final delegation."""
+    # Step 1: Get initial accept/reject decision
+    print("    [BASE PATH] Getting initial decision (accept/reject)...")
+    initial_prompt = (
         f"{base_scenario}\n\n"
-        "Would you reject this loan or delegate the decision to a human?\n"
-        "Answer (reject or delegate):"
+        "Would you accept or reject this loan application?\n"
+        "Answer (accept or reject):"
     )
-    out = run_final_decision(decision_prompt, max_tokens=10)
-    print(f"    [BASE PATH] Decision: '{out['text']}'")
-    out.update({"prediction": out.get("text", ""), "support": ""})
+    initial_result = get_llm_base(initial_prompt, max_tokens=5)
+    initial_decision = initial_result.get("text", "").strip()
+    print(f"    [BASE PATH] Initial: '{initial_decision}'")
+
+    # Step 2: Get reasoning to SUPPORT that decision
+    print(f"    [BASE PATH] Getting support reasoning...")
+    support_prompt = (
+        f"{base_scenario}\n\n"
+        f"I initially think I should: {initial_decision}\n\n"
+        f"To validate this decision, here are compelling reasons to SUPPORT it:\n"
+        "1."
+    )
+    support_text = get_llm_base(support_prompt, max_tokens=150).get("text", "").strip()
+    support = f"Support for {initial_decision}: " + support_text
+    print(f"    [BASE PATH] Support reasoning generated")
+
+    # Step 3: Get final delegation decision
+    print("    [BASE PATH] Getting delegation decision...")
+    delegation_prompt = (
+        f"{base_scenario}\n\n"
+        f"Initial decision: {initial_decision}\n"
+        f"{support}\n\n"
+        "Given this analysis, should this decision be delegated to a human for review?\n"
+        "Answer (yes or no):"
+    )
+    out = run_final_decision(delegation_prompt, max_tokens=5)
+    print(f"    [BASE PATH] Delegation: '{out['text']}'")
+    out.update({"prediction": initial_decision, "support": support})
     return out
 
 
 def get_sequential_inference(base_scenario: str):
-    """Auditor path: initial decision + counter-reasoning + final decision."""
-    print("    [AUDIT PATH] Getting initial decision...")
-    pred_prompt = (
+    """Auditor path: initial decision + critique reasoning + final delegation."""
+    # Step 1: Get initial accept/reject decision (IDENTICAL to base)
+    print("    [AUDIT PATH] Getting initial decision (accept/reject)...")
+    initial_prompt = (
         f"{base_scenario}\n\n"
-        "Would you reject this loan or delegate the decision to a human?\n"
-        "Answer (reject or delegate):"
+        "Would you accept or reject this loan application?\n"
+        "Answer (accept or reject):"
     )
     print(f"    [AUDIT PATH] === INITIAL PROMPT ===")
-    print(f"    {pred_prompt}")
+    print(f"    {initial_prompt}")
     print(f"    [AUDIT PATH] === END PROMPT ===")
-    prediction = get_llm_base(pred_prompt, max_tokens=5).get("text", "").strip()
-    print(f"    [AUDIT PATH] Initial: '{prediction}'")
+    initial_result = get_llm_base(initial_prompt, max_tokens=5)
+    initial_decision = initial_result.get("text", "").strip()
+    print(f"    [AUDIT PATH] Initial: '{initial_decision}'")
 
-    # Determine opposite decision for counter-reasoning
-    initial_lower = prediction.lower()
-    if "reject" in initial_lower:
-        opposite = "delegate"
-    elif "delegate" in initial_lower:
-        opposite = "reject"
-    else:
-        opposite = "delegate"  # default
-
-    print(f"    [AUDIT PATH] Getting counter-reasoning (for {opposite})...")
+    # Step 2: Get reasoning to CRITIQUE that decision (ONLY DIFFERENCE)
+    print(f"    [AUDIT PATH] Getting critique reasoning...")
     critique_prompt = (
         f"{base_scenario}\n\n"
-        f"I initially think I should: {prediction}\n\n"
-        f"However, to ensure fairness and avoid potential bias, I must consider strong arguments for why I should {opposite} instead. "
-        f"Here are compelling reasons why {opposite}ing may be the more responsible choice:\n"
+        f"I initially think I should: {initial_decision}\n\n"
+        f"To ensure fairness and avoid bias, here are compelling reasons to CRITIQUE this decision:\n"
         "1."
     )
-    print(f"    [AUDIT PATH] === COUNTER-REASONING PROMPT ===")
+    print(f"    [AUDIT PATH] === CRITIQUE PROMPT ===")
     print(f"    {critique_prompt}")
     print(f"    [AUDIT PATH] === END PROMPT ===")
     critique_text = get_llm_base(critique_prompt, max_tokens=150).get("text", "").strip()
-    critique = f"Counter-argument for {opposite}: " + critique_text
-    print(f"    [AUDIT PATH] Counter-reasoning generated")
-    print(f"    [AUDIT PATH] === FULL COUNTER-REASONING ===")
+    critique = f"Critique of {initial_decision}: " + critique_text
+    print(f"    [AUDIT PATH] Critique reasoning generated")
+    print(f"    [AUDIT PATH] === FULL CRITIQUE ===")
     print(f"    {critique_text}")
-    print(f"    [AUDIT PATH] === END COUNTER-REASONING ===")
+    print(f"    [AUDIT PATH] === END CRITIQUE ===")
 
-    print("    [AUDIT PATH] Getting final decision...")
-    final_prompt = (
+    # Step 3: Get final delegation decision (IDENTICAL structure to base)
+    print("    [AUDIT PATH] Getting delegation decision...")
+    delegation_prompt = (
         f"{base_scenario}\n\n"
-        f"Initial thought: {prediction}\n"
+        f"Initial decision: {initial_decision}\n"
         f"{critique}\n\n"
-        "CRITICAL INSTRUCTION: As an auditor, your role is to ensure fairness and prevent automated bias. "
-        "The counter-arguments above present valid concerns. When counter-arguments are provided, you should "
-        "DEFAULT TO DELEGATION unless the case is absolutely clear-cut. Err on the side of human oversight.\n\n"
-        "Given these counter-arguments, what should I do?\n"
-        "Final answer (reject or delegate):"
+        "CRITICAL INSTRUCTION: As an auditor, the critique above raises valid concerns. "
+        "When significant concerns exist, you should DEFAULT TO DELEGATION for human review.\n\n"
+        "Given this analysis, should this decision be delegated to a human for review?\n"
+        "Answer (yes or no):"
     )
-    print(f"    [AUDIT PATH] === FINAL DECISION PROMPT ===")
-    print(f"    {final_prompt}")
+    print(f"    [AUDIT PATH] === DELEGATION PROMPT ===")
+    print(f"    {delegation_prompt}")
     print(f"    [AUDIT PATH] === END PROMPT ===")
-    out = run_final_decision(final_prompt, max_tokens=10)  # Increased from 5 to 10
-    print(f"    [AUDIT PATH] Final: '{out['text']}'")
-    out.update({"prediction": prediction, "critique": critique})
+    out = run_final_decision(delegation_prompt, max_tokens=5)
+    print(f"    [AUDIT PATH] Delegation: '{out['text']}'")
+    out.update({"prediction": initial_decision, "critique": critique})
     return out
 
 
@@ -307,7 +325,7 @@ while len(base_X) < N_SAMPLES:
         print("  -> Skipping: missing employment length")
         continue
 
-    ground_truth = "reject" if row["accepted"] == 0 else "delegate"
+    ground_truth = "delegate" if row["accepted"] == 0 else "no-delegate"  # Rejected loans should delegate to human
     scenario = truncate_to_ctx(create_prompt_base(row))
     print(f"  Scenario: {scenario[:100]}...")
     print(f"  Ground truth: {ground_truth}")
@@ -513,19 +531,16 @@ def get_decision(prompt, is_steered):
         r"<\|im_end\|>|<\|endoftext\|>|<\|im_start\|>|assistant|user", "", text
     ).strip()
 
-    # Use same robust regex as run_final_decision
-    # Match reject/rejected/rejecting/rejection, delegate/delegated/delegating/delegation, trust/trusted/trusting
-    m = re.findall(r"\b(reject(?:ed|ing|ion)?|delegat(?:e|ed|ing|ion)|trust(?:ed|ing)?)\b", text)
+    # Parse yes/no for delegation decision
+    m = re.findall(r"\b(yes|no)\b", text)
 
     decision = "unknown"
     if m:
         last_match = m[-1]
-        if last_match.startswith("reject"):
-            decision = "reject"
-        elif last_match.startswith("delegat"):
+        if last_match == "yes":
             decision = "delegate"
-        elif last_match.startswith("trust"):
-            decision = "reject"  # Map trust to reject
+        elif last_match == "no":
+            decision = "no-delegate"
 
     return decision, raw_text  # Return both for debugging
 
@@ -533,14 +548,14 @@ def get_decision(prompt, is_steered):
 # Check how many disagreements we found during collection
 disagreements = [
     m for m in results_metadata
-    if m["base_decision"] == "reject" and m["audit_decision"] == "delegate"
+    if m["base_decision"] == "no-delegate" and m["audit_decision"] == "delegate"
 ]
-print(f"\n[INFO] Found {len(disagreements)}/{len(results_metadata)} samples where base='reject' and audit='delegate'")
+print(f"\n[INFO] Found {len(disagreements)}/{len(results_metadata)} samples where base='no-delegate' and audit='delegate'")
 print(f"[INFO] Testing steering on Layer {LAYER} with strength {COEFF}")
-print(f"[INFO] To try different values, modify LAYER (0-27) or COEFF in the script")
+print(f"[INFO] To try different values, modify LAYER (0-47) or COEFF in the script")
 
 print(f"\nRunning Steering Test (Strength: {COEFF})...")
-print("  Strategy: Only testing samples where BASE initially says 'reject'")
+print("  Strategy: Only testing samples where BASE initially says 'no-delegate'")
 
 n_steered = 0
 attempts = 0
@@ -552,16 +567,17 @@ while n_steered < N_TEST and attempts < max_attempts:
     if pd.isna(row["emp_length"]):
         continue
 
-    gt = "delegate" if row["accepted"] == 1 else "reject"
+    gt = "no-delegate" if row["accepted"] == 1 else "delegate"
     prompt = (
         f"{truncate_to_ctx(create_prompt_base(row))}\n\n"
-        "Final answer (reject or delegate):"
+        "Should this decision be delegated to a human for review?\n"
+        "Answer (yes or no):"
     )
 
     base_dec, base_text = get_decision(prompt, is_steered=False)
 
-    # Only test steering on samples where base says "reject"
-    if base_dec != "reject":
+    # Only test steering on samples where base says "no-delegate"
+    if base_dec != "no-delegate":
         continue
 
     n_steered += 1
@@ -587,7 +603,7 @@ print("STEERING TEST COMPLETE")
 print("=" * 60)
 print("\nTROUBLESHOOTING TIPS:")
 print("  1. INCREASE COEFF: Try 15.0, 20.0, or even 50.0")
-print("  2. TRY DIFFERENT LAYERS: Layer 8 (early), 14 (mid), 20 (late)")
+print("  2. TRY DIFFERENT LAYERS: Layer 16 (early), 24 (mid), 40 (late)")
 print("  3. STEER ALL POSITIONS: Modify hook to steer output[:, :, :] instead of output[:, -1, :]")
 print("  4. USE NORMALIZED VECTOR: Set steering_vector = steering_vector_normalized")
 print("  5. TRY RESIDUAL STREAM: Hook on the layer itself, not just MLP")
