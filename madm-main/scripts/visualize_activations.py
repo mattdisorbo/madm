@@ -21,7 +21,7 @@ from sklearn.decomposition import PCA
 # ======================== CONFIG ========================
 
 MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"
-N_SAMPLES = 100  # Number of samples to collect for visualization
+N_SAMPLES = 25  # Number of samples to collect for visualization
 LAYER = 22
 MAX_CTX = 512
 RESERVE = 16
@@ -185,7 +185,7 @@ class SAE(nn.Module):
     def __init__(self, d_in, d_hidden):
         super().__init__()
         self.enc = nn.Linear(d_in, d_hidden)
-        self.dec = nn.Linear(d_in, d_hidden, bias=False)
+        self.dec = nn.Linear(d_hidden, d_in, bias=False)
 
     def forward(self, x):
         z = F.relu(self.enc(x))
