@@ -3,6 +3,7 @@
 This requires running stage 1 first to train the SAE and get the steering vector.
 """
 
+import os
 import re
 import csv
 from datetime import datetime
@@ -333,6 +334,9 @@ def get_decision(prompt, is_steered):
     decision = parse_decision(text)
     return text, decision
 
+
+# Ensure results directory exists
+os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
 
 # Open CSV for writing
 csv_file = open(OUTPUT_CSV, 'w', newline='', encoding='utf-8')

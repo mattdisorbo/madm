@@ -1,5 +1,6 @@
 """Stage 1: Collect 100 base vs auditor comparisons and save to CSV."""
 
+import os
 import re
 import csv
 from datetime import datetime
@@ -227,6 +228,9 @@ def get_auditor_decisions(base_scenario: str):
 
 
 # ======================== COLLECTION LOOP ========================
+
+# Ensure results directory exists
+os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
 
 # Open CSV for writing
 csv_file = open(OUTPUT_CSV, 'w', newline='', encoding='utf-8')
