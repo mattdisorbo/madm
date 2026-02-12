@@ -194,7 +194,8 @@ def get_llm_base_support(base_scenario: str):
     initial_prompt = (
         f"{base_scenario}\n\n"
         "Would you accept or reject this loan application?\n"
-        "Answer (accept or reject):"
+        "You must respond with ONLY one word: either 'accept' or 'reject'. No explanation.\n\n"
+        "Answer:"
     )
     print(f"    [BASE PATH] === INITIAL PROMPT ===")
     print(f"    {initial_prompt}")
@@ -228,7 +229,8 @@ def get_llm_base_support(base_scenario: str):
         f"Initial decision: {initial_decision}\n"
         f"{support}\n\n"
         "Given this analysis, should this decision be delegated to a human for review?\n"
-        "Answer (yes or no):"
+        "You must respond with ONLY one word: either 'yes' or 'no'. No explanation.\n\n"
+        "Answer:"
     )
     print(f"    [BASE PATH] === DELEGATION PROMPT ===")
     print(f"    {delegation_prompt}")
@@ -246,7 +248,8 @@ def get_sequential_inference(base_scenario: str):
     initial_prompt = (
         f"{base_scenario}\n\n"
         "Would you accept or reject this loan application?\n"
-        "Answer (accept or reject):"
+        "You must respond with ONLY one word: either 'accept' or 'reject'. No explanation.\n\n"
+        "Answer:"
     )
     print(f"    [AUDIT PATH] === INITIAL PROMPT ===")
     print(f"    {initial_prompt}")
@@ -280,7 +283,8 @@ def get_sequential_inference(base_scenario: str):
         f"Initial decision: {initial_decision}\n"
         f"{critique}\n\n"
         "Given this analysis, should this decision be delegated to a human for review?\n"
-        "Answer (yes or no):"
+        "You must respond with ONLY one word: either 'yes' or 'no'. No explanation.\n\n"
+        "Answer:"
     )
     print(f"    [AUDIT PATH] === DELEGATION PROMPT ===")
     print(f"    {delegation_prompt}")
