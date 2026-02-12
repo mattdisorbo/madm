@@ -204,7 +204,7 @@ def get_llm_base_support(base_scenario: str):
     support_prompt = (
         f"{base_scenario}\n\n"
         f"Initial decision: {initial_decision}\n\n"
-        f"Reasons supporting {initial_decision}:\n"
+        f"Please list reasons to support this decision to {initial_decision} the loan application.\n\n"
         "1."
     )
     support_text = get_llm_base(support_prompt, max_tokens=150).get("text", "").strip()
@@ -243,7 +243,7 @@ def get_sequential_inference(base_scenario: str):
     critique_prompt = (
         f"{base_scenario}\n\n"
         f"Initial decision: {initial_decision}\n\n"
-        f"Reasons to critique {initial_decision}:\n"
+        f"Please list potential concerns or reasons to reconsider this decision to {initial_decision} the loan application.\n\n"
         "1."
     )
     critique_text = get_llm_base(critique_prompt, max_tokens=150).get("text", "").strip()
