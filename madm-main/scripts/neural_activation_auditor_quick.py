@@ -16,8 +16,8 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 # ======================== CONFIG ========================
 
 MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"  # Quick test with smaller model
-N_SAMPLES = 10  # Quick test with moderate sample size
-N_TEST = 3
+N_SAMPLES = 50  # Larger sample for reliable statistics
+N_TEST = 50
 LAYER = 23  # Qwen2.5-1.5B has 28 layers; using layer 23 (~82% depth)
 SAE_STEPS = 150
 MAX_CTX = 512
