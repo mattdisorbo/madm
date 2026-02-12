@@ -16,8 +16,8 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 # ======================== CONFIG ========================
 
 MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"  # Quick test with smaller model
-N_SAMPLES = 50  # Larger sample for reliable statistics
-N_TEST = 50
+N_SAMPLES = 25  # Quick sample for faster cache creation
+N_TEST = 25
 LAYER = 23  # Qwen2.5-1.5B has 28 layers; using layer 23 (~82% depth)
 SAE_STEPS = 150
 MAX_CTX = 512
@@ -28,7 +28,7 @@ ACCEPTED_CSV = "data/accepted_10k.csv"
 REJECTED_CSV = "data/rejected_10k.csv"
 
 # Set to True to skip Stage 1 (collection + SAE training) and only run Stage 2 (steering test)
-SKIP_STAGE1 = True
+SKIP_STAGE1 = False
 CACHE_FILE = "sae_cache.pt"  # Where to save/load SAE and activations
 
 # ======================== LOAD MODEL ========================
