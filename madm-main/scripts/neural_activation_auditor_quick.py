@@ -19,8 +19,8 @@ import numpy as np
 # ======================== CONFIG ========================
 
 MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"  # Quick test with smaller model
-N_SAMPLES = 25  # Quick sample for faster cache creation
-N_TEST = 25
+N_SAMPLES = 100  # Updated for comprehensive test
+N_TEST = 100
 LAYER = 23  # Qwen2.5-1.5B has 28 layers; using layer 23 (~82% depth)
 SAE_STEPS = 150
 MAX_CTX = 512
