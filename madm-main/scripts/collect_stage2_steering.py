@@ -16,7 +16,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 # ======================== CONFIG ========================
 
 MODEL_NAME = "Qwen/Qwen2.5-14B-Instruct"
-N_SAMPLES = 25
+N_SAMPLES = 100
 LAYER = 40
 MAX_CTX = 512
 RESERVE = 16
