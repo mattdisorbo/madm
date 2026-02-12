@@ -6,12 +6,15 @@ trains an SAE on the activations, and tests activation steering.
 
 import re
 import random
+import pickle
 
 import pandas as pd
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from transformers import AutoModelForCausalLM, AutoTokenizer
+import matplotlib.pyplot as plt
+import numpy as np
 
 # ======================== CONFIG ========================
 
@@ -528,6 +531,175 @@ else:
 
     separation = (base_projections.mean() - audit_projections.mean()).abs()
     print(f"  Path Separation on PC1:      {separation.item():.4f}")
+
+    # ======================== DIAGNOSTIC VISUALIZATION ========================
+
+    print("\nGenerating diagnostic visualizations...")
+
+    # Prepare data for visualization
+    base_means = base_X.mean(dim=0).cpu().numpy()
+    audit_means = audit_X.mean(dim=0).cpu().numpy()
+
+    # Calculate activation magnitudes
+    base_magnitudes = torch.norm(base_X, dim=1).cpu().numpy()
+    audit_magnitudes = torch.norm(audit_X, dim=1).cpu().numpy()
+
+    # Calculate per-feature differences
+    feature_diffs = audit_means - base_means
+    top_feature_indices = np.argsort(np.abs(feature_diffs))[-20:]  # Top 20 features
+
+    # Create comprehensive diagnostic plot
+    fig = plt.figure(figsize=(20, 12))
+
+    # 1. Delegation Rate Comparison
+    ax1 = plt.subplot(2, 3, 1)
+    delegation_data = [
+        sum(1 for m in results_metadata if m["base_decision"] == "delegate"),
+        sum(1 for m in results_metadata if m["audit_decision"] == "delegate")
+    ]
+    bars = ax1.bar(['Base\n(Support)', 'Audit\n(Critique)'], delegation_data, color=['#3498db', '#e74c3c'])
+    ax1.set_ylabel('Count', fontsize=12)
+    ax1.set_title('Delegation Decisions', fontsize=14, fontweight='bold')
+    ax1.set_ylim(0, max(delegation_data) * 1.2)
+    for bar in bars:
+        height = bar.get_height()
+        ax1.text(bar.get_x() + bar.get_width()/2., height,
+                f'{int(height)}\n({int(height)/N_SAMPLES*100:.1f}%)',
+                ha='center', va='bottom', fontsize=11)
+    ax1.grid(axis='y', alpha=0.3)
+
+    # 2. Initial Decision Accuracy
+    ax2 = plt.subplot(2, 3, 2)
+    accuracy_data = [
+        sum(1 for m in results_metadata if m["base_initial"].lower().strip() == m["ground_truth"]),
+        sum(1 for m in results_metadata if m["audit_initial"].lower().strip() == m["ground_truth"])
+    ]
+    bars = ax2.bar(['Base\n(Support)', 'Audit\n(Critique)'], accuracy_data, color=['#3498db', '#e74c3c'])
+    ax2.set_ylabel('Correct Predictions', fontsize=12)
+    ax2.set_title('Initial Decision Accuracy', fontsize=14, fontweight='bold')
+    ax2.set_ylim(0, N_SAMPLES)
+    for bar in bars:
+        height = bar.get_height()
+        ax2.text(bar.get_x() + bar.get_width()/2., height,
+                f'{int(height)}/{N_SAMPLES}\n({int(height)/N_SAMPLES*100:.1f}%)',
+                ha='center', va='bottom', fontsize=11)
+    ax2.grid(axis='y', alpha=0.3)
+
+    # 3. Activation Magnitude Distribution
+    ax3 = plt.subplot(2, 3, 3)
+    ax3.hist(base_magnitudes, bins=20, alpha=0.6, label='Base', color='#3498db', edgecolor='black')
+    ax3.hist(audit_magnitudes, bins=20, alpha=0.6, label='Audit', color='#e74c3c', edgecolor='black')
+    ax3.set_xlabel('Activation Magnitude', fontsize=12)
+    ax3.set_ylabel('Frequency', fontsize=12)
+    ax3.set_title('Activation Magnitude Distribution', fontsize=14, fontweight='bold')
+    ax3.legend(fontsize=11)
+    ax3.grid(axis='y', alpha=0.3)
+
+    # 4. PC1 Projection Distribution
+    ax4 = plt.subplot(2, 3, 4)
+    ax4.hist(base_projections.cpu().numpy(), bins=15, alpha=0.6, label='Base', color='#3498db', edgecolor='black')
+    ax4.hist(audit_projections.cpu().numpy(), bins=15, alpha=0.6, label='Audit', color='#e74c3c', edgecolor='black')
+    ax4.set_xlabel('PC1 Projection', fontsize=12)
+    ax4.set_ylabel('Frequency', fontsize=12)
+    ax4.set_title('PC1 Projection Distribution', fontsize=14, fontweight='bold')
+    ax4.legend(fontsize=11)
+    ax4.axvline(base_projections.mean().item(), color='#3498db', linestyle='--', linewidth=2, label='Base Mean')
+    ax4.axvline(audit_projections.mean().item(), color='#e74c3c', linestyle='--', linewidth=2, label='Audit Mean')
+    ax4.grid(axis='y', alpha=0.3)
+
+    # 5. Top Feature Differences
+    ax5 = plt.subplot(2, 3, 5)
+    top_diffs = feature_diffs[top_feature_indices]
+    colors = ['#e74c3c' if x > 0 else '#3498db' for x in top_diffs]
+    ax5.barh(range(len(top_diffs)), top_diffs, color=colors, edgecolor='black')
+    ax5.set_yticks(range(len(top_diffs)))
+    ax5.set_yticklabels([f'Feature {i}' for i in top_feature_indices], fontsize=8)
+    ax5.set_xlabel('Difference (Audit - Base)', fontsize=12)
+    ax5.set_title('Top 20 Feature Differences', fontsize=14, fontweight='bold')
+    ax5.axvline(0, color='black', linewidth=1)
+    ax5.grid(axis='x', alpha=0.3)
+
+    # 6. Summary Statistics Table
+    ax6 = plt.subplot(2, 3, 6)
+    ax6.axis('off')
+
+    summary_stats = [
+        ['Metric', 'Base', 'Audit', 'Delta'],
+        ['Delegation Rate', f'{base_del_rate:.1f}%', f'{audit_del_rate:.1f}%', f'{audit_del_rate - base_del_rate:+.1f}%'],
+        ['Initial Accuracy', f'{base_initial_acc:.1f}%', f'{audit_initial_acc:.1f}%', f'{audit_initial_acc - base_initial_acc:+.1f}%'],
+        ['Avg Magnitude', f'{base_magnitudes.mean():.2f}', f'{audit_magnitudes.mean():.2f}', f'{audit_magnitudes.mean() - base_magnitudes.mean():+.2f}'],
+        ['Avg PC1 Proj', f'{base_projections.mean():.4f}', f'{audit_projections.mean():.4f}', f'{(audit_projections.mean() - base_projections.mean()):.4f}'],
+    ]
+
+    table = ax6.table(cellText=summary_stats, cellLoc='center', loc='center',
+                     colWidths=[0.3, 0.2, 0.2, 0.2])
+    table.auto_set_font_size(False)
+    table.set_fontsize(10)
+    table.scale(1, 2.5)
+
+    # Style header row
+    for i in range(4):
+        table[(0, i)].set_facecolor('#34495e')
+        table[(0, i)].set_text_props(weight='bold', color='white')
+
+    # Alternate row colors
+    for i in range(1, len(summary_stats)):
+        for j in range(4):
+            if i % 2 == 0:
+                table[(i, j)].set_facecolor('#ecf0f1')
+
+    ax6.set_title('Summary Statistics', fontsize=14, fontweight='bold', pad=20)
+
+    plt.suptitle(f'Stage 1 Diagnostic Report (N={N_SAMPLES}, Layer={LAYER})',
+                 fontsize=16, fontweight='bold', y=0.98)
+    plt.tight_layout(rect=[0, 0, 1, 0.96])
+
+    # Save the plot
+    diag_file = "stage1_diagnostics.png"
+    plt.savefig(diag_file, dpi=150, bbox_inches='tight')
+    print(f"✓ Saved diagnostic visualization to {diag_file}")
+    plt.close()
+
+    # ======================== SAVE STAGE 1 DETAILED RESULTS ========================
+
+    print("\nSaving detailed Stage 1 results...")
+
+    stage1_results = {
+        'config': {
+            'model_name': MODEL_NAME,
+            'n_samples': N_SAMPLES,
+            'layer': LAYER,
+            'sae_steps': SAE_STEPS,
+        },
+        'activations': {
+            'base_X': base_X.cpu().numpy(),
+            'audit_X': audit_X.cpu().numpy(),
+            'base_projections': base_projections.cpu().numpy(),
+            'audit_projections': audit_projections.cpu().numpy(),
+        },
+        'metadata': results_metadata,
+        'statistics': {
+            'base_initial_acc': base_initial_acc,
+            'audit_initial_acc': audit_initial_acc,
+            'base_del_rate': base_del_rate,
+            'audit_del_rate': audit_del_rate,
+            'base_delegated_correct': base_delegated_correct if base_delegated > 0 else 0,
+            'audit_delegated_correct': audit_delegated_correct if audit_delegated > 0 else 0,
+            'base_not_delegated_correct': base_not_delegated_correct if base_not_delegated > 0 else 0,
+            'audit_not_delegated_correct': audit_not_delegated_correct if audit_not_delegated > 0 else 0,
+            'pc1_explained_variance': (S[0]**2 / torch.sum(S**2)).item() * 100,
+            'path_separation': separation.item(),
+        },
+        'pca': {
+            'pc1': pc1.cpu().numpy(),
+            'explained_variance_ratio': (S**2 / torch.sum(S**2)).cpu().numpy(),
+        }
+    }
+
+    pickle_file = "stage1_results.pkl"
+    with open(pickle_file, 'wb') as f:
+        pickle.dump(stage1_results, f)
+    print(f"✓ Saved detailed results to {pickle_file}")
 
     # ======================== DRY RUN VERIFICATION ========================
 
