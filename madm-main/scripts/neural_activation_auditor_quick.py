@@ -22,10 +22,14 @@ LAYER = 23  # Qwen2.5-1.5B has 28 layers; using layer 23 (~82% depth)
 SAE_STEPS = 150
 MAX_CTX = 512
 RESERVE = 16
-COEFF = 3.0  # Steering strength - reduced from 10.0 which broke generation format
+COEFF = 10.0  # Steering strength - increased for better flip rate
 
 ACCEPTED_CSV = "data/accepted_10k.csv"
 REJECTED_CSV = "data/rejected_10k.csv"
+
+# Set to True to skip Stage 1 (collection + SAE training) and only run Stage 2 (steering test)
+SKIP_STAGE1 = False
+CACHE_FILE = "sae_cache.pt"  # Where to save/load SAE and activations
 
 # ======================== LOAD MODEL ========================
 
@@ -294,231 +298,280 @@ def sae_stats(Xpart, X_mean, X_std, sae_model):
     return l1, active
 
 
-# ======================== COLLECTION LOOP ========================
+# ======================== STAGE 1: COLLECTION & SAE ========================
 
-base_X, audit_X = [], []
-results_metadata = []
-print(f"Starting collection: targeting {N_SAMPLES} samples...")
-print("=" * 60)
+if SKIP_STAGE1:
+    print("\n" + "=" * 60)
+    print("SKIPPING STAGE 1 - Loading cached SAE...")
+    print("=" * 60)
 
-attempt = 0
-while len(base_X) < N_SAMPLES:
-    attempt += 1
-    print(f"\n[ATTEMPT {attempt}] Sampling loan application...")
-
-    row = df.sample(1).iloc[0]
-    if pd.isna(row["emp_length"]):
-        print("  -> Skipping: missing employment length")
-        continue
-
-    ground_truth = "reject" if row["accepted"] == 0 else "accept"  # Ground truth is the actual loan decision
-    scenario = truncate_to_ctx(create_prompt_base(row))
-
-    b_res = get_llm_base_support(scenario)
-    print()
-    a_res = get_sequential_inference(scenario)
-
-    if b_res["del"] and a_res["del"]:
-        base_X.append(decision_activation(b_res, LAYER).detach().cpu())
-        audit_X.append(decision_activation(a_res, LAYER).detach().cpu())
-
-        results_metadata.append(
-            {
-                "ground_truth": ground_truth,
-                "base_initial": b_res["prediction"],
-                "audit_initial": a_res["prediction"],
-                "base_decision": b_res["del"],
-                "audit_decision": a_res["del"],
-            }
+    import os
+    if not os.path.exists(CACHE_FILE):
+        raise FileNotFoundError(
+            f"Cache file '{CACHE_FILE}' not found. Run with SKIP_STAGE1=False first."
         )
 
-        print(
-            f"\n  ✓ SUCCESS! Sample {len(base_X)}/{N_SAMPLES} collected"
-        )
-        print(f"  Ground truth: {ground_truth}")
-        print(f"  Base initial: {b_res['prediction']} | Audit initial: {a_res['prediction']}")
-        print(f"  Base delegate: {b_res['del']} | Audit delegate: {a_res['del']}")
-        print("=" * 60)
+    cache = torch.load(CACHE_FILE)
+    base_X = cache["base_X"].to(device)
+    audit_X = cache["audit_X"].to(device)
+    results_metadata = cache["results_metadata"]
+    X_mean = cache["X_mean"].to(device)
+    X_std = cache["X_std"].to(device)
+
+    # Reconstruct SAE
+    X = torch.cat([base_X, audit_X], dim=0)
+    d_in = X.shape[1]
+    sae = SAE(d_in, 2 * d_in).to(device)
+    sae.load_state_dict(cache["sae_state_dict"])
+
+    print(f"✓ Loaded {len(base_X)} base samples and {len(audit_X)} audit samples")
+    print(f"✓ SAE model loaded from {CACHE_FILE}")
+    print(f"Skipping to Stage 2 (Steering Test)...")
+    print("=" * 60)
+
+else:
+    # ======================== COLLECTION LOOP ========================
+
+    base_X, audit_X = [], []
+    results_metadata = []
+    print(f"Starting collection: targeting {N_SAMPLES} samples...")
+    print("=" * 60)
+
+    attempt = 0
+    while len(base_X) < N_SAMPLES:
+        attempt += 1
+        print(f"\n[ATTEMPT {attempt}] Sampling loan application...")
+
+        row = df.sample(1).iloc[0]
+        if pd.isna(row["emp_length"]):
+            print("  -> Skipping: missing employment length")
+            continue
+
+        ground_truth = "reject" if row["accepted"] == 0 else "accept"  # Ground truth is the actual loan decision
+        scenario = truncate_to_ctx(create_prompt_base(row))
+
+        b_res = get_llm_base_support(scenario)
+        print()
+        a_res = get_sequential_inference(scenario)
+
+        if b_res["del"] and a_res["del"]:
+            base_X.append(decision_activation(b_res, LAYER).detach().cpu())
+            audit_X.append(decision_activation(a_res, LAYER).detach().cpu())
+
+            results_metadata.append(
+                {
+                    "ground_truth": ground_truth,
+                    "base_initial": b_res["prediction"],
+                    "audit_initial": a_res["prediction"],
+                    "base_decision": b_res["del"],
+                    "audit_decision": a_res["del"],
+                }
+            )
+
+            print(
+                f"\n  ✓ SUCCESS! Sample {len(base_X)}/{N_SAMPLES} collected"
+            )
+            print(f"  Ground truth: {ground_truth}")
+            print(f"  Base initial: {b_res['prediction']} | Audit initial: {a_res['prediction']}")
+            print(f"  Base delegate: {b_res['del']} | Audit delegate: {a_res['del']}")
+            print("=" * 60)
+        else:
+            print(f"\n  ✗ SKIP | Base decision: '{b_res['del']}' | Audit decision: '{a_res['del']}'")
+            print(f"    Base text: '{b_res['text']}'")
+            print(f"    Audit text: '{a_res['text']}'")
+            print("=" * 60)
+
+    base_X = torch.stack(base_X).float().to(device)
+    audit_X = torch.stack(audit_X).float().to(device)
+
+    # ======================== STAGE 1 SUMMARY ========================
+
+    print("\n" + "=" * 60)
+    print("STAGE 1 SUMMARY")
+    print("=" * 60)
+
+    # Calculate initial decision accuracy
+    base_initial_correct = sum(
+        1 for m in results_metadata if m["base_initial"].lower().strip() == m["ground_truth"]
+    )
+    audit_initial_correct = sum(
+        1 for m in results_metadata if m["audit_initial"].lower().strip() == m["ground_truth"]
+    )
+
+    base_initial_acc = (base_initial_correct / N_SAMPLES) * 100
+    audit_initial_acc = (audit_initial_correct / N_SAMPLES) * 100
+
+    print(f"\nInitial Decision Accuracy (accept/reject):")
+    print(f"  Base (Support):   {base_initial_correct}/{N_SAMPLES} = {base_initial_acc:.1f}%")
+    print(f"  Audit (Critique): {audit_initial_correct}/{N_SAMPLES} = {audit_initial_acc:.1f}%")
+    print(f"  Delta:            {audit_initial_acc - base_initial_acc:+.1f}%")
+
+    # Calculate delegation rates
+    base_delegated = sum(1 for m in results_metadata if m["base_decision"] == "delegate")
+    audit_delegated = sum(1 for m in results_metadata if m["audit_decision"] == "delegate")
+
+    base_del_rate = (base_delegated / N_SAMPLES) * 100
+    audit_del_rate = (audit_delegated / N_SAMPLES) * 100
+
+    print(f"\nDelegation Rates (said 'yes' to delegation):")
+    print(f"  Base (Support):   {base_delegated}/{N_SAMPLES} = {base_del_rate:.1f}%")
+    print(f"  Audit (Critique): {audit_delegated}/{N_SAMPLES} = {audit_del_rate:.1f}%")
+    print(f"  Delta:            {audit_del_rate - base_del_rate:+.1f}%")
+
+    # Calculate accuracy conditional on delegation
+    base_delegated_correct = sum(
+        1 for m in results_metadata
+        if m["base_decision"] == "delegate" and m["base_initial"].lower().strip() == m["ground_truth"]
+    )
+    base_not_delegated_correct = sum(
+        1 for m in results_metadata
+        if m["base_decision"] != "delegate" and m["base_initial"].lower().strip() == m["ground_truth"]
+    )
+
+    audit_delegated_correct = sum(
+        1 for m in results_metadata
+        if m["audit_decision"] == "delegate" and m["audit_initial"].lower().strip() == m["ground_truth"]
+    )
+    audit_not_delegated_correct = sum(
+        1 for m in results_metadata
+        if m["audit_decision"] != "delegate" and m["audit_initial"].lower().strip() == m["ground_truth"]
+    )
+
+    base_not_delegated = N_SAMPLES - base_delegated
+    audit_not_delegated = N_SAMPLES - audit_delegated
+
+    print(f"\nAccuracy When DELEGATED:")
+    if base_delegated > 0:
+        base_del_acc = (base_delegated_correct / base_delegated) * 100
+        print(f"  Base (Support):   {base_delegated_correct}/{base_delegated} = {base_del_acc:.1f}%")
     else:
-        print(f"\n  ✗ SKIP | Base decision: '{b_res['del']}' | Audit decision: '{a_res['del']}'")
-        print(f"    Base text: '{b_res['text']}'")
-        print(f"    Audit text: '{a_res['text']}'")
-        print("=" * 60)
+        print(f"  Base (Support):   N/A (no delegations)")
 
-base_X = torch.stack(base_X).float().to(device)
-audit_X = torch.stack(audit_X).float().to(device)
+    if audit_delegated > 0:
+        audit_del_acc = (audit_delegated_correct / audit_delegated) * 100
+        print(f"  Audit (Critique): {audit_delegated_correct}/{audit_delegated} = {audit_del_acc:.1f}%")
+    else:
+        print(f"  Audit (Critique): N/A (no delegations)")
 
-# ======================== STAGE 1 SUMMARY ========================
+    print(f"\nAccuracy When NOT DELEGATED:")
+    if base_not_delegated > 0:
+        base_no_del_acc = (base_not_delegated_correct / base_not_delegated) * 100
+        print(f"  Base (Support):   {base_not_delegated_correct}/{base_not_delegated} = {base_no_del_acc:.1f}%")
+    else:
+        print(f"  Base (Support):   N/A (all delegated)")
 
-print("\n" + "=" * 60)
-print("STAGE 1 SUMMARY")
-print("=" * 60)
+    if audit_not_delegated > 0:
+        audit_no_del_acc = (audit_not_delegated_correct / audit_not_delegated) * 100
+        print(f"  Audit (Critique): {audit_not_delegated_correct}/{audit_not_delegated} = {audit_no_del_acc:.1f}%")
+    else:
+        print(f"  Audit (Critique): N/A (all delegated)")
 
-# Calculate initial decision accuracy
-base_initial_correct = sum(
-    1 for m in results_metadata if m["base_initial"].lower().strip() == m["ground_truth"]
-)
-audit_initial_correct = sum(
-    1 for m in results_metadata if m["audit_initial"].lower().strip() == m["ground_truth"]
-)
+    print("=" * 60)
 
-base_initial_acc = (base_initial_correct / N_SAMPLES) * 100
-audit_initial_acc = (audit_initial_correct / N_SAMPLES) * 100
+    # ======================== TRAIN SAE ========================
 
-print(f"\nInitial Decision Accuracy (accept/reject):")
-print(f"  Base (Support):   {base_initial_correct}/{N_SAMPLES} = {base_initial_acc:.1f}%")
-print(f"  Audit (Critique): {audit_initial_correct}/{N_SAMPLES} = {audit_initial_acc:.1f}%")
-print(f"  Delta:            {audit_initial_acc - base_initial_acc:+.1f}%")
+    X = torch.cat([base_X, audit_X], dim=0)
+    d_in = X.shape[1]
+    sae = SAE(d_in, 2 * d_in).to(device)
+    opt = torch.optim.AdamW(sae.parameters(), lr=1e-3)
 
-# Calculate delegation rates
-base_delegated = sum(1 for m in results_metadata if m["base_decision"] == "delegate")
-audit_delegated = sum(1 for m in results_metadata if m["audit_decision"] == "delegate")
+    X_mean, X_std = X.mean(0), X.std(0) + 1e-6
+    Xn = (X - X_mean) / X_std
 
-base_del_rate = (base_delegated / N_SAMPLES) * 100
-audit_del_rate = (audit_delegated / N_SAMPLES) * 100
+    print("\nTraining SAE...")
+    for step in range(SAE_STEPS):
+        x_hat, z = sae(Xn)
+        l1_loss = z.abs().mean()
+        active_pct = (z > 0).float().mean().item() * 100
+        loss = F.mse_loss(x_hat, Xn) + 5e-4 * l1_loss
 
-print(f"\nDelegation Rates (said 'yes' to delegation):")
-print(f"  Base (Support):   {base_delegated}/{N_SAMPLES} = {base_del_rate:.1f}%")
-print(f"  Audit (Critique): {audit_delegated}/{N_SAMPLES} = {audit_del_rate:.1f}%")
-print(f"  Delta:            {audit_del_rate - base_del_rate:+.1f}%")
+        opt.zero_grad()
+        loss.backward()
+        opt.step()
 
-# Calculate accuracy conditional on delegation
-base_delegated_correct = sum(
-    1 for m in results_metadata
-    if m["base_decision"] == "delegate" and m["base_initial"].lower().strip() == m["ground_truth"]
-)
-base_not_delegated_correct = sum(
-    1 for m in results_metadata
-    if m["base_decision"] != "delegate" and m["base_initial"].lower().strip() == m["ground_truth"]
-)
+        if step % 50 == 0:
+            print(
+                f"  Step {step:3} | Loss: {loss.item():.4f} | "
+                f"L1: {l1_loss:.2f} | Active: {active_pct:.1f}%"
+            )
 
-audit_delegated_correct = sum(
-    1 for m in results_metadata
-    if m["audit_decision"] == "delegate" and m["audit_initial"].lower().strip() == m["ground_truth"]
-)
-audit_not_delegated_correct = sum(
-    1 for m in results_metadata
-    if m["audit_decision"] != "delegate" and m["audit_initial"].lower().strip() == m["ground_truth"]
-)
+    # ======================== FINAL EVALUATION ========================
 
-base_not_delegated = N_SAMPLES - base_delegated
-audit_not_delegated = N_SAMPLES - audit_delegated
+    base_l1, base_active = sae_stats(base_X, X_mean, X_std, sae)
+    audit_l1, audit_active = sae_stats(audit_X, X_mean, X_std, sae)
 
-print(f"\nAccuracy When DELEGATED:")
-if base_delegated > 0:
-    base_del_acc = (base_delegated_correct / base_delegated) * 100
-    print(f"  Base (Support):   {base_delegated_correct}/{base_delegated} = {base_del_acc:.1f}%")
-else:
-    print(f"  Base (Support):   N/A (no delegations)")
+    print(f"\nFINAL STATS (Layer {LAYER})")
+    print(f"  L1 (Density):    Base={base_l1:.2f} | Audit={audit_l1:.2f}")
+    print(f"  Active Features: Base={base_active*100:.1f}% | Audit={audit_active*100:.1f}%")
 
-if audit_delegated > 0:
-    audit_del_acc = (audit_delegated_correct / audit_delegated) * 100
-    print(f"  Audit (Critique): {audit_delegated_correct}/{audit_delegated} = {audit_del_acc:.1f}%")
-else:
-    print(f"  Audit (Critique): N/A (no delegations)")
+    # ======================== PCA ========================
 
-print(f"\nAccuracy When NOT DELEGATED:")
-if base_not_delegated > 0:
-    base_no_del_acc = (base_not_delegated_correct / base_not_delegated) * 100
-    print(f"  Base (Support):   {base_not_delegated_correct}/{base_not_delegated} = {base_no_del_acc:.1f}%")
-else:
-    print(f"  Base (Support):   N/A (all delegated)")
+    print("\nExtracting principal components...")
 
-if audit_not_delegated > 0:
-    audit_no_del_acc = (audit_not_delegated_correct / audit_not_delegated) * 100
-    print(f"  Audit (Critique): {audit_not_delegated_correct}/{audit_not_delegated} = {audit_no_del_acc:.1f}%")
-else:
-    print(f"  Audit (Critique): N/A (all delegated)")
+    X_centered = X - X.mean(dim=0)
+    U, S, V = torch.pca_lowrank(X_centered, q=2)
+    pc1 = V[:, 0]
 
-print("=" * 60)
+    base_projections = base_X @ pc1
+    audit_projections = audit_X @ pc1
 
-# ======================== TRAIN SAE ========================
+    # Ensure PC1 points from base toward audit (so audit is "positive" direction)
+    if base_projections.mean() > audit_projections.mean():
+        pc1 = -pc1
+        base_projections = -base_projections
+        audit_projections = -audit_projections
+        print("  [Flipped PC1 direction to point base→audit]")
 
-X = torch.cat([base_X, audit_X], dim=0)
-d_in = X.shape[1]
-sae = SAE(d_in, 2 * d_in).to(device)
-opt = torch.optim.AdamW(sae.parameters(), lr=1e-3)
+    print(f"  PC1 Explained Variance: {(S[0]**2 / torch.sum(S**2)) * 100:.1f}%")
+    print(f"  Mean PC1 Projection (Base):  {base_projections.mean().item():.4f}")
+    print(f"  Mean PC1 Projection (Audit): {audit_projections.mean().item():.4f}")
 
-X_mean, X_std = X.mean(0), X.std(0) + 1e-6
-Xn = (X - X_mean) / X_std
+    separation = (base_projections.mean() - audit_projections.mean()).abs()
+    print(f"  Path Separation on PC1:      {separation.item():.4f}")
 
-print("\nTraining SAE...")
-for step in range(SAE_STEPS):
-    x_hat, z = sae(Xn)
-    l1_loss = z.abs().mean()
-    active_pct = (z > 0).float().mean().item() * 100
-    loss = F.mse_loss(x_hat, Xn) + 5e-4 * l1_loss
+    # ======================== DRY RUN VERIFICATION ========================
 
-    opt.zero_grad()
-    loss.backward()
-    opt.step()
-
-    if step % 50 == 0:
-        print(
-            f"  Step {step:3} | Loss: {loss.item():.4f} | "
-            f"L1: {l1_loss:.2f} | Active: {active_pct:.1f}%"
-        )
-
-# ======================== FINAL EVALUATION ========================
-
-base_l1, base_active = sae_stats(base_X, X_mean, X_std, sae)
-audit_l1, audit_active = sae_stats(audit_X, X_mean, X_std, sae)
-
-print(f"\nFINAL STATS (Layer {LAYER})")
-print(f"  L1 (Density):    Base={base_l1:.2f} | Audit={audit_l1:.2f}")
-print(f"  Active Features: Base={base_active*100:.1f}% | Audit={audit_active*100:.1f}%")
-
-# ======================== PCA ========================
-
-print("\nExtracting principal components...")
-
-X_centered = X - X.mean(dim=0)
-U, S, V = torch.pca_lowrank(X_centered, q=2)
-pc1 = V[:, 0]
-
-base_projections = base_X @ pc1
-audit_projections = audit_X @ pc1
-
-# Ensure PC1 points from base toward audit (so audit is "positive" direction)
-if base_projections.mean() > audit_projections.mean():
-    pc1 = -pc1
-    base_projections = -base_projections
-    audit_projections = -audit_projections
-    print("  [Flipped PC1 direction to point base→audit]")
-
-print(f"  PC1 Explained Variance: {(S[0]**2 / torch.sum(S**2)) * 100:.1f}%")
-print(f"  Mean PC1 Projection (Base):  {base_projections.mean().item():.4f}")
-print(f"  Mean PC1 Projection (Audit): {audit_projections.mean().item():.4f}")
-
-separation = (base_projections.mean() - audit_projections.mean()).abs()
-print(f"  Path Separation on PC1:      {separation.item():.4f}")
-
-# ======================== DRY RUN VERIFICATION ========================
-
-test_row = df.sample(1).iloc[0]
-while pd.isna(test_row["emp_length"]):
     test_row = df.sample(1).iloc[0]
-test_scenario = truncate_to_ctx(create_prompt_base(test_row))
+    while pd.isna(test_row["emp_length"]):
+        test_row = df.sample(1).iloc[0]
+    test_scenario = truncate_to_ctx(create_prompt_base(test_row))
 
-print("\n--- DRY RUN: LOGIC VERIFICATION ---")
-print(f"\n[ORIGINAL SCENARIO]\n{test_scenario}")
-print("-" * 40)
+    print("\n--- DRY RUN: LOGIC VERIFICATION ---")
+    print(f"\n[ORIGINAL SCENARIO]\n{test_scenario}")
+    print("-" * 40)
 
-print("\n[PATH A: BASE]")
-res_support = get_llm_base_support(test_scenario)
-print(f"  INITIAL DECISION: {res_support['prediction']}")
-print(f"  SUPPORT:          {res_support['support']}")
-print(f"  FINAL DECISION:   {res_support['del']}")
+    print("\n[PATH A: BASE]")
+    res_support = get_llm_base_support(test_scenario)
+    print(f"  INITIAL DECISION: {res_support['prediction']}")
+    print(f"  SUPPORT:          {res_support['support']}")
+    print(f"  FINAL DECISION:   {res_support['del']}")
 
-print("\n" + "=" * 40)
+    print("\n" + "=" * 40)
 
-print("\n[PATH B: AUDITOR]")
-res_critique = get_sequential_inference(test_scenario)
-print(f"  INITIAL DECISION: {res_critique['prediction']}")
-print(f"  CRITIQUE:         {res_critique['critique']}")
-print(f"  FINAL DECISION:   {res_critique['del']}")
+    print("\n[PATH B: AUDITOR]")
+    res_critique = get_sequential_inference(test_scenario)
+    print(f"  INITIAL DECISION: {res_critique['prediction']}")
+    print(f"  CRITIQUE:         {res_critique['critique']}")
+    print(f"  FINAL DECISION:   {res_critique['del']}")
 
-print("\n--- CHECK COMPLETE ---")
+    print("\n--- CHECK COMPLETE ---")
+
+    # ======================== SAVE STAGE 1 RESULTS ========================
+
+    print(f"\nSaving SAE and activations to {CACHE_FILE}...")
+    torch.save(
+        {
+            "base_X": base_X.cpu(),
+            "audit_X": audit_X.cpu(),
+            "results_metadata": results_metadata,
+            "X_mean": X_mean.cpu(),
+            "X_std": X_std.cpu(),
+            "sae_state_dict": sae.state_dict(),
+        },
+        CACHE_FILE,
+    )
+    print(f"✓ Saved to {CACHE_FILE}")
+    print(f"  (To skip Stage 1 next time, set SKIP_STAGE1=True)")
 
 # ======================== STEERING TEST ========================
 
