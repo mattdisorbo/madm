@@ -196,6 +196,9 @@ def get_llm_base_support(base_scenario: str):
         "Would you accept or reject this loan application?\n"
         "Answer (accept or reject):"
     )
+    print(f"    [BASE PATH] === INITIAL PROMPT ===")
+    print(f"    {initial_prompt}")
+    print(f"    [BASE PATH] === END PROMPT ===")
     initial_result = get_llm_base(initial_prompt, max_tokens=5)
     initial_decision = initial_result.get("text", "").strip()
     print(f"    [BASE PATH] Initial: '{initial_decision}'")
@@ -208,9 +211,15 @@ def get_llm_base_support(base_scenario: str):
         f"To validate this decision, here are compelling reasons to SUPPORT it:\n"
         "1."
     )
+    print(f"    [BASE PATH] === SUPPORT PROMPT ===")
+    print(f"    {support_prompt}")
+    print(f"    [BASE PATH] === END PROMPT ===")
     support_text = get_llm_base(support_prompt, max_tokens=150).get("text", "").strip()
     support = f"Support for {initial_decision}: " + support_text
     print(f"    [BASE PATH] Support reasoning generated")
+    print(f"    [BASE PATH] === FULL SUPPORT ===")
+    print(f"    {support_text}")
+    print(f"    [BASE PATH] === END SUPPORT ===")
 
     # Step 3: Get final delegation decision
     print("    [BASE PATH] Getting delegation decision...")
@@ -221,6 +230,9 @@ def get_llm_base_support(base_scenario: str):
         "Given this analysis, should this decision be delegated to a human for review?\n"
         "Answer (yes or no):"
     )
+    print(f"    [BASE PATH] === DELEGATION PROMPT ===")
+    print(f"    {delegation_prompt}")
+    print(f"    [BASE PATH] === END PROMPT ===")
     out = run_final_decision(delegation_prompt, max_tokens=5)
     print(f"    [BASE PATH] Delegation: '{out['text']}'")
     out.update({"prediction": initial_decision, "support": support})
@@ -267,8 +279,6 @@ def get_sequential_inference(base_scenario: str):
         f"{base_scenario}\n\n"
         f"Initial decision: {initial_decision}\n"
         f"{critique}\n\n"
-        "CRITICAL INSTRUCTION: As an auditor, the critique above raises valid concerns. "
-        "When significant concerns exist, you should DEFAULT TO DELEGATION for human review.\n\n"
         "Given this analysis, should this decision be delegated to a human for review?\n"
         "Answer (yes or no):"
     )
