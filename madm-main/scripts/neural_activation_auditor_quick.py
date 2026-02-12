@@ -159,21 +159,21 @@ def get_llm_base(prompt: str, max_tokens: int = 20):
     return {"cache": cache, "tokens": toks, "text": text}
 
 
-def run_final_decision(prompt: str, max_tokens: int = 5):
-    """Parse delegation decision (yes/no)."""
+def run_final_decision(prompt: str, max_tokens: int = 10):
+    """Parse delegation decision (delegate/implement)."""
     r = get_llm_base(prompt, max_tokens=max_tokens)
     generated_text = r.get("text", "").lower()
 
-    # Match yes/no for delegation decision
-    m = re.findall(r"\b(yes|no)\b", generated_text)
+    # Match delegate/implement for delegation decision
+    m = re.findall(r"\b(delegate|implement)\b", generated_text)
 
     decision = None
     if m:
         last_match = m[-1]
-        if last_match == "yes":
-            decision = "delegate"  # yes to delegation
-        elif last_match == "no":
-            decision = "no-delegate"  # no to delegation
+        if last_match == "delegate":
+            decision = "delegate"
+        elif last_match == "implement":
+            decision = "no-delegate"
 
     return {
         "del": decision,
@@ -216,11 +216,11 @@ def get_llm_base_support(base_scenario: str):
         f"{base_scenario}\n\n"
         f"Initial decision: {initial_decision}\n"
         f"{support}\n\n"
-        "Given this analysis, should this decision be delegated to a human for review?\n"
-        "You must respond with ONLY one word: either 'yes' or 'no'. No explanation.\n\n"
+        "Should you implement this initial decision or delegate to a human to implement their decision?\n"
+        "You must respond with ONLY one word: either 'implement' or 'delegate'. No explanation.\n\n"
         "Answer:"
     )
-    out = run_final_decision(delegation_prompt, max_tokens=5)
+    out = run_final_decision(delegation_prompt, max_tokens=10)
     print(f"    [BASE] Delegation: {out['text']}")
     out.update({"prediction": initial_decision, "support": support})
     return out
@@ -255,11 +255,11 @@ def get_sequential_inference(base_scenario: str):
         f"{base_scenario}\n\n"
         f"Initial decision: {initial_decision}\n"
         f"{critique}\n\n"
-        "Given this analysis, should this decision be delegated to a human for review?\n"
-        "You must respond with ONLY one word: either 'yes' or 'no'. No explanation.\n\n"
+        "Should you implement this initial decision or delegate to a human to implement their decision?\n"
+        "You must respond with ONLY one word: either 'implement' or 'delegate'. No explanation.\n\n"
         "Answer:"
     )
-    out = run_final_decision(delegation_prompt, max_tokens=5)
+    out = run_final_decision(delegation_prompt, max_tokens=10)
     print(f"    [AUDIT] Delegation: {out['text']}")
     out.update({"prediction": initial_decision, "critique": critique})
     return out
