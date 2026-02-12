@@ -412,6 +412,54 @@ print(f"  Base (Support):   {base_delegated}/{N_SAMPLES} = {base_del_rate:.1f}%"
 print(f"  Audit (Critique): {audit_delegated}/{N_SAMPLES} = {audit_del_rate:.1f}%")
 print(f"  Delta:            {audit_del_rate - base_del_rate:+.1f}%")
 
+# Calculate accuracy conditional on delegation
+base_delegated_correct = sum(
+    1 for m in results_metadata
+    if m["base_decision"] == "delegate" and m["base_initial"].lower().strip() == m["ground_truth"]
+)
+base_not_delegated_correct = sum(
+    1 for m in results_metadata
+    if m["base_decision"] != "delegate" and m["base_initial"].lower().strip() == m["ground_truth"]
+)
+
+audit_delegated_correct = sum(
+    1 for m in results_metadata
+    if m["audit_decision"] == "delegate" and m["audit_initial"].lower().strip() == m["ground_truth"]
+)
+audit_not_delegated_correct = sum(
+    1 for m in results_metadata
+    if m["audit_decision"] != "delegate" and m["audit_initial"].lower().strip() == m["ground_truth"]
+)
+
+base_not_delegated = N_SAMPLES - base_delegated
+audit_not_delegated = N_SAMPLES - audit_delegated
+
+print(f"\nAccuracy When DELEGATED:")
+if base_delegated > 0:
+    base_del_acc = (base_delegated_correct / base_delegated) * 100
+    print(f"  Base (Support):   {base_delegated_correct}/{base_delegated} = {base_del_acc:.1f}%")
+else:
+    print(f"  Base (Support):   N/A (no delegations)")
+
+if audit_delegated > 0:
+    audit_del_acc = (audit_delegated_correct / audit_delegated) * 100
+    print(f"  Audit (Critique): {audit_delegated_correct}/{audit_delegated} = {audit_del_acc:.1f}%")
+else:
+    print(f"  Audit (Critique): N/A (no delegations)")
+
+print(f"\nAccuracy When NOT DELEGATED:")
+if base_not_delegated > 0:
+    base_no_del_acc = (base_not_delegated_correct / base_not_delegated) * 100
+    print(f"  Base (Support):   {base_not_delegated_correct}/{base_not_delegated} = {base_no_del_acc:.1f}%")
+else:
+    print(f"  Base (Support):   N/A (all delegated)")
+
+if audit_not_delegated > 0:
+    audit_no_del_acc = (audit_not_delegated_correct / audit_not_delegated) * 100
+    print(f"  Audit (Critique): {audit_not_delegated_correct}/{audit_not_delegated} = {audit_no_del_acc:.1f}%")
+else:
+    print(f"  Audit (Critique): N/A (all delegated)")
+
 print("=" * 60)
 
 # ======================== TRAIN SAE ========================
