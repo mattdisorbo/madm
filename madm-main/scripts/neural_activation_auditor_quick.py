@@ -28,7 +28,7 @@ ACCEPTED_CSV = "data/accepted_10k.csv"
 REJECTED_CSV = "data/rejected_10k.csv"
 
 # Set to True to skip Stage 1 (collection + SAE training) and only run Stage 2 (steering test)
-SKIP_STAGE1 = False
+SKIP_STAGE1 = True
 CACHE_FILE = "sae_cache.pt"  # Where to save/load SAE and activations
 
 # ======================== LOAD MODEL ========================
@@ -668,6 +668,8 @@ print("  Strategy: Only testing samples where BASE initially says 'no-delegate'"
 n_steered = 0
 attempts = 0
 max_attempts = N_TEST * 20  # Avoid infinite loop
+flip_count = 0  # Track how many flips occurred
+flip_to_delegate_count = 0  # Track flips specifically to "delegate"
 
 while n_steered < N_TEST and attempts < max_attempts:
     attempts += 1
@@ -699,8 +701,12 @@ while n_steered < N_TEST and attempts < max_attempts:
     print(f"    Changed: {base_dec != steer_dec}")
 
     status = "FLIP!" if base_dec != steer_dec else "-"
+    if base_dec != steer_dec:
+        flip_count += 1
     if steer_dec == "delegate":
         status = "FLIP TO DELEGATE! ✓"
+        if base_dec != steer_dec:
+            flip_to_delegate_count += 1
 
     print(f"\n  Sample {n_steered} | GT: {gt:6}")
     print(f"    Base:    {base_dec:6}")
@@ -709,6 +715,22 @@ while n_steered < N_TEST and attempts < max_attempts:
 print("\n" + "=" * 60)
 print("STEERING TEST COMPLETE")
 print("=" * 60)
+
+# ======================== FLIP SUMMARY ========================
+flip_rate = (flip_count / N_TEST) * 100
+flip_to_delegate_rate = (flip_to_delegate_count / N_TEST) * 100
+
+print("\n" + "=" * 60)
+print("FLIP SUMMARY")
+print("=" * 60)
+print(f"\nTotal samples tested: {N_TEST}")
+print(f"  (All samples had BASE decision = 'no-delegate')")
+print(f"\nFlips (any change):          {flip_count}/{N_TEST} ({flip_rate:.1f}%)")
+print(f"Flips to 'delegate':         {flip_to_delegate_count}/{N_TEST} ({flip_to_delegate_rate:.1f}%)")
+print(f"\nSteering coefficient: {COEFF}")
+print(f"Target layer: {LAYER}")
+print("=" * 60)
+
 print("\nTROUBLESHOOTING TIPS:")
 print("  1. INCREASE COEFF: Try 15.0, 20.0, or even 50.0")
 print("  2. TRY DIFFERENT LAYERS: Layer 16 (early), 24 (mid), 40 (late)")
