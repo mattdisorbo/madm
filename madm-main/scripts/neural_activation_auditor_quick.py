@@ -208,8 +208,8 @@ def get_llm_base_support(base_scenario: str):
     print(f"    [BASE PATH] Getting support reasoning...")
     support_prompt = (
         f"{base_scenario}\n\n"
-        f"I initially think I should: {initial_decision}\n\n"
-        f"To validate this decision, here are compelling reasons to SUPPORT it:\n"
+        f"Initial decision: {initial_decision}\n\n"
+        f"Reasons supporting {initial_decision}:\n"
         "1."
     )
     print(f"    [BASE PATH] === SUPPORT PROMPT ===")
@@ -262,8 +262,8 @@ def get_sequential_inference(base_scenario: str):
     print(f"    [AUDIT PATH] Getting critique reasoning...")
     critique_prompt = (
         f"{base_scenario}\n\n"
-        f"I initially think I should: {initial_decision}\n\n"
-        f"To ensure fairness and avoid bias, here are compelling reasons to CRITIQUE this decision:\n"
+        f"Initial decision: {initial_decision}\n\n"
+        f"Reasons to critique {initial_decision}:\n"
         "1."
     )
     print(f"    [AUDIT PATH] === CRITIQUE PROMPT ===")
