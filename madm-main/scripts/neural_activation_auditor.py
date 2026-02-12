@@ -339,7 +339,7 @@ while len(base_X) < N_SAMPLES:
         print("  -> Skipping: missing employment length")
         continue
 
-    ground_truth = "delegate" if row["accepted"] == 0 else "no-delegate"  # Rejected loans should delegate to human
+    ground_truth = "reject" if row["accepted"] == 0 else "accept"  # Ground truth is the actual loan decision
     scenario = truncate_to_ctx(create_prompt_base(row))
     print(f"  Scenario: {scenario[:100]}...")
     print(f"  Ground truth: {ground_truth}")
@@ -355,15 +355,19 @@ while len(base_X) < N_SAMPLES:
         results_metadata.append(
             {
                 "ground_truth": ground_truth,
+                "base_initial": b_res["prediction"],
+                "audit_initial": a_res["prediction"],
                 "base_decision": b_res["del"],
                 "audit_decision": a_res["del"],
             }
         )
 
         print(
-            f"\n  ✓ SUCCESS! Sample {len(base_X)}/{N_SAMPLES} collected | "
-            f"Actual: {ground_truth} | Base: {b_res['del']} | Audit: {a_res['del']}"
+            f"\n  ✓ SUCCESS! Sample {len(base_X)}/{N_SAMPLES} collected"
         )
+        print(f"  Ground truth: {ground_truth}")
+        print(f"  Base initial: {b_res['prediction']} | Audit initial: {a_res['prediction']}")
+        print(f"  Base delegate: {b_res['del']} | Audit delegate: {a_res['del']}")
         print("=" * 60)
     else:
         print(f"\n  ✗ SKIP | Base decision: '{b_res['del']}' | Audit decision: '{a_res['del']}'")
@@ -373,6 +377,42 @@ while len(base_X) < N_SAMPLES:
 
 base_X = torch.stack(base_X).float().to(device)
 audit_X = torch.stack(audit_X).float().to(device)
+
+# ======================== STAGE 1 SUMMARY ========================
+
+print("\n" + "=" * 60)
+print("STAGE 1 SUMMARY")
+print("=" * 60)
+
+# Calculate initial decision accuracy
+base_initial_correct = sum(
+    1 for m in results_metadata if m["base_initial"].lower().strip() == m["ground_truth"]
+)
+audit_initial_correct = sum(
+    1 for m in results_metadata if m["audit_initial"].lower().strip() == m["ground_truth"]
+)
+
+base_initial_acc = (base_initial_correct / N_SAMPLES) * 100
+audit_initial_acc = (audit_initial_correct / N_SAMPLES) * 100
+
+print(f"\nInitial Decision Accuracy (accept/reject):")
+print(f"  Base (Support):   {base_initial_correct}/{N_SAMPLES} = {base_initial_acc:.1f}%")
+print(f"  Audit (Critique): {audit_initial_correct}/{N_SAMPLES} = {audit_initial_acc:.1f}%")
+print(f"  Delta:            {audit_initial_acc - base_initial_acc:+.1f}%")
+
+# Calculate delegation rates
+base_delegated = sum(1 for m in results_metadata if m["base_decision"] == "delegate")
+audit_delegated = sum(1 for m in results_metadata if m["audit_decision"] == "delegate")
+
+base_del_rate = (base_delegated / N_SAMPLES) * 100
+audit_del_rate = (audit_delegated / N_SAMPLES) * 100
+
+print(f"\nDelegation Rates (said 'yes' to delegation):")
+print(f"  Base (Support):   {base_delegated}/{N_SAMPLES} = {base_del_rate:.1f}%")
+print(f"  Audit (Critique): {audit_delegated}/{N_SAMPLES} = {audit_del_rate:.1f}%")
+print(f"  Delta:            {audit_del_rate - base_del_rate:+.1f}%")
+
+print("=" * 60)
 
 # ======================== TRAIN SAE ========================
 
@@ -409,23 +449,6 @@ audit_l1, audit_active = sae_stats(audit_X, X_mean, X_std, sae)
 print(f"\nFINAL STATS (Layer {LAYER})")
 print(f"  L1 (Density):    Base={base_l1:.2f} | Audit={audit_l1:.2f}")
 print(f"  Active Features: Base={base_active*100:.1f}% | Audit={audit_active*100:.1f}%")
-
-# ======================== ACCURACY ========================
-
-base_correct = sum(
-    1 for m in results_metadata if m["base_decision"] == m["ground_truth"]
-)
-audit_correct = sum(
-    1 for m in results_metadata if m["audit_decision"] == m["ground_truth"]
-)
-
-base_acc = (base_correct / N_SAMPLES) * 100
-audit_acc = (audit_correct / N_SAMPLES) * 100
-
-print(f"\nACCURACY REPORT")
-print(f"  Base Accuracy (Support):   {base_acc:.1f}%")
-print(f"  Audit Accuracy (Critique): {audit_acc:.1f}%")
-print(f"  Accuracy Delta:            {audit_acc - base_acc:+.1f}%")
 
 # ======================== PCA ========================
 
