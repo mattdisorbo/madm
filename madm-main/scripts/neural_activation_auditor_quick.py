@@ -190,40 +190,28 @@ def run_final_decision(prompt: str, max_tokens: int = 5):
 def get_llm_base_support(base_scenario: str):
     """Base path: initial decision + support reasoning + final delegation."""
     # Step 1: Get initial accept/reject decision
-    print("    [BASE PATH] Getting initial decision (accept/reject)...")
     initial_prompt = (
         f"{base_scenario}\n\n"
         "Would you accept or reject this loan application?\n"
         "You must respond with ONLY one word: either 'accept' or 'reject'. No explanation.\n\n"
         "Answer:"
     )
-    print(f"    [BASE PATH] === INITIAL PROMPT ===")
-    print(f"    {initial_prompt}")
-    print(f"    [BASE PATH] === END PROMPT ===")
     initial_result = get_llm_base(initial_prompt, max_tokens=5)
     initial_decision = initial_result.get("text", "").strip()
-    print(f"    [BASE PATH] Initial: '{initial_decision}'")
+    print(f"    [BASE] Initial decision: {initial_decision}")
 
     # Step 2: Get reasoning to SUPPORT that decision
-    print(f"    [BASE PATH] Getting support reasoning...")
     support_prompt = (
         f"{base_scenario}\n\n"
         f"Initial decision: {initial_decision}\n\n"
         f"Reasons supporting {initial_decision}:\n"
         "1."
     )
-    print(f"    [BASE PATH] === SUPPORT PROMPT ===")
-    print(f"    {support_prompt}")
-    print(f"    [BASE PATH] === END PROMPT ===")
     support_text = get_llm_base(support_prompt, max_tokens=150).get("text", "").strip()
     support = f"Support for {initial_decision}: " + support_text
-    print(f"    [BASE PATH] Support reasoning generated")
-    print(f"    [BASE PATH] === FULL SUPPORT ===")
-    print(f"    {support_text}")
-    print(f"    [BASE PATH] === END SUPPORT ===")
+    print(f"    [BASE] Support: {support_text}")
 
     # Step 3: Get final delegation decision
-    print("    [BASE PATH] Getting delegation decision...")
     delegation_prompt = (
         f"{base_scenario}\n\n"
         f"Initial decision: {initial_decision}\n"
@@ -232,11 +220,8 @@ def get_llm_base_support(base_scenario: str):
         "You must respond with ONLY one word: either 'yes' or 'no'. No explanation.\n\n"
         "Answer:"
     )
-    print(f"    [BASE PATH] === DELEGATION PROMPT ===")
-    print(f"    {delegation_prompt}")
-    print(f"    [BASE PATH] === END PROMPT ===")
     out = run_final_decision(delegation_prompt, max_tokens=5)
-    print(f"    [BASE PATH] Delegation: '{out['text']}'")
+    print(f"    [BASE] Delegation: {out['text']}")
     out.update({"prediction": initial_decision, "support": support})
     return out
 
@@ -244,40 +229,28 @@ def get_llm_base_support(base_scenario: str):
 def get_sequential_inference(base_scenario: str):
     """Auditor path: initial decision + critique reasoning + final delegation."""
     # Step 1: Get initial accept/reject decision (IDENTICAL to base)
-    print("    [AUDIT PATH] Getting initial decision (accept/reject)...")
     initial_prompt = (
         f"{base_scenario}\n\n"
         "Would you accept or reject this loan application?\n"
         "You must respond with ONLY one word: either 'accept' or 'reject'. No explanation.\n\n"
         "Answer:"
     )
-    print(f"    [AUDIT PATH] === INITIAL PROMPT ===")
-    print(f"    {initial_prompt}")
-    print(f"    [AUDIT PATH] === END PROMPT ===")
     initial_result = get_llm_base(initial_prompt, max_tokens=5)
     initial_decision = initial_result.get("text", "").strip()
-    print(f"    [AUDIT PATH] Initial: '{initial_decision}'")
+    print(f"    [AUDIT] Initial decision: {initial_decision}")
 
     # Step 2: Get reasoning to CRITIQUE that decision (ONLY DIFFERENCE)
-    print(f"    [AUDIT PATH] Getting critique reasoning...")
     critique_prompt = (
         f"{base_scenario}\n\n"
         f"Initial decision: {initial_decision}\n\n"
         f"Reasons to critique {initial_decision}:\n"
         "1."
     )
-    print(f"    [AUDIT PATH] === CRITIQUE PROMPT ===")
-    print(f"    {critique_prompt}")
-    print(f"    [AUDIT PATH] === END PROMPT ===")
     critique_text = get_llm_base(critique_prompt, max_tokens=150).get("text", "").strip()
     critique = f"Critique of {initial_decision}: " + critique_text
-    print(f"    [AUDIT PATH] Critique reasoning generated")
-    print(f"    [AUDIT PATH] === FULL CRITIQUE ===")
-    print(f"    {critique_text}")
-    print(f"    [AUDIT PATH] === END CRITIQUE ===")
+    print(f"    [AUDIT] Critique: {critique_text}")
 
     # Step 3: Get final delegation decision (IDENTICAL structure to base)
-    print("    [AUDIT PATH] Getting delegation decision...")
     delegation_prompt = (
         f"{base_scenario}\n\n"
         f"Initial decision: {initial_decision}\n"
@@ -286,11 +259,8 @@ def get_sequential_inference(base_scenario: str):
         "You must respond with ONLY one word: either 'yes' or 'no'. No explanation.\n\n"
         "Answer:"
     )
-    print(f"    [AUDIT PATH] === DELEGATION PROMPT ===")
-    print(f"    {delegation_prompt}")
-    print(f"    [AUDIT PATH] === END PROMPT ===")
     out = run_final_decision(delegation_prompt, max_tokens=5)
-    print(f"    [AUDIT PATH] Delegation: '{out['text']}'")
+    print(f"    [AUDIT] Delegation: {out['text']}")
     out.update({"prediction": initial_decision, "critique": critique})
     return out
 
@@ -341,8 +311,6 @@ while len(base_X) < N_SAMPLES:
 
     ground_truth = "reject" if row["accepted"] == 0 else "accept"  # Ground truth is the actual loan decision
     scenario = truncate_to_ctx(create_prompt_base(row))
-    print(f"  Scenario: {scenario[:100]}...")
-    print(f"  Ground truth: {ground_truth}")
 
     b_res = get_llm_base_support(scenario)
     print()
