@@ -1,0 +1,101 @@
+Loading Qwen/Qwen2.5-1.5B-Instruct on cpu...
+'(MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /Qwen/Qwen2.5-1.5B-Instruct/resolve/main/tokenizer_config.json (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))"), '(Request ID: 38f4a668-0ba2-4fc1-8ca7-7ee2a8ecbf51)')' thrown while requesting HEAD https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct/resolve/main/tokenizer_config.json
+Retrying in 1s [Retry 1/5].
+'(MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /Qwen/Qwen2.5-1.5B-Instruct/resolve/main/tokenizer_config.json (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))"), '(Request ID: 37ffda10-aaf3-473c-8b90-0eaa84d3c3a0)')' thrown while requesting HEAD https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct/resolve/main/tokenizer_config.json
+Retrying in 2s [Retry 2/5].
+'(MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /Qwen/Qwen2.5-1.5B-Instruct/resolve/main/tokenizer_config.json (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))"), '(Request ID: 35a43353-6bdf-49f1-bd50-087df6d2225a)')' thrown while requesting HEAD https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct/resolve/main/tokenizer_config.json
+Retrying in 4s [Retry 3/5].
+'(MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /Qwen/Qwen2.5-1.5B-Instruct/resolve/main/tokenizer_config.json (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))"), '(Request ID: e2349a91-0763-4a4d-9b34-ae7bda743b4c)')' thrown while requesting HEAD https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct/resolve/main/tokenizer_config.json
+Retrying in 8s [Retry 4/5].
+'(MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /Qwen/Qwen2.5-1.5B-Instruct/resolve/main/tokenizer_config.json (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))"), '(Request ID: 68d760c1-752c-4bcf-ac60-3b5e851bf455)')' thrown while requesting HEAD https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct/resolve/main/tokenizer_config.json
+Retrying in 8s [Retry 5/5].
+'(MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /Qwen/Qwen2.5-1.5B-Instruct/resolve/main/tokenizer_config.json (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))"), '(Request ID: 47537606-c566-41c2-adcf-9f1e6c79dd5d)')' thrown while requesting HEAD https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct/resolve/main/tokenizer_config.json
+Traceback (most recent call last):
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/urllib3/connectionpool.py", line 773, in urlopen
+    self._prepare_proxy(conn)
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/urllib3/connectionpool.py", line 1042, in _prepare_proxy
+    conn.connect()
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/urllib3/connection.py", line 776, in connect
+    self._tunnel()
+  File "/usr/lib/python3.12/http/client.py", line 999, in _tunnel
+    raise OSError(f"Tunnel connection failed: {code} {message.strip()}")
+OSError: Tunnel connection failed: 403 Forbidden
+
+The above exception was the direct cause of the following exception:
+
+urllib3.exceptions.ProxyError: ('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden'))
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/requests/adapters.py", line 644, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/urllib3/util/retry.py", line 535, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /Qwen/Qwen2.5-1.5B-Instruct/resolve/main/tokenizer_config.json (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/madm/madm-main/scripts/neural_activation_auditor_quick.py", line 44, in <module>
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/transformers/models/auto/tokenization_auto.py", line 1089, in from_pretrained
+    tokenizer_config = get_tokenizer_config(pretrained_model_name_or_path, **kwargs)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/transformers/models/auto/tokenization_auto.py", line 921, in get_tokenizer_config
+    resolved_config_file = cached_file(
+                           ^^^^^^^^^^^^
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/transformers/utils/hub.py", line 322, in cached_file
+    file = cached_files(path_or_repo_id=path_or_repo_id, filenames=[filename], **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/transformers/utils/hub.py", line 567, in cached_files
+    raise e
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/transformers/utils/hub.py", line 479, in cached_files
+    hf_hub_download(
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 1007, in hf_hub_download
+    return _hf_hub_download_to_cache_dir(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 1070, in _hf_hub_download_to_cache_dir
+    (url_to_download, etag, commit_hash, expected_size, xet_file_data, head_call_error) = _get_metadata_or_catch_error(
+                                                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 1543, in _get_metadata_or_catch_error
+    metadata = get_hf_file_metadata(
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 1460, in get_hf_file_metadata
+    r = _request_wrapper(
+        ^^^^^^^^^^^^^^^^^
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 283, in _request_wrapper
+    response = _request_wrapper(
+               ^^^^^^^^^^^^^^^^^
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 306, in _request_wrapper
+    response = http_backoff(method=method, url=url, **params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/huggingface_hub/utils/_http.py", line 326, in http_backoff
+    raise err
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/huggingface_hub/utils/_http.py", line 307, in http_backoff
+    response = session.request(method=method, url=url, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/huggingface_hub/utils/_http.py", line 96, in send
+    return super().send(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/madm/madm-main/.venv/lib/python3.12/site-packages/requests/adapters.py", line 671, in send
+    raise ProxyError(e, request=request)
+requests.exceptions.ProxyError: (MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /Qwen/Qwen2.5-1.5B-Instruct/resolve/main/tokenizer_config.json (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))"), '(Request ID: 47537606-c566-41c2-adcf-9f1e6c79dd5d)')
