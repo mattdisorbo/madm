@@ -41,8 +41,8 @@ SAE_STEPS = 150
 # For training SAE - we'll collect some samples first
 N_TRAIN_SAE = args.n_train_sae  # Collect samples to train SAE before steering test
 
-ACCEPTED_CSV = "data/accepted_10k.csv"
-REJECTED_CSV = "data/rejected_10k.csv"
+ACCEPTED_CSV = "../data/accepted_10k.csv"
+REJECTED_CSV = "../data/rejected_10k.csv"
 OUTPUT_CSV = args.output
 
 # ======================== LOAD MODEL ========================

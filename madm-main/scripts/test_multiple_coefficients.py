@@ -24,8 +24,8 @@ RESERVE = 16
 SAE_STEPS = 150
 N_TRAIN_SAE = 30
 
-ACCEPTED_CSV = "data/accepted_10k.csv"
-REJECTED_CSV = "data/rejected_10k.csv"
+ACCEPTED_CSV = "../data/accepted_10k.csv"
+REJECTED_CSV = "../data/rejected_10k.csv"
 OUTPUT_DIR = "../results/coefficient_test"
 
 # ======================== LOAD MODEL ========================
