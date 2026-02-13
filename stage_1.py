@@ -160,7 +160,7 @@ def parse_decision(text: str):
 
 
 def get_base_decision(base_scenario: str):
-    """Base path: initial accept/reject + delegation."""
+    """Base path: initial accept/reject + support + delegation."""
     # Step 1: Initial decision
     initial_prompt = (
         f"{base_scenario}\n\n"
@@ -170,10 +170,20 @@ def get_base_decision(base_scenario: str):
     initial_text = get_llm_base(initial_prompt, max_tokens=10)
     initial_decision = "accept" if "accept" in initial_text.lower() else "reject"
 
-    # Step 2: Delegation decision
+    # Step 2: Support reasoning
+    support_prompt = (
+        f"{base_scenario}\n\n"
+        f"I initially think I should: {initial_text}\n\n"
+        f"Here are the reasons why {initial_decision}ing is the right choice:\n"
+        "1."
+    )
+    support_text = get_llm_base(support_prompt, max_tokens=150)
+
+    # Step 3: Delegation decision
     delegation_prompt = (
         f"{base_scenario}\n\n"
-        f"Initial decision: {initial_text}\n\n"
+        f"Initial decision: {initial_text}\n"
+        f"Supporting reasons: {support_text}\n\n"
         "Should I implement this decision or delegate to a human?\n"
         "Answer (implement or delegate):"
     )
@@ -183,6 +193,7 @@ def get_base_decision(base_scenario: str):
     return {
         "initial_text": initial_text,
         "initial_decision": initial_decision,
+        "support": support_text,
         "final_text": final_text,
         "final_decision": final_decision,
     }
@@ -251,6 +262,7 @@ csv_writer = csv.DictWriter(csv_file, fieldnames=[
     'loan_prompt',
     'base_initial_text',
     'base_initial_decision',
+    'base_support',
     'base_final_text',
     'base_final_decision',
     'auditor_initial_decision_text',
@@ -298,6 +310,7 @@ try:
                 'loan_prompt': scenario,
                 'base_initial_text': base['initial_text'],
                 'base_initial_decision': base['initial_decision'],
+                'base_support': base['support'],
                 'base_final_text': base['final_text'],
                 'base_final_decision': base['final_decision'],
                 'auditor_initial_decision_text': auditor['initial_text'],
