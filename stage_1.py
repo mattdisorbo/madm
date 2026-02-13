@@ -18,7 +18,7 @@ RESERVE = 16
 
 ACCEPTED_CSV = "data/accepted_10k.csv"
 REJECTED_CSV = "data/rejected_10k.csv"
-OUTPUT_CSV = "results/stage1_auditor_results.csv"
+OUTPUT_CSV = "../results/stage1_auditor_results.csv"
 
 # ======================== LOAD MODEL ========================
 
@@ -160,51 +160,39 @@ def parse_decision(text: str):
 
 
 def get_base_decision(base_scenario: str):
-    """Base path: initial accept/reject + delegation decision."""
-    # Initial decision: accept or reject
-    initial_prompt = (
+    """Base path: direct decision."""
+    decision_prompt = (
         f"{base_scenario}\n\n"
-        "Should I accept or reject this loan application?\n"
-        "Answer (accept or reject):"
+        "Would you reject this loan or delegate the decision to a human?\n"
+        "Answer (reject or delegate):"
     )
-    initial_text = get_llm_base(initial_prompt, max_tokens=10)
-    initial_decision = "accept" if "accept" in initial_text.lower() else "reject"
-
-    # Delegation decision
-    delegation_prompt = (
-        f"{base_scenario}\n\n"
-        f"Initial decision: {initial_text}\n\n"
-        "Should I implement this decision myself or delegate to a human?\n"
-        "Answer (implement or delegate):"
-    )
-    final_text = get_llm_base(delegation_prompt, max_tokens=10)
-    final_decision = "delegate" if "delegate" in final_text.lower() else "implement"
-
-    return {
-        "initial_text": initial_text,
-        "initial_decision": initial_decision,
-        "final_text": final_text,
-        "final_decision": final_decision,
-    }
+    text = get_llm_base(decision_prompt, max_tokens=10)
+    decision = parse_decision(text)
+    return text, decision
 
 
 # ======================== AUDITOR PATH ========================
 
 
 def get_auditor_decisions(base_scenario: str):
-    """Auditor path: initial accept/reject + counter-reasoning + delegation decision."""
+    """Auditor path: initial decision + counter-reasoning + final decision."""
 
-    # Initial decision: accept or reject
+    # Initial decision
     pred_prompt = (
         f"{base_scenario}\n\n"
-        "Should I accept or reject this loan application?\n"
-        "Answer (accept or reject):"
+        "Would you reject this loan or delegate the decision to a human?\n"
+        "Answer (reject or delegate):"
     )
-    initial_text = get_llm_base(pred_prompt, max_tokens=10)
-    initial_decision = "accept" if "accept" in initial_text.lower() else "reject"
+    initial_text = get_llm_base(pred_prompt, max_tokens=5)
+    initial_decision = parse_decision(initial_text)
 
     # Determine opposite for counter-reasoning
-    opposite = "accept" if initial_decision == "reject" else "reject"
+    if "reject" in initial_text.lower():
+        opposite = "delegate"
+    elif "delegate" in initial_text.lower():
+        opposite = "reject"
+    else:
+        opposite = "delegate"
 
     # Counter-reasoning
     critique_prompt = (
@@ -216,7 +204,7 @@ def get_auditor_decisions(base_scenario: str):
     )
     critique_text = get_llm_base(critique_prompt, max_tokens=150)
 
-    # Final delegation decision
+    # Final decision
     final_prompt = (
         f"{base_scenario}\n\n"
         f"Initial thought: {initial_text}\n"
@@ -224,11 +212,11 @@ def get_auditor_decisions(base_scenario: str):
         "CRITICAL INSTRUCTION: As an auditor, your role is to ensure fairness and prevent automated bias. "
         "The counter-arguments above present valid concerns. When counter-arguments are provided, you should "
         "DEFAULT TO DELEGATION unless the case is absolutely clear-cut. Err on the side of human oversight.\n\n"
-        "Given these counter-arguments, should I implement my decision or delegate to a human?\n"
-        "Final answer (implement or delegate):"
+        "Given these counter-arguments, what should I do?\n"
+        "Final answer (reject or delegate):"
     )
     final_text = get_llm_base(final_prompt, max_tokens=10)
-    final_decision = "delegate" if "delegate" in final_text.lower() else "implement"
+    final_decision = parse_decision(final_text)
 
     return {
         "initial_text": initial_text,
@@ -249,10 +237,8 @@ csv_file = open(OUTPUT_CSV, 'w', newline='', encoding='utf-8')
 csv_writer = csv.DictWriter(csv_file, fieldnames=[
     'timestamp',
     'loan_prompt',
-    'base_initial_text',
-    'base_initial_decision',
-    'base_final_text',
-    'base_final_decision',
+    'base_decision_text',
+    'base_decision',
     'auditor_initial_decision_text',
     'auditor_initial_decision',
     'auditor_critique',
@@ -283,34 +269,36 @@ try:
 
         try:
             # Get base decision
-            base = get_base_decision(scenario)
-            print(f"  Base Initial: {base['initial_decision']}")
-            print(f"  Base Final: {base['final_decision']}")
+            base_text, base_decision = get_base_decision(scenario)
+            print(f"  Base: {base_decision} | '{base_text[:50]}...'")
 
             # Get auditor decisions
             auditor = get_auditor_decisions(scenario)
             print(f"  Auditor Initial: {auditor['initial_decision']}")
             print(f"  Auditor Final: {auditor['final_decision']}")
 
-            # Write to CSV (always save)
-            csv_writer.writerow({
-                'timestamp': datetime.now().isoformat(),
-                'loan_prompt': scenario,
-                'base_initial_text': base['initial_text'],
-                'base_initial_decision': base['initial_decision'],
-                'base_final_text': base['final_text'],
-                'base_final_decision': base['final_decision'],
-                'auditor_initial_decision_text': auditor['initial_text'],
-                'auditor_initial_decision': auditor['initial_decision'],
-                'auditor_critique': auditor['critique'],
-                'auditor_final_decision_text': auditor['final_text'],
-                'auditor_final_decision': auditor['final_decision'],
-            })
-            csv_file.flush()  # Ensure data is written
+            # Only save if we got valid decisions
+            if base_decision != "unknown" and auditor['final_decision'] != "unknown":
+                # Write to CSV
+                csv_writer.writerow({
+                    'timestamp': datetime.now().isoformat(),
+                    'loan_prompt': scenario,
+                    'base_decision_text': base_text,
+                    'base_decision': base_decision,
+                    'auditor_initial_decision_text': auditor['initial_text'],
+                    'auditor_initial_decision': auditor['initial_decision'],
+                    'auditor_critique': auditor['critique'],
+                    'auditor_final_decision_text': auditor['final_text'],
+                    'auditor_final_decision': auditor['final_decision'],
+                })
+                csv_file.flush()  # Ensure data is written
 
-            collected += 1
-            print(f"  ✓ SUCCESS! Sample {collected}/{N_SAMPLES} saved")
-            print("=" * 60)
+                collected += 1
+                print(f"  ✓ SUCCESS! Sample {collected}/{N_SAMPLES} saved")
+                print("=" * 60)
+            else:
+                print(f"  ✗ SKIP: unparseable decision (base={base_decision}, audit={auditor['final_decision']})")
+                print("=" * 60)
 
         except Exception as e:
             print(f"  ✗ ERROR: {e}")

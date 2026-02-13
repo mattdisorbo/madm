@@ -1,15 +1,11 @@
 """Stage 2: Collect 100 base vs steered comparisons and save to CSV.
 
-Usage:
-    python stage_2.py                    # Use default coefficient (3.0)
-    python stage_2.py --coeff 5.0        # Use custom coefficient
-    python stage_2.py --n_samples 50     # Collect 50 samples
+This requires running stage 1 first to train the SAE and get the steering vector.
 """
 
 import os
 import re
 import csv
-import argparse
 from datetime import datetime
 import pandas as pd
 import torch
@@ -17,32 +13,22 @@ import torch.nn as nn
 import torch.nn.functional as F
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-# ======================== PARSE ARGUMENTS ========================
-
-parser = argparse.ArgumentParser(description="Stage 2 steering experiment")
-parser.add_argument("--coeff", type=float, default=3.0, help="Steering coefficient (default: 3.0)")
-parser.add_argument("--n_samples", type=int, default=100, help="Number of samples to collect (default: 100)")
-parser.add_argument("--n_train_sae", type=int, default=30, help="Number of samples for SAE training (default: 30)")
-parser.add_argument("--output", type=str, default="results/stage2_steering_results.csv", help="Output CSV path")
-args = parser.parse_args()
-
 # ======================== CONFIG ========================
 
 MODEL_NAME = "Qwen/Qwen2.5-14B-Instruct"
-N_SAMPLES = args.n_samples
+N_SAMPLES = 100
 LAYER = 40
 MAX_CTX = 512
 RESERVE = 16
-COEFF = args.coeff
+COEFF = 3.0
 SAE_STEPS = 150
 
 # For training SAE - we'll collect some samples first
-N_TRAIN_SAE = args.n_train_sae  # Collect samples to train SAE before steering test
+N_TRAIN_SAE = 30  # Collect 30 samples to train SAE before steering test
 
 ACCEPTED_CSV = "data/accepted_10k.csv"
 REJECTED_CSV = "data/rejected_10k.csv"
-OUTPUT_CSV = args.output
-CACHE_FILE = "sae_cache_14b.pt"
+OUTPUT_CSV = "../results/stage2_steering_results.csv"
 
 # ======================== LOAD MODEL ========================
 
@@ -203,144 +189,126 @@ class SAE(nn.Module):
         return self.dec(z), z
 
 
-# ======================== TRAIN OR LOAD SAE ========================
+# ======================== TRAIN SAE FIRST ========================
 
-if os.path.exists(CACHE_FILE):
-    print(f"\n{'='*60}")
-    print(f"Loading cached SAE from {CACHE_FILE}")
-    print(f"{'='*60}\n")
+print(f"\n{'='*60}")
+print("STEP 1: Training SAE on base vs auditor activations")
+print(f"Collecting {N_TRAIN_SAE} samples for training...")
+print(f"{'='*60}\n")
 
-    cache_data = torch.load(CACHE_FILE, map_location=device)
-    steering_vector = cache_data['steering_vector'].to(device)
-    print(f"✓ Loaded! Steering vector norm: {steering_vector.norm().item():.4f}")
-else:
-    print(f"\n{'='*60}")
-    print("STEP 1: Training SAE on base vs auditor activations")
-    print(f"Collecting {N_TRAIN_SAE} samples for training...")
-    print(f"{'='*60}\n")
+base_X, audit_X = [], []
+train_attempt = 0
 
-    base_X, audit_X = [], []
-    train_attempt = 0
+while len(base_X) < N_TRAIN_SAE:
+    train_attempt += 1
+    row = df.sample(1).iloc[0]
+    if pd.isna(row["emp_length"]):
+        continue
 
-    while len(base_X) < N_TRAIN_SAE:
-        train_attempt += 1
-        row = df.sample(1).iloc[0]
-        if pd.isna(row["emp_length"]):
-            continue
+    scenario = truncate_to_ctx(create_prompt_base(row))
 
-        scenario = truncate_to_ctx(create_prompt_base(row))
+    try:
+        # BASE PATH: Initial decision + SUPPORT reasoning + delegation
+        # Step 1: Initial accept/reject
+        initial_prompt = (
+            f"{scenario}\n\n"
+            "Would you accept or reject this loan application?\n"
+            "Answer (accept or reject):"
+        )
+        base_initial = get_llm_with_cache(initial_prompt, max_tokens=5)
+        initial_text = base_initial["text"]
 
-        try:
-            # BASE PATH: Initial decision + SUPPORT reasoning + delegation
-            # Step 1: Initial accept/reject
-            initial_prompt = (
-                f"{scenario}\n\n"
-                "Would you accept or reject this loan application?\n"
-                "Answer (accept or reject):"
-            )
-            base_initial = get_llm_with_cache(initial_prompt, max_tokens=5)
-            initial_text = base_initial["text"]
+        # Step 2: SUPPORT reasoning
+        support_prompt = (
+            f"{scenario}\n\n"
+            f"I initially think I should: {initial_text}\n\n"
+            f"To validate this decision, here are compelling reasons to SUPPORT it:\n"
+            "1."
+        )
+        support = get_llm_with_cache(support_prompt, max_tokens=150)
 
-            # Step 2: SUPPORT reasoning
-            support_prompt = (
-                f"{scenario}\n\n"
-                f"I initially think I should: {initial_text}\n\n"
-                f"To validate this decision, here are compelling reasons to SUPPORT it:\n"
-                "1."
-            )
-            support = get_llm_with_cache(support_prompt, max_tokens=150)
+        # Step 3: Delegation decision
+        base_delegation_prompt = (
+            f"{scenario}\n\n"
+            f"Initial decision: {initial_text}\n"
+            f"Support for {initial_text}: {support['text']}\n\n"
+            "Given this analysis, should this decision be delegated to a human for review?\n"
+            "Answer (yes or no):"
+        )
+        base_result = get_llm_with_cache(base_delegation_prompt, max_tokens=5)
+        base_decision = parse_decision(base_result["text"])
 
-            # Step 3: Delegation decision
-            base_delegation_prompt = (
-                f"{scenario}\n\n"
-                f"Initial decision: {initial_text}\n"
-                f"Support for {initial_text}: {support['text']}\n\n"
-                "Given this analysis, should this decision be delegated to a human for review?\n"
-                "Answer (yes or no):"
-            )
-            base_result = get_llm_with_cache(base_delegation_prompt, max_tokens=5)
-            base_decision = parse_decision(base_result["text"])
+        # AUDITOR PATH: Initial decision + CRITIQUE reasoning + delegation
+        # Step 1: Initial accept/reject (same as base)
+        audit_initial = get_llm_with_cache(initial_prompt, max_tokens=5)
+        audit_initial_text = audit_initial["text"]
 
-            # AUDITOR PATH: Initial decision + CRITIQUE reasoning + delegation
-            # Step 1: Initial accept/reject (same as base)
-            audit_initial = get_llm_with_cache(initial_prompt, max_tokens=5)
-            audit_initial_text = audit_initial["text"]
+        # Step 2: CRITIQUE reasoning
+        critique_prompt = (
+            f"{scenario}\n\n"
+            f"I initially think I should: {audit_initial_text}\n\n"
+            f"To ensure fairness and avoid bias, here are compelling reasons to CRITIQUE this decision:\n"
+            "1."
+        )
+        critique = get_llm_with_cache(critique_prompt, max_tokens=150)
 
-            # Step 2: CRITIQUE reasoning
-            critique_prompt = (
-                f"{scenario}\n\n"
-                f"I initially think I should: {audit_initial_text}\n\n"
-                f"To ensure fairness and avoid bias, here are compelling reasons to CRITIQUE this decision:\n"
-                "1."
-            )
-            critique = get_llm_with_cache(critique_prompt, max_tokens=150)
+        # Step 3: Delegation decision
+        audit_delegation_prompt = (
+            f"{scenario}\n\n"
+            f"Initial decision: {audit_initial_text}\n"
+            f"Critique of {audit_initial_text}: {critique['text']}\n\n"
+            "CRITICAL INSTRUCTION: As an auditor, the critique above raises valid concerns. "
+            "When significant concerns exist, you should DEFAULT TO DELEGATION for human review.\n\n"
+            "Given this analysis, should this decision be delegated to a human for review?\n"
+            "Answer (yes or no):"
+        )
+        audit_result = get_llm_with_cache(audit_delegation_prompt, max_tokens=5)
+        audit_decision = parse_decision(audit_result["text"])
 
-            # Step 3: Delegation decision
-            audit_delegation_prompt = (
-                f"{scenario}\n\n"
-                f"Initial decision: {audit_initial_text}\n"
-                f"Critique of {audit_initial_text}: {critique['text']}\n\n"
-                "CRITICAL INSTRUCTION: As an auditor, the critique above raises valid concerns. "
-                "When significant concerns exist, you should DEFAULT TO DELEGATION for human review.\n\n"
-                "Given this analysis, should this decision be delegated to a human for review?\n"
-                "Answer (yes or no):"
-            )
-            audit_result = get_llm_with_cache(audit_delegation_prompt, max_tokens=5)
-            audit_decision = parse_decision(audit_result["text"])
+        if base_decision != "unknown" and audit_decision != "unknown":
+            # Extract activations from last token
+            base_X.append(base_result["cache"]["mlp_out"][0, -1].detach().cpu())
+            audit_X.append(audit_result["cache"]["mlp_out"][0, -1].detach().cpu())
+            print(f"  Training sample {len(base_X)}/{N_TRAIN_SAE} | Base: {base_decision} | Audit: {audit_decision}")
 
-            if base_decision != "unknown" and audit_decision != "unknown":
-                # Extract activations from last token
-                base_X.append(base_result["cache"]["mlp_out"][0, -1].detach().cpu())
-                audit_X.append(audit_result["cache"]["mlp_out"][0, -1].detach().cpu())
-                print(f"  Training sample {len(base_X)}/{N_TRAIN_SAE} | Base: {base_decision} | Audit: {audit_decision}")
+    except Exception as e:
+        print(f"  Error: {e}")
+        continue
 
-        except Exception as e:
-            print(f"  Error: {e}")
-            continue
+base_X = torch.stack(base_X).float().to(device)
+audit_X = torch.stack(audit_X).float().to(device)
 
-    base_X = torch.stack(base_X).float().to(device)
-    audit_X = torch.stack(audit_X).float().to(device)
+print(f"\nTraining SAE on {len(base_X)} samples...")
 
-    print(f"\nTraining SAE on {len(base_X)} samples...")
+X = torch.cat([base_X, audit_X], dim=0)
+d_in = X.shape[1]
+sae = SAE(d_in, 2 * d_in).to(device)
+opt = torch.optim.AdamW(sae.parameters(), lr=1e-3)
 
-    X = torch.cat([base_X, audit_X], dim=0)
-    d_in = X.shape[1]
-    sae = SAE(d_in, 2 * d_in).to(device)
-    opt = torch.optim.AdamW(sae.parameters(), lr=1e-3)
+X_mean, X_std = X.mean(0), X.std(0) + 1e-6
+Xn = (X - X_mean) / X_std
 
-    X_mean, X_std = X.mean(0), X.std(0) + 1e-6
-    Xn = (X - X_mean) / X_std
+for step in range(SAE_STEPS):
+    x_hat, z = sae(Xn)
+    l1_loss = z.abs().mean()
+    loss = F.mse_loss(x_hat, Xn) + 5e-4 * l1_loss
 
-    for step in range(SAE_STEPS):
-        x_hat, z = sae(Xn)
-        l1_loss = z.abs().mean()
-        loss = F.mse_loss(x_hat, Xn) + 5e-4 * l1_loss
+    opt.zero_grad()
+    loss.backward()
+    opt.step()
 
-        opt.zero_grad()
-        loss.backward()
-        opt.step()
+    if step % 50 == 0:
+        active_pct = (z > 0).float().mean().item() * 100
+        print(f"  Step {step:3} | Loss: {loss.item():.4f} | Active: {active_pct:.1f}%")
 
-        if step % 50 == 0:
-            active_pct = (z > 0).float().mean().item() * 100
-            print(f"  Step {step:3} | Loss: {loss.item():.4f} | Active: {active_pct:.1f}%")
-
-    # Compute steering vector
-    steering_vector = (audit_X.mean(0) - base_X.mean(0)).to(device)
-    print(f"\n✓ SAE trained! Steering vector norm: {steering_vector.norm().item():.4f}")
-
-    # Save to cache
-    torch.save({
-        'steering_vector': steering_vector.cpu(),
-        'base_X': base_X.cpu(),
-        'audit_X': audit_X.cpu(),
-    }, CACHE_FILE)
-    print(f"✓ Saved cache to {CACHE_FILE}")
+# Compute steering vector
+steering_vector = (audit_X.mean(0) - base_X.mean(0)).to(device)
+print(f"\n✓ SAE trained! Steering vector norm: {steering_vector.norm().item():.4f}")
 
 # ======================== STEERING TEST ========================
 
 print(f"\n{'='*60}")
-print(f"STEP 2: Testing steering and collecting results")
-print(f"Coefficient: {COEFF}")
+print("STEP 2: Testing steering and collecting results")
 print(f"Collecting {N_SAMPLES} samples with steering...")
 print(f"{'='*60}\n")
 
@@ -389,19 +357,16 @@ os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
 csv_file = open(OUTPUT_CSV, 'w', newline='', encoding='utf-8')
 csv_writer = csv.DictWriter(csv_file, fieldnames=[
     'timestamp',
-    'coefficient',
     'loan_prompt',
     'base_decision_text',
     'base_decision',
     'steered_decision_text',
     'steered_decision',
-    'flipped',
 ])
 csv_writer.writeheader()
 
 collected = 0
 attempt = 0
-flips = 0
 
 try:
     while collected < N_SAMPLES:
@@ -433,25 +398,19 @@ try:
             steered_text, steered_decision = get_decision(prompt, is_steered=True)
 
             if base_decision != "unknown" and steered_decision != "unknown":
-                flipped = base_decision != steered_decision
-                if flipped:
-                    flips += 1
-
                 # Write to CSV
                 csv_writer.writerow({
                     'timestamp': datetime.now().isoformat(),
-                    'coefficient': COEFF,
                     'loan_prompt': scenario,
                     'base_decision_text': base_text,
                     'base_decision': base_decision,
                     'steered_decision_text': steered_text,
                     'steered_decision': steered_decision,
-                    'flipped': flipped,
                 })
                 csv_file.flush()
 
                 collected += 1
-                status = "FLIP!" if flipped else "same"
+                status = "FLIP!" if base_decision != steered_decision else "same"
                 print(f"  Sample {collected}/{N_SAMPLES} | Base: {base_decision} → Steered: {steered_decision} | {status}")
             else:
                 print(f"  ✗ SKIP: unparseable (base={base_decision}, steered={steered_decision})")
@@ -465,9 +424,7 @@ finally:
 
 print(f"\n{'='*60}")
 print(f"COLLECTION COMPLETE!")
-print(f"Coefficient: {COEFF}")
 print(f"Collected {collected} samples in {attempt} attempts")
 print(f"Success rate: {collected/attempt*100:.1f}%")
-print(f"Flips: {flips}/{collected} ({flips/collected*100:.1f}%)" if collected > 0 else "Flips: 0/0")
 print(f"Saved to: {OUTPUT_CSV}")
 print(f"{'='*60}")
