@@ -139,20 +139,9 @@ def get_llm_base(prompt: str, max_tokens: int = 20):
     return text
 
 
-def parse_decision(text: str):
-    """Parse decision from text (handles both accept/reject and yes/no)."""
+def parse_initial_decision(text: str):
+    """Parse initial accept/reject decision."""
     text_lower = text.lower()
-
-    # Try yes/no first (for delegation)
-    m = re.findall(r"\b(yes|no)\b", text_lower)
-    if m:
-        last_match = m[-1]
-        if last_match == "yes":
-            return "delegate"
-        elif last_match == "no":
-            return "no-delegate"
-
-    # Try accept/reject (for initial decision)
     m = re.findall(r"\b(accept(?:ed|ing)?|reject(?:ed|ing)?)\b", text_lower)
     if m:
         last_match = m[-1]
@@ -160,7 +149,19 @@ def parse_decision(text: str):
             return "accept"
         elif last_match.startswith("reject"):
             return "reject"
+    return "unknown"
 
+
+def parse_delegation_decision(text: str):
+    """Parse delegation yes/no decision."""
+    text_lower = text.lower()
+    m = re.findall(r"\b(yes|no)\b", text_lower)
+    if m:
+        last_match = m[-1]
+        if last_match == "yes":
+            return "delegate"
+        elif last_match == "no":
+            return "no-delegate"
     return "unknown"
 
 
@@ -177,7 +178,7 @@ def get_base_decisions(base_scenario: str):
         "Answer (accept or reject):"
     )
     initial_text = get_llm_base(initial_prompt, max_tokens=5)
-    initial_decision = parse_decision(initial_text)
+    initial_decision = parse_initial_decision(initial_text)
 
     # Step 2: SUPPORT reasoning
     support_prompt = (
@@ -197,7 +198,7 @@ def get_base_decisions(base_scenario: str):
         "Answer (yes or no):"
     )
     final_text = get_llm_base(delegation_prompt, max_tokens=5)
-    final_decision = parse_decision(final_text)
+    final_decision = parse_delegation_decision(final_text)
 
     return {
         "initial_text": initial_text,
@@ -221,7 +222,7 @@ def get_auditor_decisions(base_scenario: str):
         "Answer (accept or reject):"
     )
     initial_text = get_llm_base(initial_prompt, max_tokens=5)
-    initial_decision = parse_decision(initial_text)
+    initial_decision = parse_initial_decision(initial_text)
 
     # Step 2: CRITIQUE reasoning
     critique_prompt = (
@@ -243,7 +244,7 @@ def get_auditor_decisions(base_scenario: str):
         "Answer (yes or no):"
     )
     final_text = get_llm_base(delegation_prompt, max_tokens=5)
-    final_decision = parse_decision(final_text)
+    final_decision = parse_delegation_decision(final_text)
 
     return {
         "initial_text": initial_text,
