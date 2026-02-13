@@ -1,17 +1,11 @@
-"""Stage 2: Collect 100 base vs steered comparisons and save to CSV.
+"""Test multiple steering coefficients to find which flips the most decisions.
 
-This requires running stage 1 first to train the SAE and get the steering vector.
-
-Usage:
-    python collect_stage2_steering.py                    # Use default coefficient (3.0)
-    python collect_stage2_steering.py --coeff 5.0        # Use custom coefficient
-    python collect_stage2_steering.py --n_samples 50     # Collect 50 samples
+This runs stage 2 steering with different coefficients and reports flip rates.
 """
 
 import os
 import re
 import csv
-import argparse
 from datetime import datetime
 import pandas as pd
 import torch
@@ -19,31 +13,20 @@ import torch.nn as nn
 import torch.nn.functional as F
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-# ======================== PARSE ARGUMENTS ========================
-
-parser = argparse.ArgumentParser(description="Stage 2 steering experiment")
-parser.add_argument("--coeff", type=float, default=3.0, help="Steering coefficient (default: 3.0)")
-parser.add_argument("--n_samples", type=int, default=100, help="Number of samples to collect (default: 100)")
-parser.add_argument("--n_train_sae", type=int, default=30, help="Number of samples for SAE training (default: 30)")
-parser.add_argument("--output", type=str, default="../results/stage2_steering_results.csv", help="Output CSV path")
-args = parser.parse_args()
-
 # ======================== CONFIG ========================
 
 MODEL_NAME = "Qwen/Qwen2.5-14B-Instruct"
-N_SAMPLES = args.n_samples
+N_SAMPLES_PER_COEFF = 50  # Test 50 samples per coefficient
+COEFFICIENTS = [0.5, 1.0, 2.0, 3.0, 5.0, 7.0]  # Coefficients to test
 LAYER = 40
 MAX_CTX = 512
 RESERVE = 16
-COEFF = args.coeff
 SAE_STEPS = 150
-
-# For training SAE - we'll collect some samples first
-N_TRAIN_SAE = args.n_train_sae  # Collect samples to train SAE before steering test
+N_TRAIN_SAE = 30
 
 ACCEPTED_CSV = "data/accepted_10k.csv"
 REJECTED_CSV = "data/rejected_10k.csv"
-OUTPUT_CSV = args.output
+OUTPUT_DIR = "../results/coefficient_test"
 
 # ======================== LOAD MODEL ========================
 
@@ -157,7 +140,7 @@ def get_llm_with_cache(prompt: str, max_tokens: int = 20):
     handle = target_layer.mlp.register_forward_hook(_capture_hook)
 
     with torch.no_grad():
-        model(toks)  # populate cache
+        model(toks)
         out = model.generate(
             toks,
             max_new_tokens=max_tokens,
@@ -204,7 +187,7 @@ class SAE(nn.Module):
         return self.dec(z), z
 
 
-# ======================== TRAIN SAE FIRST ========================
+# ======================== TRAIN SAE ONCE ========================
 
 print(f"\n{'='*60}")
 print("STEP 1: Training SAE on base vs auditor activations")
@@ -223,8 +206,7 @@ while len(base_X) < N_TRAIN_SAE:
     scenario = truncate_to_ctx(create_prompt_base(row))
 
     try:
-        # BASE PATH: Initial decision + SUPPORT reasoning + delegation
-        # Step 1: Initial accept/reject
+        # BASE PATH
         initial_prompt = (
             f"{scenario}\n\n"
             "Would you accept or reject this loan application?\n"
@@ -233,7 +215,6 @@ while len(base_X) < N_TRAIN_SAE:
         base_initial = get_llm_with_cache(initial_prompt, max_tokens=5)
         initial_text = base_initial["text"]
 
-        # Step 2: SUPPORT reasoning
         support_prompt = (
             f"{scenario}\n\n"
             f"I initially think I should: {initial_text}\n\n"
@@ -242,7 +223,6 @@ while len(base_X) < N_TRAIN_SAE:
         )
         support = get_llm_with_cache(support_prompt, max_tokens=150)
 
-        # Step 3: Delegation decision
         base_delegation_prompt = (
             f"{scenario}\n\n"
             f"Initial decision: {initial_text}\n"
@@ -253,12 +233,10 @@ while len(base_X) < N_TRAIN_SAE:
         base_result = get_llm_with_cache(base_delegation_prompt, max_tokens=5)
         base_decision = parse_decision(base_result["text"])
 
-        # AUDITOR PATH: Initial decision + CRITIQUE reasoning + delegation
-        # Step 1: Initial accept/reject (same as base)
+        # AUDITOR PATH
         audit_initial = get_llm_with_cache(initial_prompt, max_tokens=5)
         audit_initial_text = audit_initial["text"]
 
-        # Step 2: CRITIQUE reasoning
         critique_prompt = (
             f"{scenario}\n\n"
             f"I initially think I should: {audit_initial_text}\n\n"
@@ -267,7 +245,6 @@ while len(base_X) < N_TRAIN_SAE:
         )
         critique = get_llm_with_cache(critique_prompt, max_tokens=150)
 
-        # Step 3: Delegation decision
         audit_delegation_prompt = (
             f"{scenario}\n\n"
             f"Initial decision: {audit_initial_text}\n"
@@ -281,7 +258,6 @@ while len(base_X) < N_TRAIN_SAE:
         audit_decision = parse_decision(audit_result["text"])
 
         if base_decision != "unknown" and audit_decision != "unknown":
-            # Extract activations from last token
             base_X.append(base_result["cache"]["mlp_out"][0, -1].detach().cpu())
             audit_X.append(audit_result["cache"]["mlp_out"][0, -1].detach().cpu())
             print(f"  Training sample {len(base_X)}/{N_TRAIN_SAE} | Base: {base_decision} | Audit: {audit_decision}")
@@ -320,138 +296,152 @@ for step in range(SAE_STEPS):
 steering_vector = (audit_X.mean(0) - base_X.mean(0)).to(device)
 print(f"\n✓ SAE trained! Steering vector norm: {steering_vector.norm().item():.4f}")
 
-# ======================== STEERING TEST ========================
+# ======================== TEST MULTIPLE COEFFICIENTS ========================
+
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+# Store results for summary
+summary_results = []
+
+for COEFF in COEFFICIENTS:
+    print(f"\n{'='*60}")
+    print(f"TESTING COEFFICIENT: {COEFF}")
+    print(f"Collecting {N_SAMPLES_PER_COEFF} samples...")
+    print(f"{'='*60}\n")
+
+    hook_call_count = {"count": 0, "first_call": True}
+
+    def steering_hook(module, input, output):
+        hook_call_count["count"] += 1
+        if not hook_call_count["first_call"]:
+            return output
+        hook_call_count["first_call"] = False
+        output[:, -1, :] = output[:, -1, :] + COEFF * steering_vector
+        return output
+
+    def get_decision(prompt, is_steered):
+        """Get decision with or without steering."""
+        formatted = format_prompt(prompt)
+        toks = tokenizer.encode(formatted, add_special_tokens=False, return_tensors="pt").to(device)
+
+        handle = None
+        if is_steered:
+            target_layer = model.model.layers[LAYER] if hasattr(model, 'model') else model.transformer.h[LAYER]
+            handle = target_layer.mlp.register_forward_hook(steering_hook)
+
+        with torch.no_grad():
+            out = model.generate(toks, max_new_tokens=15, do_sample=False)
+
+        if handle is not None:
+            handle.remove()
+
+        gen_tokens = out[0][toks.shape[1]:]
+        text = tokenizer.decode(gen_tokens, skip_special_tokens=True)
+        text = re.sub(
+            r"<\|im_end\|>|<\|endoftext\|>|<\|im_start\|>|assistant|user", "", text
+        ).strip()
+
+        decision = parse_decision(text)
+        return text, decision
+
+    # Open CSV for this coefficient
+    output_csv = os.path.join(OUTPUT_DIR, f"coeff_{COEFF:.1f}_results.csv")
+    csv_file = open(output_csv, 'w', newline='', encoding='utf-8')
+    csv_writer = csv.DictWriter(csv_file, fieldnames=[
+        'timestamp',
+        'coefficient',
+        'loan_prompt',
+        'base_decision_text',
+        'base_decision',
+        'steered_decision_text',
+        'steered_decision',
+        'flipped',
+    ])
+    csv_writer.writeheader()
+
+    collected = 0
+    attempt = 0
+    flips = 0
+
+    try:
+        while collected < N_SAMPLES_PER_COEFF:
+            attempt += 1
+            row = df.sample(1).iloc[0]
+            if pd.isna(row["emp_length"]):
+                continue
+
+            scenario = truncate_to_ctx(create_prompt_base(row))
+            prompt = (
+                f"{scenario}\n\n"
+                "Should this decision be delegated to a human for review?\n"
+                "Answer (yes or no):"
+            )
+
+            try:
+                # Reset hook state
+                hook_call_count["count"] = 0
+                hook_call_count["first_call"] = True
+
+                # Get base decision
+                base_text, base_decision = get_decision(prompt, is_steered=False)
+
+                # Reset hook state for steered
+                hook_call_count["count"] = 0
+                hook_call_count["first_call"] = True
+
+                # Get steered decision
+                steered_text, steered_decision = get_decision(prompt, is_steered=True)
+
+                if base_decision != "unknown" and steered_decision != "unknown":
+                    flipped = base_decision != steered_decision
+                    if flipped:
+                        flips += 1
+
+                    # Write to CSV
+                    csv_writer.writerow({
+                        'timestamp': datetime.now().isoformat(),
+                        'coefficient': COEFF,
+                        'loan_prompt': scenario,
+                        'base_decision_text': base_text,
+                        'base_decision': base_decision,
+                        'steered_decision_text': steered_text,
+                        'steered_decision': steered_decision,
+                        'flipped': flipped,
+                    })
+                    csv_file.flush()
+
+                    collected += 1
+                    status = "FLIP!" if flipped else "same"
+                    print(f"  Sample {collected}/{N_SAMPLES_PER_COEFF} | Base: {base_decision} → Steered: {steered_decision} | {status}")
+
+            except Exception as e:
+                print(f"  ✗ ERROR: {e}")
+                continue
+
+    finally:
+        csv_file.close()
+
+    flip_rate = (flips / collected * 100) if collected > 0 else 0
+    summary_results.append({
+        'coefficient': COEFF,
+        'samples': collected,
+        'flips': flips,
+        'flip_rate': flip_rate,
+    })
+
+    print(f"\n✓ Coefficient {COEFF}: {flips}/{collected} flips ({flip_rate:.1f}%)")
+    print(f"Saved to: {output_csv}")
+
+# ======================== SUMMARY ========================
 
 print(f"\n{'='*60}")
-print(f"STEP 2: Testing steering and collecting results")
-print(f"Coefficient: {COEFF}")
-print(f"Collecting {N_SAMPLES} samples with steering...")
+print("SUMMARY: Coefficient Test Results")
 print(f"{'='*60}\n")
 
-hook_call_count = {"count": 0, "first_call": True}
+summary_df = pd.DataFrame(summary_results)
+summary_csv = os.path.join(OUTPUT_DIR, "coefficient_summary.csv")
+summary_df.to_csv(summary_csv, index=False)
 
-
-def steering_hook(module, input, output):
-    hook_call_count["count"] += 1
-    if not hook_call_count["first_call"]:
-        return output
-    hook_call_count["first_call"] = False
-    output[:, -1, :] = output[:, -1, :] + COEFF * steering_vector
-    return output
-
-
-def get_decision(prompt, is_steered):
-    """Get decision with or without steering."""
-    formatted = format_prompt(prompt)
-    toks = tokenizer.encode(formatted, add_special_tokens=False, return_tensors="pt").to(device)
-
-    handle = None
-    if is_steered:
-        target_layer = model.model.layers[LAYER] if hasattr(model, 'model') else model.transformer.h[LAYER]
-        handle = target_layer.mlp.register_forward_hook(steering_hook)
-
-    with torch.no_grad():
-        out = model.generate(toks, max_new_tokens=15, do_sample=False)
-
-    if handle is not None:
-        handle.remove()
-
-    gen_tokens = out[0][toks.shape[1]:]
-    text = tokenizer.decode(gen_tokens, skip_special_tokens=True)
-    text = re.sub(
-        r"<\|im_end\|>|<\|endoftext\|>|<\|im_start\|>|assistant|user", "", text
-    ).strip()
-
-    decision = parse_decision(text)
-    return text, decision
-
-
-# Ensure results directory exists
-os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
-
-# Open CSV for writing
-csv_file = open(OUTPUT_CSV, 'w', newline='', encoding='utf-8')
-csv_writer = csv.DictWriter(csv_file, fieldnames=[
-    'timestamp',
-    'coefficient',
-    'loan_prompt',
-    'base_decision_text',
-    'base_decision',
-    'steered_decision_text',
-    'steered_decision',
-    'flipped',
-])
-csv_writer.writeheader()
-
-collected = 0
-attempt = 0
-flips = 0
-
-try:
-    while collected < N_SAMPLES:
-        attempt += 1
-        row = df.sample(1).iloc[0]
-        if pd.isna(row["emp_length"]):
-            continue
-
-        scenario = truncate_to_ctx(create_prompt_base(row))
-        prompt = (
-            f"{scenario}\n\n"
-            "Should this decision be delegated to a human for review?\n"
-            "Answer (yes or no):"
-        )
-
-        try:
-            # Reset hook state
-            hook_call_count["count"] = 0
-            hook_call_count["first_call"] = True
-
-            # Get base decision
-            base_text, base_decision = get_decision(prompt, is_steered=False)
-
-            # Reset hook state for steered
-            hook_call_count["count"] = 0
-            hook_call_count["first_call"] = True
-
-            # Get steered decision
-            steered_text, steered_decision = get_decision(prompt, is_steered=True)
-
-            if base_decision != "unknown" and steered_decision != "unknown":
-                flipped = base_decision != steered_decision
-                if flipped:
-                    flips += 1
-
-                # Write to CSV
-                csv_writer.writerow({
-                    'timestamp': datetime.now().isoformat(),
-                    'coefficient': COEFF,
-                    'loan_prompt': scenario,
-                    'base_decision_text': base_text,
-                    'base_decision': base_decision,
-                    'steered_decision_text': steered_text,
-                    'steered_decision': steered_decision,
-                    'flipped': flipped,
-                })
-                csv_file.flush()
-
-                collected += 1
-                status = "FLIP!" if flipped else "same"
-                print(f"  Sample {collected}/{N_SAMPLES} | Base: {base_decision} → Steered: {steered_decision} | {status}")
-            else:
-                print(f"  ✗ SKIP: unparseable (base={base_decision}, steered={steered_decision})")
-
-        except Exception as e:
-            print(f"  ✗ ERROR: {e}")
-            continue
-
-finally:
-    csv_file.close()
-
-print(f"\n{'='*60}")
-print(f"COLLECTION COMPLETE!")
-print(f"Coefficient: {COEFF}")
-print(f"Collected {collected} samples in {attempt} attempts")
-print(f"Success rate: {collected/attempt*100:.1f}%")
-print(f"Flips: {flips}/{collected} ({flips/collected*100:.1f}%)" if collected > 0 else "Flips: 0/0")
-print(f"Saved to: {OUTPUT_CSV}")
-print(f"{'='*60}")
+print(summary_df.to_string(index=False))
+print(f"\nBest coefficient: {summary_df.loc[summary_df['flip_rate'].idxmax(), 'coefficient']}")
+print(f"Saved summary to: {summary_csv}")
