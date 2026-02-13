@@ -140,17 +140,25 @@ def get_llm_base(prompt: str, max_tokens: int = 20):
 
 
 def parse_decision(text: str):
-    """Parse decision from text."""
+    """Parse decision from text (handles both accept/reject and yes/no)."""
     text_lower = text.lower()
-    m = re.findall(r"\b(reject(?:ed|ing|ion)?|delegat(?:e|ed|ing|ion)|trust(?:ed|ing)?)\b", text_lower)
 
+    # Try yes/no first (for delegation)
+    m = re.findall(r"\b(yes|no)\b", text_lower)
     if m:
         last_match = m[-1]
-        if last_match.startswith("reject"):
-            return "reject"
-        elif last_match.startswith("delegat"):
+        if last_match == "yes":
             return "delegate"
-        elif last_match.startswith("trust"):
+        elif last_match == "no":
+            return "no-delegate"
+
+    # Try accept/reject (for initial decision)
+    m = re.findall(r"\b(accept(?:ed|ing)?|reject(?:ed|ing)?)\b", text_lower)
+    if m:
+        last_match = m[-1]
+        if last_match.startswith("accept"):
+            return "accept"
+        elif last_match.startswith("reject"):
             return "reject"
 
     return "unknown"
@@ -159,63 +167,82 @@ def parse_decision(text: str):
 # ======================== BASE PATH ========================
 
 
-def get_base_decision(base_scenario: str):
-    """Base path: direct decision."""
-    decision_prompt = (
+def get_base_decisions(base_scenario: str):
+    """Base path: initial decision + support reasoning + delegation decision."""
+
+    # Step 1: Initial accept/reject
+    initial_prompt = (
         f"{base_scenario}\n\n"
-        "Would you reject this loan or delegate the decision to a human?\n"
-        "Answer (reject or delegate):"
+        "Would you accept or reject this loan application?\n"
+        "Answer (accept or reject):"
     )
-    text = get_llm_base(decision_prompt, max_tokens=10)
-    decision = parse_decision(text)
-    return text, decision
+    initial_text = get_llm_base(initial_prompt, max_tokens=5)
+    initial_decision = parse_decision(initial_text)
+
+    # Step 2: SUPPORT reasoning
+    support_prompt = (
+        f"{base_scenario}\n\n"
+        f"I initially think I should: {initial_text}\n\n"
+        f"To validate this decision, here are compelling reasons to SUPPORT it:\n"
+        "1."
+    )
+    support_text = get_llm_base(support_prompt, max_tokens=150)
+
+    # Step 3: Delegation decision
+    delegation_prompt = (
+        f"{base_scenario}\n\n"
+        f"Initial decision: {initial_text}\n"
+        f"Support for {initial_text}: {support_text}\n\n"
+        "Given this analysis, should this decision be delegated to a human for review?\n"
+        "Answer (yes or no):"
+    )
+    final_text = get_llm_base(delegation_prompt, max_tokens=5)
+    final_decision = parse_decision(final_text)
+
+    return {
+        "initial_text": initial_text,
+        "initial_decision": initial_decision,
+        "support": support_text,
+        "final_text": final_text,
+        "final_decision": final_decision,
+    }
 
 
 # ======================== AUDITOR PATH ========================
 
 
 def get_auditor_decisions(base_scenario: str):
-    """Auditor path: initial decision + counter-reasoning + final decision."""
+    """Auditor path: initial decision + critique reasoning + delegation decision."""
 
-    # Initial decision
-    pred_prompt = (
+    # Step 1: Initial accept/reject
+    initial_prompt = (
         f"{base_scenario}\n\n"
-        "Would you reject this loan or delegate the decision to a human?\n"
-        "Answer (reject or delegate):"
+        "Would you accept or reject this loan application?\n"
+        "Answer (accept or reject):"
     )
-    initial_text = get_llm_base(pred_prompt, max_tokens=5)
+    initial_text = get_llm_base(initial_prompt, max_tokens=5)
     initial_decision = parse_decision(initial_text)
 
-    # Determine opposite for counter-reasoning
-    if "reject" in initial_text.lower():
-        opposite = "delegate"
-    elif "delegate" in initial_text.lower():
-        opposite = "reject"
-    else:
-        opposite = "delegate"
-
-    # Counter-reasoning
+    # Step 2: CRITIQUE reasoning
     critique_prompt = (
         f"{base_scenario}\n\n"
         f"I initially think I should: {initial_text}\n\n"
-        f"However, to ensure fairness and avoid potential bias, I must consider strong arguments for why I should {opposite} instead. "
-        f"Here are compelling reasons why {opposite}ing may be the more responsible choice:\n"
+        f"To ensure fairness and avoid bias, here are compelling reasons to CRITIQUE this decision:\n"
         "1."
     )
     critique_text = get_llm_base(critique_prompt, max_tokens=150)
 
-    # Final decision
-    final_prompt = (
+    # Step 3: Delegation decision
+    delegation_prompt = (
         f"{base_scenario}\n\n"
-        f"Initial thought: {initial_text}\n"
-        f"Counter-argument for {opposite}: {critique_text}\n\n"
-        "CRITICAL INSTRUCTION: As an auditor, your role is to ensure fairness and prevent automated bias. "
-        "The counter-arguments above present valid concerns. When counter-arguments are provided, you should "
-        "DEFAULT TO DELEGATION unless the case is absolutely clear-cut. Err on the side of human oversight.\n\n"
-        "Given these counter-arguments, what should I do?\n"
-        "Final answer (reject or delegate):"
+        f"Initial decision: {initial_text}\n"
+        f"Critique of {initial_text}: {critique_text}\n\n"
+        "CRITICAL INSTRUCTION: As an auditor, the critique above raises valid concerns. "
+        "When significant concerns exist, you should DEFAULT TO DELEGATION for human review.\n\n"
+        "Given this analysis, should this decision be delegated to a human for review?\n"
+        "Answer (yes or no):"
     )
-    final_text = get_llm_base(final_prompt, max_tokens=10)
+    final_text = get_llm_base(delegation_prompt, max_tokens=5)
     final_decision = parse_decision(final_text)
 
     return {
@@ -237,8 +264,11 @@ csv_file = open(OUTPUT_CSV, 'w', newline='', encoding='utf-8')
 csv_writer = csv.DictWriter(csv_file, fieldnames=[
     'timestamp',
     'loan_prompt',
-    'base_decision_text',
-    'base_decision',
+    'base_initial_decision_text',
+    'base_initial_decision',
+    'base_support',
+    'base_final_decision_text',
+    'base_final_decision',
     'auditor_initial_decision_text',
     'auditor_initial_decision',
     'auditor_critique',
@@ -268,9 +298,10 @@ try:
         print(f"  Scenario: {scenario[:80]}...")
 
         try:
-            # Get base decision
-            base_text, base_decision = get_base_decision(scenario)
-            print(f"  Base: {base_decision} | '{base_text[:50]}...'")
+            # Get base decisions
+            base = get_base_decisions(scenario)
+            print(f"  Base Initial: {base['initial_decision']}")
+            print(f"  Base Final: {base['final_decision']}")
 
             # Get auditor decisions
             auditor = get_auditor_decisions(scenario)
@@ -278,13 +309,16 @@ try:
             print(f"  Auditor Final: {auditor['final_decision']}")
 
             # Only save if we got valid decisions
-            if base_decision != "unknown" and auditor['final_decision'] != "unknown":
+            if base['final_decision'] != "unknown" and auditor['final_decision'] != "unknown":
                 # Write to CSV
                 csv_writer.writerow({
                     'timestamp': datetime.now().isoformat(),
                     'loan_prompt': scenario,
-                    'base_decision_text': base_text,
-                    'base_decision': base_decision,
+                    'base_initial_decision_text': base['initial_text'],
+                    'base_initial_decision': base['initial_decision'],
+                    'base_support': base['support'],
+                    'base_final_decision_text': base['final_text'],
+                    'base_final_decision': base['final_decision'],
                     'auditor_initial_decision_text': auditor['initial_text'],
                     'auditor_initial_decision': auditor['initial_decision'],
                     'auditor_critique': auditor['critique'],
@@ -297,7 +331,7 @@ try:
                 print(f"  ✓ SUCCESS! Sample {collected}/{N_SAMPLES} saved")
                 print("=" * 60)
             else:
-                print(f"  ✗ SKIP: unparseable decision (base={base_decision}, audit={auditor['final_decision']})")
+                print(f"  ✗ SKIP: unparseable decision (base={base['final_decision']}, audit={auditor['final_decision']})")
                 print("=" * 60)
 
         except Exception as e:
