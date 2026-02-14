@@ -16,8 +16,8 @@ import re
 
 # ======================== CONFIG ========================
 
-MODEL_NAME = "Qwen/Qwen2.5-14B-Instruct"
-LAYER = 40
+MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"
+LAYER = 22
 MAX_CTX = 512
 RESERVE = 16
 SAE_STEPS = 150
