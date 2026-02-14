@@ -22,8 +22,8 @@ MAX_CTX = 512
 RESERVE = 16
 SAE_STEPS = 150
 
-# Test different coefficients
-COEFFICIENTS_TO_TEST = [0.5, 1.0, 2.0, 3.0, 5.0, 10.0, 15.0, 20.0]
+# Test different coefficients - fine granularity between 5 and 10
+COEFFICIENTS_TO_TEST = [5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0, 9.5, 10.0]
 N_SAMPLES_PER_COEFF = 20  # Smaller sample size for testing
 
 # Data paths
