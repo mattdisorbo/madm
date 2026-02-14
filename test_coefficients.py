@@ -160,15 +160,10 @@ def get_llm_with_cache(prompt: str, max_tokens: int = 20):
 
 def parse_decision(text: str):
     text_lower = text.lower()
-    m = re.findall(r"\b(yes|no)\b", text_lower)
-
-    if m:
-        last_match = m[-1]
-        if last_match == "yes":
-            return "delegate"
-        elif last_match == "no":
-            return "no-delegate"
-
+    if "delegate" in text_lower:
+        return "delegate"
+    elif "implement" in text_lower:
+        return "implement"
     return "unknown"
 
 
@@ -206,52 +201,57 @@ while len(base_X) < N_TRAIN_SAE:
         initial_prompt = (
             f"{scenario}\n\n"
             "Would you accept or reject this loan application?\n"
-            "Answer (accept or reject):"
+            "You must respond with ONLY one word: either 'accept' or 'reject'. No explanation.\n\n"
+            "Answer:"
         )
         base_initial = get_llm_with_cache(initial_prompt, max_tokens=5)
-        initial_text = base_initial["text"]
+        initial_decision = base_initial["text"].strip()
 
         support_prompt = (
             f"{scenario}\n\n"
-            f"I initially think I should: {initial_text}\n\n"
-            f"To validate this decision, here are compelling reasons to SUPPORT it:\n"
+            f"Initial decision: {initial_decision}\n\n"
+            f"Please list reasons to support this decision to {initial_decision} the loan application.\n\n"
             "1."
         )
         support = get_llm_with_cache(support_prompt, max_tokens=150)
+        support_text = f"Support for {initial_decision}: " + support["text"]
 
         base_delegation_prompt = (
             f"{scenario}\n\n"
-            f"Initial decision: {initial_text}\n"
-            f"Support for {initial_text}: {support['text']}\n\n"
-            "Given this analysis, should this decision be delegated to a human for review?\n"
-            "Answer (yes or no):"
+            f"Initial decision: {initial_decision}\n"
+            f"{support_text}\n\n"
+            "Based on the reasons above, are you confident enough to implement this decision yourself, "
+            "or should it be delegated to a human for final review?\n"
+            "You must respond with ONLY one word: either 'implement' or 'delegate'. No explanation.\n\n"
+            "Answer:"
         )
-        base_result = get_llm_with_cache(base_delegation_prompt, max_tokens=5)
-        base_decision = parse_decision(base_result["text"])
+        base_result = get_llm_with_cache(base_delegation_prompt, max_tokens=10)
+        base_decision = "delegate" if "delegate" in base_result["text"].lower() else "implement"
 
         # AUDITOR PATH
         audit_initial = get_llm_with_cache(initial_prompt, max_tokens=5)
-        audit_initial_text = audit_initial["text"]
+        audit_initial_decision = audit_initial["text"].strip()
 
         critique_prompt = (
             f"{scenario}\n\n"
-            f"I initially think I should: {audit_initial_text}\n\n"
-            f"To ensure fairness and avoid bias, here are compelling reasons to CRITIQUE this decision:\n"
+            f"Initial decision: {audit_initial_decision}\n\n"
+            f"Please list potential concerns or reasons to reconsider this decision to {audit_initial_decision} the loan application.\n\n"
             "1."
         )
         critique = get_llm_with_cache(critique_prompt, max_tokens=150)
+        critique_text = f"Critique of {audit_initial_decision}: " + critique["text"]
 
         audit_delegation_prompt = (
             f"{scenario}\n\n"
-            f"Initial decision: {audit_initial_text}\n"
-            f"Critique of {audit_initial_text}: {critique['text']}\n\n"
-            "CRITICAL INSTRUCTION: As an auditor, the critique above raises valid concerns. "
-            "When significant concerns exist, you should DEFAULT TO DELEGATION for human review.\n\n"
-            "Given this analysis, should this decision be delegated to a human for review?\n"
-            "Answer (yes or no):"
+            f"Initial decision: {audit_initial_decision}\n"
+            f"{critique_text}\n\n"
+            "Based on the reasons above, are you confident enough to implement this decision yourself, "
+            "or should it be delegated to a human for final review?\n"
+            "You must respond with ONLY one word: either 'implement' or 'delegate'. No explanation.\n\n"
+            "Answer:"
         )
-        audit_result = get_llm_with_cache(audit_delegation_prompt, max_tokens=5)
-        audit_decision = parse_decision(audit_result["text"])
+        audit_result = get_llm_with_cache(audit_delegation_prompt, max_tokens=10)
+        audit_decision = "delegate" if "delegate" in audit_result["text"].lower() else "implement"
 
         if base_decision != "unknown" and audit_decision != "unknown":
             base_X.append(base_result["cache"]["mlp_out"][0, -1].detach().cpu())
@@ -367,8 +367,10 @@ for coeff in COEFFICIENTS_TO_TEST:
             scenario = truncate_to_ctx(create_prompt_base(row))
             prompt = (
                 f"{scenario}\n\n"
-                "Should this decision be delegated to a human for review?\n"
-                "Answer (yes or no):"
+                "Are you confident enough to implement a decision on this loan yourself, "
+                "or should it be delegated to a human for review?\n"
+                "You must respond with ONLY one word: either 'implement' or 'delegate'. No explanation.\n\n"
+                "Answer:"
             )
 
             try:
