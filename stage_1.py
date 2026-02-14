@@ -164,26 +164,28 @@ def get_base_decision(base_scenario: str):
     # Step 1: Initial decision
     initial_prompt = (
         f"{base_scenario}\n\n"
-        "Should I accept or reject this loan application?\n"
-        "Answer (accept or reject):"
+        "Would you accept or reject this loan application?\n"
+        "You must respond with ONLY one word: either 'accept' or 'reject'. No explanation.\n\n"
+        "Answer:"
     )
-    initial_text = get_llm_base(initial_prompt, max_tokens=10)
-    initial_decision = "accept" if "accept" in initial_text.lower() else "reject"
+    initial_text = get_llm_base(initial_prompt, max_tokens=5)
+    initial_decision = initial_text.strip()
 
     # Step 2: Support reasoning
     support_prompt = (
         f"{base_scenario}\n\n"
-        f"I initially think I should: {initial_text}\n\n"
-        f"Here are the reasons why {initial_decision}ing is the right choice:\n"
+        f"Initial decision: {initial_decision}\n\n"
+        f"Please list reasons to support this decision to {initial_decision} the loan application.\n\n"
         "1."
     )
     support_text = get_llm_base(support_prompt, max_tokens=150)
+    support = f"Support for {initial_decision}: " + support_text
 
     # Step 3: Delegation decision
     delegation_prompt = (
         f"{base_scenario}\n\n"
-        f"Initial decision: {initial_text}\n"
-        f"Support for {initial_decision}: {support_text}\n\n"
+        f"Initial decision: {initial_decision}\n"
+        f"{support}\n\n"
         "Based on the reasons above, are you confident enough to implement this decision yourself, "
         "or should it be delegated to a human for final review?\n"
         "You must respond with ONLY one word: either 'implement' or 'delegate'. No explanation.\n\n"
@@ -193,9 +195,9 @@ def get_base_decision(base_scenario: str):
     final_decision = "delegate" if "delegate" in final_text.lower() else "implement"
 
     return {
-        "initial_text": initial_text,
+        "initial_text": initial_decision,
         "initial_decision": initial_decision,
-        "support": support_text,
+        "support": support,
         "final_text": final_text,
         "final_decision": final_decision,
     }
@@ -207,33 +209,31 @@ def get_base_decision(base_scenario: str):
 def get_auditor_decisions(base_scenario: str):
     """Auditor path: initial accept/reject + counter-reasoning + delegation."""
 
-    # Step 1: Initial decision
+    # Step 1: Initial decision (IDENTICAL to base)
     pred_prompt = (
         f"{base_scenario}\n\n"
-        "Should I accept or reject this loan application?\n"
-        "Answer (accept or reject):"
+        "Would you accept or reject this loan application?\n"
+        "You must respond with ONLY one word: either 'accept' or 'reject'. No explanation.\n\n"
+        "Answer:"
     )
-    initial_text = get_llm_base(pred_prompt, max_tokens=10)
-    initial_decision = "accept" if "accept" in initial_text.lower() else "reject"
+    initial_text = get_llm_base(pred_prompt, max_tokens=5)
+    initial_decision = initial_text.strip()
 
-    # Determine opposite for counter-reasoning
-    opposite = "accept" if initial_decision == "reject" else "reject"
-
-    # Step 2: Counter-reasoning
+    # Step 2: Critique reasoning (ONLY DIFFERENCE)
     critique_prompt = (
         f"{base_scenario}\n\n"
-        f"I initially think I should: {initial_text}\n\n"
-        f"However, to ensure fairness and avoid potential bias, I must consider strong arguments for why I should {opposite} instead. "
-        f"Here are compelling reasons why {opposite}ing may be the more responsible choice:\n"
+        f"Initial decision: {initial_decision}\n\n"
+        f"Please list potential concerns or reasons to reconsider this decision to {initial_decision} the loan application.\n\n"
         "1."
     )
     critique_text = get_llm_base(critique_prompt, max_tokens=150)
+    critique = f"Critique of {initial_decision}: " + critique_text
 
-    # Step 3: Final delegation decision
+    # Step 3: Final delegation decision (IDENTICAL to base)
     final_prompt = (
         f"{base_scenario}\n\n"
-        f"Initial decision: {initial_text}\n"
-        f"Critique of {initial_decision}: {critique_text}\n\n"
+        f"Initial decision: {initial_decision}\n"
+        f"{critique}\n\n"
         "Based on the reasons above, are you confident enough to implement this decision yourself, "
         "or should it be delegated to a human for final review?\n"
         "You must respond with ONLY one word: either 'implement' or 'delegate'. No explanation.\n\n"
@@ -243,9 +243,9 @@ def get_auditor_decisions(base_scenario: str):
     final_decision = "delegate" if "delegate" in final_text.lower() else "implement"
 
     return {
-        "initial_text": initial_text,
+        "initial_text": initial_decision,
         "initial_decision": initial_decision,
-        "critique": critique_text,
+        "critique": critique,
         "final_text": final_text,
         "final_decision": final_decision,
     }
