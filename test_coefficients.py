@@ -23,7 +23,7 @@ RESERVE = 16
 SAE_STEPS = 150
 
 # Test different coefficients
-COEFFICIENTS_TO_TEST = [0.5, 1.0, 2.0, 3.0, 5.0, 10.0]
+COEFFICIENTS_TO_TEST = [0.5, 1.0, 2.0, 3.0, 5.0, 10.0, 15.0, 20.0]
 N_SAMPLES_PER_COEFF = 20  # Smaller sample size for testing
 
 # Data paths
