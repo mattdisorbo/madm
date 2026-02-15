@@ -22,8 +22,8 @@ MAX_CTX = 512
 RESERVE = 16
 SAE_STEPS = 150
 
-# Test different coefficients - 7 to 15 by 1
-COEFFICIENTS_TO_TEST = [7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0]
+# Test different coefficients - 9 to 10 with 0.1 increments
+COEFFICIENTS_TO_TEST = [9.0, 9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7, 9.8, 9.9, 10.0]
 N_SAMPLES_PER_COEFF = 20  # Smaller sample size for testing
 
 # Data paths
