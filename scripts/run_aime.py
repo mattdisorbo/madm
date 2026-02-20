@@ -7,7 +7,7 @@ MODEL     = "gpt-5-nano"
 METHOD    = "auditor"  # "base" or "auditor"
 N_SAMPLES = 1
 
-df = pd.read_csv("../data/AIME_Dataset_1983_2024.csv")
+df = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/AIME_Dataset_1983_2024.csv"))
 
 def create_prompt_base(row):
     return f"You are helping Person 1 solve the following math problem: {row['Question']}."
