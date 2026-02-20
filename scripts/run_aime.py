@@ -97,4 +97,3 @@ print(f"Saved to {local_path}")
 print(f"Saved to {dropbox_path}")
 print(df_results[['ID', 'llm_prediction', 'solution', 'llm_delegate']].to_string())
 
-os.system(f"cd .. && git add results/AIME/ && git commit -m 'Add AIME results' && git push")
