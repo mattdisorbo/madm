@@ -82,18 +82,12 @@ local_dir = '../results/AIME'
 os.makedirs(local_dir, exist_ok=True)
 local_path = os.path.join(local_dir, f'{METHOD}_{MODEL}.csv')
 
-dropbox_dir = '/Users/mdisorbo/Harvard University Dropbox/Matthew DosSantos DiSorbo/Mac/Desktop/Trust/AIME'
-os.makedirs(dropbox_dir, exist_ok=True)
-dropbox_path = os.path.join(dropbox_dir, f'{METHOD}_{MODEL}.csv')
-
 try:
     df_results = pd.concat([pd.read_csv(local_path), df_results], ignore_index=True)
 except FileNotFoundError:
     pass
 
 df_results.to_csv(local_path, index=False)
-df_results.to_csv(dropbox_path, index=False)
 print(f"Saved to {local_path}")
-print(f"Saved to {dropbox_path}")
 print(df_results[['ID', 'llm_prediction', 'solution', 'llm_delegate']].to_string())
 
