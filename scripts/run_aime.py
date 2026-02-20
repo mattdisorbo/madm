@@ -78,7 +78,7 @@ with ThreadPoolExecutor(max_workers=5) as executor:
 df_results = pd.DataFrame(results)
 df_results['timestamp'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-local_dir = '/Users/mdisorbo/Desktop/Results/AIME'
+local_dir = '/home/user/madm/results/AIME'
 os.makedirs(local_dir, exist_ok=True)
 local_path = os.path.join(local_dir, f'{METHOD}_{MODEL}.csv')
 
