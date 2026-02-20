@@ -16,9 +16,9 @@ LAYER = 22
 MAX_CTX = 512
 RESERVE = 16
 
-ACCEPTED_CSV = "data/accepted_10k.csv"
-REJECTED_CSV = "data/rejected_10k.csv"
-OUTPUT_CSV = "../results/stage1_auditor_results.csv"
+ACCEPTED_CSV = "../../data/accepted_10k.csv"
+REJECTED_CSV = "../../data/rejected_10k.csv"
+OUTPUT_CSV = "../../results/stage1_auditor_results.csv"
 
 # ======================== LOAD MODEL ========================
 
