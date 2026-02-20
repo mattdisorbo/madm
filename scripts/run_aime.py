@@ -5,7 +5,7 @@ import openai
 
 MODEL     = "gpt-5-nano"
 METHOD    = "auditor"  # "base" or "auditor"
-N_SAMPLES = 5
+N_SAMPLES = 1
 
 df = pd.read_csv("../data/AIME_Dataset_1983_2024.csv")
 
