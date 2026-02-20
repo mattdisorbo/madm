@@ -160,7 +160,7 @@ def parse_decision(text: str):
 
 
 def get_base_decision(base_scenario: str):
-    """Base path: initial decision + final decision (no counter-reasoning)."""
+    """Base path: initial decision + support reasoning + final decision."""
     # Initial decision (same as auditor)
     initial_prompt = (
         f"{base_scenario}\n\n"
@@ -170,11 +170,22 @@ def get_base_decision(base_scenario: str):
     initial_text = get_llm_base(initial_prompt, max_tokens=5)
     initial_decision = parse_decision(initial_text)
 
-    # Final decision (without counter-reasoning)
+    # Support reasoning (strengthen the initial decision)
+    support_prompt = (
+        f"{base_scenario}\n\n"
+        f"I initially think I should: {initial_text}\n\n"
+        f"To validate this decision, I should consider strong arguments supporting why {initial_text.lower()} is the right choice. "
+        f"Here are compelling reasons why {initial_text.lower()}ing is the responsible action:\n"
+        "1."
+    )
+    support_text = get_llm_base(support_prompt, max_tokens=150)
+
+    # Final decision (after support reasoning)
     final_prompt = (
         f"{base_scenario}\n\n"
-        f"Initial thought: {initial_text}\n\n"
-        "Given your initial assessment, what is your final decision?\n"
+        f"Initial thought: {initial_text}\n"
+        f"Supporting argument: {support_text}\n\n"
+        "Given these supporting arguments, what is your final decision?\n"
         "Final answer (reject or delegate):"
     )
     final_text = get_llm_base(final_prompt, max_tokens=10)
@@ -183,6 +194,7 @@ def get_base_decision(base_scenario: str):
     return {
         "initial_text": initial_text,
         "initial_decision": initial_decision,
+        "support": support_text,
         "final_text": final_text,
         "final_decision": final_decision,
     }
@@ -256,6 +268,7 @@ csv_writer = csv.DictWriter(csv_file, fieldnames=[
     'loan_prompt',
     'base_initial_decision_text',
     'base_initial_decision',
+    'base_support',
     'base_final_decision_text',
     'base_final_decision',
     'auditor_initial_decision_text',
@@ -289,13 +302,15 @@ try:
         try:
             # Get base decisions
             base = get_base_decision(scenario)
-            print(f"  Base Initial: {base['initial_decision']}")
-            print(f"  Base Final: {base['final_decision']}")
+            print(f"  Base Initial: {base['initial_decision']} | '{base['initial_text'][:40]}...'")
+            print(f"  Base Support: '{base['support'][:60]}...'")
+            print(f"  Base Final: {base['final_decision']} | '{base['final_text'][:40]}...'")
 
             # Get auditor decisions
             auditor = get_auditor_decisions(scenario)
-            print(f"  Auditor Initial: {auditor['initial_decision']}")
-            print(f"  Auditor Final: {auditor['final_decision']}")
+            print(f"  Auditor Initial: {auditor['initial_decision']} | '{auditor['initial_text'][:40]}...'")
+            print(f"  Auditor Critique: '{auditor['critique'][:60]}...'")
+            print(f"  Auditor Final: {auditor['final_decision']} | '{auditor['final_text'][:40]}...'")
 
             # Only save if we got valid decisions
             if base['final_decision'] != "unknown" and auditor['final_decision'] != "unknown":
@@ -305,6 +320,7 @@ try:
                     'loan_prompt': scenario,
                     'base_initial_decision_text': base['initial_text'],
                     'base_initial_decision': base['initial_decision'],
+                    'base_support': base['support'],
                     'base_final_decision_text': base['final_text'],
                     'base_final_decision': base['final_decision'],
                     'auditor_initial_decision_text': auditor['initial_text'],
