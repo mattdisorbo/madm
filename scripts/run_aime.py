@@ -44,8 +44,10 @@ def get_llm_base(prompt, model):
     response = llm(prompt + instructions, model)
     lines = [l.strip() for l in response.strip().split('\n') if l.strip()]
     try:
-        return {"pred": int(lines[0]), "del": int(lines[1])}
-    except (ValueError, IndexError):
+        pred = int(re.search(r'\d+', lines[0]).group()) if len(lines) > 0 else None
+        delg = int(re.search(r'[01]', lines[-1]).group()) if len(lines) > 1 else None
+        return {"pred": pred, "del": delg}
+    except (ValueError, IndexError, AttributeError):
         print(f"Parse error: {response}")
         return {"pred": None, "del": None}
 
