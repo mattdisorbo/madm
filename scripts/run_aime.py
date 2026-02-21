@@ -26,7 +26,7 @@ if N_QWEN > 0:
 def llm(prompt, model):
     if model == QWEN_MODEL:
         with qwen_lock:
-            out = qwen_pipe([{"role": "user", "content": prompt}], max_new_tokens=512)
+            out = qwen_pipe([{"role": "user", "content": prompt}], max_new_tokens=2048)
         return out[0]["generated_text"][-1]["content"]
     else:
         r = openai.chat.completions.create(model=model, messages=[{"role": "user", "content": prompt}])
