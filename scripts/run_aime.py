@@ -57,6 +57,8 @@ def get_sequential_inference(scenario, model):
         thought = llm(f"{scenario}\n\nSolve the math problem step by step, "
                       "then conclude with 'SOLUTION: <integer>'.", model)
         preds = re.findall(r'SOLUTION:\s*(\d+)', thought)
+        if not preds:
+            preds = re.findall(r'\\boxed\{(\d+)\}', thought)
         pred = preds[-1] if preds else "0"
         critique = llm(f"PROBLEM: {scenario}\n\nPROPOSED SOLUTION: {thought}\n\nCritique this reasoning in 1 sentence.", model)
         decision = llm(f"PROBLEM: {scenario}\nSOLUTION AND REASONING: {thought}\nCRITIQUE: {critique}\n\n"
