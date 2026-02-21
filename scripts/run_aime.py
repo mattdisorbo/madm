@@ -79,12 +79,20 @@ def call_llm(idx, row, method, model):
 # --- Output ---
 local_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../results/AIME")
 os.makedirs(local_dir, exist_ok=True)
-local_path = os.path.join(local_dir, "results.csv")
 
-try:
-    df_existing = pd.read_csv(local_path)
-except FileNotFoundError:
-    df_existing = pd.DataFrame()
+def get_path(method, model):
+    return os.path.join(local_dir, f'{method}_{model.split("/")[-1]}.csv')
+
+# Load existing data per (method, model) combination
+df_existing = {}
+for model, n in [(OAI_MODEL, N_OAI), (QWEN_MODEL, N_QWEN)]:
+    if n > 0:
+        for method in ["base", "auditor"]:
+            path = get_path(method, model)
+            try:
+                df_existing[(method, model)] = pd.read_csv(path)
+            except FileNotFoundError:
+                df_existing[(method, model)] = pd.DataFrame()
 
 results = []
 completed = 0
@@ -94,7 +102,9 @@ save_lock = threading.Lock()
 def save_progress():
     df_new = pd.DataFrame(results)
     df_new['timestamp'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    pd.concat([df_existing, df_new], ignore_index=True).to_csv(local_path, index=False)
+    for (method, model), group in df_new.groupby(['method', 'model']):
+        path = get_path(method, model)
+        pd.concat([df_existing.get((method, model), pd.DataFrame()), group], ignore_index=True).to_csv(path, index=False)
 
 def call_llm_tracked(idx, row, method, model):
     global completed
@@ -121,6 +131,8 @@ with ThreadPoolExecutor(max_workers=5) as executor:
     for f in as_completed(futures):
         f.result()
 
-print(f"Saved to {local_path}")
-df_final = pd.read_csv(local_path)
-print(df_final[['ID', 'llm_prediction', 'solution', 'llm_delegate', 'method', 'model']].to_string())
+df_new = pd.DataFrame(results)
+for (method, model), group in df_new.groupby(['method', 'model']):
+    path = get_path(method, model)
+    print(f"Saved to {path}")
+    print(pd.read_csv(path)[['ID', 'llm_prediction', 'solution', 'llm_delegate', 'method', 'model']].to_string())
