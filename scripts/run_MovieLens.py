@@ -17,11 +17,11 @@ N_QWEN = 0
 DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/MovieLens/movies_and_ratings_last1000000.csv")
 
 # --- Load data ---
-print("Loading MovieLens data...")
+print("Loading MovieLens data...", flush=True)
 df = pd.read_csv(DATA_PATH)
 
 # --- Train OLS ---
-print("Training OLS...")
+print("Training OLS...", flush=True)
 df_ols = df.copy()
 df_ols['year'] = (
     df_ols['title']
@@ -48,7 +48,7 @@ train_df['split'] = 'train'; test_df['split'] = 'test'
 ols = smf.ols(formula=formula, data=train_df).fit()
 r2 = ols.rsquared
 df_ols['pred'] = ols.predict(df_ols)
-print(f"OLS R²: {r2:.3f}")
+print(f"OLS R²: {r2:.3f}", flush=True)
 
 pred_df  = df_ols[['user_movie_key', 'pred']]
 split_df = pd.concat([train_df[['user_movie_key', 'split']], test_df[['user_movie_key', 'split']]])
@@ -63,9 +63,9 @@ qwen_lock = threading.Lock()
 
 if N_QWEN > 0:
     from transformers import pipeline
-    print(f"Loading {QWEN_MODEL}...")
+    print(f"Loading {QWEN_MODEL}...", flush=True)
     qwen_pipe = pipeline("text-generation", model=QWEN_MODEL, torch_dtype="auto", device_map="auto")
-    print("Qwen loaded.")
+    print("Qwen loaded.", flush=True)
 
 def llm(prompt, model):
     if model == QWEN_MODEL:
@@ -129,7 +129,7 @@ def get_llm_base(base_prompt, model):
         delg = int(re.search(r'[01]', lines[-1]).group()) if len(lines) > 1 else None
         return {"pred": pred, "del": delg, "full_prompt": full_prompt, "response": response}
     except (ValueError, IndexError, AttributeError):
-        print(f"Parse error: {response}")
+        print(f"Parse error: {response}", flush=True)
         return {"pred": None, "del": None, "full_prompt": full_prompt, "response": response}
 
 def get_sequential_inference(base_prompt, model):
@@ -240,7 +240,7 @@ def call_llm_tracked(row_idx, method, model):
         completed += 1
         if result is not None:
             results.append(result)
-        print(f"[{completed}/{total}] Done: row {row_idx} ({method}, {model})")
+        print(f"[{completed}/{total}] Done: row {row_idx} ({method}, {model})", flush=True)
         save_progress()
     return result
 
@@ -254,7 +254,7 @@ for model, n in [(OAI_MODEL, N_OAI), (QWEN_MODEL, N_QWEN)]:
                 for idx in sampled:
                     jobs.append((idx, method, model))
 
-print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR})")
+print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR})", flush=True)
 with ThreadPoolExecutor(max_workers=5) as executor:
     futures = [executor.submit(call_llm_tracked, idx, method, model) for idx, method, model in jobs]
     for f in as_completed(futures):
@@ -263,5 +263,5 @@ with ThreadPoolExecutor(max_workers=5) as executor:
 df_new = pd.DataFrame([r for r in results if r is not None])
 for (method, model), group in df_new.groupby(['method', 'model']):
     path = get_path(method, model)
-    print(f"Saved to {path}")
-    print(pd.read_csv(path)[['userId', 'llm_prediction', 'human_response', 'llm_delegate', 'method', 'model']].to_string())
+    print(f"Saved to {path}", flush=True)
+    print(pd.read_csv(path)[['userId', 'llm_prediction', 'human_response', 'llm_delegate', 'method', 'model']].to_string(), flush=True)
