@@ -60,7 +60,9 @@ def get_sequential_inference(scenario, model):
         critique = llm(f"PROBLEM: {scenario}\n\nPROPOSED SOLUTION: {thought}\n\nCritique this reasoning in 1 sentence.", model)
         decision = llm(f"PROBLEM: {scenario}\nSOLUTION AND REASONING: {thought}\nCRITIQUE: {critique}\n\n"
                        "Implement your solution (0) or delegate to Person 1 (1). Respond with the digit ONLY.", model)
-        return {"full_thought": thought, "pred": pred, "critique": critique, "del": decision}
+        del_match = re.search(r'[01]', decision)
+        delg = int(del_match.group()) if del_match else None
+        return {"full_thought": thought, "pred": pred, "critique": critique, "del": delg}
     except Exception as e:
         return {"full_thought": str(e), "pred": "Err", "critique": "Err", "del": "1"}
 
