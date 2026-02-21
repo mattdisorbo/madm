@@ -54,7 +54,7 @@ def get_llm_base(prompt, model):
 
 def get_sequential_inference(scenario, model):
     try:
-        thought = llm(f"{scenario}\n\nSolve the math problem. Explain your reasoning in 1 sentence, "
+        thought = llm(f"{scenario}\n\nSolve the math problem step by step, "
                       "then conclude with 'SOLUTION: <integer>'.", model)
         preds = re.findall(r'SOLUTION:\s*(\d+)', thought)
         pred = preds[-1] if preds else "0"
