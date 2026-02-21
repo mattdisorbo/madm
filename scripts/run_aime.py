@@ -6,8 +6,8 @@ import openai
 OAI_MODEL  = "gpt-5-nano"
 QWEN_MODEL = "Qwen/Qwen2.5-0.5B-Instruct"
 
-N_SAMPLES_BASE    = 1
-N_SAMPLES_AUDITOR = 1
+N_SAMPLES_BASE    = 20
+N_SAMPLES_AUDITOR = 20
 N_OAI  = 0
 N_QWEN = 1
 
