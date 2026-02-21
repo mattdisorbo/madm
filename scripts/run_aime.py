@@ -6,9 +6,9 @@ import openai
 OAI_MODEL  = "gpt-5-nano"
 QWEN_MODEL = "Qwen/Qwen2.5-3B-Instruct"
 
-N_SAMPLES_BASE    = 0
-N_SAMPLES_AUDITOR = 5
-N_OAI  = 0
+N_SAMPLES_BASE    = 25
+N_SAMPLES_AUDITOR = 25
+N_OAI  = 1
 N_QWEN = 1
 
 df = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/AIME_Dataset_1983_2024.csv"))
