@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import openai
 
 OAI_MODEL  = "gpt-5-nano"
-QWEN_MODEL = "Qwen/Qwen2.5-7B-Instruct"
+QWEN_MODEL = "Qwen/Qwen2.5-3B-Instruct"
 
 N_SAMPLES_BASE    = 10
 N_SAMPLES_AUDITOR = 10
