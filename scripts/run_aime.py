@@ -1,11 +1,11 @@
-import os, re, datetime
+import os, re, datetime, threading
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import openai
 
-MODEL     = "gpt-5-nano"
-METHOD    = "auditor"  # "base" or "auditor"
-N_SAMPLES = 1
+MODEL             = "gpt-5-nano"
+N_SAMPLES_BASE    = 1
+N_SAMPLES_AUDITOR = 1
 
 df = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/AIME_Dataset_1983_2024.csv"))
 
@@ -46,48 +46,61 @@ def get_sequential_inference(scenario):
     except Exception as e:
         return {"full_thought": str(e), "pred": "Err", "critique": "Err", "del": "1"}
 
-def call_llm(idx, row):
+def call_llm(idx, row, method):
     base = create_prompt_base(row)
-    if METHOD == "base":
+    if method == "base":
         result = get_llm_base(base)
         return {**row, "prompt": base, "llm_prediction": result["pred"],
-                "llm_delegate": result["del"], "solution": row["Answer"], "method": METHOD}
-    elif METHOD == "auditor":
+                "llm_delegate": result["del"], "solution": row["Answer"],
+                "method": method, "model": MODEL}
+    elif method == "auditor":
         result = get_sequential_inference(base)
         return {**row, "prompt": base, "llm_full_thought": result["full_thought"],
                 "llm_prediction": result["pred"], "llm_critique": result["critique"],
-                "llm_delegate": result["del"], "solution": row["Answer"], "method": METHOD}
-
-sampled_rows = df.sample(n=N_SAMPLES)
-results = []
-completed = 0
-
-def call_llm_tracked(idx, row):
-    global completed
-    result = call_llm(idx, row)
-    completed += 1
-    print(f"[{completed}/{N_SAMPLES}] Done: row {idx}")
-    return result
-
-print(f"Starting {N_SAMPLES} samples | model: {MODEL} | method: {METHOD}")
-with ThreadPoolExecutor(max_workers=5) as executor:
-    futures = [executor.submit(call_llm_tracked, idx, row) for idx, row in sampled_rows.iterrows()]
-    for f in as_completed(futures):
-        results.append(f.result())
-
-df_results = pd.DataFrame(results)
-df_results['timestamp'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                "llm_delegate": result["del"], "solution": row["Answer"],
+                "method": method, "model": MODEL}
 
 local_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../results/AIME")
 os.makedirs(local_dir, exist_ok=True)
-local_path = os.path.join(local_dir, f'{METHOD}_{MODEL}.csv')
+local_path = os.path.join(local_dir, f'{MODEL}.csv')
 
 try:
-    df_results = pd.concat([pd.read_csv(local_path), df_results], ignore_index=True)
+    df_existing = pd.read_csv(local_path)
 except FileNotFoundError:
-    pass
+    df_existing = pd.DataFrame()
 
-df_results.to_csv(local_path, index=False)
+results = []
+completed = 0
+total = N_SAMPLES_BASE + N_SAMPLES_AUDITOR
+save_lock = threading.Lock()
+
+def save_progress():
+    df_new = pd.DataFrame(results)
+    df_new['timestamp'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    pd.concat([df_existing, df_new], ignore_index=True).to_csv(local_path, index=False)
+
+def call_llm_tracked(idx, row, method):
+    global completed
+    result = call_llm(idx, row, method)
+    with save_lock:
+        completed += 1
+        results.append(result)
+        print(f"[{completed}/{total}] Done: row {idx} ({method})")
+        save_progress()
+    return result
+
+base_rows    = df.sample(n=N_SAMPLES_BASE)    if N_SAMPLES_BASE    > 0 else pd.DataFrame()
+auditor_rows = df.sample(n=N_SAMPLES_AUDITOR) if N_SAMPLES_AUDITOR > 0 else pd.DataFrame()
+
+print(f"Starting {N_SAMPLES_BASE} base + {N_SAMPLES_AUDITOR} auditor samples | model: {MODEL}")
+with ThreadPoolExecutor(max_workers=5) as executor:
+    futures = (
+        [executor.submit(call_llm_tracked, idx, row, "base")    for idx, row in base_rows.iterrows()] +
+        [executor.submit(call_llm_tracked, idx, row, "auditor") for idx, row in auditor_rows.iterrows()]
+    )
+    for f in as_completed(futures):
+        f.result()
+
 print(f"Saved to {local_path}")
-print(df_results[['ID', 'llm_prediction', 'solution', 'llm_delegate']].to_string())
-
+df_final = pd.read_csv(local_path)
+print(df_final[['ID', 'llm_prediction', 'solution', 'llm_delegate', 'method', 'model']].to_string())
