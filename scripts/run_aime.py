@@ -41,15 +41,16 @@ def get_llm_base(prompt, model):
         "First, your integer solution. "
         "Second, 0 to implement your solution or 1 to delegate to Person 1."
     )
-    response = llm(prompt + instructions, model)
+    full_prompt = prompt + instructions
+    response = llm(full_prompt, model)
     lines = [l.strip() for l in response.strip().split('\n') if l.strip()]
     try:
         pred = int(re.search(r'\d+', lines[0]).group()) if len(lines) > 0 else None
         delg = int(re.search(r'[01]', lines[-1]).group()) if len(lines) > 1 else None
-        return {"pred": pred, "del": delg}
+        return {"pred": pred, "del": delg, "full_prompt": full_prompt, "response": response}
     except (ValueError, IndexError, AttributeError):
         print(f"Parse error: {response}")
-        return {"pred": None, "del": None}
+        return {"pred": None, "del": None, "full_prompt": full_prompt, "response": response}
 
 def get_sequential_inference(scenario, model):
     try:
@@ -62,23 +63,28 @@ def get_sequential_inference(scenario, model):
                        "Implement your solution (0) or delegate to Person 1 (1). Respond with the digit ONLY.", model)
         del_match = re.search(r'[01]', decision)
         delg = int(del_match.group()) if del_match else None
-        return {"full_thought": thought, "pred": pred, "critique": critique, "del": delg}
+        return {"full_thought": thought, "pred": pred, "critique": critique, "decision": decision, "del": delg}
     except Exception as e:
-        return {"full_thought": str(e), "pred": "Err", "critique": "Err", "del": "1"}
+        return {"full_thought": str(e), "pred": "Err", "critique": "Err", "decision": "Err", "del": "1"}
 
 def call_llm(idx, row, method, model):
     base = create_prompt_base(row)
     if method == "base":
         result = get_llm_base(base, model)
+        trace = f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}"
         return {**row, "prompt": base, "llm_prediction": result["pred"],
                 "llm_delegate": result["del"], "solution": row["Answer"],
-                "method": method, "model": model}
+                "method": method, "model": model, "trace": trace}
     elif method == "auditor":
         result = get_sequential_inference(base, model)
+        trace = (f"[PROMPT]\n{base}\n\n"
+                 f"[THOUGHT]\n{result['full_thought']}\n\n"
+                 f"[CRITIQUE]\n{result['critique']}\n\n"
+                 f"[DECISION]\n{result['decision']}")
         return {**row, "prompt": base, "llm_full_thought": result["full_thought"],
                 "llm_prediction": result["pred"], "llm_critique": result["critique"],
                 "llm_delegate": result["del"], "solution": row["Answer"],
-                "method": method, "model": model}
+                "method": method, "model": model, "trace": trace}
 
 # --- Output ---
 local_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../results/AIME")
