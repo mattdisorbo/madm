@@ -8,6 +8,7 @@ scripts = [
     "run_FEVEROUS.py",
     "run_JFLEG.py",
     "run_LendingClub.py",
+    "run_aime.py",
 ]
 
 for script in scripts:
