@@ -7,12 +7,12 @@ import openai
 OAI_MODEL  = "gpt-5-mini-2025-08-07"
 QWEN_MODEL = "Qwen/Qwen2.5-1.5B-Instruct"
 
-N_SAMPLES_BASE    = 25
-N_SAMPLES_AUDITOR = 25
+N_SAMPLES_BASE    = 10
+N_SAMPLES_AUDITOR = 10
 N_OAI  = 1
 N_QWEN = 1
 
-DATA_PATH = "/Users/mdisorbo/Harvard University Dropbox/Matthew DosSantos DiSorbo/Mac/Desktop/Trust/Folder of initial human data (i.e., MoralMachine)/Wikipedia Toxicity_data_data.csv"
+DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/WikipediaToxicity/Wikipedia Toxicity_data_data.csv")
 
 # --- Load and aggregate data ---
 print("Loading Wikipedia Toxicity data...", flush=True)
