@@ -11,11 +11,12 @@ N_SAMPLES_AUDITOR = 10
 N_OAI  = 1
 N_QWEN = 1
 
-DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/FEVEROUS/FEVEROUS.csv")
+DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/FEVEROUS/feverous_train_challenges.jsonl")
 
 # --- Load and clean data ---
 print("Loading FEVEROUS data...", flush=True)
-data = pd.read_csv(DATA_PATH)
+data = pd.read_json(DATA_PATH, lines=True)
+data = data.replace('', pd.NA).dropna(how='all')
 data = data[data["label"] != "NOT ENOUGH INFO"]
 data["supports"] = data["label"].map({"SUPPORTS": 1, "REFUTES": 0})
 data = data.reset_index(drop=True)
