@@ -6,13 +6,15 @@ from sklearn.model_selection import train_test_split
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import openai
 
-OAI_MODEL  = "gpt-5-mini-2025-08-07"
-QWEN_MODEL = "Qwen/Qwen2.5-1.5B-Instruct"
+OAI_MODEL      = "gpt-5-mini-2025-08-07"
+OAI_MODEL_NANO = "gpt-5-nano-2025-08-07"
+QWEN_MODEL     = "Qwen/Qwen2.5-1.5B-Instruct"
 
 N_SAMPLES_BASE    = 50
 N_SAMPLES_OLS     = 50
 N_SAMPLES_AUDITOR = 50
 N_OAI  = 1
+N_NANO = 1
 N_QWEN = 1
 
 DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/MovieLens/movies_and_ratings_last1000000.csv")
@@ -233,7 +235,7 @@ def get_path(method, model):
     return os.path.join(local_dir, f'{method}_{model.split("/")[-1]}.csv')
 
 df_existing = {}
-for model, n in [(OAI_MODEL, N_OAI), (QWEN_MODEL, N_QWEN)]:
+for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN)]:
     if n > 0:
         for method in ["base", "ols", "auditor"]:
             path = get_path(method, model)
@@ -246,7 +248,7 @@ test_indices = df.loc[df['split'] == 'test'].index.tolist()
 
 results = []
 completed = 0
-total = (N_OAI + N_QWEN) * (N_SAMPLES_BASE + N_SAMPLES_OLS + N_SAMPLES_AUDITOR)
+total = (N_OAI + N_NANO + N_QWEN) * (N_SAMPLES_BASE + N_SAMPLES_OLS + N_SAMPLES_AUDITOR)
 save_lock = threading.Lock()
 
 def save_progress():
@@ -272,7 +274,7 @@ def call_llm_tracked(row_idx, method, model):
 
 # --- Build jobs ---
 jobs = []
-for model, n in [(OAI_MODEL, N_OAI), (QWEN_MODEL, N_QWEN)]:
+for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN)]:
     if n > 0:
         for method, n_samples in [("base", N_SAMPLES_BASE), ("ols", N_SAMPLES_OLS), ("auditor", N_SAMPLES_AUDITOR)]:
             if n_samples > 0:
@@ -280,7 +282,7 @@ for model, n in [(OAI_MODEL, N_OAI), (QWEN_MODEL, N_QWEN)]:
                 for idx in sampled:
                     jobs.append((idx, method, model))
 
-print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR})", flush=True)
+print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR})", flush=True)
 with ThreadPoolExecutor(max_workers=5) as executor:
     futures = [executor.submit(call_llm_tracked, idx, method, model) for idx, method, model in jobs]
     for f in as_completed(futures):
