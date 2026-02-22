@@ -7,6 +7,7 @@
 ## Cluster (AMD HPC Fund)
 - SSH alias: `amd`
 - Submit jobs: `bash cluster/submit.sh cluster/<script>.slurm`
+- Confirmed working: `run_MovieLens.slurm` ran successfully (2026-02-22)
 - SLURM fails silently (signal 53) if `logs/` directory doesn't exist
 - PyTorch ROCm: `uv sync` then `uv pip install --reinstall torch --index-url https://download.pytorch.org/whl/rocm7.1`
 - Can't use `[tool.uv.sources]` for ROCm torch due to `triton-rocm` cross-platform resolution issues
