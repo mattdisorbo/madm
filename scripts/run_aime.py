@@ -6,8 +6,8 @@ import openai
 OAI_MODEL  = "gpt-5-mini-2025-08-07"
 QWEN_MODEL = "Qwen/Qwen2.5-1.5B-Instruct"
 
-N_SAMPLES_BASE    = 25
-N_SAMPLES_AUDITOR = 25
+N_SAMPLES_BASE    = 50
+N_SAMPLES_AUDITOR = 50
 N_OAI  = 1
 N_QWEN = 1
 
