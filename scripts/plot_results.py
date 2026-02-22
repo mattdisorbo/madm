@@ -4,7 +4,7 @@ Generate per-model bar charts across datasets.
 For each model, produces a figure with one facet per dataset.
 X-axis: mode (base, auditor, tool=rf/ols)
 Y-axis: 0–1
-Bars: LLM accuracy (non-delegated rows only) and delegation rate.
+Bars: LLM accuracy (llm_prediction == ground_truth, all rows) and delegation rate.
 
 Note: JFLEG is a grammar-correction task (text generation); accuracy there
 requires GLEU scoring, not simple equality, so the accuracy bar is omitted.
@@ -43,7 +43,7 @@ def compute_metrics(df: pd.DataFrame, dataset: str) -> tuple[float, float]:
     """Return (accuracy, delegation_rate) for a results dataframe.
 
     Rows where llm_delegate is NaN are excluded (incomplete entries).
-    Accuracy is computed only on non-delegated rows.
+    Accuracy is llm_prediction == ground_truth across all valid rows.
     """
     valid = df[df["llm_delegate"].notna()]
     delegation_rate = (valid["llm_delegate"] == 1).mean()
@@ -52,13 +52,9 @@ def compute_metrics(df: pd.DataFrame, dataset: str) -> tuple[float, float]:
         accuracy = np.nan
     else:
         gt_col = ground_truth_col(df)
-        non_delegated = valid[valid["llm_delegate"] == 0].copy()
-        if non_delegated.empty:
-            accuracy = np.nan
-        else:
-            pred = pd.to_numeric(non_delegated["llm_prediction"], errors="coerce")
-            truth = pd.to_numeric(non_delegated[gt_col], errors="coerce")
-            accuracy = (pred == truth).mean()
+        pred = pd.to_numeric(valid["llm_prediction"], errors="coerce")
+        truth = pd.to_numeric(valid[gt_col], errors="coerce")
+        accuracy = (pred == truth).mean()
 
     return accuracy, delegation_rate
 
