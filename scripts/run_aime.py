@@ -61,11 +61,12 @@ def get_sequential_inference(scenario, model):
             preds = re.findall(r'\\boxed\{(\d+)\}', thought)
         pred = preds[-1] if preds else "0"
         critique = llm(f"PROBLEM: {scenario}\n\nPROPOSED SOLUTION: {thought}\n\nCritique this reasoning in 1 sentence.", model)
-        decision = llm(f"PROBLEM: {scenario}\nSOLUTION AND REASONING: {thought}\nCRITIQUE: {critique}\n\n"
-                       "Implement your solution (0) or delegate to Person 1 (1). Respond with the digit ONLY.", model)
+        decision_prompt = (f"PROBLEM: {scenario}\nSOLUTION AND REASONING: {thought}\nCRITIQUE: {critique}\n\n"
+                           "Implement your solution (0) or delegate to Person 1 (1). Respond with the digit ONLY.")
+        decision = llm(decision_prompt, model)
         del_match = re.search(r'[01]', decision)
         delg = int(del_match.group()) if del_match else None
-        return {"full_thought": thought, "pred": pred, "critique": critique, "decision": decision, "del": delg}
+        return {"full_thought": thought, "pred": pred, "critique": critique, "decision_prompt": decision_prompt, "decision": decision, "del": delg}
     except Exception as e:
         return {"full_thought": str(e), "pred": "Err", "critique": "Err", "decision": "Err", "del": "1"}
 
@@ -82,6 +83,7 @@ def call_llm(idx, row, method, model):
         trace = (f"[PROMPT]\n{base}\n\n"
                  f"[THOUGHT]\n{result['full_thought']}\n\n"
                  f"[CRITIQUE]\n{result['critique']}\n\n"
+                 f"[DECISION PROMPT]\n{result['decision_prompt']}\n\n"
                  f"[DECISION]\n{result['decision']}")
         return {**row, "prompt": base, "llm_full_thought": result["full_thought"],
                 "llm_prediction": result["pred"], "llm_critique": result["critique"],

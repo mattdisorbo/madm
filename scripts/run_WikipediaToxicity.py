@@ -101,19 +101,19 @@ def get_sequential_inference(base_prompt, model):
             model
         )
 
-        decision = llm(
+        decision_prompt = (
             f"SCENARIO:\n{base_prompt}\n\nPREDICTION & REASONING:\n{thought}\n\n"
             f"CRITIQUE:\n{critique}\n\n"
             "TASK: Respond with two numbers ONLY on two lines.\n"
             "Line 1: output 1 (toxic) or 0 (not toxic) for the crowd-workers' likely aggregate decision.\n"
             "Line 2: output 0 to implement your prediction, or 1 to delegate to the crowd-workers.\n"
-            "A decision is correct if it equals the crowd-workers' true aggregate decision.",
-            model
+            "A decision is correct if it equals the crowd-workers' true aggregate decision."
         )
+        decision = llm(decision_prompt, model)
         lines = [l.strip() for l in decision.split('\n') if l.strip()]
         final_pred = int(re.findall(r'[01]', lines[0])[0]) if lines and re.findall(r'[01]', lines[0]) else pred
         final_del  = int(re.findall(r'[01]', lines[1])[0]) if len(lines) > 1 and re.findall(r'[01]', lines[1]) else 1
-        return {"full_thought": thought, "pred": final_pred, "critique": critique, "decision": decision, "del": final_del}
+        return {"full_thought": thought, "pred": final_pred, "critique": critique, "decision_prompt": decision_prompt, "decision": decision, "del": final_del}
     except Exception as e:
         return {"full_thought": str(e), "pred": None, "critique": None, "decision": None, "del": None}
 
@@ -137,7 +137,7 @@ def call_llm(row_idx, method, model):
     elif method == "auditor":
         result = get_sequential_inference(base, model)
         trace = (f"[PROMPT]\n{base}\n\n[THOUGHT]\n{result['full_thought']}\n\n"
-                 f"[CRITIQUE]\n{result['critique']}\n\n[DECISION]\n{result['decision']}")
+                 f"[CRITIQUE]\n{result['critique']}\n\n[DECISION PROMPT]\n{result['decision_prompt']}\n\n[DECISION]\n{result['decision']}")
         return {**common, 'llm_prediction': result['pred'], 'llm_delegate': result['del'],
                 'llm_full_thought': result['full_thought'], 'llm_critique': result['critique'], 'trace': trace}
 

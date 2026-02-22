@@ -82,17 +82,17 @@ def get_sequential_inference(base_prompt, model):
             model
         )
 
-        decision = llm(
+        decision_prompt = (
             f"SCENARIO:\n{base_prompt}\n\nCORRECTION & REASONING:\n{thought}\n\n"
             f"CRITIQUE:\n{critique}\n\n"
             "TASK: Respond with a digit ONLY.\n"
             "Output 0 to implement your prediction, or 1 to delegate to Person 1.\n"
-            "The ground truth is one of Person 1's true grammatical corrections.",
-            model
+            "The ground truth is one of Person 1's true grammatical corrections."
         )
+        decision = llm(decision_prompt, model)
         delg_match = re.search(r'[01]', decision.strip())
         final_del = int(delg_match.group()) if delg_match else 1
-        return {"full_thought": thought, "pred": pred, "critique": critique, "decision": decision, "del": final_del}
+        return {"full_thought": thought, "pred": pred, "critique": critique, "decision_prompt": decision_prompt, "decision": decision, "del": final_del}
     except Exception as e:
         return {"full_thought": str(e), "pred": None, "critique": None, "decision": None, "del": None}
 
@@ -117,7 +117,7 @@ def call_llm(row_idx, method, model):
     elif method == "auditor":
         result = get_sequential_inference(base, model)
         trace = (f"[PROMPT]\n{base}\n\n[THOUGHT]\n{result['full_thought']}\n\n"
-                 f"[CRITIQUE]\n{result['critique']}\n\n[DECISION]\n{result['decision']}")
+                 f"[CRITIQUE]\n{result['critique']}\n\n[DECISION PROMPT]\n{result['decision_prompt']}\n\n[DECISION]\n{result['decision']}")
         return {**common, 'llm_prediction': result['pred'], 'llm_delegate': result['del'],
                 'llm_full_thought': result['full_thought'], 'llm_critique': result['critique'], 'trace': trace}
 
