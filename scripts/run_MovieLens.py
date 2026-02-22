@@ -10,6 +10,7 @@ OAI_MODEL  = "gpt-5-mini-2025-08-07"
 QWEN_MODEL = "Qwen/Qwen2.5-1.5B-Instruct"
 
 N_SAMPLES_BASE    = 25
+N_SAMPLES_OLS     = 25
 N_SAMPLES_AUDITOR = 25
 N_OAI  = 1
 N_QWEN = 1
@@ -132,6 +133,27 @@ def get_llm_base(base_prompt, model):
         print(f"Parse error: {response}", flush=True)
         return {"pred": None, "del": None, "full_prompt": full_prompt, "response": response}
 
+def get_llm_ols(base_prompt, ols_pred1, ols_pred2, r2_val, model):
+    instructions = (
+        f"An OLS model trained on a similar dataset predicts Person 1 would rate the first movie {round(ols_pred1, 2)} "
+        f"and the second movie {round(ols_pred2, 2)}. The OLS model has an R-squared of {round(r2_val, 2)}. "
+        "\n\nRespond with two numbers ONLY on two lines. "
+        "First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.\n"
+        "Second, respond 0 to recommend the movie you predicted, "
+        "or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.\n"
+        "A decision is correct if it is the movie Person 1 would rate higher."
+    )
+    full_prompt = base_prompt + instructions
+    response = llm(full_prompt, model)
+    lines = [l.strip() for l in response.strip().split('\n') if l.strip()]
+    try:
+        pred = int(re.search(r'[12]', lines[0]).group()) if lines else None
+        delg = int(re.search(r'[01]', lines[-1]).group()) if len(lines) > 1 else None
+        return {"pred": pred, "del": delg, "full_prompt": full_prompt, "response": response}
+    except (ValueError, IndexError, AttributeError):
+        print(f"Parse error: {response}", flush=True)
+        return {"pred": None, "del": None, "full_prompt": full_prompt, "response": response}
+
 def get_sequential_inference(base_prompt, model):
     try:
         thought = llm(
@@ -192,6 +214,10 @@ def call_llm(row_idx, method, model):
         result = get_llm_base(base, model)
         trace = f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}"
         return {**common, 'llm_prediction': result['pred'], 'llm_delegate': result['del'], 'trace': trace}
+    elif method == "ols":
+        result = get_llm_ols(base, ols_pred_1, ols_pred_2, r2, model)
+        trace = f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}"
+        return {**common, 'llm_prediction': result['pred'], 'llm_delegate': result['del'], 'trace': trace}
     elif method == "auditor":
         result = get_sequential_inference(base, model)
         trace = (f"[PROMPT]\n{base}\n\n[THOUGHT]\n{result['full_thought']}\n\n"
@@ -209,7 +235,7 @@ def get_path(method, model):
 df_existing = {}
 for model, n in [(OAI_MODEL, N_OAI), (QWEN_MODEL, N_QWEN)]:
     if n > 0:
-        for method in ["base", "auditor"]:
+        for method in ["base", "ols", "auditor"]:
             path = get_path(method, model)
             try:
                 df_existing[(method, model)] = pd.read_csv(path)
@@ -220,7 +246,7 @@ test_indices = df.loc[df['split'] == 'test'].index.tolist()
 
 results = []
 completed = 0
-total = (N_OAI + N_QWEN) * (N_SAMPLES_BASE + N_SAMPLES_AUDITOR)
+total = (N_OAI + N_QWEN) * (N_SAMPLES_BASE + N_SAMPLES_OLS + N_SAMPLES_AUDITOR)
 save_lock = threading.Lock()
 
 def save_progress():
@@ -248,13 +274,13 @@ def call_llm_tracked(row_idx, method, model):
 jobs = []
 for model, n in [(OAI_MODEL, N_OAI), (QWEN_MODEL, N_QWEN)]:
     if n > 0:
-        for method, n_samples in [("base", N_SAMPLES_BASE), ("auditor", N_SAMPLES_AUDITOR)]:
+        for method, n_samples in [("base", N_SAMPLES_BASE), ("ols", N_SAMPLES_OLS), ("auditor", N_SAMPLES_AUDITOR)]:
             if n_samples > 0:
                 sampled = random.sample(test_indices, n * n_samples)
                 for idx in sampled:
                     jobs.append((idx, method, model))
 
-print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR})", flush=True)
+print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR})", flush=True)
 with ThreadPoolExecutor(max_workers=5) as executor:
     futures = [executor.submit(call_llm_tracked, idx, method, model) for idx, method, model in jobs]
     for f in as_completed(futures):
