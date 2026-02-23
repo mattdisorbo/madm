@@ -22,7 +22,7 @@ def run_script(script):
         raise RuntimeError(f"{script} failed with exit code {result.returncode}")
     return script
 
-with ThreadPoolExecutor(max_workers=len(scripts)) as executor:
+with ThreadPoolExecutor(max_workers=1) as executor:
     futures = {executor.submit(run_script, s): s for s in scripts}
     for f in as_completed(futures):
         f.result()
