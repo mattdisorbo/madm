@@ -56,7 +56,7 @@ for _m, _n in [(QWEN_MODEL, N_QWEN), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (DEEPSEEK
     if _n > 0:
         from transformers import pipeline
         print(f"Loading {_m}...", flush=True)
-        local_pipes[_m] = pipeline("text-generation", model=_m, torch_dtype="auto", device_map="auto")
+        local_pipes[_m] = pipeline("text-generation", model=_m, torch_dtype="auto", device_map="auto", trust_remote_code=True)
         local_locks[_m] = threading.Lock()
         print(f"{_m} loaded.", flush=True)
 

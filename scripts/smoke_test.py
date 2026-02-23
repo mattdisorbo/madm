@@ -12,7 +12,7 @@ local_locks = {}
 
 for m in [QWEN_MODEL_LARGE, DEEPSEEK_MODEL, GLM_MODEL]:
     print(f"Loading {m}...", flush=True)
-    local_pipes[m] = pipeline("text-generation", model=m, torch_dtype="auto", device_map="auto")
+    local_pipes[m] = pipeline("text-generation", model=m, torch_dtype="auto", device_map="auto", trust_remote_code=True)
     local_locks[m] = threading.Lock()
     print(f"{m} loaded.", flush=True)
 
