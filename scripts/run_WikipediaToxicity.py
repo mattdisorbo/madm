@@ -16,9 +16,9 @@ N_SAMPLES_AUDITOR = 10
 N_OAI        = 1
 N_NANO       = 1
 N_QWEN       = 1
-N_QWEN_LARGE = 1
-N_DEEPSEEK   = 1
-N_GLM        = 1
+N_QWEN_LARGE = 10
+N_DEEPSEEK   = 10
+N_GLM        = 10
 
 DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/WikipediaToxicity/Wikipedia Toxicity_data_data.csv")
 
