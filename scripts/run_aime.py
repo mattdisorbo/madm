@@ -26,10 +26,10 @@ local_locks = {}
 for _m, _n in [(QWEN_MODEL, N_QWEN), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (GLM_MODEL, N_GLM)]:
     if _n > 0:
         from transformers import pipeline
-        print(f"Loading {_m}...")
+        print(f"Loading {_m}...", flush=True)
         local_pipes[_m] = pipeline("text-generation", model=_m, torch_dtype="auto", device_map="auto", trust_remote_code=True)
         local_locks[_m] = threading.Lock()
-        print(f"{_m} loaded.")
+        print(f"{_m} loaded.", flush=True)
 
 def llm(prompt, model):
     if model in local_pipes:
@@ -57,7 +57,7 @@ def get_llm_base(prompt, model):
         delg = int(re.search(r'[01]', lines[-1]).group()) if len(lines) > 1 else None
         return {"pred": pred, "del": delg, "full_prompt": full_prompt, "response": response}
     except (ValueError, IndexError, AttributeError):
-        print(f"Parse error: {response}")
+        print(f"Parse error: {response}", flush=True)
         return {"pred": None, "del": None, "full_prompt": full_prompt, "response": response}
 
 def get_sequential_inference(scenario, model):
@@ -134,7 +134,7 @@ def call_llm_tracked(idx, row, method, model):
     with save_lock:
         completed += 1
         results.append(result)
-        print(f"[{completed}/{total}] Done: row {idx} ({method}, {model})")
+        print(f"[{completed}/{total}] Done: row {idx} ({method}, {model})", flush=True)
         save_progress()
     return result
 
@@ -147,7 +147,7 @@ for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QW
                 for idx, row in df.sample(n=n * n_samples).iterrows():
                     jobs.append((idx, row, method, model))
 
-print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x | QwenLarge {N_QWEN_LARGE}x | GLM {N_GLM}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR})")
+print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x | QwenLarge {N_QWEN_LARGE}x | GLM {N_GLM}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR})", flush=True)
 with ThreadPoolExecutor(max_workers=5) as executor:
     futures = [executor.submit(call_llm_tracked, idx, row, method, model) for idx, row, method, model in jobs]
     for f in as_completed(futures):
@@ -156,5 +156,5 @@ with ThreadPoolExecutor(max_workers=5) as executor:
 df_new = pd.DataFrame(results)
 for (method, model), group in df_new.groupby(['method', 'model']):
     path = get_path(method, model)
-    print(f"Saved to {path}")
-    print(pd.read_csv(path)[['ID', 'llm_prediction', 'solution', 'llm_delegate', 'method', 'model']].to_string())
+    print(f"Saved to {path}", flush=True)
+    print(pd.read_csv(path)[['ID', 'llm_prediction', 'solution', 'llm_delegate', 'method', 'model']].to_string(), flush=True)
