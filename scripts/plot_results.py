@@ -24,7 +24,7 @@ DATASETS = [
     "AIME", "FEVEROUS", "JFLEG",
     "LendingClub", "MoralMachine", "MovieLens", "WikipediaToxicity",
 ]
-MODELS = ["Qwen2.5-1.5B-Instruct", "gpt-5-mini-2025-08-07"]
+MODELS = ["Qwen2.5-1.5B-Instruct", "gpt-5-mini-2025-08-07", "gpt-5-nano-2025-08-07"]
 TOOL_METHODS = {"rf", "ols"}
 
 MODE_ORDER = ["base", "auditor", "tool"]
