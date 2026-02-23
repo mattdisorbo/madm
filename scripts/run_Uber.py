@@ -1,5 +1,8 @@
 import os, re, datetime, threading, random
+import numpy as np
 import pandas as pd
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import openai
 
@@ -11,6 +14,7 @@ QWEN_MODEL_LARGE = "Qwen/Qwen2.5-7B-Instruct"
 GLM_MODEL        = "THUDM/glm-4-9b-chat-hf"
 
 N_SAMPLES_BASE    = 10
+N_SAMPLES_GLM     = 10
 N_SAMPLES_AUDITOR = 10
 N_OAI        = 0
 N_NANO       = 0
@@ -31,6 +35,33 @@ data = data.dropna(subset=["Pickup_Location", "Drop_Location"])
 data = data.reset_index(drop=True)
 
 print(f"Loaded {len(data)} rides. Driver cancel rate: {data['cancelled'].mean():.3f}", flush=True)
+
+# --- Train Logistic Regression ---
+print("Training Logistic Regression...", flush=True)
+features_df = pd.get_dummies(data[['Pickup_Location', 'Drop_Location']])
+target = data['cancelled']
+
+train_idx, holdout_idx = train_test_split(data.index, test_size=0.2, random_state=42)
+
+X_train = features_df.loc[train_idx]
+y_train = target.loc[train_idx]
+X_holdout = features_df.loc[holdout_idx]
+
+glm_model = LogisticRegression(max_iter=1000, random_state=42)
+glm_model.fit(X_train, y_train)
+
+glm_preds = glm_model.predict(X_holdout)
+glm_probs = glm_model.predict_proba(X_holdout)[:, 1]
+glm_acc = (glm_preds == target.loc[holdout_idx].values).mean()
+print(f"Logistic Regression accuracy: {glm_acc:.3f}", flush=True)
+
+data['glm_pred'] = np.nan
+data['glm_prob'] = np.nan
+data.loc[holdout_idx, 'glm_pred'] = glm_preds
+data.loc[holdout_idx, 'glm_prob'] = glm_probs
+
+holdout_indices = list(holdout_idx)
+print(f"Holdout size: {len(holdout_indices)}", flush=True)
 
 # --- Local model setup ---
 local_pipes = {}
@@ -61,6 +92,28 @@ def create_prompt_base(row):
 
 def get_llm_base(base_prompt, model):
     instructions = (
+        "\n\nRespond with two numbers ONLY on two lines. "
+        "First, respond 1 (cancel) or 0 (accept) based on your prediction of Person 1's true decision.\n"
+        "Second, respond 0 to implement your prediction of Person 1's true decision, "
+        "or 1 to delegate to Person 1 so they can implement their true decision.\n"
+        "A decision is considered correct if it equals Person 1's true decision."
+    )
+    full_prompt = base_prompt + instructions
+    response = llm(full_prompt, model)
+    lines = [l.strip() for l in response.strip().split('\n') if l.strip()]
+    try:
+        pred = int(re.search(r'[01]', lines[0]).group()) if lines else None
+        delg = int(re.search(r'[01]', lines[-1]).group()) if len(lines) > 1 else None
+        return {"pred": pred, "del": delg, "full_prompt": full_prompt, "response": response}
+    except (ValueError, IndexError, AttributeError):
+        print(f"Parse error: {response}", flush=True)
+        return {"pred": None, "del": None, "full_prompt": full_prompt, "response": response}
+
+def get_llm_glm(base_prompt, glm_pred, glm_prob, model):
+    glm_label = "cancel" if glm_pred == 1 else "accept"
+    instructions = (
+        f"A logistic regression trained on a similar dataset predicts Person 1 would {glm_label} this ride, "
+        f"based on a predicted probability of {glm_prob:.3f} that Person 1 would cancel it. "
         "\n\nRespond with two numbers ONLY on two lines. "
         "First, respond 1 (cancel) or 0 (accept) based on your prediction of Person 1's true decision.\n"
         "Second, respond 0 to implement your prediction of Person 1's true decision, "
@@ -128,6 +181,13 @@ def call_llm(row_idx, method, model):
         result = get_llm_base(base, model)
         trace = f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}"
         return {**common, 'llm_prediction': result['pred'], 'llm_delegate': result['del'], 'trace': trace}
+    elif method == "glm":
+        glm_pred_val = row['glm_pred']
+        glm_prob_val = row['glm_prob']
+        result = get_llm_glm(base, glm_pred_val, glm_prob_val, model)
+        trace = f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}"
+        return {**common, 'llm_prediction': result['pred'], 'llm_delegate': result['del'],
+                'glm_pred': glm_pred_val, 'glm_prob': glm_prob_val, 'trace': trace}
     elif method == "auditor":
         result = get_sequential_inference(base, model)
         trace = (f"[PROMPT]\n{base}\n\n[THOUGHT]\n{result['full_thought']}\n\n"
@@ -145,7 +205,7 @@ def get_path(method, model):
 df_existing = {}
 for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN), (QWEN_MODEL_MED, N_QWEN_MED), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (GLM_MODEL, N_GLM)]:
     if n > 0:
-        for method in ["base", "auditor"]:
+        for method in ["base", "glm", "auditor"]:
             path = get_path(method, model)
             try:
                 df_existing[(method, model)] = pd.read_csv(path)
@@ -154,7 +214,7 @@ for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QW
 
 results = []
 completed = 0
-total = (N_OAI + N_NANO + N_QWEN + N_QWEN_MED + N_QWEN_LARGE + N_GLM) * (N_SAMPLES_BASE + N_SAMPLES_AUDITOR)
+total = (N_OAI + N_NANO + N_QWEN + N_QWEN_MED + N_QWEN_LARGE + N_GLM) * (N_SAMPLES_BASE + N_SAMPLES_GLM + N_SAMPLES_AUDITOR)
 save_lock = threading.Lock()
 
 def save_progress():
@@ -179,17 +239,16 @@ def call_llm_tracked(row_idx, method, model):
     return result
 
 # --- Build jobs ---
-all_indices = list(data.index)
 jobs = []
 for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN), (QWEN_MODEL_MED, N_QWEN_MED), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (GLM_MODEL, N_GLM)]:
     if n > 0:
-        for method, n_samples in [("base", N_SAMPLES_BASE), ("auditor", N_SAMPLES_AUDITOR)]:
+        for method, n_samples in [("base", N_SAMPLES_BASE), ("glm", N_SAMPLES_GLM), ("auditor", N_SAMPLES_AUDITOR)]:
             if n_samples > 0:
-                sampled = random.sample(all_indices, n * n_samples)
+                sampled = random.sample(holdout_indices, n * n_samples)
                 for idx in sampled:
                     jobs.append((idx, method, model))
 
-print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x | QwenMed {N_QWEN_MED}x | QwenLarge {N_QWEN_LARGE}x | GLM {N_GLM}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR})", flush=True)
+print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, g={N_SAMPLES_GLM}, a={N_SAMPLES_AUDITOR}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, g={N_SAMPLES_GLM}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x | QwenMed {N_QWEN_MED}x | QwenLarge {N_QWEN_LARGE}x | GLM {N_GLM}x(b={N_SAMPLES_BASE}, g={N_SAMPLES_GLM}, a={N_SAMPLES_AUDITOR})", flush=True)
 with ThreadPoolExecutor(max_workers=5) as executor:
     futures = [executor.submit(call_llm_tracked, idx, method, model) for idx, method, model in jobs]
     for f in as_completed(futures):
