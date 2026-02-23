@@ -19,15 +19,14 @@ N_QWEN_MED   = 0
 N_QWEN_LARGE = 1
 N_GLM        = 1
 
-# Expected columns: Status, Pickup_Location, Drop_Location
-# Status values kept: "Success" (label 0) and "Cancelled by Driver" (label 1)
-DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/Uber/uber_data.csv")
+# Booking_Status values kept: "Success" (label 0) and "Canceled by Driver" (label 1)
+DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/Bookings.csv")
 
 # --- Load and clean data ---
 print("Loading Uber data...", flush=True)
 data = pd.read_csv(DATA_PATH)
-data = data[data["Status"].isin(["Success", "Cancelled by Driver"])].copy()
-data["cancelled"] = (data["Status"] == "Cancelled by Driver").astype(int)
+data = data[data["Booking_Status"].isin(["Success", "Canceled by Driver"])].copy()
+data["cancelled"] = (data["Booking_Status"] == "Canceled by Driver").astype(int)
 data = data.dropna(subset=["Pickup_Location", "Drop_Location"])
 data = data.reset_index(drop=True)
 
