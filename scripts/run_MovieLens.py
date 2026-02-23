@@ -11,7 +11,7 @@ OAI_MODEL_NANO   = "gpt-5-nano-2025-08-07"
 QWEN_MODEL       = "Qwen/Qwen2.5-1.5B-Instruct"
 QWEN_MODEL_LARGE = "Qwen/Qwen2.5-7B-Instruct"
 DEEPSEEK_MODEL   = "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B"
-GLM_MODEL        = "THUDM/glm-4-9b-chat"
+GLM_MODEL        = "THUDM/glm-4-9b-chat-hf"
 
 N_SAMPLES_BASE    = 10
 N_SAMPLES_OLS = 10

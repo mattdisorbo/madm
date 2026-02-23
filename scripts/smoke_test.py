@@ -3,7 +3,7 @@ from transformers import pipeline
 
 QWEN_MODEL_LARGE = "Qwen/Qwen2.5-7B-Instruct"
 DEEPSEEK_MODEL   = "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B"
-GLM_MODEL        = "THUDM/glm-4-9b-chat"
+GLM_MODEL        = "THUDM/glm-4-9b-chat-hf"
 
 PROMPT = "What is 2 + 2? Reply with a single number."
 
