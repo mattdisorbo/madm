@@ -177,16 +177,14 @@ def get_sequential_inference(base_prompt, model):
         decision_prompt = (
             f"PROMPT:\n{base_prompt}\n\nPREDICTION & REASONING:\n{thought}\n\n"
             f"CRITIQUE:\n{critique}\n\n"
-            "TASK: Respond with two numbers ONLY on two lines.\n"
-            "Line 1: output 1 or 2 for which movie Person 1 would rate higher.\n"
-            "Line 2: output 0 to implement your prediction, or 1 to delegate to Person 1.\n"
+            "TASK: Respond with a digit ONLY.\n"
+            "Output 0 to implement your prediction, or 1 to delegate to Person 1.\n"
             "A decision is correct if it matches the movie Person 1 would rate higher."
         )
         decision = llm(decision_prompt, model)
-        lines = [l.strip() for l in decision.split('\n') if l.strip()]
-        final_pred = int(re.findall(r'[12]', lines[0])[0]) if lines and re.findall(r'[12]', lines[0]) else pred
-        final_del  = int(re.findall(r'[01]', lines[1])[0]) if len(lines) > 1 and re.findall(r'[01]', lines[1]) else 1
-        return {"full_thought": thought, "pred": final_pred, "critique": critique, "decision_prompt": decision_prompt, "decision": decision, "del": final_del}
+        del_match = re.search(r'[01]', decision.strip())
+        final_del = int(del_match.group()) if del_match else 1
+        return {"full_thought": thought, "pred": pred, "critique": critique, "decision_prompt": decision_prompt, "decision": decision, "del": final_del}
     except Exception as e:
         return {"full_thought": str(e), "pred": None, "critique": None, "decision": None, "del": None}
 
