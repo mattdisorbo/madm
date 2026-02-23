@@ -1,5 +1,5 @@
 userId,movieId1,movieId2,rating_1,rating_2,ols_pred_1,ols_pred_2,human_response,prompt,method,model,llm_prediction,llm_delegate,trace,llm_full_thought,llm_critique,timestamp
-196347,49272,84637,4.0,3.0,3.3666060228550236,3.5244619419244176,1,"Person 1 has reviewed the following movies:
+196347,49272,84637,4.0,3.0,3.366606022855024,3.5244619419244176,1,"Person 1 has reviewed the following movies:
 
 - Million Dollar Baby (2004) (Drama): Rated 3.0/5
 - Jack Reacher (2012) (Action|Crime|Thriller): Rated 1.0/5
@@ -63,3 +63,646 @@ A decision is correct if it matches the movie Person 1 would rate higher.
 [DECISION]
 0","Given Person 1’s pattern of rating intense, thoughtful dramas and sci-fi higher (Shawshank, Ex Machina) and disliking straightforward action or light family fare, Casino Royale would likely be rated higher than Gnomeo & Juliet.
 PREDICTION: 2","The reasoning rests on an underspecified, small sample and a vague “intense dramas/sci-fi > action/family” heuristic, while Casino Royale is a nuanced thriller that could fit the user’s taste and the low rating for Jack Reacher contradicts a simple dislike of action.",2026-02-22 19:53:54
+194864,809,216,3.0,4.0,3.4218646179045535,3.3462668807226765,2,"Person 1 has reviewed the following movies:
+
+- Matilda (1996) (Children|Comedy|Fantasy): Rated 4.0/5
+- Cowboy Way, The (1994) (Action|Comedy|Drama): Rated 3.0/5
+- Pretty Woman (1990) (Comedy|Romance): Rated 4.0/5
+- Executive Decision (1996) (Action|Adventure|Thriller): Rated 3.0/5
+- Sabrina (1995) (Comedy|Romance): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Fled (1996) (Action|Adventure)
+- Billy Madison (1995) (Comedy)
+",auditor,gpt-5-nano-2025-08-07,2,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Matilda (1996) (Children|Comedy|Fantasy): Rated 4.0/5
+- Cowboy Way, The (1994) (Action|Comedy|Drama): Rated 3.0/5
+- Pretty Woman (1990) (Comedy|Romance): Rated 4.0/5
+- Executive Decision (1996) (Action|Adventure|Thriller): Rated 3.0/5
+- Sabrina (1995) (Comedy|Romance): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Fled (1996) (Action|Adventure)
+- Billy Madison (1995) (Comedy)
+
+
+[THOUGHT]
+Person 1 clearly prefers light comedies and romance over action-heavy thrillers, so Billy Madison is likely rated higher than Fled.
+PREDICTION: 2
+
+[CRITIQUE]
+The reasoning overgeneralizes from a small, genre-skewed sample and assumes genre alone dictates rating, ignoring that the existing ratings span both high-scoring comedies and lower-scoring non-comedies, so predicting Billy Madison higher than Fled lacks empirical support.
+
+[DECISION PROMPT]
+PROMPT:
+Person 1 has reviewed the following movies:
+
+- Matilda (1996) (Children|Comedy|Fantasy): Rated 4.0/5
+- Cowboy Way, The (1994) (Action|Comedy|Drama): Rated 3.0/5
+- Pretty Woman (1990) (Comedy|Romance): Rated 4.0/5
+- Executive Decision (1996) (Action|Adventure|Thriller): Rated 3.0/5
+- Sabrina (1995) (Comedy|Romance): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Fled (1996) (Action|Adventure)
+- Billy Madison (1995) (Comedy)
+
+
+PREDICTION & REASONING:
+Person 1 clearly prefers light comedies and romance over action-heavy thrillers, so Billy Madison is likely rated higher than Fled.
+PREDICTION: 2
+
+CRITIQUE:
+The reasoning overgeneralizes from a small, genre-skewed sample and assumes genre alone dictates rating, ignoring that the existing ratings span both high-scoring comedies and lower-scoring non-comedies, so predicting Billy Madison higher than Fled lacks empirical support.
+
+TASK: Respond with a digit ONLY.
+Output 0 to implement your prediction, or 1 to delegate to Person 1.
+A decision is correct if it matches the movie Person 1 would rate higher.
+
+[DECISION]
+0","Person 1 clearly prefers light comedies and romance over action-heavy thrillers, so Billy Madison is likely rated higher than Fled.
+PREDICTION: 2","The reasoning overgeneralizes from a small, genre-skewed sample and assumes genre alone dictates rating, ignoring that the existing ratings span both high-scoring comedies and lower-scoring non-comedies, so predicting Billy Madison higher than Fled lacks empirical support.",2026-02-22 20:08:40
+196403,920,589,4.0,5.0,3.894354686441715,3.3946128780424525,2,"Person 1 has reviewed the following movies:
+
+- Red Dawn (1984) (Action|Drama|War): Rated 3.0/5
+- Planet of the Apes (1968) (Action|Drama|Sci-Fi): Rated 4.0/5
+- Star Wars: Episode IV - A New Hope (1977) (Action|Adventure|Sci-Fi): Rated 4.0/5
+- Captain Horatio Hornblower R.N. (1951) (Action|Adventure|Drama|War): Rated 5.0/5
+- African Queen, The (1951) (Adventure|Comedy|Romance|War): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Terminator 2: Judgment Day (1991) (Action|Sci-Fi)
+- Gone with the Wind (1939) (Drama|Romance|War)
+",auditor,gpt-5-nano-2025-08-07,2,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Red Dawn (1984) (Action|Drama|War): Rated 3.0/5
+- Planet of the Apes (1968) (Action|Drama|Sci-Fi): Rated 4.0/5
+- Star Wars: Episode IV - A New Hope (1977) (Action|Adventure|Sci-Fi): Rated 4.0/5
+- Captain Horatio Hornblower R.N. (1951) (Action|Adventure|Drama|War): Rated 5.0/5
+- African Queen, The (1951) (Adventure|Comedy|Romance|War): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Terminator 2: Judgment Day (1991) (Action|Sci-Fi)
+- Gone with the Wind (1939) (Drama|Romance|War)
+
+
+[THOUGHT]
+They show a clear preference for classic war/adventure/romance cinema (5/5 for Hornblower and The African Queen), so Gone with the Wind is more likely to be rated higher than Terminator 2. 
+PREDICTION: 2
+
+[CRITIQUE]
+The reasoning is flawed: it overgeneralizes from only two 5/5 classics, implying a blanket preference for classic war/adventure/romance will predict that Gone with the Wind will outscore Terminator 2, while ignoring genre differences, limited data, and the fact that past ratings on other titles do not reliably predict future ratings.
+
+[DECISION PROMPT]
+PROMPT:
+Person 1 has reviewed the following movies:
+
+- Red Dawn (1984) (Action|Drama|War): Rated 3.0/5
+- Planet of the Apes (1968) (Action|Drama|Sci-Fi): Rated 4.0/5
+- Star Wars: Episode IV - A New Hope (1977) (Action|Adventure|Sci-Fi): Rated 4.0/5
+- Captain Horatio Hornblower R.N. (1951) (Action|Adventure|Drama|War): Rated 5.0/5
+- African Queen, The (1951) (Adventure|Comedy|Romance|War): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Terminator 2: Judgment Day (1991) (Action|Sci-Fi)
+- Gone with the Wind (1939) (Drama|Romance|War)
+
+
+PREDICTION & REASONING:
+They show a clear preference for classic war/adventure/romance cinema (5/5 for Hornblower and The African Queen), so Gone with the Wind is more likely to be rated higher than Terminator 2. 
+PREDICTION: 2
+
+CRITIQUE:
+The reasoning is flawed: it overgeneralizes from only two 5/5 classics, implying a blanket preference for classic war/adventure/romance will predict that Gone with the Wind will outscore Terminator 2, while ignoring genre differences, limited data, and the fact that past ratings on other titles do not reliably predict future ratings.
+
+TASK: Respond with a digit ONLY.
+Output 0 to implement your prediction, or 1 to delegate to Person 1.
+A decision is correct if it matches the movie Person 1 would rate higher.
+
+[DECISION]
+0","They show a clear preference for classic war/adventure/romance cinema (5/5 for Hornblower and The African Queen), so Gone with the Wind is more likely to be rated higher than Terminator 2. 
+PREDICTION: 2","The reasoning is flawed: it overgeneralizes from only two 5/5 classics, implying a blanket preference for classic war/adventure/romance will predict that Gone with the Wind will outscore Terminator 2, while ignoring genre differences, limited data, and the fact that past ratings on other titles do not reliably predict future ratings.",2026-02-22 20:08:40
+199627,5064,3703,4.0,3.5,3.5615675189446647,3.4188963540180874,1,"Person 1 has reviewed the following movies:
+
+- Heist (2001) (Crime|Drama): Rated 4.0/5
+- Liar Liar (1997) (Comedy): Rated 4.0/5
+- American Beauty (1999) (Drama|Romance): Rated 4.5/5
+- Hard-Boiled (Lat sau san taam) (1992) (Action|Crime|Drama|Thriller): Rated 3.5/5
+- Battlefield Earth (2000) (Action|Sci-Fi): Rated 2.5/5
+
+Consider these two movies they have not seen:
+
+- The Count of Monte Cristo (2002) (Action|Adventure|Drama|Thriller)
+- Road Warrior, The (Mad Max 2) (1981) (Action|Adventure|Sci-Fi|Thriller)
+",auditor,gpt-5-nano-2025-08-07,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Heist (2001) (Crime|Drama): Rated 4.0/5
+- Liar Liar (1997) (Comedy): Rated 4.0/5
+- American Beauty (1999) (Drama|Romance): Rated 4.5/5
+- Hard-Boiled (Lat sau san taam) (1992) (Action|Crime|Drama|Thriller): Rated 3.5/5
+- Battlefield Earth (2000) (Action|Sci-Fi): Rated 2.5/5
+
+Consider these two movies they have not seen:
+
+- The Count of Monte Cristo (2002) (Action|Adventure|Drama|Thriller)
+- Road Warrior, The (Mad Max 2) (1981) (Action|Adventure|Sci-Fi|Thriller)
+
+
+[THOUGHT]
+They show a preference for drama-driven, character-centric storytelling and crime dramas over sci-fi/action, so The Count of Monte Cristo would likely be rated higher than The Road Warrior. 
+PREDICTION: 1
+
+[CRITIQUE]
+It's a weak generalization from a small, mixed sample that treats Monte Cristo as a crime drama and ignores tonal differences, making the predicted higher rating for Monte Cristo speculative at best.
+
+[DECISION PROMPT]
+PROMPT:
+Person 1 has reviewed the following movies:
+
+- Heist (2001) (Crime|Drama): Rated 4.0/5
+- Liar Liar (1997) (Comedy): Rated 4.0/5
+- American Beauty (1999) (Drama|Romance): Rated 4.5/5
+- Hard-Boiled (Lat sau san taam) (1992) (Action|Crime|Drama|Thriller): Rated 3.5/5
+- Battlefield Earth (2000) (Action|Sci-Fi): Rated 2.5/5
+
+Consider these two movies they have not seen:
+
+- The Count of Monte Cristo (2002) (Action|Adventure|Drama|Thriller)
+- Road Warrior, The (Mad Max 2) (1981) (Action|Adventure|Sci-Fi|Thriller)
+
+
+PREDICTION & REASONING:
+They show a preference for drama-driven, character-centric storytelling and crime dramas over sci-fi/action, so The Count of Monte Cristo would likely be rated higher than The Road Warrior. 
+PREDICTION: 1
+
+CRITIQUE:
+It's a weak generalization from a small, mixed sample that treats Monte Cristo as a crime drama and ignores tonal differences, making the predicted higher rating for Monte Cristo speculative at best.
+
+TASK: Respond with a digit ONLY.
+Output 0 to implement your prediction, or 1 to delegate to Person 1.
+A decision is correct if it matches the movie Person 1 would rate higher.
+
+[DECISION]
+0","They show a preference for drama-driven, character-centric storytelling and crime dramas over sci-fi/action, so The Count of Monte Cristo would likely be rated higher than The Road Warrior. 
+PREDICTION: 1","It's a weak generalization from a small, mixed sample that treats Monte Cristo as a crime drama and ignores tonal differences, making the predicted higher rating for Monte Cristo speculative at best.",2026-02-22 20:08:40
+195613,1234,86295,4.5,2.0,3.5522505357200536,3.2142283636797813,1,"Person 1 has reviewed the following movies:
+
+- Lionheart (1990) (Action): Rated 2.5/5
+- Kick-Ass (2010) (Action|Comedy): Rated 3.0/5
+- Sixth Sense, The (1999) (Drama|Horror|Mystery): Rated 3.5/5
+- Battleship (2012) (Action|Sci-Fi|Thriller|IMAX): Rated 1.5/5
+- Paddington (2014) (Children|Comedy): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Scream 4 (2011) (Comedy|Horror|Mystery|Thriller)
+- Sting, The (1973) (Comedy|Crime)
+",auditor,gpt-5-nano-2025-08-07,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Lionheart (1990) (Action): Rated 2.5/5
+- Kick-Ass (2010) (Action|Comedy): Rated 3.0/5
+- Sixth Sense, The (1999) (Drama|Horror|Mystery): Rated 3.5/5
+- Battleship (2012) (Action|Sci-Fi|Thriller|IMAX): Rated 1.5/5
+- Paddington (2014) (Children|Comedy): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Scream 4 (2011) (Comedy|Horror|Mystery|Thriller)
+- Sting, The (1973) (Comedy|Crime)
+
+
+[THOUGHT]
+Their top-rated film among those they've seen is The Sixth Sense (3.5), which is horror/mystery, suggesting they prefer horror-driven storytelling over straightforward action, so Scream 4's horror-comedy-mystery blend should resonate more than Sting, The's crime comedy. 
+PREDICTION: 1
+
+[CRITIQUE]
+The argument rests on a single data point and overgeneralizes From The Sixth Sense’s horror-mystery blend to a broad horror preference, ignoring tone, humor, nostalgia, and other factors that could shape whether Scream 4 or Sting, The would appeal more.
+
+[DECISION PROMPT]
+PROMPT:
+Person 1 has reviewed the following movies:
+
+- Lionheart (1990) (Action): Rated 2.5/5
+- Kick-Ass (2010) (Action|Comedy): Rated 3.0/5
+- Sixth Sense, The (1999) (Drama|Horror|Mystery): Rated 3.5/5
+- Battleship (2012) (Action|Sci-Fi|Thriller|IMAX): Rated 1.5/5
+- Paddington (2014) (Children|Comedy): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Scream 4 (2011) (Comedy|Horror|Mystery|Thriller)
+- Sting, The (1973) (Comedy|Crime)
+
+
+PREDICTION & REASONING:
+Their top-rated film among those they've seen is The Sixth Sense (3.5), which is horror/mystery, suggesting they prefer horror-driven storytelling over straightforward action, so Scream 4's horror-comedy-mystery blend should resonate more than Sting, The's crime comedy. 
+PREDICTION: 1
+
+CRITIQUE:
+The argument rests on a single data point and overgeneralizes From The Sixth Sense’s horror-mystery blend to a broad horror preference, ignoring tone, humor, nostalgia, and other factors that could shape whether Scream 4 or Sting, The would appeal more.
+
+TASK: Respond with a digit ONLY.
+Output 0 to implement your prediction, or 1 to delegate to Person 1.
+A decision is correct if it matches the movie Person 1 would rate higher.
+
+[DECISION]
+0","Their top-rated film among those they've seen is The Sixth Sense (3.5), which is horror/mystery, suggesting they prefer horror-driven storytelling over straightforward action, so Scream 4's horror-comedy-mystery blend should resonate more than Sting, The's crime comedy. 
+PREDICTION: 1","The argument rests on a single data point and overgeneralizes From The Sixth Sense’s horror-mystery blend to a broad horror preference, ignoring tone, humor, nostalgia, and other factors that could shape whether Scream 4 or Sting, The would appeal more.",2026-02-22 20:08:40
+198158,1222,2329,4.0,5.0,3.8777413334314357,3.8555285667803347,2,"Person 1 has reviewed the following movies:
+
+- Life Is Beautiful (La Vita è bella) (1997) (Comedy|Drama|Romance|War): Rated 4.0/5
+- Star Wars: Episode IV - A New Hope (1977) (Action|Adventure|Sci-Fi): Rated 4.5/5
+- Platoon (1986) (Drama|War): Rated 4.0/5
+- Last Action Hero (1993) (Action|Adventure|Comedy|Fantasy): Rated 3.0/5
+- Kill Bill: Vol. 1 (2003) (Action|Crime|Thriller): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Full Metal Jacket (1987) (Drama|War)
+- American History X (1998) (Crime|Drama)
+",auditor,gpt-5-nano-2025-08-07,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Life Is Beautiful (La Vita è bella) (1997) (Comedy|Drama|Romance|War): Rated 4.0/5
+- Star Wars: Episode IV - A New Hope (1977) (Action|Adventure|Sci-Fi): Rated 4.5/5
+- Platoon (1986) (Drama|War): Rated 4.0/5
+- Last Action Hero (1993) (Action|Adventure|Comedy|Fantasy): Rated 3.0/5
+- Kill Bill: Vol. 1 (2003) (Action|Crime|Thriller): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Full Metal Jacket (1987) (Drama|War)
+- American History X (1998) (Crime|Drama)
+
+
+[THOUGHT]
+Their ratings show a preference for war dramas and highly crafted action (Platoon 4.0, Life Is Beautiful 4.0, Kill Bill 5.0), so Full Metal Jacket, a Kubrick war drama, fits their pattern better than American History X. 
+PREDICTION: 1
+
+[CRITIQUE]
+This reasoning rests on a cherry-picked, ill-defined pattern (treating Life Is Beautiful as a war drama and equating ""highly crafted action"" with Kill Bill) and then assumes Full Metal Jacket fits better solely on that flimsy pattern, ignoring the small sample size and other factors like tone, director, and genre overlap.
+
+[DECISION PROMPT]
+PROMPT:
+Person 1 has reviewed the following movies:
+
+- Life Is Beautiful (La Vita è bella) (1997) (Comedy|Drama|Romance|War): Rated 4.0/5
+- Star Wars: Episode IV - A New Hope (1977) (Action|Adventure|Sci-Fi): Rated 4.5/5
+- Platoon (1986) (Drama|War): Rated 4.0/5
+- Last Action Hero (1993) (Action|Adventure|Comedy|Fantasy): Rated 3.0/5
+- Kill Bill: Vol. 1 (2003) (Action|Crime|Thriller): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Full Metal Jacket (1987) (Drama|War)
+- American History X (1998) (Crime|Drama)
+
+
+PREDICTION & REASONING:
+Their ratings show a preference for war dramas and highly crafted action (Platoon 4.0, Life Is Beautiful 4.0, Kill Bill 5.0), so Full Metal Jacket, a Kubrick war drama, fits their pattern better than American History X. 
+PREDICTION: 1
+
+CRITIQUE:
+This reasoning rests on a cherry-picked, ill-defined pattern (treating Life Is Beautiful as a war drama and equating ""highly crafted action"" with Kill Bill) and then assumes Full Metal Jacket fits better solely on that flimsy pattern, ignoring the small sample size and other factors like tone, director, and genre overlap.
+
+TASK: Respond with a digit ONLY.
+Output 0 to implement your prediction, or 1 to delegate to Person 1.
+A decision is correct if it matches the movie Person 1 would rate higher.
+
+[DECISION]
+0","Their ratings show a preference for war dramas and highly crafted action (Platoon 4.0, Life Is Beautiful 4.0, Kill Bill 5.0), so Full Metal Jacket, a Kubrick war drama, fits their pattern better than American History X. 
+PREDICTION: 1","This reasoning rests on a cherry-picked, ill-defined pattern (treating Life Is Beautiful as a war drama and equating ""highly crafted action"" with Kill Bill) and then assumes Full Metal Jacket fits better solely on that flimsy pattern, ignoring the small sample size and other factors like tone, director, and genre overlap.",2026-02-22 20:08:40
+198511,5903,4896,3.5,3.0,3.339167306409842,3.3163656757140516,1,"Person 1 has reviewed the following movies:
+
+- Summer Wars (Samâ wôzu) (2009) (Adventure|Animation|Comedy|Sci-Fi): Rated 3.5/5
+- The Conjuring: The Devil Made Me Do It (2021) (Horror|Mystery|Thriller): Rated 3.5/5
+- Milk (2008) (Drama): Rated 0.5/5
+- Doom (2005) (Action|Horror|Sci-Fi): Rated 1.0/5
+- It (2017) (Horror): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Equilibrium (2002) (Action|Sci-Fi|Thriller)
+- Harry Potter and the Sorcerer's Stone (a.k.a. Harry Potter and the Philosopher's Stone) (2001) (Adventure|Children|Fantasy)
+",auditor,gpt-5-nano-2025-08-07,1,1,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Summer Wars (Samâ wôzu) (2009) (Adventure|Animation|Comedy|Sci-Fi): Rated 3.5/5
+- The Conjuring: The Devil Made Me Do It (2021) (Horror|Mystery|Thriller): Rated 3.5/5
+- Milk (2008) (Drama): Rated 0.5/5
+- Doom (2005) (Action|Horror|Sci-Fi): Rated 1.0/5
+- It (2017) (Horror): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Equilibrium (2002) (Action|Sci-Fi|Thriller)
+- Harry Potter and the Sorcerer's Stone (a.k.a. Harry Potter and the Philosopher's Stone) (2001) (Adventure|Children|Fantasy)
+
+
+[THOUGHT]
+Based on Person 1's higher ratings for horror and genre-blending sci-fi/action (It, The Conjuring, Summer Wars) and their aversion to pure drama, Equilibrium's darker, action-heavy sci-fi aligns more with their tastes than the light, family-friendly Harry Potter. 
+PREDICTION: 1
+
+[CRITIQUE]
+The reasoning rests on a small, cherry-picked sample and a dubious generalization that enjoying horror and genre-blending implies a preference for Equilibrium over Potter, while ignoring Potter’s adventurous fantasy appeal and the possibility that Equilibrium’s tone may not actually align with the user’s tastes as reflected in their ratings.
+
+[DECISION PROMPT]
+PROMPT:
+Person 1 has reviewed the following movies:
+
+- Summer Wars (Samâ wôzu) (2009) (Adventure|Animation|Comedy|Sci-Fi): Rated 3.5/5
+- The Conjuring: The Devil Made Me Do It (2021) (Horror|Mystery|Thriller): Rated 3.5/5
+- Milk (2008) (Drama): Rated 0.5/5
+- Doom (2005) (Action|Horror|Sci-Fi): Rated 1.0/5
+- It (2017) (Horror): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Equilibrium (2002) (Action|Sci-Fi|Thriller)
+- Harry Potter and the Sorcerer's Stone (a.k.a. Harry Potter and the Philosopher's Stone) (2001) (Adventure|Children|Fantasy)
+
+
+PREDICTION & REASONING:
+Based on Person 1's higher ratings for horror and genre-blending sci-fi/action (It, The Conjuring, Summer Wars) and their aversion to pure drama, Equilibrium's darker, action-heavy sci-fi aligns more with their tastes than the light, family-friendly Harry Potter. 
+PREDICTION: 1
+
+CRITIQUE:
+The reasoning rests on a small, cherry-picked sample and a dubious generalization that enjoying horror and genre-blending implies a preference for Equilibrium over Potter, while ignoring Potter’s adventurous fantasy appeal and the possibility that Equilibrium’s tone may not actually align with the user’s tastes as reflected in their ratings.
+
+TASK: Respond with a digit ONLY.
+Output 0 to implement your prediction, or 1 to delegate to Person 1.
+A decision is correct if it matches the movie Person 1 would rate higher.
+
+[DECISION]
+1","Based on Person 1's higher ratings for horror and genre-blending sci-fi/action (It, The Conjuring, Summer Wars) and their aversion to pure drama, Equilibrium's darker, action-heavy sci-fi aligns more with their tastes than the light, family-friendly Harry Potter. 
+PREDICTION: 1","The reasoning rests on a small, cherry-picked sample and a dubious generalization that enjoying horror and genre-blending implies a preference for Equilibrium over Potter, while ignoring Potter’s adventurous fantasy appeal and the possibility that Equilibrium’s tone may not actually align with the user’s tastes as reflected in their ratings.",2026-02-22 20:08:40
+195508,122920,110102,4.0,4.5,3.3365496342467216,3.5063867707618552,2,"Person 1 has reviewed the following movies:
+
+- X-Men: Days of Future Past (2014) (Action|Adventure|Sci-Fi): Rated 4.0/5
+- Star Wars: Episode IV - A New Hope (1977) (Action|Adventure|Sci-Fi): Rated 4.0/5
+- Thor (2011) (Action|Adventure|Drama|Fantasy|IMAX): Rated 4.0/5
+- John Wick (2014) (Action|Thriller): Rated 1.0/5
+- The Promise (2017) (Drama|Horror|Thriller): Rated 2.0/5
+
+Consider these two movies they have not seen:
+
+- Captain America: The Winter Soldier (2014) (Action|Adventure|Sci-Fi|IMAX)
+- Captain America: Civil War (2016) (Action|Sci-Fi|Thriller)
+",auditor,gpt-5-nano-2025-08-07,2,1,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- X-Men: Days of Future Past (2014) (Action|Adventure|Sci-Fi): Rated 4.0/5
+- Star Wars: Episode IV - A New Hope (1977) (Action|Adventure|Sci-Fi): Rated 4.0/5
+- Thor (2011) (Action|Adventure|Drama|Fantasy|IMAX): Rated 4.0/5
+- John Wick (2014) (Action|Thriller): Rated 1.0/5
+- The Promise (2017) (Drama|Horror|Thriller): Rated 2.0/5
+
+Consider these two movies they have not seen:
+
+- Captain America: The Winter Soldier (2014) (Action|Adventure|Sci-Fi|IMAX)
+- Captain America: Civil War (2016) (Action|Sci-Fi|Thriller)
+
+
+[THOUGHT]
+They tend to reward big, high-energy action-adventure with sci-fi/fantasy scale and ensemble casts, which Civil War delivers more strongly than Winter Soldier's darker espionage focus. 
+PREDICTION: 2
+
+[CRITIQUE]
+The argument relies on a single criterion (big sci‑fi action with an ensemble) and wrongly assumes Winter Soldier lacks that mix; Winter Soldier is a high‑energy, ensemble-driven film with substantial tech/spy science elements, so predicting Civil War over Winter Soldier oversimplifies the user's tastes.
+
+[DECISION PROMPT]
+PROMPT:
+Person 1 has reviewed the following movies:
+
+- X-Men: Days of Future Past (2014) (Action|Adventure|Sci-Fi): Rated 4.0/5
+- Star Wars: Episode IV - A New Hope (1977) (Action|Adventure|Sci-Fi): Rated 4.0/5
+- Thor (2011) (Action|Adventure|Drama|Fantasy|IMAX): Rated 4.0/5
+- John Wick (2014) (Action|Thriller): Rated 1.0/5
+- The Promise (2017) (Drama|Horror|Thriller): Rated 2.0/5
+
+Consider these two movies they have not seen:
+
+- Captain America: The Winter Soldier (2014) (Action|Adventure|Sci-Fi|IMAX)
+- Captain America: Civil War (2016) (Action|Sci-Fi|Thriller)
+
+
+PREDICTION & REASONING:
+They tend to reward big, high-energy action-adventure with sci-fi/fantasy scale and ensemble casts, which Civil War delivers more strongly than Winter Soldier's darker espionage focus. 
+PREDICTION: 2
+
+CRITIQUE:
+The argument relies on a single criterion (big sci‑fi action with an ensemble) and wrongly assumes Winter Soldier lacks that mix; Winter Soldier is a high‑energy, ensemble-driven film with substantial tech/spy science elements, so predicting Civil War over Winter Soldier oversimplifies the user's tastes.
+
+TASK: Respond with a digit ONLY.
+Output 0 to implement your prediction, or 1 to delegate to Person 1.
+A decision is correct if it matches the movie Person 1 would rate higher.
+
+[DECISION]
+1","They tend to reward big, high-energy action-adventure with sci-fi/fantasy scale and ensemble casts, which Civil War delivers more strongly than Winter Soldier's darker espionage focus. 
+PREDICTION: 2","The argument relies on a single criterion (big sci‑fi action with an ensemble) and wrongly assumes Winter Soldier lacks that mix; Winter Soldier is a high‑energy, ensemble-driven film with substantial tech/spy science elements, so predicting Civil War over Winter Soldier oversimplifies the user's tastes.",2026-02-22 20:08:40
+199313,1916,2804,1.0,5.0,3.661296873633155,3.0931704847477843,2,"Person 1 has reviewed the following movies:
+
+- Bowfinger (1999) (Comedy): Rated 4.0/5
+- Rocky (1976) (Drama): Rated 4.0/5
+- Conspiracy Theory (1997) (Drama|Mystery|Romance|Thriller): Rated 5.0/5
+- Executive Decision (1996) (Action|Adventure|Thriller): Rated 5.0/5
+- Braveheart (1995) (Action|Drama|War): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Buffalo '66 (a.k.a. Buffalo 66) (1998) (Drama|Romance)
+- Christmas Story, A (1983) (Children|Comedy)
+",auditor,gpt-5-nano-2025-08-07,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Bowfinger (1999) (Comedy): Rated 4.0/5
+- Rocky (1976) (Drama): Rated 4.0/5
+- Conspiracy Theory (1997) (Drama|Mystery|Romance|Thriller): Rated 5.0/5
+- Executive Decision (1996) (Action|Adventure|Thriller): Rated 5.0/5
+- Braveheart (1995) (Action|Drama|War): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Buffalo '66 (a.k.a. Buffalo 66) (1998) (Drama|Romance)
+- Christmas Story, A (1983) (Children|Comedy)
+
+
+[THOUGHT]
+They tend to reward intense drama and thriller elements more than light family comedies, so Buffalo '66 fits their taste better. 
+PREDICTION: 1
+
+[CRITIQUE]
+The reasoning overgeneralizes from a small, genre-diverse sample, assuming 'intense drama/thriller' is the sole predictor of taste and that Buffalo '66' will align with those films, despite two high-rated entries being non-thrillers and Buffalo '66' presenting a different indie tone.
+
+[DECISION PROMPT]
+PROMPT:
+Person 1 has reviewed the following movies:
+
+- Bowfinger (1999) (Comedy): Rated 4.0/5
+- Rocky (1976) (Drama): Rated 4.0/5
+- Conspiracy Theory (1997) (Drama|Mystery|Romance|Thriller): Rated 5.0/5
+- Executive Decision (1996) (Action|Adventure|Thriller): Rated 5.0/5
+- Braveheart (1995) (Action|Drama|War): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Buffalo '66 (a.k.a. Buffalo 66) (1998) (Drama|Romance)
+- Christmas Story, A (1983) (Children|Comedy)
+
+
+PREDICTION & REASONING:
+They tend to reward intense drama and thriller elements more than light family comedies, so Buffalo '66 fits their taste better. 
+PREDICTION: 1
+
+CRITIQUE:
+The reasoning overgeneralizes from a small, genre-diverse sample, assuming 'intense drama/thriller' is the sole predictor of taste and that Buffalo '66' will align with those films, despite two high-rated entries being non-thrillers and Buffalo '66' presenting a different indie tone.
+
+TASK: Respond with a digit ONLY.
+Output 0 to implement your prediction, or 1 to delegate to Person 1.
+A decision is correct if it matches the movie Person 1 would rate higher.
+
+[DECISION]
+0","They tend to reward intense drama and thriller elements more than light family comedies, so Buffalo '66 fits their taste better. 
+PREDICTION: 1","The reasoning overgeneralizes from a small, genre-diverse sample, assuming 'intense drama/thriller' is the sole predictor of taste and that Buffalo '66' will align with those films, despite two high-rated entries being non-thrillers and Buffalo '66' presenting a different indie tone.",2026-02-22 20:08:40
+199645,50872,70336,4.0,3.5,3.7127019032898363,3.4136610096918463,1,"Person 1 has reviewed the following movies:
+
+- Constantine (2005) (Action|Fantasy|Horror|Thriller): Rated 4.0/5
+- Up (2009) (Adventure|Animation|Children|Drama): Rated 3.5/5
+- Lord of the Rings: The Fellowship of the Ring, The (2001) (Adventure|Fantasy): Rated 4.0/5
+- Prestige, The (2006) (Drama|Mystery|Sci-Fi|Thriller): Rated 4.5/5
+- Hancock (2008) (Action|Adventure|Comedy|Crime|Fantasy): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Ratatouille (2007) (Animation|Children|Drama)
+- G.I. Joe: The Rise of Cobra (2009) (Action|Adventure|Sci-Fi|Thriller)
+",auditor,gpt-5-nano-2025-08-07,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Constantine (2005) (Action|Fantasy|Horror|Thriller): Rated 4.0/5
+- Up (2009) (Adventure|Animation|Children|Drama): Rated 3.5/5
+- Lord of the Rings: The Fellowship of the Ring, The (2001) (Adventure|Fantasy): Rated 4.0/5
+- Prestige, The (2006) (Drama|Mystery|Sci-Fi|Thriller): Rated 4.5/5
+- Hancock (2008) (Action|Adventure|Comedy|Crime|Fantasy): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Ratatouille (2007) (Animation|Children|Drama)
+- G.I. Joe: The Rise of Cobra (2009) (Action|Adventure|Sci-Fi|Thriller)
+
+
+[THOUGHT]
+They tend to favor story-driven, highly regarded films over loud action blockbusters, so Ratatouille would likely receive a higher rating than G.I. Joe. 
+PREDICTION: 1
+
+[CRITIQUE]
+Overgeneralizes from a small sample by assuming 'story-driven' and highly regarded automatically yield higher ratings for this person, ignoring individual tastes for animation/children's films and the noisiness of ratings across genres.
+
+[DECISION PROMPT]
+PROMPT:
+Person 1 has reviewed the following movies:
+
+- Constantine (2005) (Action|Fantasy|Horror|Thriller): Rated 4.0/5
+- Up (2009) (Adventure|Animation|Children|Drama): Rated 3.5/5
+- Lord of the Rings: The Fellowship of the Ring, The (2001) (Adventure|Fantasy): Rated 4.0/5
+- Prestige, The (2006) (Drama|Mystery|Sci-Fi|Thriller): Rated 4.5/5
+- Hancock (2008) (Action|Adventure|Comedy|Crime|Fantasy): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Ratatouille (2007) (Animation|Children|Drama)
+- G.I. Joe: The Rise of Cobra (2009) (Action|Adventure|Sci-Fi|Thriller)
+
+
+PREDICTION & REASONING:
+They tend to favor story-driven, highly regarded films over loud action blockbusters, so Ratatouille would likely receive a higher rating than G.I. Joe. 
+PREDICTION: 1
+
+CRITIQUE:
+Overgeneralizes from a small sample by assuming 'story-driven' and highly regarded automatically yield higher ratings for this person, ignoring individual tastes for animation/children's films and the noisiness of ratings across genres.
+
+TASK: Respond with a digit ONLY.
+Output 0 to implement your prediction, or 1 to delegate to Person 1.
+A decision is correct if it matches the movie Person 1 would rate higher.
+
+[DECISION]
+0","They tend to favor story-driven, highly regarded films over loud action blockbusters, so Ratatouille would likely receive a higher rating than G.I. Joe. 
+PREDICTION: 1","Overgeneralizes from a small sample by assuming 'story-driven' and highly regarded automatically yield higher ratings for this person, ignoring individual tastes for animation/children's films and the noisiness of ratings across genres.",2026-02-22 20:08:40
+198527,112138,45210,4.0,3.5,3.430827814335203,3.8540327541156945,1,"Person 1 has reviewed the following movies:
+
+- 2 Guns (2013) (Action|Comedy|Crime): Rated 3.5/5
+- Body of Lies (2008) (Action|Drama|Thriller): Rated 4.0/5
+- Salt (2010) (Action|Thriller): Rated 3.5/5
+- Safe House (2012) (Action|Crime|Mystery|Thriller): Rated 4.0/5
+- Bourne Identity, The (2002) (Action|Mystery|Thriller): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- 22 Jump Street (2014) (Action|Comedy|Crime)
+- United 93 (2006) (Crime|Drama)
+",auditor,gpt-5-nano-2025-08-07,2,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- 2 Guns (2013) (Action|Comedy|Crime): Rated 3.5/5
+- Body of Lies (2008) (Action|Drama|Thriller): Rated 4.0/5
+- Salt (2010) (Action|Thriller): Rated 3.5/5
+- Safe House (2012) (Action|Crime|Mystery|Thriller): Rated 4.0/5
+- Bourne Identity, The (2002) (Action|Mystery|Thriller): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- 22 Jump Street (2014) (Action|Comedy|Crime)
+- United 93 (2006) (Crime|Drama)
+
+
+[THOUGHT]
+Because Person 1 tends to rate intense thrillers and dramas around 4.0 and lighter action-comedies around 3.5, United 93 is more likely to score higher than 22 Jump Street.
+
+PREDICTION: 2
+
+[CRITIQUE]
+The reasoning rests on a simplistic intensity-based heuristic drawn from a very small, biased sample and ignores individual film qualities, genre-specific audience responses, rating variance, and the possibility that the two unseen films could deviate significantly from past patterns.
+
+[DECISION PROMPT]
+PROMPT:
+Person 1 has reviewed the following movies:
+
+- 2 Guns (2013) (Action|Comedy|Crime): Rated 3.5/5
+- Body of Lies (2008) (Action|Drama|Thriller): Rated 4.0/5
+- Salt (2010) (Action|Thriller): Rated 3.5/5
+- Safe House (2012) (Action|Crime|Mystery|Thriller): Rated 4.0/5
+- Bourne Identity, The (2002) (Action|Mystery|Thriller): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- 22 Jump Street (2014) (Action|Comedy|Crime)
+- United 93 (2006) (Crime|Drama)
+
+
+PREDICTION & REASONING:
+Because Person 1 tends to rate intense thrillers and dramas around 4.0 and lighter action-comedies around 3.5, United 93 is more likely to score higher than 22 Jump Street.
+
+PREDICTION: 2
+
+CRITIQUE:
+The reasoning rests on a simplistic intensity-based heuristic drawn from a very small, biased sample and ignores individual film qualities, genre-specific audience responses, rating variance, and the possibility that the two unseen films could deviate significantly from past patterns.
+
+TASK: Respond with a digit ONLY.
+Output 0 to implement your prediction, or 1 to delegate to Person 1.
+A decision is correct if it matches the movie Person 1 would rate higher.
+
+[DECISION]
+0","Because Person 1 tends to rate intense thrillers and dramas around 4.0 and lighter action-comedies around 3.5, United 93 is more likely to score higher than 22 Jump Street.
+
+PREDICTION: 2","The reasoning rests on a simplistic intensity-based heuristic drawn from a very small, biased sample and ignores individual film qualities, genre-specific audience responses, rating variance, and the possibility that the two unseen films could deviate significantly from past patterns.",2026-02-22 20:08:40
