@@ -12,9 +12,9 @@ GLM_MODEL        = "THUDM/glm-4-9b-chat-hf"
 
 N_SAMPLES_BASE    = 10
 N_SAMPLES_AUDITOR = 10
-N_OAI        = 1
-N_NANO       = 1
-N_QWEN       = 1
+N_OAI        = 0
+N_NANO       = 0
+N_QWEN       = 0
 N_QWEN_LARGE = 10
 N_DEEPSEEK   = 10
 N_GLM        = 10
