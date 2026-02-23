@@ -1,0 +1,65 @@
+userId,movieId1,movieId2,rating_1,rating_2,ols_pred_1,ols_pred_2,human_response,prompt,method,model,llm_prediction,llm_delegate,trace,llm_full_thought,llm_critique,timestamp
+196347,49272,84637,4.0,3.0,3.3666060228550236,3.5244619419244176,1,"Person 1 has reviewed the following movies:
+
+- Million Dollar Baby (2004) (Drama): Rated 3.0/5
+- Jack Reacher (2012) (Action|Crime|Thriller): Rated 1.0/5
+- Ex Machina (2015) (Drama|Sci-Fi|Thriller): Rated 4.5/5
+- Weird Science (1985) (Comedy|Fantasy|Sci-Fi): Rated 3.0/5
+- Shawshank Redemption, The (1994) (Crime|Drama): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Gnomeo & Juliet (2011) (Adventure|Animation|Children|Comedy|Fantasy|Romance)
+- Casino Royale (2006) (Action|Adventure|Thriller)
+",auditor,gpt-5-nano-2025-08-07,2,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Million Dollar Baby (2004) (Drama): Rated 3.0/5
+- Jack Reacher (2012) (Action|Crime|Thriller): Rated 1.0/5
+- Ex Machina (2015) (Drama|Sci-Fi|Thriller): Rated 4.5/5
+- Weird Science (1985) (Comedy|Fantasy|Sci-Fi): Rated 3.0/5
+- Shawshank Redemption, The (1994) (Crime|Drama): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Gnomeo & Juliet (2011) (Adventure|Animation|Children|Comedy|Fantasy|Romance)
+- Casino Royale (2006) (Action|Adventure|Thriller)
+
+
+[THOUGHT]
+Given Person 1’s pattern of rating intense, thoughtful dramas and sci-fi higher (Shawshank, Ex Machina) and disliking straightforward action or light family fare, Casino Royale would likely be rated higher than Gnomeo & Juliet.
+PREDICTION: 2
+
+[CRITIQUE]
+The reasoning rests on an underspecified, small sample and a vague “intense dramas/sci-fi > action/family” heuristic, while Casino Royale is a nuanced thriller that could fit the user’s taste and the low rating for Jack Reacher contradicts a simple dislike of action.
+
+[DECISION PROMPT]
+PROMPT:
+Person 1 has reviewed the following movies:
+
+- Million Dollar Baby (2004) (Drama): Rated 3.0/5
+- Jack Reacher (2012) (Action|Crime|Thriller): Rated 1.0/5
+- Ex Machina (2015) (Drama|Sci-Fi|Thriller): Rated 4.5/5
+- Weird Science (1985) (Comedy|Fantasy|Sci-Fi): Rated 3.0/5
+- Shawshank Redemption, The (1994) (Crime|Drama): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Gnomeo & Juliet (2011) (Adventure|Animation|Children|Comedy|Fantasy|Romance)
+- Casino Royale (2006) (Action|Adventure|Thriller)
+
+
+PREDICTION & REASONING:
+Given Person 1’s pattern of rating intense, thoughtful dramas and sci-fi higher (Shawshank, Ex Machina) and disliking straightforward action or light family fare, Casino Royale would likely be rated higher than Gnomeo & Juliet.
+PREDICTION: 2
+
+CRITIQUE:
+The reasoning rests on an underspecified, small sample and a vague “intense dramas/sci-fi > action/family” heuristic, while Casino Royale is a nuanced thriller that could fit the user’s taste and the low rating for Jack Reacher contradicts a simple dislike of action.
+
+TASK: Respond with a digit ONLY.
+Output 0 to implement your prediction, or 1 to delegate to Person 1.
+A decision is correct if it matches the movie Person 1 would rate higher.
+
+[DECISION]
+0","Given Person 1’s pattern of rating intense, thoughtful dramas and sci-fi higher (Shawshank, Ex Machina) and disliking straightforward action or light family fare, Casino Royale would likely be rated higher than Gnomeo & Juliet.
+PREDICTION: 2","The reasoning rests on an underspecified, small sample and a vague “intense dramas/sci-fi > action/family” heuristic, while Casino Royale is a nuanced thriller that could fit the user’s taste and the low rating for Jack Reacher contradicts a simple dislike of action.",2026-02-22 19:53:54
