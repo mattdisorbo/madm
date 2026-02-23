@@ -4,15 +4,19 @@ import pandas as pd
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import openai
 
-OAI_MODEL      = "gpt-5-mini-2025-08-07"
-OAI_MODEL_NANO = "gpt-5-nano-2025-08-07"
-QWEN_MODEL     = "Qwen/Qwen2.5-1.5B-Instruct"
+OAI_MODEL        = "gpt-5-mini-2025-08-07"
+OAI_MODEL_NANO   = "gpt-5-nano-2025-08-07"
+QWEN_MODEL       = "Qwen/Qwen2.5-1.5B-Instruct"
+QWEN_MODEL_LARGE = "Qwen/Qwen2.5-7B-Instruct"
+DEEPSEEK_MODEL   = "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B"
 
 N_SAMPLES_BASE    = 10
 N_SAMPLES_AUDITOR = 10
-N_OAI  = 1
-N_NANO = 1
-N_QWEN = 1
+N_OAI        = 1
+N_NANO       = 1
+N_QWEN       = 1
+N_QWEN_LARGE = 1
+N_DEEPSEEK   = 1
 
 DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/WikipediaToxicity/Wikipedia Toxicity_data_data.csv")
 
@@ -42,20 +46,22 @@ data_agg = data_agg.reset_index(drop=True)
 
 print(f"Loaded {len(data_agg)} comments. Toxicity rate: {data_agg['toxicity'].mean():.3f}", flush=True)
 
-# --- Qwen setup ---
-qwen_pipe = None
-qwen_lock = threading.Lock()
+# --- Local model setup ---
+local_pipes = {}
+local_locks = {}
 
-if N_QWEN > 0:
-    from transformers import pipeline
-    print(f"Loading {QWEN_MODEL}...", flush=True)
-    qwen_pipe = pipeline("text-generation", model=QWEN_MODEL, torch_dtype="auto", device_map="auto")
-    print("Qwen loaded.", flush=True)
+for _m, _n in [(QWEN_MODEL, N_QWEN), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (DEEPSEEK_MODEL, N_DEEPSEEK)]:
+    if _n > 0:
+        from transformers import pipeline
+        print(f"Loading {_m}...", flush=True)
+        local_pipes[_m] = pipeline("text-generation", model=_m, torch_dtype="auto", device_map="auto")
+        local_locks[_m] = threading.Lock()
+        print(f"{_m} loaded.", flush=True)
 
 def llm(prompt, model):
-    if model == QWEN_MODEL:
-        with qwen_lock:
-            out = qwen_pipe([{"role": "user", "content": prompt}], max_new_tokens=2048)
+    if model in local_pipes:
+        with local_locks[model]:
+            out = local_pipes[model]([{"role": "user", "content": prompt}], max_new_tokens=2048)
         return out[0]["generated_text"][-1]["content"]
     else:
         r = openai.chat.completions.create(model=model, messages=[{"role": "user", "content": prompt}])
@@ -149,7 +155,7 @@ def get_path(method, model):
     return os.path.join(local_dir, f'{method}_{model.split("/")[-1]}.csv')
 
 df_existing = {}
-for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN)]:
+for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (DEEPSEEK_MODEL, N_DEEPSEEK)]:
     if n > 0:
         for method in ["base", "auditor"]:
             path = get_path(method, model)
@@ -160,7 +166,7 @@ for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QW
 
 results = []
 completed = 0
-total = (N_OAI + N_NANO + N_QWEN) * (N_SAMPLES_BASE + N_SAMPLES_AUDITOR)
+total = (N_OAI + N_NANO + N_QWEN + N_QWEN_LARGE + N_DEEPSEEK) * (N_SAMPLES_BASE + N_SAMPLES_AUDITOR)
 save_lock = threading.Lock()
 
 def save_progress():
@@ -187,7 +193,7 @@ def call_llm_tracked(row_idx, method, model):
 # --- Build jobs ---
 all_indices = list(data_agg.index)
 jobs = []
-for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN)]:
+for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (DEEPSEEK_MODEL, N_DEEPSEEK)]:
     if n > 0:
         for method, n_samples in [("base", N_SAMPLES_BASE), ("auditor", N_SAMPLES_AUDITOR)]:
             if n_samples > 0:
@@ -195,7 +201,7 @@ for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QW
                 for idx in sampled:
                     jobs.append((idx, method, model))
 
-print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR})", flush=True)
+print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x | QwenLarge {N_QWEN_LARGE}x | DeepSeek {N_DEEPSEEK}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR})", flush=True)
 with ThreadPoolExecutor(max_workers=5) as executor:
     futures = [executor.submit(call_llm_tracked, idx, method, model) for idx, method, model in jobs]
     for f in as_completed(futures):
