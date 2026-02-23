@@ -7,7 +7,6 @@ OAI_MODEL        = "gpt-5-mini-2025-08-07"
 OAI_MODEL_NANO   = "gpt-5-nano-2025-08-07"
 QWEN_MODEL       = "Qwen/Qwen2.5-1.5B-Instruct"
 QWEN_MODEL_LARGE = "Qwen/Qwen2.5-7B-Instruct"
-DEEPSEEK_MODEL   = "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B"
 GLM_MODEL        = "THUDM/glm-4-9b-chat-hf"
 
 N_SAMPLES_BASE    = 10
@@ -16,7 +15,6 @@ N_OAI        = 0
 N_NANO       = 0
 N_QWEN       = 0
 N_QWEN_LARGE = 1
-N_DEEPSEEK   = 0
 N_GLM        = 1
 
 DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/FEVEROUS/feverous_train_challenges.jsonl")
@@ -35,7 +33,7 @@ print(f"Loaded {len(data)} claims. Support rate: {data['supports'].mean():.3f}",
 local_pipes = {}
 local_locks = {}
 
-for _m, _n in [(QWEN_MODEL, N_QWEN), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (DEEPSEEK_MODEL, N_DEEPSEEK), (GLM_MODEL, N_GLM)]:
+for _m, _n in [(QWEN_MODEL, N_QWEN), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (GLM_MODEL, N_GLM)]:
     if _n > 0:
         from transformers import pipeline
         print(f"Loading {_m}...", flush=True)
@@ -141,7 +139,7 @@ def get_path(method, model):
     return os.path.join(local_dir, f'{method}_{model.split("/")[-1]}.csv')
 
 df_existing = {}
-for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (DEEPSEEK_MODEL, N_DEEPSEEK), (GLM_MODEL, N_GLM)]:
+for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (GLM_MODEL, N_GLM)]:
     if n > 0:
         for method in ["base", "auditor"]:
             path = get_path(method, model)
@@ -152,7 +150,7 @@ for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QW
 
 results = []
 completed = 0
-total = (N_OAI + N_NANO + N_QWEN + N_QWEN_LARGE + N_DEEPSEEK + N_GLM) * (N_SAMPLES_BASE + N_SAMPLES_AUDITOR)
+total = (N_OAI + N_NANO + N_QWEN + N_QWEN_LARGE + N_GLM) * (N_SAMPLES_BASE + N_SAMPLES_AUDITOR)
 save_lock = threading.Lock()
 
 def save_progress():
@@ -179,7 +177,7 @@ def call_llm_tracked(row_idx, method, model):
 # --- Build jobs ---
 all_indices = list(data.index)
 jobs = []
-for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (DEEPSEEK_MODEL, N_DEEPSEEK), (GLM_MODEL, N_GLM)]:
+for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (GLM_MODEL, N_GLM)]:
     if n > 0:
         for method, n_samples in [("base", N_SAMPLES_BASE), ("auditor", N_SAMPLES_AUDITOR)]:
             if n_samples > 0:
@@ -187,7 +185,7 @@ for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QW
                 for idx in sampled:
                     jobs.append((idx, method, model))
 
-print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x | QwenLarge {N_QWEN_LARGE}x | DeepSeek {N_DEEPSEEK}x | GLM {N_GLM}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR})", flush=True)
+print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x | QwenLarge {N_QWEN_LARGE}x | GLM {N_GLM}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR})", flush=True)
 with ThreadPoolExecutor(max_workers=5) as executor:
     futures = [executor.submit(call_llm_tracked, idx, method, model) for idx, method, model in jobs]
     for f in as_completed(futures):
