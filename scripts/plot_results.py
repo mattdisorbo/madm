@@ -4,7 +4,11 @@ Generate per-model bar charts across datasets.
 For each model, produces a figure with one facet per dataset.
 X-axis: mode (base, auditor, tool=rf/ols)
 Y-axis: 0–1
-Bars: LLM accuracy (llm_prediction == ground_truth, all rows) and delegation rate.
+Bars: Final accuracy and delegation rate.
+
+Final accuracy: rows where the model delegates count as correct (human assumed
+perfect); rows where the model implements count as correct only if
+llm_prediction == ground_truth.
 
 Note: JFLEG is a grammar-correction task (text generation); accuracy there
 requires GLEU scoring, not simple equality, so the accuracy bar is omitted.
@@ -41,12 +45,15 @@ def ground_truth_col(df: pd.DataFrame) -> str:
 
 
 def compute_metrics(df: pd.DataFrame, dataset: str) -> tuple[float, float]:
-    """Return (accuracy, delegation_rate) for a results dataframe.
+    """Return (final_accuracy, delegation_rate) for a results dataframe.
 
     Rows where llm_delegate is NaN are excluded (incomplete entries).
-    Accuracy is llm_prediction == ground_truth across all valid rows.
+    Final accuracy: delegated rows count as correct (human assumed perfect);
+    implemented rows are correct iff llm_prediction == ground_truth.
     """
-    valid = df[df["llm_delegate"].notna()]
+    valid = df[df["llm_delegate"].notna()].copy()
+    if valid.empty:
+        return np.nan, np.nan
     delegation_rate = (valid["llm_delegate"] == 1).mean()
 
     if dataset in TEXT_GEN_DATASETS:
@@ -55,7 +62,9 @@ def compute_metrics(df: pd.DataFrame, dataset: str) -> tuple[float, float]:
         gt_col = ground_truth_col(df)
         pred = pd.to_numeric(valid["llm_prediction"], errors="coerce")
         truth = pd.to_numeric(valid[gt_col], errors="coerce")
-        accuracy = (pred == truth).mean()
+        correct_implemented = (valid["llm_delegate"] == 0) & (pred == truth)
+        delegated = valid["llm_delegate"] == 1
+        accuracy = (correct_implemented | delegated).mean()
 
     return accuracy, delegation_rate
 
@@ -110,7 +119,7 @@ for model in MODELS:
     axes[0].set_ylabel("Rate", fontsize=10)
 
     legend_handles = [
-        mpatches.Patch(color=COLORS["accuracy"], label="LLM Accuracy"),
+        mpatches.Patch(color=COLORS["accuracy"], label="Final Accuracy"),
         mpatches.Patch(color=COLORS["delegation"], label="Delegation Rate"),
     ]
     fig.legend(handles=legend_handles, loc="upper right", frameon=False, fontsize=9)
