@@ -9,6 +9,7 @@
 
 cd "${WORK}/madm"
 source .venv/bin/activate
+[ -f ~/.deepseek_key ] && source ~/.deepseek_key
 export PYTHONUNBUFFERED=1
 export HF_HOME=/work1/harangju/harang/.cache/huggingface
 export PYTORCH_ALLOC_CONF=expandable_segments:True
