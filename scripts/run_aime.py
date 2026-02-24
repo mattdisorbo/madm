@@ -23,8 +23,8 @@ N_OAI        = 0
 N_NANO       = 0
 N_QWEN       = 0
 N_QWEN_MED   = 0
-N_QWEN_LARGE = 1
-N_GLM        = 1
+N_QWEN_LARGE = 0
+N_GLM        = 0
 N_DEEPSEEK   = 1
 
 df = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/AIME_Dataset_1983_2024.csv"))

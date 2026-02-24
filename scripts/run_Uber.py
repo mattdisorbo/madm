@@ -27,8 +27,8 @@ N_OAI        = 0
 N_NANO       = 0
 N_QWEN       = 0
 N_QWEN_MED   = 0
-N_QWEN_LARGE = 1
-N_GLM        = 1
+N_QWEN_LARGE = 0
+N_GLM        = 0
 N_DEEPSEEK   = 1
 
 # Booking_Status values kept: "Success" (label 0) and "Canceled by Driver" (label 1)
