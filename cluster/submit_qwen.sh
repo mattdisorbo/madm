@@ -28,9 +28,9 @@ for MODEL in "${MODELS[@]}"; do
     ERR="logs/${MODEL_SHORT}.%j.err"
     echo "==> Submitting ${JOB_NAME} (n=${N})"
     ssh amd "cd \$WORK/madm && MODEL=${MODEL} N=${N} sbatch \
+        --partition=mi2101x \
         --job-name='${JOB_NAME}' \
         --output='${OUT}' \
         --error='${ERR}' \
-        --partition=mi2101x \
         cluster/run_qwen.slurm"
 done
