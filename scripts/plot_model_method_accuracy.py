@@ -20,8 +20,8 @@ DATASETS = [
     "LendingClub", "MovieLens", "Uber", "WikipediaToxicity",
 ]
 MODELS = [
-    "Qwen2.5-1.5B-Instruct", "gpt-5-nano-2025-08-07", "Qwen3-1.7B",
-    "gpt-5-mini-2025-08-07", "Qwen2.5-7B-Instruct", "glm-4-9b-chat-hf",
+    "gpt-5-nano-2025-08-07", "Qwen3-1.7B",
+    "gpt-5-mini-2025-08-07", "glm-4-9b-chat-hf",
     "Qwen3-4B", "Qwen3-8B", "Qwen3-14B",
 ]
 TOOL_METHODS = {"rf", "ols", "glm"}
