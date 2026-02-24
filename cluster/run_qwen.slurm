@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -p mi2104x
+#SBATCH -p mi2101x
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH -t 12:00:00
