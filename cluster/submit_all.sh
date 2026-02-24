@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Submit one job per dataset × model (36 jobs total).
+# Submit one job per dataset × model (21 jobs total).
 #
 # Usage:
 #   bash cluster/submit_all.sh <n_samples>
@@ -23,17 +23,14 @@ DATASETS=(
     LendingClub
     FEVEROUS
     JFLEG
-    MoralMachine
     HotelBookings
     Uber
-    aime
 )
 
 MODELS=(
     "Qwen/Qwen3-1.7B"
     "Qwen/Qwen3-4B"
     "Qwen/Qwen3-8B"
-    "Qwen/Qwen3-14B"
 )
 
 echo "==> Syncing code to cluster"
