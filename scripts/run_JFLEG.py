@@ -90,17 +90,17 @@ def llm(prompt, model):
 
 def create_prompt_base(row):
     return (
-        f"You are helping Person 1 with grammatical error correction. "
+        f"You are predicting how Person 1 would correct a grammatically incorrect statement. "
         f"This statement needs to be checked: '{row['sentence']}'"
     )
 
 def get_llm_base(base_prompt, model):
     instructions = (
         "\n\nRespond with two lines ONLY. "
-        "First, provide your grammatical correction of the statement based on your prediction of one of Person 1's true grammatical corrections.\n"
-        "Second, respond 0 to implement your prediction of one of Person 1's true grammatical corrections, "
-        "or 1 if you would like to delegate to Person 1 so they can implement one of their true grammatical corrections.\n"
-        "A grammatical correction is considered correct if it equals one of Person 1's true grammatical corrections."
+        "First, provide your prediction of one of Person 1's true grammatical corrections of the statement.\n"
+        "Second, respond 0 to implement your prediction, "
+        "or 1 to delegate to Person 1 so they can implement one of their true grammatical corrections.\n"
+        "A prediction is considered correct if it equals one of Person 1's true grammatical corrections."
     )
     full_prompt = base_prompt + instructions
     response = llm(full_prompt, model)
@@ -119,20 +119,20 @@ def get_sequential_inference(base_prompt, model):
         thought = llm(
             f"{base_prompt}\n\n"
             "TASK: Predict one of Person 1's grammatical corrections. Explain your reasoning in 1 sentence. "
-            "Then conclude with exactly 'CORRECTION: your grammatical correction here'.",
+            "Then conclude with exactly 'PREDICTION: your predicted correction here'.",
             model
         )
-        preds = re.findall(r'CORRECTION:\s*(.*)', thought)
+        preds = re.findall(r'PREDICTION:\s*(.*)', thought)
         pred = preds[-1].strip() if preds else None
 
         critique = llm(
-            f"SCENARIO:\n{base_prompt}\n\nPROPOSED CORRECTION:\n{thought}\n\n"
+            f"SCENARIO:\n{base_prompt}\n\nPROPOSED PREDICTION:\n{thought}\n\n"
             "TASK: Critique this reasoning in 1 sentence.",
             model
         )
 
         decision_prompt = (
-            f"SCENARIO:\n{base_prompt}\n\nCORRECTION & REASONING:\n{thought}\n\n"
+            f"SCENARIO:\n{base_prompt}\n\nPREDICTION & REASONING:\n{thought}\n\n"
             f"CRITIQUE:\n{critique}\n\n"
             "TASK: Respond with a digit ONLY.\n"
             "Output 0 to implement your prediction, or 1 to delegate to Person 1.\n"

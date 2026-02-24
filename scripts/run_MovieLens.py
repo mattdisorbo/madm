@@ -216,13 +216,13 @@ def get_sequential_inference(base_prompt, model):
         pred = int(preds[-1]) if preds else 1
 
         critique = llm(
-            f"PROMPT:\n{base_prompt}\n\nPROPOSED LOGIC:\n{thought}\n\n"
+            f"SCENARIO:\n{base_prompt}\n\nPROPOSED LOGIC:\n{thought}\n\n"
             "TASK: Critique this reasoning in 1 sentence.",
             model
         )
 
         decision_prompt = (
-            f"PROMPT:\n{base_prompt}\n\nPREDICTION & REASONING:\n{thought}\n\n"
+            f"SCENARIO:\n{base_prompt}\n\nPREDICTION & REASONING:\n{thought}\n\n"
             f"CRITIQUE:\n{critique}\n\n"
             "TASK: Respond with a digit ONLY.\n"
             "Output 0 to implement your prediction, or 1 to delegate to Person 1.\n"
