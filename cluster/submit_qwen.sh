@@ -32,6 +32,6 @@ for MODEL in "${MODELS[@]}"; do
         --output='${OUT}' \
         --error='${ERR}' \
         --partition=mi2101x \
-        --export=ALL,MODEL=${MODEL},N=${N} \
+        --export=MODEL=${MODEL},N=${N} \
         cluster/run_qwen.slurm"
 done
