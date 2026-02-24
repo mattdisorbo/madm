@@ -16,8 +16,8 @@ RESULTS_DIR = Path("results")
 VISUALS_DIR = Path("visuals")
 
 DATASETS = [
-    "AIME", "FEVEROUS", "HotelBookings", "JFLEG",
-    "LendingClub", "MoralMachine", "MovieLens", "Uber", "WikipediaToxicity",
+    "FEVEROUS", "HotelBookings", "JFLEG",
+    "LendingClub", "MovieLens", "Uber", "WikipediaToxicity",
 ]
 MODELS = [
     "Qwen2.5-1.5B-Instruct", "gpt-5-nano-2025-08-07", "Qwen3-1.7B",
@@ -35,21 +35,23 @@ def ground_truth_col(df):
     return "Answer" if "Answer" in df.columns else "human_response"
 
 
-def compute_accuracy(df, dataset):
+def compute_counts(df, dataset):
+    """Return (n_correct, n_rows) for row-weighted aggregation. Returns (nan, 0) for text-gen."""
     if dataset in TEXT_GEN_DATASETS:
-        return np.nan
+        return np.nan, 0
     valid = df[df["llm_delegate"].notna()].copy()
     if valid.empty:
-        return np.nan
+        return np.nan, 0
     gt_col = ground_truth_col(df)
     pred = pd.to_numeric(valid["llm_prediction"], errors="coerce")
     truth = pd.to_numeric(valid[gt_col], errors="coerce")
     correct_implemented = (valid["llm_delegate"] == 0) & (pred == truth)
     delegated = valid["llm_delegate"] == 1
-    return (correct_implemented | delegated).mean()
+    n_correct = (correct_implemented | delegated).sum()
+    return n_correct, len(valid)
 
 
-# Build records: (model, mode, dataset, accuracy)
+# Build records: (model, mode, dataset, n_correct, n_rows)
 records = []
 for model in MODELS:
     for dataset in DATASETS:
@@ -60,14 +62,18 @@ for model in MODELS:
             df = pd.read_csv(filepath)
             method = df["method"].dropna().iloc[0]
             mode = "tool" if method in TOOL_METHODS else method
-            acc = compute_accuracy(df, dataset)
-            if not np.isnan(acc):
-                records.append({"model": model, "mode": mode, "dataset": dataset, "accuracy": acc})
+            n_correct, n_rows = compute_counts(df, dataset)
+            if n_rows > 0 and not np.isnan(n_correct):
+                records.append({"model": model, "mode": mode, "dataset": dataset,
+                                "n_correct": n_correct, "n_rows": n_rows})
 
 df_all = pd.DataFrame(records)
 
-# ── Figure 1: grouped bar chart, one group per model, bars = methods ──────────
-pivot = df_all.groupby(["model", "mode"])["accuracy"].mean().unstack("mode")
+# Row-weighted accuracy: sum(correct) / sum(rows) per (model, mode)
+def weighted_accuracy(grp):
+    return grp["n_correct"].sum() / grp["n_rows"].sum()
+
+pivot = df_all.groupby(["model", "mode"]).apply(weighted_accuracy).unstack("mode")
 pivot = pivot.reindex(index=MODELS, columns=MODE_ORDER)
 
 n_models = len(pivot)
@@ -92,8 +98,8 @@ for i, mode in enumerate(MODE_ORDER):
 ax.set_xticks(x)
 ax.set_xticklabels([m.replace("-Instruct", "") for m in MODELS], rotation=30, ha="right", fontsize=9)
 ax.set_ylim(0, 1.08)
-ax.set_ylabel("Mean Final Accuracy (across available datasets)", fontsize=10)
-ax.set_title("Final Accuracy by Model × Method\n(averaged over datasets where data exists)", fontsize=11)
+ax.set_ylabel("Final Accuracy (row-weighted across available datasets)", fontsize=10)
+ax.set_title("Final Accuracy by Model × Method\n(row-weighted, excl. AIME & MoralMachine)", fontsize=11)
 ax.legend(fontsize=10, frameon=False)
 ax.yaxis.grid(True, linestyle="--", alpha=0.5, zorder=0)
 ax.set_axisbelow(True)
@@ -119,7 +125,7 @@ ax2.axhline(0, color="black", linewidth=0.8)
 ax2.set_xticks(range(len(gain)))
 ax2.set_xticklabels([m.replace("-Instruct", "") for m in gain.index], rotation=30, ha="right", fontsize=9)
 ax2.set_ylabel("Auditor − Base Accuracy", fontsize=10)
-ax2.set_title("Auditor Gain over Base (mean across available datasets)", fontsize=11)
+ax2.set_title("Auditor Gain over Base (row-weighted, excl. AIME & MoralMachine)", fontsize=11)
 ax2.yaxis.grid(True, linestyle="--", alpha=0.5, zorder=0)
 ax2.set_axisbelow(True)
 plt.tight_layout()
@@ -129,7 +135,7 @@ plt.close()
 print(f"Saved {out2}")
 
 # ── Figure 3: per-dataset heatmap of auditor gain ─────────────────────────────
-pivot_ds = df_all.groupby(["model", "mode", "dataset"])["accuracy"].mean().unstack("mode")
+pivot_ds = df_all.groupby(["model", "mode", "dataset"]).apply(weighted_accuracy).unstack("mode")
 auditor_gain_ds = (pivot_ds["auditor"] - pivot_ds["base"]).unstack("dataset")
 auditor_gain_ds = auditor_gain_ds.reindex(index=MODELS)
 
