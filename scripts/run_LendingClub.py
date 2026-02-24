@@ -27,9 +27,9 @@ N_OAI        = 0
 N_NANO       = 0
 N_QWEN       = 0
 N_QWEN_MED   = 0
-N_QWEN_LARGE = 0
-N_GLM        = 0
-N_DEEPSEEK   = 1
+N_QWEN_LARGE = 1
+N_GLM        = 1
+N_DEEPSEEK   = 0
 
 ACCEPTED_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/accepted_10k.csv")
 REJECTED_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/rejected_10k.csv")
