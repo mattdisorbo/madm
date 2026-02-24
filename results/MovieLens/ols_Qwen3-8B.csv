@@ -1,5 +1,5 @@
 userId,movieId1,movieId2,rating_1,rating_2,ols_pred_1,ols_pred_2,human_response,prompt,method,model,llm_prediction,llm_delegate,trace,llm_full_thought,llm_critique,timestamp
-197371,2394,141,2.0,2.5,3.833548295178716,3.3460799041395934,2,"Person 1 has reviewed the following movies:
+197371,2394,141,2.0,2.5,3.833548295178716,3.346079904139593,2,"Person 1 has reviewed the following movies:
 
 - Matrix Revolutions, The (2003) (Action|Adventure|Sci-Fi|Thriller|IMAX): Rated 1.5/5
 - Ghost (1990) (Comedy|Drama|Fantasy|Romance|Thriller): Rated 3.0/5
@@ -67,7 +67,7 @@ A decision is correct if it is the movie Person 1 would rate higher.
 [RESPONSE]
 1  
 0",,,2026-02-24 09:12:50
-195689,4225,6932,4.0,4.5,3.345145021224193,3.8545936838649304,2,"Person 1 has reviewed the following movies:
+195689,4225,6932,4.0,4.5,3.345145021224193,3.8545936838649295,2,"Person 1 has reviewed the following movies:
 
 - Nine to Five (a.k.a. 9 to 5) (1980) (Comedy|Crime): Rated 4.0/5
 - Wonder Boys (2000) (Comedy|Drama): Rated 4.5/5
@@ -305,7 +305,7 @@ A decision is correct if it is the movie Person 1 would rate higher.
 [RESPONSE]
 1  
 0",,,2026-02-24 09:12:50
-200323,786,1061,3.0,4.0,3.486886839079577,3.4064299308008255,2,"Person 1 has reviewed the following movies:
+200323,786,1061,3.0,4.0,3.486886839079577,3.406429930800825,2,"Person 1 has reviewed the following movies:
 
 - One Minute Time Machine (2014) (Comedy|Mystery|Romance): Rated 3.0/5
 - The Martian (2015) (Adventure|Drama|Sci-Fi): Rated 4.0/5
@@ -373,7 +373,7 @@ A decision is correct if it is the movie Person 1 would rate higher.
 [RESPONSE]
 1  
 0",,,2026-02-24 09:12:50
-200606,79132,6373,4.5,2.0,3.89262353461588,3.5836425090559714,1,"Person 1 has reviewed the following movies:
+200606,79132,6373,4.5,2.0,3.89262353461588,3.583642509055972,1,"Person 1 has reviewed the following movies:
 
 - Hot Fuzz (2007) (Action|Comedy|Crime|Mystery): Rated 4.5/5
 - Borat Subsequent Moviefilm (2020) (Comedy): Rated 4.5/5
@@ -509,7 +509,7 @@ A decision is correct if it is the movie Person 1 would rate higher.
 [RESPONSE]
 1  
 0",,,2026-02-24 09:12:50
-194853,4067,2243,2.5,3.0,3.6622317565485507,3.54961476016707,2,"Person 1 has reviewed the following movies:
+194853,4067,2243,2.5,3.0,3.662231756548551,3.54961476016707,2,"Person 1 has reviewed the following movies:
 
 - Charlotte's Web (1973) (Animation|Children): Rated 4.0/5
 - Sunset Blvd. (a.k.a. Sunset Boulevard) (1950) (Drama|Film-Noir|Romance): Rated 2.5/5
@@ -645,7 +645,7 @@ A decision is correct if it is the movie Person 1 would rate higher.
 [RESPONSE]
 1  
 0",,,2026-02-24 09:12:50
-198198,7153,102903,4.0,4.5,3.651788745798492,3.7237179652351453,2,"Person 1 has reviewed the following movies:
+198198,7153,102903,4.0,4.5,3.651788745798492,3.723717965235145,2,"Person 1 has reviewed the following movies:
 
 - Ocean's Thirteen (2007) (Crime|Thriller): Rated 4.0/5
 - V for Vendetta (2006) (Action|Sci-Fi|Thriller|IMAX): Rated 4.5/5
@@ -679,3 +679,1703 @@ A decision is correct if it is the movie Person 1 would rate higher.
 [RESPONSE]
 1  
 0",,,2026-02-24 09:12:50
+198471,1178,112852,4.0,3.0,3.883350630923835,3.466114955995172,1,"Person 1 has reviewed the following movies:
+
+- A Ghost Story (2017) (Drama): Rated 3.5/5
+- Pitch Perfect (2012) (Comedy|Musical): Rated 3.5/5
+- (500) Days of Summer (2009) (Comedy|Drama|Romance): Rated 4.0/5
+- 12 Years a Slave (2013) (Drama): Rated 4.0/5
+- Mr. Nobody (2009) (Drama|Fantasy|Romance|Sci-Fi): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Guardians of the Galaxy (2014) (Action|Adventure|Sci-Fi)
+- Paths of Glory (1957) (Drama|War)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- A Ghost Story (2017) (Drama): Rated 3.5/5
+- Pitch Perfect (2012) (Comedy|Musical): Rated 3.5/5
+- (500) Days of Summer (2009) (Comedy|Drama|Romance): Rated 4.0/5
+- 12 Years a Slave (2013) (Drama): Rated 4.0/5
+- Mr. Nobody (2009) (Drama|Fantasy|Romance|Sci-Fi): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Guardians of the Galaxy (2014) (Action|Adventure|Sci-Fi)
+- Paths of Glory (1957) (Drama|War)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.88 and the second movie 3.47. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+200548,1348,1291,3.5,3.0,3.2794004984955287,3.4231734539861107,1,"Person 1 has reviewed the following movies:
+
+- Young Frankenstein (1974) (Comedy|Fantasy): Rated 4.5/5
+- Doctor Strange (2016) (Action|Adventure|Sci-Fi): Rated 3.0/5
+- Get Out (2017) (Horror): Rated 4.0/5
+- Hamlet (1990) (Drama): Rated 3.0/5
+- Gingerbread Man, The (1998) (Drama|Thriller): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Nosferatu (Nosferatu, eine Symphonie des Grauens) (1922) (Horror)
+- Indiana Jones and the Last Crusade (1989) (Action|Adventure)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Young Frankenstein (1974) (Comedy|Fantasy): Rated 4.5/5
+- Doctor Strange (2016) (Action|Adventure|Sci-Fi): Rated 3.0/5
+- Get Out (2017) (Horror): Rated 4.0/5
+- Hamlet (1990) (Drama): Rated 3.0/5
+- Gingerbread Man, The (1998) (Drama|Thriller): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Nosferatu (Nosferatu, eine Symphonie des Grauens) (1922) (Horror)
+- Indiana Jones and the Last Crusade (1989) (Action|Adventure)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.28 and the second movie 3.42. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+199225,34162,1089,3.5,4.5,3.352035591914309,3.7276444734798266,2,"Person 1 has reviewed the following movies:
+
+- Seven (a.k.a. Se7en) (1995) (Mystery|Thriller): Rated 5.0/5
+- Michael (1996) (Comedy|Drama|Fantasy|Romance): Rated 2.0/5
+- Spider-Man 3 (2007) (Action|Adventure|Sci-Fi|Thriller|IMAX): Rated 3.0/5
+- Dark City (1998) (Adventure|Film-Noir|Sci-Fi|Thriller): Rated 4.0/5
+- Hackers (1995) (Action|Adventure|Crime|Thriller): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Reservoir Dogs (1992) (Crime|Mystery|Thriller)
+- Wedding Crashers (2005) (Comedy|Romance)
+",ols,Qwen/Qwen3-8B,1,1,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Seven (a.k.a. Se7en) (1995) (Mystery|Thriller): Rated 5.0/5
+- Michael (1996) (Comedy|Drama|Fantasy|Romance): Rated 2.0/5
+- Spider-Man 3 (2007) (Action|Adventure|Sci-Fi|Thriller|IMAX): Rated 3.0/5
+- Dark City (1998) (Adventure|Film-Noir|Sci-Fi|Thriller): Rated 4.0/5
+- Hackers (1995) (Action|Adventure|Crime|Thriller): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Reservoir Dogs (1992) (Crime|Mystery|Thriller)
+- Wedding Crashers (2005) (Comedy|Romance)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.35 and the second movie 3.73. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+1",,,2026-02-24 14:22:16
+199546,1653,3616,3.5,2.0,3.648072460561128,3.3529704748297093,1,"Person 1 has reviewed the following movies:
+
+- Godfather: Part II, The (1974) (Crime|Drama): Rated 3.5/5
+- Natural Born Killers (1994) (Action|Crime|Thriller): Rated 3.0/5
+- One Flew Over the Cuckoo's Nest (1975) (Drama): Rated 4.0/5
+- City of God (Cidade de Deus) (2002) (Action|Adventure|Crime|Drama|Thriller): Rated 3.5/5
+- Bruce Almighty (2003) (Comedy|Drama|Fantasy|Romance): Rated 2.0/5
+
+Consider these two movies they have not seen:
+
+- Gattaca (1997) (Drama|Sci-Fi|Thriller)
+- Loser (2000) (Comedy|Romance)
+",ols,Qwen/Qwen3-8B,1,1,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Godfather: Part II, The (1974) (Crime|Drama): Rated 3.5/5
+- Natural Born Killers (1994) (Action|Crime|Thriller): Rated 3.0/5
+- One Flew Over the Cuckoo's Nest (1975) (Drama): Rated 4.0/5
+- City of God (Cidade de Deus) (2002) (Action|Adventure|Crime|Drama|Thriller): Rated 3.5/5
+- Bruce Almighty (2003) (Comedy|Drama|Fantasy|Romance): Rated 2.0/5
+
+Consider these two movies they have not seen:
+
+- Gattaca (1997) (Drama|Sci-Fi|Thriller)
+- Loser (2000) (Comedy|Romance)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.65 and the second movie 3.35. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+1",,,2026-02-24 14:22:16
+197512,2599,5008,2.5,5.0,3.3455189743903535,3.7265320734753318,2,"Person 1 has reviewed the following movies:
+
+- Talk Radio (1988) (Drama): Rated 3.0/5
+- To Catch a Thief (1955) (Crime|Mystery|Romance|Thriller): Rated 3.0/5
+- Haunting, The (1963) (Horror|Thriller): Rated 3.0/5
+- Mars Attacks! (1996) (Action|Comedy|Sci-Fi): Rated 1.0/5
+- For a Few Dollars More (Per qualche dollaro in più) (1965) (Action|Drama|Thriller|Western): Rated 2.5/5
+
+Consider these two movies they have not seen:
+
+- Election (1999) (Comedy)
+- Witness for the Prosecution (1957) (Drama|Mystery|Thriller)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Talk Radio (1988) (Drama): Rated 3.0/5
+- To Catch a Thief (1955) (Crime|Mystery|Romance|Thriller): Rated 3.0/5
+- Haunting, The (1963) (Horror|Thriller): Rated 3.0/5
+- Mars Attacks! (1996) (Action|Comedy|Sci-Fi): Rated 1.0/5
+- For a Few Dollars More (Per qualche dollaro in più) (1965) (Action|Drama|Thriller|Western): Rated 2.5/5
+
+Consider these two movies they have not seen:
+
+- Election (1999) (Comedy)
+- Witness for the Prosecution (1957) (Drama|Mystery|Thriller)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.35 and the second movie 3.73. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+199982,2990,1792,5.0,4.5,3.3697846247673815,3.4941694663257135,1,"Person 1 has reviewed the following movies:
+
+- Star Trek V: The Final Frontier (1989) (Action|Sci-Fi): Rated 1.0/5
+- Hellboy II: The Golden Army (2008) (Action|Adventure|Fantasy|Sci-Fi): Rated 0.5/5
+- Man with the Golden Gun, The (1974) (Action|Adventure|Thriller): Rated 5.0/5
+- End of Days (1999) (Action|Fantasy|Horror|Mystery|Thriller): Rated 1.0/5
+- Sum of All Fears, The (2002) (Drama|Thriller): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Licence to Kill (1989) (Action|Adventure|Thriller)
+- U.S. Marshals (1998) (Action|Crime|Thriller)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Star Trek V: The Final Frontier (1989) (Action|Sci-Fi): Rated 1.0/5
+- Hellboy II: The Golden Army (2008) (Action|Adventure|Fantasy|Sci-Fi): Rated 0.5/5
+- Man with the Golden Gun, The (1974) (Action|Adventure|Thriller): Rated 5.0/5
+- End of Days (1999) (Action|Fantasy|Horror|Mystery|Thriller): Rated 1.0/5
+- Sum of All Fears, The (2002) (Drama|Thriller): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Licence to Kill (1989) (Action|Adventure|Thriller)
+- U.S. Marshals (1998) (Action|Crime|Thriller)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.37 and the second movie 3.49. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+197602,1997,104074,2.5,3.0,3.388461158935511,3.3141219567170883,2,"Person 1 has reviewed the following movies:
+
+- Illusionist, The (2006) (Drama|Fantasy|Mystery|Romance): Rated 3.5/5
+- The Amazing Spider-Man 2 (2014) (Action|Sci-Fi|IMAX): Rated 3.0/5
+- Good Will Hunting (1997) (Drama|Romance): Rated 4.0/5
+- My Sister's Keeper (2009) (Drama): Rated 3.5/5
+- Pitch Perfect 2 (2015) (Comedy): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Exorcist, The (1973) (Horror|Mystery)
+- Percy Jackson: Sea of Monsters (2013) (Adventure|Children|Fantasy)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Illusionist, The (2006) (Drama|Fantasy|Mystery|Romance): Rated 3.5/5
+- The Amazing Spider-Man 2 (2014) (Action|Sci-Fi|IMAX): Rated 3.0/5
+- Good Will Hunting (1997) (Drama|Romance): Rated 4.0/5
+- My Sister's Keeper (2009) (Drama): Rated 3.5/5
+- Pitch Perfect 2 (2015) (Comedy): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Exorcist, The (1973) (Horror|Mystery)
+- Percy Jackson: Sea of Monsters (2013) (Adventure|Children|Fantasy)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.39 and the second movie 3.31. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+195485,185,1358,1.0,4.0,3.4947303960749534,3.6540323497768745,2,"Person 1 has reviewed the following movies:
+
+- Glory (1989) (Drama|War): Rated 4.0/5
+- Braveheart (1995) (Action|Drama|War): Rated 2.0/5
+- Rambo: First Blood Part II (1985) (Action|Adventure|Thriller): Rated 1.0/5
+- Independence Day (a.k.a. ID4) (1996) (Action|Adventure|Sci-Fi|Thriller): Rated 1.0/5
+- Jean de Florette (1986) (Drama|Mystery): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Sling Blade (1996) (Drama)
+- Net, The (1995) (Action|Crime|Thriller)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Glory (1989) (Drama|War): Rated 4.0/5
+- Braveheart (1995) (Action|Drama|War): Rated 2.0/5
+- Rambo: First Blood Part II (1985) (Action|Adventure|Thriller): Rated 1.0/5
+- Independence Day (a.k.a. ID4) (1996) (Action|Adventure|Sci-Fi|Thriller): Rated 1.0/5
+- Jean de Florette (1986) (Drama|Mystery): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Sling Blade (1996) (Drama)
+- Net, The (1995) (Action|Crime|Thriller)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.49 and the second movie 3.65. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+197696,45183,296,4.5,4.0,3.3791217743641915,3.68914878801396,1,"Person 1 has reviewed the following movies:
+
+- I Am Sam (2001) (Drama): Rated 4.5/5
+- Terminal, The (2004) (Comedy|Drama|Romance): Rated 4.5/5
+- Raging Bull (1980) (Drama): Rated 4.5/5
+- Bourne Ultimatum, The (2007) (Action|Crime|Thriller): Rated 4.5/5
+- Salt (2010) (Action|Thriller): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Protector, The (a.k.a. Warrior King) (Tom yum goong) (2005) (Action|Comedy|Crime|Thriller)
+- Pulp Fiction (1994) (Comedy|Crime|Drama|Thriller)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- I Am Sam (2001) (Drama): Rated 4.5/5
+- Terminal, The (2004) (Comedy|Drama|Romance): Rated 4.5/5
+- Raging Bull (1980) (Drama): Rated 4.5/5
+- Bourne Ultimatum, The (2007) (Action|Crime|Thriller): Rated 4.5/5
+- Salt (2010) (Action|Thriller): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Protector, The (a.k.a. Warrior King) (Tom yum goong) (2005) (Action|Comedy|Crime|Thriller)
+- Pulp Fiction (1994) (Comedy|Crime|Drama|Thriller)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.38 and the second movie 3.69. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+195658,269872,105653,5.0,2.5,3.464619143330532,3.408091113586961,1,"Person 1 has reviewed the following movies:
+
+- Jurassic World (2015) (Action|Adventure|Drama|Sci-Fi|Thriller): Rated 5.0/5
+- The Equalizer 2 (2018) (Action|Crime|Thriller): Rated 4.0/5
+- Resident Evil (2002) (Action|Horror|Sci-Fi|Thriller): Rated 5.0/5
+- Star Trek Into Darkness (2013) (Action|Adventure|Sci-Fi|IMAX): Rated 5.0/5
+- Guardians of the Galaxy Volume 3 (2023) (Action|Adventure|Sci-Fi): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Escape Plan (2013) (Action|Mystery|Thriller)
+- Moonfall (2022) (Action|Adventure|Sci-Fi)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Jurassic World (2015) (Action|Adventure|Drama|Sci-Fi|Thriller): Rated 5.0/5
+- The Equalizer 2 (2018) (Action|Crime|Thriller): Rated 4.0/5
+- Resident Evil (2002) (Action|Horror|Sci-Fi|Thriller): Rated 5.0/5
+- Star Trek Into Darkness (2013) (Action|Adventure|Sci-Fi|IMAX): Rated 5.0/5
+- Guardians of the Galaxy Volume 3 (2023) (Action|Adventure|Sci-Fi): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Escape Plan (2013) (Action|Mystery|Thriller)
+- Moonfall (2022) (Action|Adventure|Sci-Fi)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.46 and the second movie 3.41. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+199966,3704,1252,2.0,4.0,3.4715372769044937,3.9272760207217545,2,"Person 1 has reviewed the following movies:
+
+- Postcards From the Edge (1990) (Comedy|Drama): Rated 3.0/5
+- Meteor Man, The (1993) (Comedy): Rated 2.0/5
+- Triple Trouble (1918) (Comedy): Rated 2.0/5
+- Predator (1987) (Action|Sci-Fi|Thriller): Rated 2.5/5
+- Guardians of the Galaxy (2014) (Action|Adventure|Sci-Fi): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Mad Max Beyond Thunderdome (1985) (Action|Adventure|Sci-Fi)
+- Chinatown (1974) (Crime|Film-Noir|Mystery|Thriller)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Postcards From the Edge (1990) (Comedy|Drama): Rated 3.0/5
+- Meteor Man, The (1993) (Comedy): Rated 2.0/5
+- Triple Trouble (1918) (Comedy): Rated 2.0/5
+- Predator (1987) (Action|Sci-Fi|Thriller): Rated 2.5/5
+- Guardians of the Galaxy (2014) (Action|Adventure|Sci-Fi): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Mad Max Beyond Thunderdome (1985) (Action|Adventure|Sci-Fi)
+- Chinatown (1974) (Crime|Film-Noir|Mystery|Thriller)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.47 and the second movie 3.93. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+198149,65982,7256,4.0,3.5,3.4672368154936524,3.6673464837575245,1,"Person 1 has reviewed the following movies:
+
+- Out of Sight (1998) (Comedy|Crime|Drama|Romance|Thriller): Rated 3.0/5
+- The Mummy (2017) (Action|Adventure|Fantasy|Horror|Thriller): Rated 3.0/5
+- Rocketeer, The (1991) (Action|Adventure|Sci-Fi): Rated 3.0/5
+- Just My Luck (2006) (Comedy|Romance): Rated 3.0/5
+- Crocodile Dundee (1986) (Adventure|Comedy): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Outlander (2008) (Action|Adventure|Sci-Fi)
+- Touching the Void (2003) (Adventure|Documentary)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Out of Sight (1998) (Comedy|Crime|Drama|Romance|Thriller): Rated 3.0/5
+- The Mummy (2017) (Action|Adventure|Fantasy|Horror|Thriller): Rated 3.0/5
+- Rocketeer, The (1991) (Action|Adventure|Sci-Fi): Rated 3.0/5
+- Just My Luck (2006) (Comedy|Romance): Rated 3.0/5
+- Crocodile Dundee (1986) (Adventure|Comedy): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Outlander (2008) (Action|Adventure|Sci-Fi)
+- Touching the Void (2003) (Adventure|Documentary)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.47 and the second movie 3.67. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+195169,107916,2959,5.0,3.0,3.65830524830387,3.6881960794999533,1,"Person 1 has reviewed the following movies:
+
+- Coco Before Chanel (Coco avant Chanel) (2009) (Drama): Rated 5.0/5
+- Atomic Blonde (2017) (Thriller): Rated 5.0/5
+- Carol (2015) (Drama|Romance): Rated 5.0/5
+- Intouchables (2011) (Comedy|Drama): Rated 5.0/5
+- Mad Max: Fury Road (2015) (Action|Adventure|Sci-Fi|Thriller): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Yves Saint Laurent (2014) (Drama|Romance)
+- Fight Club (1999) (Action|Crime|Drama|Thriller)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Coco Before Chanel (Coco avant Chanel) (2009) (Drama): Rated 5.0/5
+- Atomic Blonde (2017) (Thriller): Rated 5.0/5
+- Carol (2015) (Drama|Romance): Rated 5.0/5
+- Intouchables (2011) (Comedy|Drama): Rated 5.0/5
+- Mad Max: Fury Road (2015) (Action|Adventure|Sci-Fi|Thriller): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Yves Saint Laurent (2014) (Drama|Romance)
+- Fight Club (1999) (Action|Crime|Drama|Thriller)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.66 and the second movie 3.69. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+194712,4896,5464,3.0,5.0,3.316365675714049,3.8547806604480104,2,"Person 1 has reviewed the following movies:
+
+- Karate Kid, The (1984) (Drama): Rated 3.0/5
+- Mars Attacks! (1996) (Action|Comedy|Sci-Fi): Rated 3.0/5
+- Days of Thunder (1990) (Action|Drama|Romance): Rated 3.5/5
+- Bridesmaids (2011) (Comedy): Rated 4.5/5
+- Simpsons Movie, The (2007) (Animation|Comedy): Rated 2.5/5
+
+Consider these two movies they have not seen:
+
+- Harry Potter and the Sorcerer's Stone (a.k.a. Harry Potter and the Philosopher's Stone) (2001) (Adventure|Children|Fantasy)
+- Road to Perdition (2002) (Crime|Drama)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Karate Kid, The (1984) (Drama): Rated 3.0/5
+- Mars Attacks! (1996) (Action|Comedy|Sci-Fi): Rated 3.0/5
+- Days of Thunder (1990) (Action|Drama|Romance): Rated 3.5/5
+- Bridesmaids (2011) (Comedy): Rated 4.5/5
+- Simpsons Movie, The (2007) (Animation|Comedy): Rated 2.5/5
+
+Consider these two movies they have not seen:
+
+- Harry Potter and the Sorcerer's Stone (a.k.a. Harry Potter and the Philosopher's Stone) (2001) (Adventure|Children|Fantasy)
+- Road to Perdition (2002) (Crime|Drama)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.32 and the second movie 3.85. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+198066,30749,1222,3.5,4.0,3.874562731519073,3.8777413334314335,2,"Person 1 has reviewed the following movies:
+
+- Friendship! (2010) (Comedy): Rated 2.5/5
+- Game, The (1997) (Drama|Mystery|Thriller): Rated 4.5/5
+- Room (2015) (Drama): Rated 2.5/5
+- Children of Men (2006) (Action|Adventure|Drama|Sci-Fi|Thriller): Rated 0.5/5
+- Memento (2000) (Mystery|Thriller): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Hotel Rwanda (2004) (Drama|War)
+- Full Metal Jacket (1987) (Drama|War)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Friendship! (2010) (Comedy): Rated 2.5/5
+- Game, The (1997) (Drama|Mystery|Thriller): Rated 4.5/5
+- Room (2015) (Drama): Rated 2.5/5
+- Children of Men (2006) (Action|Adventure|Drama|Sci-Fi|Thriller): Rated 0.5/5
+- Memento (2000) (Mystery|Thriller): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Hotel Rwanda (2004) (Drama|War)
+- Full Metal Jacket (1987) (Drama|War)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.87 and the second movie 3.88. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+196544,628,1633,3.0,4.0,3.921110156904826,3.6538453731937945,2,"Person 1 has reviewed the following movies:
+
+- Local Hero (1983) (Comedy): Rated 5.0/5
+- Six Degrees of Separation (1993) (Drama): Rated 3.0/5
+- Intimate Relations (1996) (Comedy): Rated 3.0/5
+- My Blue Heaven (1990) (Comedy): Rated 2.0/5
+- Apollo 13 (1995) (Adventure|Drama|IMAX): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Primal Fear (1996) (Crime|Drama|Mystery|Thriller)
+- Ulee's Gold (1997) (Drama)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Local Hero (1983) (Comedy): Rated 5.0/5
+- Six Degrees of Separation (1993) (Drama): Rated 3.0/5
+- Intimate Relations (1996) (Comedy): Rated 3.0/5
+- My Blue Heaven (1990) (Comedy): Rated 2.0/5
+- Apollo 13 (1995) (Adventure|Drama|IMAX): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Primal Fear (1996) (Crime|Drama|Mystery|Thriller)
+- Ulee's Gold (1997) (Drama)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.92 and the second movie 3.65. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+196616,1198,6564,5.0,1.0,3.424669266650751,3.261066573746736,1,"Person 1 has reviewed the following movies:
+
+- Dark Knight Rises, The (2012) (Action|Adventure|Crime|IMAX): Rated 5.0/5
+- Home Alone (1990) (Children|Comedy): Rated 2.0/5
+- Dangal (2016) (Drama): Rated 3.0/5
+- Fahrenheit 9/11 (2004) (Documentary): Rated 1.0/5
+- Pale Rider (1985) (Western): Rated 1.0/5
+
+Consider these two movies they have not seen:
+
+- Raiders of the Lost Ark (Indiana Jones and the Raiders of the Lost Ark) (1981) (Action|Adventure)
+- Lara Croft Tomb Raider: The Cradle of Life (2003) (Action|Adventure|Comedy|Romance|Thriller)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Dark Knight Rises, The (2012) (Action|Adventure|Crime|IMAX): Rated 5.0/5
+- Home Alone (1990) (Children|Comedy): Rated 2.0/5
+- Dangal (2016) (Drama): Rated 3.0/5
+- Fahrenheit 9/11 (2004) (Documentary): Rated 1.0/5
+- Pale Rider (1985) (Western): Rated 1.0/5
+
+Consider these two movies they have not seen:
+
+- Raiders of the Lost Ark (Indiana Jones and the Raiders of the Lost Ark) (1981) (Action|Adventure)
+- Lara Croft Tomb Raider: The Cradle of Life (2003) (Action|Adventure|Comedy|Romance|Thriller)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.42 and the second movie 3.26. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+196019,1036,2527,4.0,3.0,3.4960392321565137,3.426828746238502,1,"Person 1 has reviewed the following movies:
+
+- Dogma (1999) (Adventure|Comedy|Fantasy): Rated 3.0/5
+- Femme Nikita, La (Nikita) (1990) (Action|Crime|Romance|Thriller): Rated 4.0/5
+- Monty Python and the Holy Grail (1975) (Adventure|Comedy|Fantasy): Rated 4.0/5
+- Soylent Green (1973) (Drama|Mystery|Sci-Fi|Thriller): Rated 4.0/5
+- One Flew Over the Cuckoo's Nest (1975) (Drama): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Die Hard (1988) (Action|Crime|Thriller)
+- Westworld (1973) (Action|Sci-Fi|Thriller|Western)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Dogma (1999) (Adventure|Comedy|Fantasy): Rated 3.0/5
+- Femme Nikita, La (Nikita) (1990) (Action|Crime|Romance|Thriller): Rated 4.0/5
+- Monty Python and the Holy Grail (1975) (Adventure|Comedy|Fantasy): Rated 4.0/5
+- Soylent Green (1973) (Drama|Mystery|Sci-Fi|Thriller): Rated 4.0/5
+- One Flew Over the Cuckoo's Nest (1975) (Drama): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Die Hard (1988) (Action|Crime|Thriller)
+- Westworld (1973) (Action|Sci-Fi|Thriller|Western)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.5 and the second movie 3.43. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+198399,1784,924,5.0,4.0,3.5477449943362696,3.7826861500527422,1,"Person 1 has reviewed the following movies:
+
+- Duck Soup (1933) (Comedy|Musical|War): Rated 5.0/5
+- Last Emperor, The (1987) (Drama): Rated 5.0/5
+- Poseidon Adventure, The (1972) (Action|Adventure|Drama): Rated 4.0/5
+- Congo (1995) (Action|Adventure|Mystery|Sci-Fi): Rated 4.0/5
+- Office Space (1999) (Comedy|Crime): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- 2001: A Space Odyssey (1968) (Adventure|Drama|Sci-Fi)
+- As Good as It Gets (1997) (Comedy|Drama|Romance)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Duck Soup (1933) (Comedy|Musical|War): Rated 5.0/5
+- Last Emperor, The (1987) (Drama): Rated 5.0/5
+- Poseidon Adventure, The (1972) (Action|Adventure|Drama): Rated 4.0/5
+- Congo (1995) (Action|Adventure|Mystery|Sci-Fi): Rated 4.0/5
+- Office Space (1999) (Comedy|Crime): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- 2001: A Space Odyssey (1968) (Adventure|Drama|Sci-Fi)
+- As Good as It Gets (1997) (Comedy|Drama|Romance)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.55 and the second movie 3.78. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+198486,908,3793,4.0,2.0,3.501628865459284,3.4687326281582926,1,"Person 1 has reviewed the following movies:
+
+- Three Colors: Red (Trois couleurs: Rouge) (1994) (Drama): Rated 4.0/5
+- Rock, The (1996) (Action|Adventure|Thriller): Rated 3.0/5
+- Robin Hood: Prince of Thieves (1991) (Adventure|Drama): Rated 3.0/5
+- Austin Powers: International Man of Mystery (1997) (Action|Adventure|Comedy): Rated 4.0/5
+- American Psycho (2000) (Crime|Horror|Mystery|Thriller): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- North by Northwest (1959) (Action|Adventure|Mystery|Romance|Thriller)
+- X-Men (2000) (Action|Adventure|Sci-Fi)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Three Colors: Red (Trois couleurs: Rouge) (1994) (Drama): Rated 4.0/5
+- Rock, The (1996) (Action|Adventure|Thriller): Rated 3.0/5
+- Robin Hood: Prince of Thieves (1991) (Adventure|Drama): Rated 3.0/5
+- Austin Powers: International Man of Mystery (1997) (Action|Adventure|Comedy): Rated 4.0/5
+- American Psycho (2000) (Crime|Horror|Mystery|Thriller): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- North by Northwest (1959) (Action|Adventure|Mystery|Romance|Thriller)
+- X-Men (2000) (Action|Adventure|Sci-Fi)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.5 and the second movie 3.47. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+198615,1291,3114,3.5,4.0,3.4231734539861107,3.5190671838989385,2,"Person 1 has reviewed the following movies:
+
+- Sense and Sensibility (1995) (Drama|Romance): Rated 3.5/5
+- Monster's Ball (2001) (Drama|Romance): Rated 4.0/5
+- Robin Hood: Men in Tights (1993) (Comedy): Rated 3.5/5
+- Man Who Knew Too Much, The (1934) (Drama|Thriller): Rated 3.5/5
+- Phenomenon (1996) (Drama|Romance): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Indiana Jones and the Last Crusade (1989) (Action|Adventure)
+- Toy Story 2 (1999) (Adventure|Animation|Children|Comedy|Fantasy)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Sense and Sensibility (1995) (Drama|Romance): Rated 3.5/5
+- Monster's Ball (2001) (Drama|Romance): Rated 4.0/5
+- Robin Hood: Men in Tights (1993) (Comedy): Rated 3.5/5
+- Man Who Knew Too Much, The (1934) (Drama|Thriller): Rated 3.5/5
+- Phenomenon (1996) (Drama|Romance): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Indiana Jones and the Last Crusade (1989) (Action|Adventure)
+- Toy Story 2 (1999) (Adventure|Animation|Children|Comedy|Fantasy)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.42 and the second movie 3.52. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+198113,48394,3753,5.0,3.0,3.6357931289455268,3.7615539563728246,1,"Person 1 has reviewed the following movies:
+
+- That Thing You Do! (1996) (Comedy|Drama): Rated 4.5/5
+- Manhattan (1979) (Comedy|Drama|Romance): Rated 2.5/5
+- Time After Time (1979) (Sci-Fi|Thriller): Rated 4.5/5
+- Gattaca (1997) (Drama|Sci-Fi|Thriller): Rated 4.0/5
+- Midnight Express (1978) (Drama): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Pan's Labyrinth (Laberinto del fauno, El) (2006) (Drama|Fantasy|Thriller)
+- Patriot, The (2000) (Action|Drama|War)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- That Thing You Do! (1996) (Comedy|Drama): Rated 4.5/5
+- Manhattan (1979) (Comedy|Drama|Romance): Rated 2.5/5
+- Time After Time (1979) (Sci-Fi|Thriller): Rated 4.5/5
+- Gattaca (1997) (Drama|Sci-Fi|Thriller): Rated 4.0/5
+- Midnight Express (1978) (Drama): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Pan's Labyrinth (Laberinto del fauno, El) (2006) (Drama|Fantasy|Thriller)
+- Patriot, The (2000) (Action|Drama|War)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.64 and the second movie 3.76. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+198981,5349,1214,3.5,5.0,3.4149698457734035,3.3163587498460285,2,"Person 1 has reviewed the following movies:
+
+- Deliverance (1972) (Adventure|Drama|Thriller): Rated 4.5/5
+- Blade Runner (1982) (Action|Sci-Fi|Thriller): Rated 5.0/5
+- Being John Malkovich (1999) (Comedy|Drama|Fantasy): Rated 5.0/5
+- Rocky (1976) (Drama): Rated 3.5/5
+- Chasing Amy (1997) (Comedy|Drama|Romance): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Spider-Man (2002) (Action|Adventure|Sci-Fi|Thriller)
+- Alien (1979) (Horror|Sci-Fi)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Deliverance (1972) (Adventure|Drama|Thriller): Rated 4.5/5
+- Blade Runner (1982) (Action|Sci-Fi|Thriller): Rated 5.0/5
+- Being John Malkovich (1999) (Comedy|Drama|Fantasy): Rated 5.0/5
+- Rocky (1976) (Drama): Rated 3.5/5
+- Chasing Amy (1997) (Comedy|Drama|Romance): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Spider-Man (2002) (Action|Adventure|Sci-Fi|Thriller)
+- Alien (1979) (Horror|Sci-Fi)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.41 and the second movie 3.32. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+200761,5449,4880,1.0,2.5,3.3525965216635494,3.653097466861474,2,"Person 1 has reviewed the following movies:
+
+- Mallrats (1995) (Comedy|Romance): Rated 2.5/5
+- Hudsucker Proxy, The (1994) (Comedy): Rated 2.0/5
+- Life of David Gale, The (2003) (Crime|Drama|Thriller): Rated 3.0/5
+- Meet the Parents (2000) (Comedy): Rated 4.0/5
+- Scary Movie 2 (2001) (Comedy): Rated 2.0/5
+
+Consider these two movies they have not seen:
+
+- Life as a House (2001) (Drama)
+- Mr. Deeds (2002) (Comedy|Romance)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Mallrats (1995) (Comedy|Romance): Rated 2.5/5
+- Hudsucker Proxy, The (1994) (Comedy): Rated 2.0/5
+- Life of David Gale, The (2003) (Crime|Drama|Thriller): Rated 3.0/5
+- Meet the Parents (2000) (Comedy): Rated 4.0/5
+- Scary Movie 2 (2001) (Comedy): Rated 2.0/5
+
+Consider these two movies they have not seen:
+
+- Life as a House (2001) (Drama)
+- Mr. Deeds (2002) (Comedy|Romance)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.35 and the second movie 3.65. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+195743,32587,1287,4.0,3.0,3.8077230651677048,3.622996341235832,1,"Person 1 has reviewed the following movies:
+
+- Lantana (2001) (Drama|Mystery|Thriller): Rated 2.0/5
+- Austin Powers: The Spy Who Shagged Me (1999) (Action|Adventure|Comedy): Rated 2.0/5
+- Chariots of Fire (1981) (Drama): Rated 3.5/5
+- Blind Side, The  (2009) (Drama): Rated 3.0/5
+- Superman III (1983) (Action|Adventure|Sci-Fi): Rated 1.0/5
+
+Consider these two movies they have not seen:
+
+- Sin City (2005) (Action|Crime|Film-Noir|Mystery|Thriller)
+- Ben-Hur (1959) (Action|Adventure|Drama)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Lantana (2001) (Drama|Mystery|Thriller): Rated 2.0/5
+- Austin Powers: The Spy Who Shagged Me (1999) (Action|Adventure|Comedy): Rated 2.0/5
+- Chariots of Fire (1981) (Drama): Rated 3.5/5
+- Blind Side, The  (2009) (Drama): Rated 3.0/5
+- Superman III (1983) (Action|Adventure|Sci-Fi): Rated 1.0/5
+
+Consider these two movies they have not seen:
+
+- Sin City (2005) (Action|Crime|Film-Noir|Mystery|Thriller)
+- Ben-Hur (1959) (Action|Adventure|Drama)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.81 and the second movie 3.62. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+196616,2496,4876,1.5,1.0,3.3531574514127898,3.2112405192134754,1,"Person 1 has reviewed the following movies:
+
+- Sin City: A Dame to Kill For (2014) (Action|Crime|Thriller): Rated 5.0/5
+- Sleepy Hollow (1999) (Fantasy|Horror|Mystery|Romance): Rated 2.0/5
+- Windtalkers (2002) (Action|Drama|War): Rated 1.5/5
+- War of the Worlds, The (1953) (Action|Drama|Sci-Fi): Rated 1.0/5
+- Body of Lies (2008) (Action|Drama|Thriller): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Thirteen Ghosts (a.k.a. Thir13en Ghosts) (2001) (Horror|Thriller)
+- Blast from the Past (1999) (Comedy|Romance)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Sin City: A Dame to Kill For (2014) (Action|Crime|Thriller): Rated 5.0/5
+- Sleepy Hollow (1999) (Fantasy|Horror|Mystery|Romance): Rated 2.0/5
+- Windtalkers (2002) (Action|Drama|War): Rated 1.5/5
+- War of the Worlds, The (1953) (Action|Drama|Sci-Fi): Rated 1.0/5
+- Body of Lies (2008) (Action|Drama|Thriller): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Thirteen Ghosts (a.k.a. Thir13en Ghosts) (2001) (Horror|Thriller)
+- Blast from the Past (1999) (Comedy|Romance)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.35 and the second movie 3.21. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+195577,1213,6874,4.0,5.0,3.857024379444971,3.493234583410313,2,"Person 1 has reviewed the following movies:
+
+- Tangled (2010) (Animation|Children|Comedy|Fantasy|Musical|Romance|IMAX): Rated 3.5/5
+- Up (2009) (Adventure|Animation|Children|Drama): Rated 3.5/5
+- Source Code (2011) (Action|Drama|Mystery|Sci-Fi|Thriller): Rated 4.5/5
+- Moon (2009) (Drama|Mystery|Sci-Fi|Thriller): Rated 4.0/5
+- Prestige, The (2006) (Drama|Mystery|Sci-Fi|Thriller): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Goodfellas (1990) (Crime|Drama)
+- Kill Bill: Vol. 1 (2003) (Action|Crime|Thriller)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Tangled (2010) (Animation|Children|Comedy|Fantasy|Musical|Romance|IMAX): Rated 3.5/5
+- Up (2009) (Adventure|Animation|Children|Drama): Rated 3.5/5
+- Source Code (2011) (Action|Drama|Mystery|Sci-Fi|Thriller): Rated 4.5/5
+- Moon (2009) (Drama|Mystery|Sci-Fi|Thriller): Rated 4.0/5
+- Prestige, The (2006) (Drama|Mystery|Sci-Fi|Thriller): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Goodfellas (1990) (Crime|Drama)
+- Kill Bill: Vol. 1 (2003) (Action|Crime|Thriller)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.86 and the second movie 3.49. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+199383,3147,97752,5.0,2.0,3.8553415901972508,3.738928455800336,1,"Person 1 has reviewed the following movies:
+
+- Pianist, The (2002) (Drama|War): Rated 5.0/5
+- The Danish Girl (2015) (Drama): Rated 2.0/5
+- Ocean's Eleven (2001) (Crime|Thriller): Rated 5.0/5
+- Harry Potter and the Deathly Hallows: Part 2 (2011) (Action|Adventure|Drama|Fantasy|Mystery|IMAX): Rated 4.5/5
+- Finding Nemo (2003) (Adventure|Animation|Children|Comedy): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Cloud Atlas (2012) (Drama|Sci-Fi|IMAX)
+- Green Mile, The (1999) (Crime|Drama)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Pianist, The (2002) (Drama|War): Rated 5.0/5
+- The Danish Girl (2015) (Drama): Rated 2.0/5
+- Ocean's Eleven (2001) (Crime|Thriller): Rated 5.0/5
+- Harry Potter and the Deathly Hallows: Part 2 (2011) (Action|Adventure|Drama|Fantasy|Mystery|IMAX): Rated 4.5/5
+- Finding Nemo (2003) (Adventure|Animation|Children|Comedy): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Cloud Atlas (2012) (Drama|Sci-Fi|IMAX)
+- Green Mile, The (1999) (Crime|Drama)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.86 and the second movie 3.74. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+195650,2153,2294,1.0,4.0,3.4214906647383905,3.5192541604820184,2,"Person 1 has reviewed the following movies:
+
+- Von Ryan's Express (1965) (Action|Adventure|Drama|War): Rated 4.0/5
+- Star Wars: Episode IV - A New Hope (1977) (Action|Adventure|Sci-Fi): Rated 4.0/5
+- There's Something About Mary (1998) (Comedy|Romance): Rated 4.0/5
+- The Hunger (1983) (Horror): Rated 4.0/5
+- Time Bandits (1981) (Adventure|Comedy|Fantasy|Sci-Fi): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Antz (1998) (Adventure|Animation|Children|Comedy|Fantasy)
+- Avengers, The (1998) (Action|Adventure)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Von Ryan's Express (1965) (Action|Adventure|Drama|War): Rated 4.0/5
+- Star Wars: Episode IV - A New Hope (1977) (Action|Adventure|Sci-Fi): Rated 4.0/5
+- There's Something About Mary (1998) (Comedy|Romance): Rated 4.0/5
+- The Hunger (1983) (Horror): Rated 4.0/5
+- Time Bandits (1981) (Adventure|Comedy|Fantasy|Sci-Fi): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Antz (1998) (Adventure|Animation|Children|Comedy|Fantasy)
+- Avengers, The (1998) (Action|Adventure)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.42 and the second movie 3.52. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+199470,7619,67087,4.5,4.0,3.660389553601596,3.343649208559553,1,"Person 1 has reviewed the following movies:
+
+- The Artist (2011) (Comedy|Drama|Romance): Rated 4.0/5
+- Room (2015) (Drama): Rated 5.0/5
+- Barbie (2023) (Comedy): Rated 4.5/5
+- Social Network, The (2010) (Drama): Rated 4.5/5
+- Spy Kids (2001) (Action|Adventure|Children|Comedy): Rated 2.0/5
+
+Consider these two movies they have not seen:
+
+- Miracle Worker, The (1962) (Drama)
+- I Love You, Man (2009) (Comedy)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- The Artist (2011) (Comedy|Drama|Romance): Rated 4.0/5
+- Room (2015) (Drama): Rated 5.0/5
+- Barbie (2023) (Comedy): Rated 4.5/5
+- Social Network, The (2010) (Drama): Rated 4.5/5
+- Spy Kids (2001) (Action|Adventure|Children|Comedy): Rated 2.0/5
+
+Consider these two movies they have not seen:
+
+- Miracle Worker, The (1962) (Drama)
+- I Love You, Man (2009) (Comedy)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.66 and the second movie 3.34. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+195955,3978,3408,3.0,5.0,3.6609229204669904,3.653284443444554,2,"Person 1 has reviewed the following movies:
+
+- Last Days of Disco, The (1998) (Comedy|Drama): Rated 4.0/5
+- Closet, The (Placard, Le) (2001) (Comedy): Rated 5.0/5
+- Notting Hill (1999) (Comedy|Romance): Rated 4.0/5
+- Witness (1985) (Drama|Romance|Thriller): Rated 5.0/5
+- This Is Spinal Tap (1984) (Comedy): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Legend of Bagger Vance, The (2000) (Drama|Romance)
+- Erin Brockovich (2000) (Drama)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Last Days of Disco, The (1998) (Comedy|Drama): Rated 4.0/5
+- Closet, The (Placard, Le) (2001) (Comedy): Rated 5.0/5
+- Notting Hill (1999) (Comedy|Romance): Rated 4.0/5
+- Witness (1985) (Drama|Romance|Thriller): Rated 5.0/5
+- This Is Spinal Tap (1984) (Comedy): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Legend of Bagger Vance, The (2000) (Drama|Romance)
+- Erin Brockovich (2000) (Drama)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.66 and the second movie 3.65. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+194754,551,186,3.5,2.0,3.6161624373404466,3.3539053577451097,1,"Person 1 has reviewed the following movies:
+
+- Dinosaur (2000) (Adventure|Animation|Children): Rated 2.5/5
+- Gremlins (1984) (Comedy|Horror): Rated 4.0/5
+- Lara Croft: Tomb Raider (2001) (Action|Adventure): Rated 2.5/5
+- History of the World: Part I (1981) (Comedy|Musical): Rated 4.0/5
+- She's All That (1999) (Comedy|Romance): Rated 2.0/5
+
+Consider these two movies they have not seen:
+
+- Nightmare Before Christmas, The (1993) (Animation|Children|Fantasy|Musical)
+- Nine Months (1995) (Comedy|Romance)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Dinosaur (2000) (Adventure|Animation|Children): Rated 2.5/5
+- Gremlins (1984) (Comedy|Horror): Rated 4.0/5
+- Lara Croft: Tomb Raider (2001) (Action|Adventure): Rated 2.5/5
+- History of the World: Part I (1981) (Comedy|Musical): Rated 4.0/5
+- She's All That (1999) (Comedy|Romance): Rated 2.0/5
+
+Consider these two movies they have not seen:
+
+- Nightmare Before Christmas, The (1993) (Animation|Children|Fantasy|Musical)
+- Nine Months (1995) (Comedy|Romance)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.62 and the second movie 3.35. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+199266,102686,5989,0.5,3.5,3.3429013022272325,3.8547806604480104,2,"Person 1 has reviewed the following movies:
+
+- Doors, The (1991) (Drama): Rated 2.5/5
+- Waitress (2007) (Comedy|Drama|Romance): Rated 3.0/5
+- Chronicles of Riddick, The (2004) (Action|Sci-Fi|Thriller): Rated 2.5/5
+- Chronicle (2012) (Action|Sci-Fi|Thriller): Rated 2.5/5
+- Firm, The (1993) (Drama|Thriller): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Hangover Part III, The (2013) (Comedy)
+- Catch Me If You Can (2002) (Crime|Drama)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Doors, The (1991) (Drama): Rated 2.5/5
+- Waitress (2007) (Comedy|Drama|Romance): Rated 3.0/5
+- Chronicles of Riddick, The (2004) (Action|Sci-Fi|Thriller): Rated 2.5/5
+- Chronicle (2012) (Action|Sci-Fi|Thriller): Rated 2.5/5
+- Firm, The (1993) (Drama|Thriller): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Hangover Part III, The (2013) (Comedy)
+- Catch Me If You Can (2002) (Crime|Drama)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.34 and the second movie 3.85. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+199915,2657,1210,2.5,3.0,3.261404877725018,3.4719112300706536,2,"Person 1 has reviewed the following movies:
+
+- Psycho (1960) (Crime|Horror): Rated 3.0/5
+- Bowling for Columbine (2002) (Documentary): Rated 4.0/5
+- Top Gun (1986) (Action|Romance): Rated 2.0/5
+- Rocky (1976) (Drama): Rated 2.5/5
+- Terminator, The (1984) (Action|Sci-Fi|Thriller): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Star Wars: Episode VI - Return of the Jedi (1983) (Action|Adventure|Sci-Fi)
+- Rocky Horror Picture Show, The (1975) (Comedy|Horror|Musical|Sci-Fi)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Psycho (1960) (Crime|Horror): Rated 3.0/5
+- Bowling for Columbine (2002) (Documentary): Rated 4.0/5
+- Top Gun (1986) (Action|Romance): Rated 2.0/5
+- Rocky (1976) (Drama): Rated 2.5/5
+- Terminator, The (1984) (Action|Sci-Fi|Thriller): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Star Wars: Episode VI - Return of the Jedi (1983) (Action|Adventure|Sci-Fi)
+- Rocky Horror Picture Show, The (1975) (Comedy|Horror|Musical|Sci-Fi)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.26 and the second movie 3.47. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+194776,924,48385,4.5,4.0,3.7826861500527422,3.3442101383087928,1,"Person 1 has reviewed the following movies:
+
+- Angel-A (2005) (Comedy|Drama|Fantasy|Romance): Rated 5.0/5
+- American Beauty (1999) (Drama|Romance): Rated 1.0/5
+- Fish Called Wanda, A (1988) (Comedy|Crime): Rated 4.5/5
+- Shawshank Redemption, The (1994) (Crime|Drama): Rated 4.0/5
+- Amelie (Fabuleux destin d'Amélie Poulain, Le) (2001) (Comedy|Romance): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Borat: Cultural Learnings of America for Make Benefit Glorious Nation of Kazakhstan (2006) (Comedy)
+- 2001: A Space Odyssey (1968) (Adventure|Drama|Sci-Fi)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Angel-A (2005) (Comedy|Drama|Fantasy|Romance): Rated 5.0/5
+- American Beauty (1999) (Drama|Romance): Rated 1.0/5
+- Fish Called Wanda, A (1988) (Comedy|Crime): Rated 4.5/5
+- Shawshank Redemption, The (1994) (Crime|Drama): Rated 4.0/5
+- Amelie (Fabuleux destin d'Amélie Poulain, Le) (2001) (Comedy|Romance): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Borat: Cultural Learnings of America for Make Benefit Glorious Nation of Kazakhstan (2006) (Comedy)
+- 2001: A Space Odyssey (1968) (Adventure|Drama|Sci-Fi)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.78 and the second movie 3.34. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+195375,2252,1307,2.0,4.0,3.5410414002292336,3.35502721724359,2,"Person 1 has reviewed the following movies:
+
+- Fear and Loathing in Las Vegas (1998) (Adventure|Comedy|Drama): Rated 4.0/5
+- Twelve Monkeys (a.k.a. 12 Monkeys) (1995) (Mystery|Sci-Fi|Thriller): Rated 2.0/5
+- Rambo: First Blood Part II (1985) (Action|Adventure|Thriller): Rated 1.0/5
+- Mystery Science Theater 3000: The Movie (1996) (Comedy|Sci-Fi): Rated 3.0/5
+- Butch Cassidy and the Sundance Kid (1969) (Action|Western): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Hero (1992) (Comedy|Drama)
+- When Harry Met Sally... (1989) (Comedy|Romance)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Fear and Loathing in Las Vegas (1998) (Adventure|Comedy|Drama): Rated 4.0/5
+- Twelve Monkeys (a.k.a. 12 Monkeys) (1995) (Mystery|Sci-Fi|Thriller): Rated 2.0/5
+- Rambo: First Blood Part II (1985) (Action|Adventure|Thriller): Rated 1.0/5
+- Mystery Science Theater 3000: The Movie (1996) (Comedy|Sci-Fi): Rated 3.0/5
+- Butch Cassidy and the Sundance Kid (1969) (Action|Western): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Hero (1992) (Comedy|Drama)
+- When Harry Met Sally... (1989) (Comedy|Romance)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.54 and the second movie 3.36. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+196330,2997,256,4.0,3.0,3.5767519383658555,3.394069773891816,1,"Person 1 has reviewed the following movies:
+
+- High Noon (1952) (Drama|Western): Rated 4.0/5
+- Monty Python's Life of Brian (1979) (Comedy): Rated 5.0/5
+- Schindler's List (1993) (Drama|War): Rated 4.5/5
+- Back to the Future (1985) (Adventure|Comedy|Sci-Fi): Rated 3.5/5
+- Down with Love (2003) (Comedy|Romance): Rated 4.5/5
+
+Consider these two movies they have not seen:
+
+- Junior (1994) (Comedy|Sci-Fi)
+- Being John Malkovich (1999) (Comedy|Drama|Fantasy)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- High Noon (1952) (Drama|Western): Rated 4.0/5
+- Monty Python's Life of Brian (1979) (Comedy): Rated 5.0/5
+- Schindler's List (1993) (Drama|War): Rated 4.5/5
+- Back to the Future (1985) (Adventure|Comedy|Sci-Fi): Rated 3.5/5
+- Down with Love (2003) (Comedy|Romance): Rated 4.5/5
+
+Consider these two movies they have not seen:
+
+- Junior (1994) (Comedy|Sci-Fi)
+- Being John Malkovich (1999) (Comedy|Drama|Fantasy)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.58 and the second movie 3.39. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+199004,112399,117887,4.0,3.0,3.58967417856316,3.087374210672301,1,"Person 1 has reviewed the following movies:
+
+- 2 Days in New York (2012) (Comedy): Rated 3.0/5
+- Cobra (1986) (Action|Crime): Rated 2.0/5
+- Barton Fink (1991) (Drama|Thriller): Rated 3.0/5
+- Illusionist, The (L'illusionniste) (2010) (Animation): Rated 5.0/5
+- George Carlin: Life Is Worth Losing (2005) (Comedy): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Finding Vivian Maier (2013) (Documentary)
+- Paddington (2014) (Children|Comedy)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- 2 Days in New York (2012) (Comedy): Rated 3.0/5
+- Cobra (1986) (Action|Crime): Rated 2.0/5
+- Barton Fink (1991) (Drama|Thriller): Rated 3.0/5
+- Illusionist, The (L'illusionniste) (2010) (Animation): Rated 5.0/5
+- George Carlin: Life Is Worth Losing (2005) (Comedy): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Finding Vivian Maier (2013) (Documentary)
+- Paddington (2014) (Children|Comedy)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.59 and the second movie 3.09. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+196417,357,331,4.0,3.0,3.3540923343281897,3.6544063029430345,1,"Person 1 has reviewed the following movies:
+
+- In the Name of the Father (1993) (Drama): Rated 5.0/5
+- Vanya on 42nd Street (1994) (Drama): Rated 3.0/5
+- Much Ado About Nothing (1993) (Comedy|Romance): Rated 3.0/5
+- Michael Collins (1996) (Drama): Rated 4.0/5
+- Legends of the Fall (1994) (Drama|Romance|War|Western): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Four Weddings and a Funeral (1994) (Comedy|Romance)
+- Tom & Viv (1994) (Drama)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- In the Name of the Father (1993) (Drama): Rated 5.0/5
+- Vanya on 42nd Street (1994) (Drama): Rated 3.0/5
+- Much Ado About Nothing (1993) (Comedy|Romance): Rated 3.0/5
+- Michael Collins (1996) (Drama): Rated 4.0/5
+- Legends of the Fall (1994) (Drama|Romance|War|Western): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Four Weddings and a Funeral (1994) (Comedy|Romance)
+- Tom & Viv (1994) (Drama)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.35 and the second movie 3.65. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+197243,4037,852,5.0,1.0,3.924845325141714,3.5479319709193495,1,"Person 1 has reviewed the following movies:
+
+- Get Shorty (1995) (Comedy|Crime|Thriller): Rated 1.0/5
+- Stargate (1994) (Action|Adventure|Sci-Fi): Rated 3.0/5
+- Snow White and the Seven Dwarfs (1937) (Animation|Children|Drama|Fantasy|Musical): Rated 2.0/5
+- Twin Peaks: Fire Walk with Me (1992) (Crime|Drama|Mystery|Thriller): Rated 4.0/5
+- Frantic (1988) (Crime|Mystery|Thriller): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Tin Cup (1996) (Comedy|Drama|Romance)
+- House of Games (1987) (Crime|Film-Noir|Mystery|Thriller)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Get Shorty (1995) (Comedy|Crime|Thriller): Rated 1.0/5
+- Stargate (1994) (Action|Adventure|Sci-Fi): Rated 3.0/5
+- Snow White and the Seven Dwarfs (1937) (Animation|Children|Drama|Fantasy|Musical): Rated 2.0/5
+- Twin Peaks: Fire Walk with Me (1992) (Crime|Drama|Mystery|Thriller): Rated 4.0/5
+- Frantic (1988) (Crime|Mystery|Thriller): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Tin Cup (1996) (Comedy|Drama|Romance)
+- House of Games (1987) (Crime|Film-Noir|Mystery|Thriller)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.92 and the second movie 3.55. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+197696,74530,4344,3.5,4.0,3.57002300143818,3.741210955552522,2,"Person 1 has reviewed the following movies:
+
+- Children of Men (2006) (Action|Adventure|Drama|Sci-Fi|Thriller): Rated 5.0/5
+- My Cousin Vinny (1992) (Comedy): Rated 4.5/5
+- Cloud Atlas (2012) (Drama|Sci-Fi|IMAX): Rated 4.0/5
+- Hall Pass (2011) (Comedy): Rated 3.0/5
+- State of Play (2009) (Crime|Drama|Thriller): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Swordfish (2001) (Action|Crime|Drama)
+- Percy Jackson & the Olympians: The Lightning Thief (2010) (Adventure|Fantasy)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Children of Men (2006) (Action|Adventure|Drama|Sci-Fi|Thriller): Rated 5.0/5
+- My Cousin Vinny (1992) (Comedy): Rated 4.5/5
+- Cloud Atlas (2012) (Drama|Sci-Fi|IMAX): Rated 4.0/5
+- Hall Pass (2011) (Comedy): Rated 3.0/5
+- State of Play (2009) (Crime|Drama|Thriller): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Swordfish (2001) (Action|Crime|Drama)
+- Percy Jackson & the Olympians: The Lightning Thief (2010) (Adventure|Fantasy)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.57 and the second movie 3.74. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+198515,192325,179815,3.0,2.5,3.5995839374664027,3.5967170123134644,1,"Person 1 has reviewed the following movies:
+
+- Suspect, The (Yong-eui-ja) (2013) (Action|Thriller): Rated 2.0/5
+- Doors, The (1991) (Drama): Rated 2.0/5
+- Friendly Persuasion (1956) (Drama): Rated 2.0/5
+- Deep Impact (1998) (Drama|Sci-Fi|Thriller): Rated 3.0/5
+- Black Book (Zwartboek) (2006) (Drama|Thriller|War): Rated 2.5/5
+
+Consider these two movies they have not seen:
+
+- Roman J. Israel, Esq. (2017) (Drama|Thriller)
+- Jazz on a Summer's Day (1960) (Documentary)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Suspect, The (Yong-eui-ja) (2013) (Action|Thriller): Rated 2.0/5
+- Doors, The (1991) (Drama): Rated 2.0/5
+- Friendly Persuasion (1956) (Drama): Rated 2.0/5
+- Deep Impact (1998) (Drama|Sci-Fi|Thriller): Rated 3.0/5
+- Black Book (Zwartboek) (2006) (Drama|Thriller|War): Rated 2.5/5
+
+Consider these two movies they have not seen:
+
+- Roman J. Israel, Esq. (2017) (Drama|Thriller)
+- Jazz on a Summer's Day (1960) (Documentary)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.6 and the second movie 3.6. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+196394,44195,608,4.0,3.5,3.5384237280661126,3.6887748348478,1,"Person 1 has reviewed the following movies:
+
+- 5 Centimeters per Second (Byôsoku 5 senchimêtoru) (2007) (Animation|Drama|Romance): Rated 4.0/5
+- Scott Pilgrim vs. the World (2010) (Action|Comedy|Fantasy|Musical|Romance): Rated 5.0/5
+- Graduate, The (1967) (Comedy|Drama|Romance): Rated 4.0/5
+- Dogma (1999) (Adventure|Comedy|Fantasy): Rated 4.5/5
+- Hurt Locker, The (2008) (Action|Drama|Thriller|War): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Fargo (1996) (Comedy|Crime|Drama|Thriller)
+- Thank You for Smoking (2006) (Comedy|Drama)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- 5 Centimeters per Second (Byôsoku 5 senchimêtoru) (2007) (Animation|Drama|Romance): Rated 4.0/5
+- Scott Pilgrim vs. the World (2010) (Action|Comedy|Fantasy|Musical|Romance): Rated 5.0/5
+- Graduate, The (1967) (Comedy|Drama|Romance): Rated 4.0/5
+- Dogma (1999) (Adventure|Comedy|Fantasy): Rated 4.5/5
+- Hurt Locker, The (2008) (Action|Drama|Thriller|War): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Fargo (1996) (Comedy|Crime|Drama|Thriller)
+- Thank You for Smoking (2006) (Comedy|Drama)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.54 and the second movie 3.69. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+194931,1916,1701,3.0,3.5,3.661296873633151,3.5401065173138333,2,"Person 1 has reviewed the following movies:
+
+- Insider, The (1999) (Drama|Thriller): Rated 3.0/5
+- Blade Runner (1982) (Action|Sci-Fi|Thriller): Rated 3.0/5
+- Magnolia (1999) (Drama): Rated 2.5/5
+- The Interview (2014) (Action|Comedy): Rated 1.5/5
+- The Devil's Advocate (1997) (Drama|Mystery|Thriller): Rated 2.5/5
+
+Consider these two movies they have not seen:
+
+- Buffalo '66 (a.k.a. Buffalo 66) (1998) (Drama|Romance)
+- Deconstructing Harry (1997) (Comedy|Drama)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Insider, The (1999) (Drama|Thriller): Rated 3.0/5
+- Blade Runner (1982) (Action|Sci-Fi|Thriller): Rated 3.0/5
+- Magnolia (1999) (Drama): Rated 2.5/5
+- The Interview (2014) (Action|Comedy): Rated 1.5/5
+- The Devil's Advocate (1997) (Drama|Mystery|Thriller): Rated 2.5/5
+
+Consider these two movies they have not seen:
+
+- Buffalo '66 (a.k.a. Buffalo 66) (1998) (Drama|Romance)
+- Deconstructing Harry (1997) (Comedy|Drama)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.66 and the second movie 3.54. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+200915,316,59022,3.5,2.5,3.469854487656773,3.4196387245061968,1,"Person 1 has reviewed the following movies:
+
+- Star Wars: Episode V - The Empire Strikes Back (1980) (Action|Adventure|Sci-Fi): Rated 4.5/5
+- Walk the Line (2005) (Drama|Musical|Romance): Rated 3.5/5
+- Rum Diary, The (2011) (Comedy|Drama|Thriller): Rated 2.5/5
+- X-Men (2000) (Action|Adventure|Sci-Fi): Rated 4.0/5
+- Ocean's Thirteen (2007) (Crime|Thriller): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Stargate (1994) (Action|Adventure|Sci-Fi)
+- Harold & Kumar Escape from Guantanamo Bay (2008) (Adventure|Comedy)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Star Wars: Episode V - The Empire Strikes Back (1980) (Action|Adventure|Sci-Fi): Rated 4.5/5
+- Walk the Line (2005) (Drama|Musical|Romance): Rated 3.5/5
+- Rum Diary, The (2011) (Comedy|Drama|Thriller): Rated 2.5/5
+- X-Men (2000) (Action|Adventure|Sci-Fi): Rated 4.0/5
+- Ocean's Thirteen (2007) (Crime|Thriller): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Stargate (1994) (Action|Adventure|Sci-Fi)
+- Harold & Kumar Escape from Guantanamo Bay (2008) (Adventure|Comedy)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.47 and the second movie 3.42. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+199840,3953,3578,2.0,4.0,3.3529704748297093,3.61533030132955,2,"Person 1 has reviewed the following movies:
+
+- Never Been Kissed (1999) (Comedy|Romance): Rated 2.0/5
+- Reindeer Games (2000) (Action|Thriller): Rated 1.0/5
+- Space Jam (1996) (Adventure|Animation|Children|Comedy|Fantasy|Sci-Fi): Rated 1.0/5
+- Me Myself I (2000) (Comedy|Romance): Rated 1.0/5
+- Duets (2000) (Comedy|Drama): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Gladiator (2000) (Action|Adventure|Drama)
+- Dr. T and the Women (2000) (Comedy|Romance)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Never Been Kissed (1999) (Comedy|Romance): Rated 2.0/5
+- Reindeer Games (2000) (Action|Thriller): Rated 1.0/5
+- Space Jam (1996) (Adventure|Animation|Children|Comedy|Fantasy|Sci-Fi): Rated 1.0/5
+- Me Myself I (2000) (Comedy|Romance): Rated 1.0/5
+- Duets (2000) (Comedy|Drama): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Gladiator (2000) (Action|Adventure|Drama)
+- Dr. T and the Women (2000) (Comedy|Romance)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.35 and the second movie 3.62. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+195348,8228,4308,5.0,4.0,3.5905687040968224,3.7187730213105414,1,"Person 1 has reviewed the following movies:
+
+- Third Man, The (1949) (Film-Noir|Mystery|Thriller): Rated 5.0/5
+- Billy Elliot (2000) (Drama): Rated 2.5/5
+- Philadelphia (1993) (Drama): Rated 2.5/5
+- Nine Months (1995) (Comedy|Romance): Rated 2.5/5
+- True Romance (1993) (Crime|Thriller): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Moulin Rouge (2001) (Drama|Musical|Romance)
+- Maltese Falcon, The (a.k.a. Dangerous Female) (1931) (Mystery)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Third Man, The (1949) (Film-Noir|Mystery|Thriller): Rated 5.0/5
+- Billy Elliot (2000) (Drama): Rated 2.5/5
+- Philadelphia (1993) (Drama): Rated 2.5/5
+- Nine Months (1995) (Comedy|Romance): Rated 2.5/5
+- True Romance (1993) (Crime|Thriller): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Moulin Rouge (2001) (Drama|Musical|Romance)
+- Maltese Falcon, The (a.k.a. Dangerous Female) (1931) (Mystery)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.59 and the second movie 3.72. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+198876,5989,5540,4.0,3.0,3.8547806604480104,3.4693271178913694,1,"Person 1 has reviewed the following movies:
+
+- Minority Report (2002) (Action|Crime|Mystery|Sci-Fi|Thriller): Rated 4.0/5
+- Mr. Deeds (2002) (Comedy|Romance): Rated 4.0/5
+- I Know What You Did Last Summer (1997) (Horror|Mystery|Thriller): Rated 3.0/5
+- Dances with Wolves (1990) (Adventure|Drama|Western): Rated 4.0/5
+- Tarzan (1999) (Adventure|Animation|Children|Drama): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Clash of the Titans (1981) (Action|Adventure|Fantasy|Romance)
+- Catch Me If You Can (2002) (Crime|Drama)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Minority Report (2002) (Action|Crime|Mystery|Sci-Fi|Thriller): Rated 4.0/5
+- Mr. Deeds (2002) (Comedy|Romance): Rated 4.0/5
+- I Know What You Did Last Summer (1997) (Horror|Mystery|Thriller): Rated 3.0/5
+- Dances with Wolves (1990) (Adventure|Drama|Western): Rated 4.0/5
+- Tarzan (1999) (Adventure|Animation|Children|Drama): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Clash of the Titans (1981) (Action|Adventure|Fantasy|Romance)
+- Catch Me If You Can (2002) (Crime|Drama)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.85 and the second movie 3.47. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+196969,2716,750,4.0,5.0,3.2821828582440484,3.5740893492049937,2,"Person 1 has reviewed the following movies:
+
+- Simpsons Movie, The (2007) (Animation|Comedy): Rated 3.5/5
+- Fear and Loathing in Las Vegas (1998) (Adventure|Comedy|Drama): Rated 5.0/5
+- Dear Wendy (2005) (Drama): Rated 3.5/5
+- Sleepy Hollow (1999) (Fantasy|Horror|Mystery|Romance): Rated 4.0/5
+- Bourne Ultimatum, The (2007) (Action|Crime|Thriller): Rated 1.5/5
+
+Consider these two movies they have not seen:
+
+- Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb (1964) (Comedy|War)
+- Ghostbusters (a.k.a. Ghost Busters) (1984) (Action|Comedy|Sci-Fi)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Simpsons Movie, The (2007) (Animation|Comedy): Rated 3.5/5
+- Fear and Loathing in Las Vegas (1998) (Adventure|Comedy|Drama): Rated 5.0/5
+- Dear Wendy (2005) (Drama): Rated 3.5/5
+- Sleepy Hollow (1999) (Fantasy|Horror|Mystery|Romance): Rated 4.0/5
+- Bourne Ultimatum, The (2007) (Action|Crime|Thriller): Rated 1.5/5
+
+Consider these two movies they have not seen:
+
+- Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb (1964) (Comedy|War)
+- Ghostbusters (a.k.a. Ghost Busters) (1984) (Action|Comedy|Sci-Fi)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.28 and the second movie 3.57. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
+199689,4834,491,5.0,4.0,3.3490715294688744,3.6545932795261145,1,"Person 1 has reviewed the following movies:
+
+- Pulp Fiction (1994) (Comedy|Crime|Drama|Thriller): Rated 5.0/5
+- Mercury Rising (1998) (Action|Drama|Thriller): Rated 4.0/5
+- Teenage Mutant Ninja Turtles II: The Secret of the Ooze (1991) (Action|Children|Fantasy): Rated 3.0/5
+- End of Days (1999) (Action|Fantasy|Horror|Mystery|Thriller): Rated 3.0/5
+- X-Men (2000) (Action|Adventure|Sci-Fi): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Cheech & Chong's Next Movie (1980) (Comedy)
+- Man Without a Face, The (1993) (Drama)
+",ols,Qwen/Qwen3-8B,1,0,"[PROMPT]
+Person 1 has reviewed the following movies:
+
+- Pulp Fiction (1994) (Comedy|Crime|Drama|Thriller): Rated 5.0/5
+- Mercury Rising (1998) (Action|Drama|Thriller): Rated 4.0/5
+- Teenage Mutant Ninja Turtles II: The Secret of the Ooze (1991) (Action|Children|Fantasy): Rated 3.0/5
+- End of Days (1999) (Action|Fantasy|Horror|Mystery|Thriller): Rated 3.0/5
+- X-Men (2000) (Action|Adventure|Sci-Fi): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Cheech & Chong's Next Movie (1980) (Comedy)
+- Man Without a Face, The (1993) (Drama)
+An OLS model trained on a similar dataset predicts Person 1 would rate the first movie 3.35 and the second movie 3.65. The OLS model has an R-squared of 0.03. 
+
+Respond with two numbers ONLY on two lines. First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.
+Second, respond 0 to recommend the movie you predicted, or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.
+A decision is correct if it is the movie Person 1 would rate higher.
+
+[RESPONSE]
+1  
+0",,,2026-02-24 14:22:16
