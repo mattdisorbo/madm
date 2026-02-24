@@ -59,8 +59,9 @@ def llm(prompt, model):
     t0 = time.time()
     if model in local_pipes:
         with local_locks[model]:
-            out = local_pipes[model]([{"role": "user", "content": prompt}], max_new_tokens=2048)
+            out = local_pipes[model]([{"role": "system", "content": "/no_think"}, {"role": "user", "content": prompt}], max_new_tokens=512)
         result = out[0]["generated_text"][-1]["content"]
+        result = re.sub(r'<think>.*?</think>', '', result, flags=re.DOTALL).strip()
     elif model == DEEPSEEK_MODEL:
         r = deepseek_client.chat.completions.create(model=model, messages=[{"role": "user", "content": prompt}])
         result = r.choices[0].message.content.strip()
