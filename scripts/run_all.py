@@ -3,24 +3,23 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 scripts_dir = os.path.dirname(os.path.abspath(__file__))
 scripts = [
-    "run_MoralMachine.py",
-    "run_MovieLens.py",
-    "run_WikipediaToxicity.py",
-    "run_FEVEROUS.py",
-    "run_JFLEG.py",
-    "run_LendingClub.py",
-    "run_Uber.py",
-    "run_HotelBookings.py",
     "run_aime.py",
+    "run_LendingClub.py",
+    "run_HotelBookings.py",
+    "run_Uber.py",
+    "run_JFLEG.py",
+    "run_FEVEROUS.py",
+    "run_WikipediaToxicity.py",
+    "run_MovieLens.py",
+    "run_MoralMachine.py",
 ]
 
 def run_script(script):
     path = os.path.join(scripts_dir, script)
     print(f"[START] {script}", flush=True)
-    result = subprocess.run([sys.executable, path], capture_output=True, text=True)
-    print(f"[DONE] {script}\n{result.stdout}", flush=True)
+    result = subprocess.run([sys.executable, path])
+    print(f"[DONE] {script}", flush=True)
     if result.returncode != 0:
-        print(f"[ERROR] {script}\n{result.stderr}", flush=True)
         raise RuntimeError(f"{script} failed with exit code {result.returncode}")
     return script
 
