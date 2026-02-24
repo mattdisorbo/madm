@@ -9,6 +9,8 @@ scripts = [
     "run_FEVEROUS.py",
     "run_JFLEG.py",
     "run_LendingClub.py",
+    "run_Uber.py",
+    "run_HotelBookings.py",
     "run_aime.py",
 ]
 
