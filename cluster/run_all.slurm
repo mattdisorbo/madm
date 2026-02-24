@@ -2,7 +2,7 @@
 #SBATCH -J madm-all
 #SBATCH -o logs/run_all.%j.out
 #SBATCH -e logs/run_all.%j.err
-#SBATCH -p mi2104x
+#SBATCH -p mi3008x
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH -t 12:00:00
