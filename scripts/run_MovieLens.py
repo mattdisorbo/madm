@@ -1,4 +1,4 @@
-import os, re, datetime, threading, random
+import os, re, datetime, threading, random, time
 import numpy as np
 import pandas as pd
 import statsmodels.formula.api as smf
@@ -14,9 +14,10 @@ deepseek_client = openai.OpenAI(
 
 OAI_MODEL        = "gpt-5-mini-2025-08-07"
 OAI_MODEL_NANO   = "gpt-5-nano-2025-08-07"
-QWEN_MODEL       = "Qwen/Qwen2.5-1.5B-Instruct"
-QWEN_MODEL_MED   = "Qwen/Qwen2.5-3B-Instruct"
-QWEN_MODEL_LARGE = "Qwen/Qwen2.5-7B-Instruct"
+QWEN_MODEL       = "Qwen/Qwen3-1.7B"
+QWEN_MODEL_MED   = "Qwen/Qwen3-4B"
+QWEN_MODEL_LARGE = "Qwen/Qwen3-8B"
+QWEN_MODEL_XL    = "Qwen/Qwen3-14B"
 GLM_MODEL        = "THUDM/glm-4-9b-chat-hf"
 DEEPSEEK_MODEL   = "deepseek-chat"
 
@@ -25,10 +26,11 @@ N_SAMPLES_OLS = 10
 N_SAMPLES_AUDITOR = 10
 N_OAI        = 0
 N_NANO       = 0
-N_QWEN       = 0
-N_QWEN_MED   = 0
-N_QWEN_LARGE = 1
-N_GLM        = 1
+N_QWEN       = 2
+N_QWEN_MED   = 2
+N_QWEN_LARGE = 2
+N_QWEN_XL    = 2
+N_GLM        = 0
 N_DEEPSEEK   = 0
 
 DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/MovieLens/movies_and_ratings_last1000000.csv")
@@ -78,25 +80,30 @@ df = df.merge(split_df, on='user_movie_key', how='left')
 local_pipes = {}
 local_locks = {}
 
-for _m, _n in [(QWEN_MODEL, N_QWEN), (QWEN_MODEL_MED, N_QWEN_MED), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (GLM_MODEL, N_GLM)]:
+for _m, _n in [(QWEN_MODEL, N_QWEN), (QWEN_MODEL_MED, N_QWEN_MED), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (QWEN_MODEL_XL, N_QWEN_XL), (GLM_MODEL, N_GLM)]:
     if _n > 0:
         from transformers import pipeline
         print(f"Loading {_m}...", flush=True)
+        _t = time.time()
         local_pipes[_m] = pipeline("text-generation", model=_m, torch_dtype="auto", device_map="auto", trust_remote_code=True)
+        print(f"Loaded {_m.split(chr(47))[-1]} in {time.time()-_t:.1f}s", flush=True)
         local_locks[_m] = threading.Lock()
         print(f"{_m} loaded.", flush=True)
 
 def llm(prompt, model):
+    t0 = time.time()
     if model in local_pipes:
         with local_locks[model]:
             out = local_pipes[model]([{"role": "user", "content": prompt}], max_new_tokens=2048)
-        return out[0]["generated_text"][-1]["content"]
+        result = out[0]["generated_text"][-1]["content"]
     elif model == DEEPSEEK_MODEL:
         r = deepseek_client.chat.completions.create(model=model, messages=[{"role": "user", "content": prompt}])
-        return r.choices[0].message.content.strip()
+        result = r.choices[0].message.content.strip()
     else:
         r = oai_client.chat.completions.create(model=model, messages=[{"role": "user", "content": prompt}])
-        return r.choices[0].message.content.strip()
+        result = r.choices[0].message.content.strip()
+    print(f"[{model.split(chr(47))[-1]}] {time.time()-t0:.1f}s", flush=True)
+    return result
 
 def create_prompt_base(row_idx):
     user_id = df.iloc[row_idx]['userId']
@@ -252,7 +259,7 @@ def get_path(method, model):
     return os.path.join(local_dir, f'{method}_{model.split("/")[-1]}.csv')
 
 df_existing = {}
-for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN), (QWEN_MODEL_MED, N_QWEN_MED), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (GLM_MODEL, N_GLM), (DEEPSEEK_MODEL, N_DEEPSEEK)]:
+for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN), (QWEN_MODEL_MED, N_QWEN_MED), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (QWEN_MODEL_XL, N_QWEN_XL), (GLM_MODEL, N_GLM), (DEEPSEEK_MODEL, N_DEEPSEEK)]:
     if n > 0:
         for method in ["base", "ols", "auditor"]:
             path = get_path(method, model)
@@ -265,7 +272,7 @@ test_indices = df.loc[df['split'] == 'test'].index.tolist()
 
 results = []
 completed = 0
-total = (N_OAI + N_NANO + N_QWEN + N_QWEN_MED + N_QWEN_LARGE + N_GLM + N_DEEPSEEK) * (N_SAMPLES_BASE + N_SAMPLES_OLS + N_SAMPLES_AUDITOR)
+total = (N_OAI + N_NANO + N_QWEN + N_QWEN_MED + N_QWEN_LARGE + N_QWEN_XL + N_GLM + N_DEEPSEEK) * (N_SAMPLES_BASE + N_SAMPLES_OLS + N_SAMPLES_AUDITOR)
 save_lock = threading.Lock()
 
 def save_progress():
@@ -291,7 +298,7 @@ def call_llm_tracked(row_idx, method, model):
 
 # --- Build jobs ---
 jobs = []
-for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN), (QWEN_MODEL_MED, N_QWEN_MED), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (GLM_MODEL, N_GLM), (DEEPSEEK_MODEL, N_DEEPSEEK)]:
+for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN), (QWEN_MODEL_MED, N_QWEN_MED), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (QWEN_MODEL_XL, N_QWEN_XL), (GLM_MODEL, N_GLM), (DEEPSEEK_MODEL, N_DEEPSEEK)]:
     if n > 0:
         for method, n_samples in [("base", N_SAMPLES_BASE), ("ols", N_SAMPLES_OLS), ("auditor", N_SAMPLES_AUDITOR)]:
             if n_samples > 0:
@@ -299,7 +306,7 @@ for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QW
                 for idx in sampled:
                     jobs.append((idx, method, model))
 
-print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x | QwenMed {N_QWEN_MED}x | QwenLarge {N_QWEN_LARGE}x | GLM {N_GLM}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | DeepSeek {N_DEEPSEEK}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR})", flush=True)
+print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x | QwenMed {N_QWEN_MED}x | QwenLarge {N_QWEN_LARGE}x | QwenXL {N_QWEN_XL}x | GLM {N_GLM}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | DeepSeek {N_DEEPSEEK}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR})", flush=True)
 with ThreadPoolExecutor(max_workers=5) as executor:
     futures = [executor.submit(call_llm_tracked, idx, method, model) for idx, method, model in jobs]
     for f in as_completed(futures):
