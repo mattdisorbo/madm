@@ -33,6 +33,26 @@ N_QWEN_XL    = 2
 N_GLM        = 0
 N_DEEPSEEK   = 0
 
+import argparse as _ap
+_p = _ap.ArgumentParser()
+_p.add_argument('--model', type=str, default=None)
+_p.add_argument('--n', type=int, default=None)
+_args, _ = _p.parse_known_args()
+if _args.model is not None and _args.n is not None:
+    N_OAI        = 1 if OAI_MODEL        == _args.model else 0
+    N_NANO       = 1 if OAI_MODEL_NANO   == _args.model else 0
+    N_QWEN       = 1 if QWEN_MODEL       == _args.model else 0
+    N_QWEN_MED   = 1 if QWEN_MODEL_MED   == _args.model else 0
+    N_QWEN_LARGE = 1 if QWEN_MODEL_LARGE == _args.model else 0
+    N_QWEN_XL    = 1 if QWEN_MODEL_XL    == _args.model else 0
+    N_GLM        = 1 if GLM_MODEL        == _args.model else 0
+    N_DEEPSEEK   = 1 if DEEPSEEK_MODEL   == _args.model else 0
+    N_SAMPLES_BASE    = _args.n
+    N_SAMPLES_AUDITOR = _args.n
+    N_SAMPLES_RF      = _args.n
+    N_SAMPLES_OLS     = _args.n
+    N_SAMPLES_GLM     = _args.n
+
 DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/hotel_bookings.csv")
 
 # --- Load and clean data ---
