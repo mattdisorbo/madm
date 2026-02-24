@@ -19,7 +19,7 @@ MODELS=(
 )
 
 echo "==> Syncing code to cluster"
-rsync -av --exclude .venv --exclude outputs --exclude .git . "${REMOTE}"
+rsync -av --exclude .venv --exclude outputs --exclude .git . "${REMOTE}" || true
 
 echo "==> Ensuring logs directory exists"
 ssh amd "mkdir -p \$WORK/madm/logs"
