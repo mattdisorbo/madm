@@ -21,11 +21,12 @@ VISUALS_DIR = Path("visuals")
 VISUALS_DIR.mkdir(exist_ok=True)
 
 DATASETS = [
-    "AIME", "FEVEROUS", "JFLEG",
-    "LendingClub", "MoralMachine", "MovieLens", "WikipediaToxicity",
+    "AIME", "FEVEROUS", "HotelBookings", "JFLEG",
+    "LendingClub", "MoralMachine", "MovieLens", "Uber", "WikipediaToxicity",
 ]
-MODELS = ["Qwen2.5-1.5B-Instruct", "gpt-5-mini-2025-08-07", "gpt-5-nano-2025-08-07", "Qwen2.5-7B-Instruct", "glm-4-9b-chat-hf"]
-TOOL_METHODS = {"rf", "ols"}
+MODELS = ["Qwen2.5-1.5B-Instruct", "gpt-5-mini-2025-08-07", "gpt-5-nano-2025-08-07", "Qwen2.5-7B-Instruct", "glm-4-9b-chat-hf",
+          "Qwen3-1.7B", "Qwen3-4B", "Qwen3-8B", "Qwen3-14B"]
+TOOL_METHODS = {"rf", "ols", "glm"}
 
 MODE_ORDER = ["base", "auditor", "tool"]
 MODE_LABELS = {"base": "Base", "auditor": "Auditor", "tool": "Tool"}
@@ -71,10 +72,15 @@ def load_dataset_modes(dataset: str, model: str) -> dict[str, tuple[float, float
 
 
 for model in MODELS:
-    n = len(DATASETS)
+    available = [d for d in DATASETS if list((RESULTS_DIR / d).glob(f"*_{model}.csv"))]
+    n = len(available)
+    if n == 0:
+        continue
     fig, axes = plt.subplots(1, n, figsize=(3.2 * n, 4.5), sharey=True)
+    if n == 1:
+        axes = [axes]
 
-    for ax, dataset in zip(axes, DATASETS):
+    for ax, dataset in zip(axes, available):
         modes_data = load_dataset_modes(dataset, model)
 
         x = np.arange(len(MODE_ORDER))
