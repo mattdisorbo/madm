@@ -82,35 +82,72 @@ def load_records():
     return pd.DataFrame(records)
 
 
-def weighted_stat(grp, num_col):
-    return grp[num_col].sum() / grp["n_rows"].sum()
-
-
 df_all = load_records()
 
-# ── compute row-weighted stats ─────────────────────────────────────────────
-acc_pivot = (
+# per-dataset rates (used for SE computation)
+df_all["acc"] = df_all["n_correct"]   / df_all["n_rows"]
+df_all["dlg"] = df_all["n_delegated"] / df_all["n_rows"]
+
+
+def stats_pivot(df, stat_col):
+    """Return (mean_pivot, se_pivot) both indexed by model × method.
+    Mean = row-weighted across datasets; SE = std of per-dataset rates / sqrt(n)."""
+    mean = (
+        df.groupby(["model", "method"])
+        .apply(lambda g: g["n_" + stat_col.rstrip("_rate")].sum() / g["n_rows"].sum()
+               if stat_col == "acc"
+               else g["n_delegated"].sum() / g["n_rows"].sum(),
+               include_groups=False)
+        .unstack("method")
+        .reindex(index=MODELS, columns=METHODS)
+    )
+    se = (
+        df.groupby(["model", "method"])[stat_col]
+        .agg(lambda x: x.std(ddof=1) / np.sqrt(len(x)))
+        .unstack("method")
+        .reindex(index=MODELS, columns=METHODS)
+    )
+    return mean, se
+
+
+def weighted_mean(g, num_col):
+    return g[num_col].sum() / g["n_rows"].sum()
+
+
+acc_mean = (
     df_all.groupby(["model", "method"])
-    .apply(lambda g: weighted_stat(g, "n_correct"), include_groups=False)
-    .unstack("method")
-    .reindex(index=MODELS, columns=METHODS)
+    .apply(lambda g: weighted_mean(g, "n_correct"), include_groups=False)
+    .unstack("method").reindex(index=MODELS, columns=METHODS)
+)
+acc_se = (
+    df_all.groupby(["model", "method"])["acc"]
+    .agg(lambda x: x.std(ddof=1) / np.sqrt(len(x)))
+    .unstack("method").reindex(index=MODELS, columns=METHODS)
 )
 
-dlg_pivot = (
+dlg_mean = (
     df_all.groupby(["model", "method"])
-    .apply(lambda g: weighted_stat(g, "n_delegated"), include_groups=False)
-    .unstack("method")
-    .reindex(index=MODELS, columns=METHODS)
+    .apply(lambda g: weighted_mean(g, "n_delegated"), include_groups=False)
+    .unstack("method").reindex(index=MODELS, columns=METHODS)
+)
+dlg_se = (
+    df_all.groupby(["model", "method"])["dlg"]
+    .agg(lambda x: x.std(ddof=1) / np.sqrt(len(x)))
+    .unstack("method").reindex(index=MODELS, columns=METHODS)
 )
 
-print("Final accuracy:")
-print(acc_pivot.round(3))
-print("\nDelegation rate:")
-print(dlg_pivot.round(3))
+print("Final accuracy (mean ± SE across datasets):")
+for m in MODELS:
+    for method in METHODS:
+        print(f"  {m:35s} {method}: {acc_mean.loc[m, method]:.3f} ± {acc_se.loc[m, method]:.3f}")
+print("\nDelegation rate (mean ± SE across datasets):")
+for m in MODELS:
+    for method in METHODS:
+        print(f"  {m:35s} {method}: {dlg_mean.loc[m, method]:.3f} ± {dlg_se.loc[m, method]:.3f}")
 
 
 # ── shared chart helper ────────────────────────────────────────────────────
-def make_chart(pivot, ylabel, title, outfile):
+def make_chart(mean_pivot, se_pivot, ylabel, title, outfile):
     n_models = len(MODELS)
     x = np.arange(n_models)
     width = 0.32
@@ -118,11 +155,16 @@ def make_chart(pivot, ylabel, title, outfile):
     fig, ax = plt.subplots(figsize=(10, 4.5))
 
     for i, method in enumerate(METHODS):
-        vals   = pivot[method].values.astype(float)
+        vals = mean_pivot[method].values.astype(float)
+        errs = se_pivot[method].values.astype(float)
         offset = (i - 0.5) * width
-        bars   = ax.bar(x + offset, vals, width,
-                        color=COLORS[method], label=LABELS[method],
-                        zorder=3, edgecolor="white", linewidth=0.5)
+        bars = ax.bar(x + offset, vals, width,
+                      color=COLORS[method], label=LABELS[method],
+                      zorder=3, edgecolor="white", linewidth=0.5)
+        ax.errorbar(
+            x + offset, vals, yerr=errs,
+            fmt="none", color="black", capsize=3, linewidth=1.2, zorder=4,
+        )
         for bar, v in zip(bars, vals):
             if not np.isnan(v):
                 ax.text(
@@ -134,7 +176,7 @@ def make_chart(pivot, ylabel, title, outfile):
 
     ax.set_xticks(x)
     ax.set_xticklabels([MODEL_LABELS[m] for m in MODELS], fontsize=10)
-    ax.set_ylim(0, min(1.12, pivot.max().max() * 1.25 + 0.05))
+    ax.set_ylim(0, min(1.12, (mean_pivot + se_pivot).max().max() * 1.2 + 0.05))
     ax.set_ylabel(ylabel, fontsize=11)
     ax.set_title(title, fontsize=12, pad=10)
     ax.legend(fontsize=10, frameon=False, loc="upper right")
@@ -150,14 +192,14 @@ def make_chart(pivot, ylabel, title, outfile):
 
 
 make_chart(
-    acc_pivot,
+    acc_mean, acc_se,
     ylabel="Final accuracy (row-weighted)",
     title="Final Accuracy by Model and Reasoning Method",
     outfile=OUT_DIR / "fig_accuracy.pdf",
 )
 
 make_chart(
-    dlg_pivot,
+    dlg_mean, dlg_se,
     ylabel="Delegation rate (row-weighted)",
     title="Delegation Rate by Model and Reasoning Method",
     outfile=OUT_DIR / "fig_delegation.pdf",
