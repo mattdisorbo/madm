@@ -11,7 +11,7 @@ export PYTHONUNBUFFERED=1
 export HF_HOME=/work1/harangju/harang/.cache/huggingface
 export PYTORCH_ALLOC_CONF=expandable_segments:True
 
-for DATASET in WikipediaToxicity MovieLens LendingClub FEVEROUS JFLEG HotelBookings Uber MoralMachine AIME; do
+for DATASET in WikipediaToxicity MovieLens LendingClub FEVEROUS JFLEG HotelBookings Uber MoralMachine aime; do
     echo "==> Running ${DATASET} with ${MODEL} (n=${N})"
     python scripts/run_${DATASET}.py --model "${MODEL}" --n "${N}"
 done
