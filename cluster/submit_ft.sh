@@ -17,18 +17,15 @@ fi
 N="$1"
 REMOTE="amd:\$WORK/madm/"
 
-declare -A FT_MODELS
-FT_MODELS["LendingClub"]="ft:gpt-4o-mini-2024-07-18:mit-ide:lendingclub:DDBReFWb"
-FT_MODELS["HotelBookings"]="ft:gpt-4o-mini-2024-07-18:mit-ide:hotelbookings:DDBQuoVq"
-
 echo "==> Syncing code to cluster"
 rsync -av --exclude .venv --exclude outputs --exclude .git --exclude data . "${REMOTE}"
 
 echo "==> Ensuring logs directory exists"
 ssh amd "mkdir -p \$WORK/madm/logs"
 
-for DATASET in "${!FT_MODELS[@]}"; do
-    MODEL="${FT_MODELS[$DATASET]}"
+submit_job() {
+    DATASET="$1"
+    MODEL="$2"
     MODEL_SHORT="${MODEL##*:}"
     JOB_NAME="madm-ft-${DATASET}-${MODEL_SHORT}"
     OUT="logs/ft_${DATASET}_${MODEL_SHORT}.%j.out"
@@ -40,4 +37,7 @@ for DATASET in "${!FT_MODELS[@]}"; do
         --error='${ERR}' \
         --export=ALL,DATASET=${DATASET},MODEL=${MODEL},N=${N} \
         cluster/run_model.slurm"
-done
+}
+
+submit_job "LendingClub"   "ft:gpt-4o-mini-2024-07-18:mit-ide:lendingclub:DDBReFWb"
+submit_job "HotelBookings" "ft:gpt-4o-mini-2024-07-18:mit-ide:hotelbookings:DDBQuoVq"
