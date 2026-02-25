@@ -21,16 +21,16 @@ QWEN_MODEL_XL    = "Qwen/Qwen3-14B"
 GLM_MODEL        = "THUDM/glm-4-9b-chat-hf"
 DEEPSEEK_MODEL   = "deepseek-chat"
 
-N_SAMPLES_BASE    = 10
-N_SAMPLES_OLS = 10
-N_SAMPLES_AUDITOR = 10
-N_SAMPLES_COT = 10
+N_SAMPLES_BASE    = 0
+N_SAMPLES_OLS = 0
+N_SAMPLES_AUDITOR = 0
+N_SAMPLES_COT = 150
 N_OAI        = 0
-N_NANO       = 0
-N_QWEN       = 2
-N_QWEN_MED   = 2
-N_QWEN_LARGE = 2
-N_QWEN_XL    = 2
+N_NANO       = 1
+N_QWEN       = 0
+N_QWEN_MED   = 0
+N_QWEN_LARGE = 0
+N_QWEN_XL    = 0
 N_GLM        = 0
 N_DEEPSEEK   = 0
 
