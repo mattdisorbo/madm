@@ -104,7 +104,12 @@ def get_llm_base(prompt, model):
         return {"pred": None, "del": None, "full_prompt": full_prompt, "response": response}
 
 def get_llm_cot(base_prompt, model):
-    full_prompt = base_prompt + "\n\nRespond with your integer solution ONLY."
+    instructions = (
+        "\n\nRespond with two numbers ONLY on two lines. "
+        "First, your integer solution. "
+        "Second, 0 to implement your solution or 1 to delegate to Person 1."
+    )
+    full_prompt = base_prompt + instructions
     t0 = time.time()
     r = oai_client.chat.completions.create(
         model=model,
@@ -114,9 +119,13 @@ def get_llm_cot(base_prompt, model):
     print(f"[{model.split(chr(47))[-1]} cot] {time.time()-t0:.1f}s", flush=True)
     response = r.choices[0].message.content.strip()
     reasoning_tokens = getattr(getattr(r.usage, 'completion_tokens_details', None), 'reasoning_tokens', None)
-    pred_match = re.search(r'\d+', response)
-    pred = int(pred_match.group()) if pred_match else None
-    return {"full_prompt": full_prompt, "response": response, "pred": pred, "reasoning_tokens": reasoning_tokens}
+    lines = [l.strip() for l in response.strip().split('\n') if l.strip()]
+    try:
+        pred = int(re.search(r'\d+', lines[0]).group()) if lines else None
+        delg = int(re.search(r'[01]', lines[-1]).group()) if len(lines) > 1 else None
+    except (ValueError, IndexError, AttributeError):
+        pred, delg = None, None
+    return {"full_prompt": full_prompt, "response": response, "pred": pred, "del": delg, "reasoning_tokens": reasoning_tokens}
 
 def get_sequential_inference(scenario, model):
     try:
@@ -148,7 +157,7 @@ def call_llm(idx, row, method, model):
         result = get_llm_cot(base, model)
         trace = f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}"
         return {**row, "prompt": base, "llm_prediction": result["pred"],
-                "llm_delegate": None, "reasoning_tokens": result["reasoning_tokens"],
+                "llm_delegate": result["del"], "reasoning_tokens": result["reasoning_tokens"],
                 "solution": row["Answer"], "method": method, "model": model, "trace": trace}
     elif method == "auditor":
         result = get_sequential_inference(base, model)

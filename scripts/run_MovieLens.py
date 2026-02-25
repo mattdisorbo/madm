@@ -206,11 +206,14 @@ def get_llm_ols(base_prompt, ols_pred1, ols_pred2, r2_val, model):
         return {"pred": None, "del": None, "full_prompt": full_prompt, "response": response}
 
 def get_llm_cot(base_prompt, model):
-    full_prompt = (
-        base_prompt +
-        "\n\nRespond with a single digit ONLY: "
-        "1 (first movie) or 2 (second movie) for which Person 1 would rate higher."
+    instructions = (
+        "\n\nRespond with two numbers ONLY on two lines. "
+        "First, respond 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher.\n"
+        "Second, respond 0 to recommend the movie you predicted, "
+        "or 1 to delegate to Person 1 so they can choose. Person 1 will always choose the movie they would rate higher.\n"
+        "A decision is correct if it is the movie Person 1 would rate higher."
     )
+    full_prompt = base_prompt + instructions
     t0 = time.time()
     r = oai_client.chat.completions.create(
         model=model,
@@ -220,9 +223,13 @@ def get_llm_cot(base_prompt, model):
     print(f"[{model.split(chr(47))[-1]} cot] {time.time()-t0:.1f}s", flush=True)
     response = r.choices[0].message.content.strip()
     reasoning_tokens = getattr(getattr(r.usage, 'completion_tokens_details', None), 'reasoning_tokens', None)
-    pred_match = re.search(r'[12]', response)
-    pred = int(pred_match.group()) if pred_match else None
-    return {"full_prompt": full_prompt, "response": response, "pred": pred, "reasoning_tokens": reasoning_tokens}
+    lines = [l.strip() for l in response.strip().split('\n') if l.strip()]
+    try:
+        pred = int(re.search(r'[12]', lines[0]).group()) if lines else None
+        delg = int(re.search(r'[01]', lines[-1]).group()) if len(lines) > 1 else None
+    except (ValueError, IndexError, AttributeError):
+        pred, delg = None, None
+    return {"full_prompt": full_prompt, "response": response, "pred": pred, "del": delg, "reasoning_tokens": reasoning_tokens}
 
 def get_sequential_inference(base_prompt, model):
     try:
@@ -295,7 +302,7 @@ def call_llm(row_idx, method, model):
     elif method == "cot":
         result = get_llm_cot(base, model)
         trace = f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}"
-        return {**common, 'llm_prediction': result['pred'], 'llm_delegate': None, 'reasoning_tokens': result['reasoning_tokens'], 'trace': trace}
+        return {**common, 'llm_prediction': result['pred'], 'llm_delegate': result['del'], 'reasoning_tokens': result['reasoning_tokens'], 'trace': trace}
 
 # --- Output ---
 local_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../results/MovieLens")
