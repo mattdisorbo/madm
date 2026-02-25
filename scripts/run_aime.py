@@ -113,9 +113,10 @@ def get_llm_cot(base_prompt, model):
     )
     print(f"[{model.split(chr(47))[-1]} cot] {time.time()-t0:.1f}s", flush=True)
     response = r.choices[0].message.content.strip()
+    reasoning_tokens = getattr(getattr(r.usage, 'completion_tokens_details', None), 'reasoning_tokens', None)
     pred_match = re.search(r'\d+', response)
     pred = int(pred_match.group()) if pred_match else None
-    return {"full_prompt": full_prompt, "response": response, "pred": pred}
+    return {"full_prompt": full_prompt, "response": response, "pred": pred, "reasoning_tokens": reasoning_tokens}
 
 def get_sequential_inference(scenario, model):
     try:
@@ -147,8 +148,8 @@ def call_llm(idx, row, method, model):
         result = get_llm_cot(base, model)
         trace = f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}"
         return {**row, "prompt": base, "llm_prediction": result["pred"],
-                "llm_delegate": None, "solution": row["Answer"],
-                "method": method, "model": model, "trace": trace}
+                "llm_delegate": None, "reasoning_tokens": result["reasoning_tokens"],
+                "solution": row["Answer"], "method": method, "model": model, "trace": trace}
     elif method == "auditor":
         result = get_sequential_inference(base, model)
         trace = (f"[PROMPT]\n{base}\n\n"
