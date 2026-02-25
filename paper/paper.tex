@@ -219,28 +219,34 @@ final decision changes relative to the unsteered baseline.
 
 \subsection{Decision Quality and Delegation}
 
-Table~\ref{tab:accuracy} summarizes performance across both reasoning paths.
+Figures~\ref{fig:accuracy} and~\ref{fig:delegation} summarize performance
+across both reasoning paths and all models.
 The auditor path achieves higher decision quality than the base path despite
 operating on identical inputs.
 Notably, the two paths produce comparable delegation rates, indicating that
 the auditor's gains reflect improved decisions on the cases it does handle
 rather than a more aggressive policy of deferral.
 
-\begin{table}[t]
+\begin{figure}[t]
   \centering
-  \caption{Decision quality and delegation by reasoning path.
-           Quality is accuracy on non-delegated cases; delegation rate is
-           the fraction of inputs referred for human review.}
-  \label{tab:accuracy}
-  \begin{tabular}{lccc}
-    \toprule
-    Path & Quality (\%) & Delegation rate (\%) & Overall Acc. (\%) \\
-    \midrule
-    Base (predict-support-evaluate)   & --- & --- & --- \\
-    Auditor (predict-critique-evaluate) & --- & --- & --- \\
-    \bottomrule
-  \end{tabular}
-\end{table}
+  \begin{subfigure}[b]{0.48\linewidth}
+    \includegraphics[width=\linewidth]{figures/fig_accuracy.pdf}
+    \caption{Final accuracy by model and reasoning method.
+             Error bars show $\pm 1$ standard error across datasets.}
+    \label{fig:accuracy}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.48\linewidth}
+    \includegraphics[width=\linewidth]{figures/fig_delegation.pdf}
+    \caption{Delegation rate by model and reasoning method.
+             Error bars show $\pm 1$ standard error across datasets.}
+    \label{fig:delegation}
+  \end{subfigure}
+  \caption{Performance of the base and auditor reasoning paths across seven
+           models. Bar heights are row-weighted means; error bars reflect
+           variability across evaluation datasets.}
+  \label{fig:main_results}
+\end{figure}
 
 \subsection{LLM Overconfidence}
 
