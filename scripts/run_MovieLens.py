@@ -206,20 +206,22 @@ def get_llm_ols(base_prompt, ols_pred1, ols_pred2, r2_val, model):
         return {"pred": None, "del": None, "full_prompt": full_prompt, "response": response}
 
 def get_llm_cot(base_prompt, model):
-    reasoning = llm(
-        base_prompt + "\n\nThink step by step about which movie Person 1 would rate higher. "
-        "Give your reasoning only. Do not state a final answer.",
-        model
+    full_prompt = (
+        base_prompt +
+        "\n\nRespond with a single digit ONLY: "
+        "1 (first movie) or 2 (second movie) for which Person 1 would rate higher."
     )
-    response = llm(
-        f"{base_prompt}\n\nReasoning:\n{reasoning}\n\n"
-        "Based on this reasoning, respond with a single digit ONLY: "
-        "1 (first movie) or 2 (second movie) for which Person 1 would rate higher.",
-        model
+    t0 = time.time()
+    r = oai_client.chat.completions.create(
+        model=model,
+        messages=[{"role": "user", "content": full_prompt}],
+        reasoning_effort="medium",
     )
-    pred_match = re.search(r'[12]', response.strip())
+    print(f"[{model.split(chr(47))[-1]} cot] {time.time()-t0:.1f}s", flush=True)
+    response = r.choices[0].message.content.strip()
+    pred_match = re.search(r'[12]', response)
     pred = int(pred_match.group()) if pred_match else None
-    return {"reasoning": reasoning, "response": response, "pred": pred}
+    return {"full_prompt": full_prompt, "response": response, "pred": pred}
 
 def get_sequential_inference(base_prompt, model):
     try:
@@ -291,9 +293,8 @@ def call_llm(row_idx, method, model):
                 'llm_full_thought': result['full_thought'], 'llm_critique': result['critique'], 'trace': trace}
     elif method == "cot":
         result = get_llm_cot(base, model)
-        trace = f"[PROMPT]\n{base}\n\n[REASONING]\n{result['reasoning']}\n\n[PREDICTION]\n{result['response']}"
-        return {**common, 'llm_prediction': result['pred'], 'llm_delegate': None,
-                'llm_cot_reasoning': result['reasoning'], 'trace': trace}
+        trace = f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}"
+        return {**common, 'llm_prediction': result['pred'], 'llm_delegate': None, 'trace': trace}
 
 # --- Output ---
 local_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../results/MovieLens")
@@ -316,7 +317,7 @@ test_indices = df.loc[df['split'] == 'test'].index.tolist()
 
 results = []
 completed = 0
-total = (N_OAI + N_NANO + N_QWEN + N_QWEN_MED + N_QWEN_LARGE + N_QWEN_XL + N_GLM + N_DEEPSEEK) * (N_SAMPLES_BASE + N_SAMPLES_OLS + N_SAMPLES_AUDITOR + N_SAMPLES_COT)
+total = (N_OAI + N_NANO + N_QWEN + N_QWEN_MED + N_QWEN_LARGE + N_QWEN_XL + N_GLM + N_DEEPSEEK) * (N_SAMPLES_BASE + N_SAMPLES_OLS + N_SAMPLES_AUDITOR) + N_NANO * N_SAMPLES_COT
 save_lock = threading.Lock()
 
 def save_progress():
@@ -344,13 +345,16 @@ def call_llm_tracked(row_idx, method, model):
 jobs = []
 for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN), (QWEN_MODEL_MED, N_QWEN_MED), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (QWEN_MODEL_XL, N_QWEN_XL), (GLM_MODEL, N_GLM), (DEEPSEEK_MODEL, N_DEEPSEEK)]:
     if n > 0:
-        for method, n_samples in [("base", N_SAMPLES_BASE), ("ols", N_SAMPLES_OLS), ("auditor", N_SAMPLES_AUDITOR), ("cot", N_SAMPLES_COT)]:
+        methods = [("base", N_SAMPLES_BASE), ("ols", N_SAMPLES_OLS), ("auditor", N_SAMPLES_AUDITOR)]
+        if model == OAI_MODEL_NANO:
+            methods.append(("cot", N_SAMPLES_COT))
+        for method, n_samples in methods:
             if n_samples > 0:
                 sampled = random.sample(test_indices, n * n_samples)
                 for idx in sampled:
                     jobs.append((idx, method, model))
 
-print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, c={N_SAMPLES_COT}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, c={N_SAMPLES_COT}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x | QwenMed {N_QWEN_MED}x | QwenLarge {N_QWEN_LARGE}x | QwenXL {N_QWEN_XL}x | GLM {N_GLM}x(b={N_SAMPLES_BASE}, c={N_SAMPLES_COT}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | DeepSeek {N_DEEPSEEK}x(b={N_SAMPLES_BASE}, c={N_SAMPLES_COT}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR})", flush=True)
+print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, c={N_SAMPLES_COT}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x | QwenMed {N_QWEN_MED}x | QwenLarge {N_QWEN_LARGE}x | QwenXL {N_QWEN_XL}x | GLM {N_GLM}x | DeepSeek {N_DEEPSEEK}x", flush=True)
 with ThreadPoolExecutor(max_workers=5) as executor:
     futures = [executor.submit(call_llm_tracked, idx, method, model) for idx, method, model in jobs]
     for f in as_completed(futures):
