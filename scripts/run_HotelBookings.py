@@ -47,6 +47,10 @@ if _args.model is not None and _args.n is not None:
     N_QWEN_XL    = 1 if QWEN_MODEL_XL    == _args.model else 0
     N_GLM        = 1 if GLM_MODEL        == _args.model else 0
     N_DEEPSEEK   = 1 if DEEPSEEK_MODEL   == _args.model else 0
+    _known = {OAI_MODEL, OAI_MODEL_NANO, QWEN_MODEL, QWEN_MODEL_MED, QWEN_MODEL_LARGE, QWEN_MODEL_XL, GLM_MODEL, DEEPSEEK_MODEL}
+    if _args.model not in _known:
+        OAI_MODEL = _args.model
+        N_OAI = 1
     N_SAMPLES_BASE    = _args.n
     N_SAMPLES_AUDITOR = _args.n
     N_SAMPLES_RF      = _args.n
