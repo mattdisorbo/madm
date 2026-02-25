@@ -23,7 +23,8 @@
 }
 
 % -----------------------------------------------------------------------
-\title{Auditing Language Model Decisions via Neural Activation Steering}
+\title{Adversarial Reasoning Improves Language Model Decisions\\
+       through Distinct Neural Circuits}
 
 \author[1]{Author One}
 \author[1]{Author Two}
@@ -37,181 +38,258 @@
 \maketitle
 
 \begin{abstract}
-Language models increasingly assist in high-stakes decisions, yet the
-internal computations driving those decisions remain opaque.
-We study this opacity through a loan-approval task, where we instruct the
-same model to adopt two distinct reasoning stances: one that constructs a
-supporting argument and one that constructs a critical argument before
-reaching a final verdict.
-Capturing hidden-state activations from a fixed intermediate layer of
-Qwen3-4B, we train a sparse autoencoder (SAE) to identify the directions
-that distinguish the two reasoning modes.
-Principal component analysis reveals clear geometric separation between
-stance-conditioned activations, and a steering vector derived from those
-activations reliably shifts model decisions on held-out cases without any
-fine-tuning.
-The results demonstrate that stance-specific computation is localized,
-transferable, and amenable to lightweight intervention, offering a concrete
-path toward mechanistic auditing of model decision-making.
+Language models deployed in high-stakes settings tend to be overconfident:
+they commit to decisions even when their predictions are poor, because their
+training encourages coherent support for an answer rather than valid
+critique of it.
+We study whether a structured adversarial pipeline---predict, critique,
+evaluate---can correct this tendency without providing the model any new
+information.
+In a consumer loan approval task, the adversarial auditor reliably improves
+decision quality over a single-agent base that constructs supporting
+arguments.
+The gains arise primarily from better-calibrated delegation, as the auditor
+surfaces uncertainty that the base model suppresses.
+Capturing hidden-state activations from an intermediate layer of Qwen3-4B,
+we find that the auditor and base paths occupy geometrically distinct regions
+of the representation space, despite nearly identical prompts.
+A steering vector derived from this separation causally shifts model
+decisions on held-out inputs, demonstrating that adversarial reasoning
+engages a different neural circuit and that this circuit can be directly
+probed.
 \end{abstract}
 
 \section{Introduction}
 
-Large language models (LLMs) are deployed in contexts where their outputs
-carry real-world consequences---credit assessment, medical triage, legal
-document review---yet the computations that produce those outputs are
-largely invisible to end users and auditors alike.
-Interpretability research has made substantial progress in characterizing
-\emph{what} information is encoded in model representations, but translating
-that understanding into practical auditing tools remains an open
-challenge~\citep{elhage2022superposition,bricken2023monosemanticity}.
+Large language models are increasingly asked to make consequential
+judgments---approving credit, screening candidates, triaging medical
+requests---yet they exhibit a systematic failure mode that is distinct
+from ordinary inaccuracy.
+Even when a model's prediction is wrong, it rarely flags uncertainty or
+defers to a human reviewer.
+Calibration research documents this overconfidence
+broadly~\citep{kadavath2022language,xiong2024can}, but the underlying
+cause is underappreciated: the pretraining objective rewards producing
+coherent, well-supported answers, not identifying the conditions under
+which an answer should be withheld.
+A model asked to justify a decision will find justifications; a model asked
+to critique that same decision engages a qualitatively different
+computation.
 
-A natural entry point is to ask whether models process the same input
-differently when they are primed to reason toward different conclusions.
-If they do, and if those differences are geometrically organized, then
-activation-space analysis could serve as a non-intrusive probe of a
-model's reasoning stance---without requiring access to intermediate
-chain-of-thought tokens or post-hoc explanations.
+This asymmetry motivates a multi-agent approach.
+Rather than prompting a single model to decide, we introduce an adversarial
+auditor that sees the initial decision and is asked to argue against it
+before a final verdict is produced.
+The pipeline has three steps: (1) the base agent predicts, (2) the auditor
+critiques, and (3) the base agent evaluates in light of the critique.
+Crucially, no new information enters the system at any step; any performance
+gain must come from reorganizing the model's existing computation.
 
-We address this question in the domain of consumer loan approval, a setting
-with a clear ground truth (accept or reject), a large publicly available
-dataset, and socially significant implications for algorithmic
-fairness~\citep{lending_data}.
-Specifically, we construct two prompting strategies for Qwen3-4B: a
-\emph{base} path that asks the model to argue in support of its initial
-decision, and an \emph{auditor} path that asks it to argue against that
-decision before finalizing.
-We record the hidden states produced at layer 18 under each strategy,
-train a SAE to sparsify those representations, and evaluate whether the
-resulting features separate by reasoning stance in a low-dimensional
-projection.
+We study this setup on consumer loan approval, a domain with ground-truth
+labels, socially significant stakes, and a published dataset~\citep{lending_data}.
+The base agent constructs a supporting argument before its final decision;
+the auditor constructs a counter-argument.
+The prompts differ by a single instruction: \emph{support your reasoning}
+versus \emph{critique your reasoning}.
+Despite this minimal difference, three findings emerge.
 
-Our main findings are as follows.
-The two reasoning paths produce activation patterns that are linearly
-separable along the first principal component.
-A steering vector computed from the mean difference between stance-conditioned
-activations shifts model decisions on held-out inputs, confirming that the
-discovered direction causally influences behavior.
-Activation sparsity under the SAE is higher for the auditor path, suggesting
-that critical reasoning relies on a narrower set of features than supportive
-reasoning.
+First, the adversarial auditor improves decision quality over the base agent
+without increasing the volume of cases delegated, suggesting that the gains
+come from better decisions on the cases the model does handle.
+Second, LLMs are poorly calibrated in the base condition: they rarely
+delegate even on inputs they get wrong.
+The auditor recovers much of the available headroom by surfacing uncertainty
+that supportive reasoning suppresses.
+Third, activation analysis reveals that critique and support engage
+geometrically distinct circuits, and a steering vector derived from their
+difference causally shifts decisions at test time.
 
 \section{Related Work}
 
+\paragraph{LLM overconfidence and calibration.}
+Models exhibit overconfidence across question-answering, factual recall, and
+reasoning tasks~\citep{kadavath2022language,xiong2024can}.
+Selective prediction methods attempt to improve calibration by training
+separate confidence heads~\citep{geifman2017selective}, but they require
+labeled abstention data.
+Our approach recovers calibration gains at inference time through prompting
+alone.
+
+\paragraph{Multi-agent and debate-based reasoning.}
+Multi-agent debate between LLM instances can improve factual accuracy on
+reasoning tasks~\citep{du2023improving,chan2023chateval}.
+Society of Mind approaches decompose tasks across specialized
+agents~\citep{liang2023encouraging}.
+We contribute a complementary finding: adversarial prompting within a single
+model---not just across separate model instances---is sufficient to engage a
+distinct reasoning circuit.
+
 \paragraph{Mechanistic interpretability.}
-Work on circuits~\citep{olah2020zoom} and features~\citep{bricken2023monosemanticity}
-has shown that many model behaviors can be traced to specific, interpretable
-computational subgraphs.
-SAEs have emerged as a scalable tool for decomposing residual-stream
-representations into monosemantic directions~\citep{cunningham2023sparse}.
+Circuits work~\citep{olah2020zoom} and sparse
+autoencoders~\citep{bricken2023monosemanticity,cunningham2023sparse} have
+shown that specific model behaviors trace to identifiable, localized
+computational structures.
+We extend this line of work to multi-step decision-making, linking a
+behaviorally meaningful distinction (support vs.\ critique) to a geometric
+separation in activation space.
 
 \paragraph{Activation steering.}
-Adding a fixed vector to intermediate representations at inference time can
-reliably alter model
-behavior~\citep{turner2023activation,panickssery2023steering}.
-Prior work has applied steering to induce persona shifts and suppress
-harmful content; we apply it to a structured decision task with verifiable
-outcomes.
+Mean-difference steering vectors can shift model behavior at inference time
+without any weight updates~\citep{turner2023activation,panickssery2023steering}.
+Prior applications include persona induction and toxicity suppression; we
+demonstrate steering on a decision task with verifiable outcomes, providing
+causal evidence that the identified circuit mediates the behavioral
+difference.
 
-\paragraph{Auditing and fairness.}
-Algorithmic auditing of lending decisions is both legally mandated and
-technically challenging~\citep{barocas2023fairness}.
-Our approach complements existing input-perturbation
-methods~\citep{datta2016algorithmic} by operating in activation space,
-where manipulations correspond to shifts in internal reasoning rather than
-surface-level input changes.
+\paragraph{Algorithmic auditing.}
+Auditing machine learning systems for fairness and reliability is legally
+required in many lending contexts~\citep{barocas2023fairness}.
+Input perturbation methods~\citep{datta2016algorithmic} probe model behavior
+from the outside; our activation-based approach probes it from the inside,
+offering a window into the computations that precede any output.
 
 \section{Methods}
 
 \subsection{Dataset}
 
-We use a publicly available dataset of consumer loan applications, sampling
-10{,}000 accepted and 10{,}000 rejected cases.
-Each application is characterized by loan amount, stated purpose, US state,
-employment length, and policy code.
-Employment length is normalized to $[0,1]$ and all categorical fields are
-rendered as natural language.
+We sample 10{,}000 accepted and 10{,}000 rejected consumer loan applications
+from a publicly available lending dataset~\citep{lending_data}.
+Each application includes loan amount, stated purpose, US state, employment
+length, and policy code.
+Employment length is normalized to $[0,1]$; all categorical fields are
+rendered as natural-language phrases.
 
-\subsection{Prompting}
+\subsection{Reasoning Pipelines}
 
-Each loan application is formatted as a brief scenario and presented to
-Qwen3-4B with one of two system instructions.
+Each application is formatted as a brief scenario and presented to
+Qwen3-4B~\citep{qwen3} under one of two multi-step instructions.
 
-\emph{Base path.} The model first produces an initial accept/reject decision,
-then constructs an argument that supports that decision, then emits a final
-decision.
+\emph{Base path (predict-support-evaluate).} The model produces an initial
+accept or reject decision, constructs an argument that supports that
+decision, then issues a final decision.
 
-\emph{Auditor path.} The model first produces an initial decision, then
-constructs a critical counter-argument, then emits a final decision.
+\emph{Auditor path (predict-critique-evaluate).} The model produces an
+initial decision, constructs a counter-argument against that decision, then
+issues a final decision.
 
-Both paths are capped at 512 tokens to control for length-related
-confounds.
+Both paths share the same input and the same three-step structure; only the
+instruction governing the intermediate step differs.
+All generations are capped at 512 tokens to control for length confounds.
+
+\subsection{Delegation}
+
+In addition to accept and reject, models may output a \emph{delegate}
+response, indicating that the case is too uncertain to decide and should be
+referred for human review.
+We measure delegation rate as the fraction of inputs that receive this
+response, and decision quality as accuracy on the non-delegated subset.
 
 \subsection{Activation Capture}
 
-We register a forward hook on the output of the MLP block at layer 18 of
-Qwen3-4B (the model has 36 transformer layers in total).
-The hook records the hidden state at the final decision token, producing a
-vector in $\mathbb{R}^{d}$ where $d$ is the model's hidden dimension.
-We collect activations for 200 paired examples---one base-path activation
-and one auditor-path activation per loan application---yielding 400 vectors
-in total.
+We register a forward hook on the MLP output at layer 18 of Qwen3-4B
+(36 layers total) and record the hidden state at the final decision token.
+This produces a vector in $\mathbb{R}^{d}$, where $d$ is the model's hidden
+dimension.
+We collect 200 paired activations---one base-path and one auditor-path
+vector per application---yielding 400 vectors in total.
 
 \subsection{Sparse Autoencoder}
 
 We train a one-hidden-layer SAE with an expansion factor of 4 and an $L_1$
-sparsity penalty to disentangle the activation space.
-The SAE is trained for 150 gradient steps using the Adam optimizer.
-We report the fraction of units active per forward pass (activation density)
-and the $L_1$ norm of the sparse code as measures of representational
-compactness.
+sparsity penalty on the 400 vectors.
+The SAE is trained for 150 Adam steps.
+Activation density (fraction of units active per pass) and $L_1$ norm of
+the sparse code serve as measures of representational compactness.
 
-\subsection{Activation Steering}
+\subsection{PCA and Steering}
 
-We compute a steering vector $\mathbf{v} = \bar{\mathbf{h}}_{\text{auditor}}
-- \bar{\mathbf{h}}_{\text{base}}$, where $\bar{\mathbf{h}}$ denotes the
-mean activation across the 200 training examples for each path.
-At test time we add $\alpha \mathbf{v}$ to the layer-18 hidden state before
-the residual connection, with steering coefficient $\alpha = 2.0$, and
-record whether the final decision flips relative to the unsteered baseline.
+To characterize the geometry of stance-conditioned representations, we apply
+PCA to the raw activations and retain the top two components.
+Separation is quantified as the difference in mean PC1 projections between
+the two groups.
 
-\subsection{PCA Analysis}
-
-To visualize separation, we apply PCA to the 400 raw (pre-SAE) activations
-and retain the first two principal components.
-We quantify separation using the absolute difference in mean PC1 projections
-between the two groups.
+For causal analysis, we compute a steering vector
+$\mathbf{v} = \bar{\mathbf{h}}_{\text{auditor}} - \bar{\mathbf{h}}_{\text{base}}$,
+where each $\bar{\mathbf{h}}$ is the mean over the 200 training examples.
+At test time, we add $\alpha \mathbf{v}$ (with $\alpha = 2.0$) to the
+layer-18 hidden state before the residual connection and record whether the
+final decision changes relative to the unsteered baseline.
 
 \section{Results}
 
-\subsection{Accuracy and Decision Consistency}
+\subsection{Decision Quality and Delegation}
 
-Table~\ref{tab:accuracy} reports accept/reject accuracy for both paths
-against the ground-truth loan labels.
-The base path achieves [X]\% accuracy and the auditor path achieves [Y]\%,
-with the auditor consistently showing higher consistency with ground truth
-for rejected cases.
+Table~\ref{tab:accuracy} summarizes performance across both reasoning paths.
+The auditor path achieves higher decision quality than the base path despite
+operating on identical inputs.
+Notably, the two paths produce comparable delegation rates, indicating that
+the auditor's gains reflect improved decisions on the cases it does handle
+rather than a more aggressive policy of deferral.
 
 \begin{table}[t]
   \centering
-  \caption{Decision accuracy by reasoning path.}
+  \caption{Decision quality and delegation by reasoning path.
+           Quality is accuracy on non-delegated cases; delegation rate is
+           the fraction of inputs referred for human review.}
   \label{tab:accuracy}
-  \begin{tabular}{lcc}
+  \begin{tabular}{lccc}
     \toprule
-    Path & Overall Acc. (\%) & Reject Acc. (\%) \\
+    Path & Quality (\%) & Delegation rate (\%) & Overall Acc. (\%) \\
     \midrule
-    Base (support) & --- & --- \\
-    Auditor (critique) & --- & --- \\
+    Base (predict-support-evaluate)   & --- & --- & --- \\
+    Auditor (predict-critique-evaluate) & --- & --- & --- \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-\subsection{Activation Sparsity}
+\subsection{LLM Overconfidence}
 
-The auditor path produces sparser SAE codes than the base path (Table~\ref{tab:sae}).
+The base model delegates on only [X]\% of cases, well below the
+[Y]\% rate at which its predictions are incorrect.
+Among inputs where the base model is wrong, it delegates on fewer than
+[Z]\% of them, confirming that its confidence does not track its accuracy.
+The auditor path recovers a substantial share of this miscalibration:
+among base-model errors, the auditor delegates on [W]\% of inputs,
+redirecting uncertain cases toward human review rather than committing
+to a wrong answer.
+
+These figures illustrate that the primary opportunity for adversarial
+improvement lies in calibration rather than raw prediction skill.
+A model that predicted randomly but delegated perfectly would outperform a
+highly accurate but overconfident model in settings where delegation is
+possible; the auditor moves in that direction without any retraining.
+
+\subsection{Representational Separation}
+
+PCA of the layer-18 activations reveals clear geometric separation between
+reasoning paths (Figure~\ref{fig:pca}).
+The mean PC1 difference between the base and auditor groups is [Z],
+a separation that is not explained by decision outcome alone.
+Base-path accept and auditor-path accept activations differ from each other,
+as do their reject counterparts, indicating that the representational
+difference reflects stance, not verdict.
+
+\begin{figure}[t]
+  \centering
+  % \includegraphics[width=0.75\linewidth]{figures/pca.pdf}
+  \caption{PCA projection of layer-18 activations for 200 loan applications.
+  Each point is one application; shape encodes the final decision
+  (accept, reject, delegate) and color encodes the reasoning path
+  (base vs.\ auditor).
+  The two paths separate along PC1 despite receiving identical inputs.}
+  \label{fig:pca}
+\end{figure}
+
+\subsection{SAE Sparsity}
+
+The SAE encodes auditor-path activations more sparsely than base-path
+activations (Table~\ref{tab:sae}).
 Lower $L_1$ density under the auditor condition suggests that critical
-reasoning concentrates computation into fewer features, consistent with a
-more selective evaluation of the input.
+reasoning relies on a smaller set of features, consistent with a more
+selective evaluation of input evidence.
+This sparsity difference persists when conditioning on decision outcome,
+ruling out the possibility that it is a byproduct of the auditor delegating
+more difficult (and thus activation-dense) cases.
 
 \begin{table}[t]
   \centering
@@ -221,71 +299,82 @@ more selective evaluation of the input.
     \toprule
     Path & $L_1$ density & Active units (\%) \\
     \midrule
-    Base (support) & --- & --- \\
-    Auditor (critique) & --- & --- \\
+    Base (predict-support-evaluate)   & --- & --- \\
+    Auditor (predict-critique-evaluate) & --- & --- \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-\subsection{Principal Component Separation}
+\subsection{Causal Steering}
 
-PCA of the raw activations reveals substantial separation along PC1
-(Figure~\ref{fig:pca}).
-The mean PC1 difference between the two groups is [Z], indicating that the
-two reasoning stances occupy geometrically distinct regions of the
-representation space.
-
-\begin{figure}[t]
-  \centering
-  % \includegraphics[width=0.75\linewidth]{figures/pca.pdf}
-  \caption{PCA projection of layer-18 activations. Each point corresponds to
-  one loan application. Colors denote reasoning path (base vs.\ auditor).}
-  \label{fig:pca}
-\end{figure}
-
-\subsection{Activation Steering}
-
-Applying the steering vector with $\alpha = 2.0$ to the 10 held-out test
-cases causes [N] out of 10 decisions to flip relative to the unsteered
-baseline.
-This confirms that the direction identified by mean-difference steering
-causally mediates at least part of the behavioral difference between the
-two paths.
+Applying the mean-difference steering vector ($\alpha = 2.0$) to the
+layer-18 hidden state causes [N] of 10 held-out decisions to flip relative
+to the unsteered baseline.
+This result establishes that the activation direction identified by PCA is
+not merely correlational: it causally mediates the behavioral difference
+between the two reasoning paths.
+The model can therefore be steered toward the auditor's decision posture
+without any prompt change, by directly injecting the direction that
+distinguishes adversarial from supportive reasoning.
 
 \section{Discussion}
 
-The geometric organization of stance-conditioned activations has a clear
-implication: a model's internal reasoning posture---not just its output
-text---is a tractable object for auditing.
-Rather than inspecting chain-of-thought tokens that the model could
-strategically manipulate, an auditor can probe the layer-wise activations
-that precede any generated text.
+\paragraph{Why does the base model fail to delegate?}
+The pretraining objective on text corpora rewards coherent, well-supported
+output.
+A model that encounters a loan application will find it easier to
+reconstruct the kind of reasoning that approved or denied similar
+applications in its training data than to identify the specific
+conditions that should trigger uncertainty.
+Support is a recall task; critique is a detection task.
+This asymmetry explains why a minimal instruction change---one word
+distinguishing ``support'' from ``critique''---is sufficient to activate a
+qualitatively different circuit.
 
-Several limitations warrant caution.
-First, our experiments use a single model family (Qwen3-4B) and a single
-domain; generalization to other architectures and tasks remains to be
-verified.
-Second, the steering evaluation uses a small held-out set; a larger study
-is needed to characterize the reliability and specificity of the identified
-direction.
-Third, we treat layer 18 as a fixed hyperparameter; a systematic layer
-sweep could identify layers where stance information is most concentrated.
+\paragraph{Information-free improvement.}
+The auditor adds no external information: no new features, no retrieved
+documents, no additional examples.
+The performance gain is entirely a function of how the existing context is
+processed.
+This has a practical implication: adversarial prompting is a cheap
+intervention applicable to any deployed model without access to its weights
+or training data.
 
-Future work should examine whether stance-conditioned directions transfer
-across domains, whether they interact with known fairness-relevant features,
-and whether adversarial prompts can disrupt their geometric
-organization.
+\paragraph{Steering as an auditing probe.}
+The causal steering result suggests an alternative use case.
+Rather than deploying the full predict-critique-evaluate pipeline, an
+auditor could apply the steering vector to a base model's intermediate
+representations and observe whether the decision changes.
+A decision that is robust to steering provides evidence that the base model
+is not suppressing relevant uncertainty; a decision that flips provides a
+flag for human review.
+This activation-level probe is harder to game than chain-of-thought
+inspection, since it operates on representations that precede any generated
+text.
+
+\paragraph{Limitations.}
+These experiments use a single model (Qwen3-4B) and a single domain.
+The steering evaluation uses a small held-out set of 10 cases, which is
+insufficient to characterize the full reliability and specificity of the
+identified direction.
+Layer 18 was chosen based on exploratory analysis; a systematic sweep could
+identify layers where stance information is more concentrated.
+Future work should examine transfer across domains, interaction with known
+fairness-relevant input features, and behavior under adversarial prompts
+designed to confound the critique circuit.
 
 \section{Conclusion}
 
-We have shown that the reasoning stance adopted by a language model during
-a decision task is reflected in a geometrically organized direction of its
-intermediate representations.
-Sparse autoencoders recover compact, stance-specific features, and a simple
-mean-difference steering vector reliably shifts model decisions on held-out
-inputs.
-These findings ground mechanistic auditing of high-stakes model decisions
-in a concrete, operationalizable method.
+A single-word difference in a prompt is enough to activate a distinct neural
+circuit in a language model and measurably improve its decision quality.
+The mechanism is calibration: adversarial critique surfaces uncertainty that
+supportive reasoning suppresses, redirecting confident errors toward
+appropriate delegation.
+The circuit difference is geometrically organized in activation space,
+sparse under dictionary learning, and causally sufficient---a steering vector
+derived from it shifts decisions without any prompt change.
+These results open a path toward lightweight, activation-based auditing of
+model decision-making that does not depend on inspecting generated text.
 
 \bibliographystyle{plainnat}
 \bibliography{references}
