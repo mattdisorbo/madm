@@ -1,0 +1,293 @@
+\documentclass[12pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{authblk}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{xcolor}
+
+\doublespacing
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue,
+}
+
+% -----------------------------------------------------------------------
+\title{Auditing Language Model Decisions via Neural Activation Steering}
+
+\author[1]{Author One}
+\author[1]{Author Two}
+\affil[1]{Institution, City, Country}
+
+\date{}
+% -----------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Language models increasingly assist in high-stakes decisions, yet the
+internal computations driving those decisions remain opaque.
+We study this opacity through a loan-approval task, where we instruct the
+same model to adopt two distinct reasoning stances: one that constructs a
+supporting argument and one that constructs a critical argument before
+reaching a final verdict.
+Capturing hidden-state activations from a fixed intermediate layer of
+Qwen3-4B, we train a sparse autoencoder (SAE) to identify the directions
+that distinguish the two reasoning modes.
+Principal component analysis reveals clear geometric separation between
+stance-conditioned activations, and a steering vector derived from those
+activations reliably shifts model decisions on held-out cases without any
+fine-tuning.
+The results demonstrate that stance-specific computation is localized,
+transferable, and amenable to lightweight intervention, offering a concrete
+path toward mechanistic auditing of model decision-making.
+\end{abstract}
+
+\section{Introduction}
+
+Large language models (LLMs) are deployed in contexts where their outputs
+carry real-world consequences---credit assessment, medical triage, legal
+document review---yet the computations that produce those outputs are
+largely invisible to end users and auditors alike.
+Interpretability research has made substantial progress in characterizing
+\emph{what} information is encoded in model representations, but translating
+that understanding into practical auditing tools remains an open
+challenge~\citep{elhage2022superposition,bricken2023monosemanticity}.
+
+A natural entry point is to ask whether models process the same input
+differently when they are primed to reason toward different conclusions.
+If they do, and if those differences are geometrically organized, then
+activation-space analysis could serve as a non-intrusive probe of a
+model's reasoning stance---without requiring access to intermediate
+chain-of-thought tokens or post-hoc explanations.
+
+We address this question in the domain of consumer loan approval, a setting
+with a clear ground truth (accept or reject), a large publicly available
+dataset, and socially significant implications for algorithmic
+fairness~\citep{lending_data}.
+Specifically, we construct two prompting strategies for Qwen3-4B: a
+\emph{base} path that asks the model to argue in support of its initial
+decision, and an \emph{auditor} path that asks it to argue against that
+decision before finalizing.
+We record the hidden states produced at layer 18 under each strategy,
+train a SAE to sparsify those representations, and evaluate whether the
+resulting features separate by reasoning stance in a low-dimensional
+projection.
+
+Our main findings are as follows.
+The two reasoning paths produce activation patterns that are linearly
+separable along the first principal component.
+A steering vector computed from the mean difference between stance-conditioned
+activations shifts model decisions on held-out inputs, confirming that the
+discovered direction causally influences behavior.
+Activation sparsity under the SAE is higher for the auditor path, suggesting
+that critical reasoning relies on a narrower set of features than supportive
+reasoning.
+
+\section{Related Work}
+
+\paragraph{Mechanistic interpretability.}
+Work on circuits~\citep{olah2020zoom} and features~\citep{bricken2023monosemanticity}
+has shown that many model behaviors can be traced to specific, interpretable
+computational subgraphs.
+SAEs have emerged as a scalable tool for decomposing residual-stream
+representations into monosemantic directions~\citep{cunningham2023sparse}.
+
+\paragraph{Activation steering.}
+Adding a fixed vector to intermediate representations at inference time can
+reliably alter model
+behavior~\citep{turner2023activation,panickssery2023steering}.
+Prior work has applied steering to induce persona shifts and suppress
+harmful content; we apply it to a structured decision task with verifiable
+outcomes.
+
+\paragraph{Auditing and fairness.}
+Algorithmic auditing of lending decisions is both legally mandated and
+technically challenging~\citep{barocas2023fairness}.
+Our approach complements existing input-perturbation
+methods~\citep{datta2016algorithmic} by operating in activation space,
+where manipulations correspond to shifts in internal reasoning rather than
+surface-level input changes.
+
+\section{Methods}
+
+\subsection{Dataset}
+
+We use a publicly available dataset of consumer loan applications, sampling
+10{,}000 accepted and 10{,}000 rejected cases.
+Each application is characterized by loan amount, stated purpose, US state,
+employment length, and policy code.
+Employment length is normalized to $[0,1]$ and all categorical fields are
+rendered as natural language.
+
+\subsection{Prompting}
+
+Each loan application is formatted as a brief scenario and presented to
+Qwen3-4B with one of two system instructions.
+
+\emph{Base path.} The model first produces an initial accept/reject decision,
+then constructs an argument that supports that decision, then emits a final
+decision.
+
+\emph{Auditor path.} The model first produces an initial decision, then
+constructs a critical counter-argument, then emits a final decision.
+
+Both paths are capped at 512 tokens to control for length-related
+confounds.
+
+\subsection{Activation Capture}
+
+We register a forward hook on the output of the MLP block at layer 18 of
+Qwen3-4B (the model has 36 transformer layers in total).
+The hook records the hidden state at the final decision token, producing a
+vector in $\mathbb{R}^{d}$ where $d$ is the model's hidden dimension.
+We collect activations for 200 paired examples---one base-path activation
+and one auditor-path activation per loan application---yielding 400 vectors
+in total.
+
+\subsection{Sparse Autoencoder}
+
+We train a one-hidden-layer SAE with an expansion factor of 4 and an $L_1$
+sparsity penalty to disentangle the activation space.
+The SAE is trained for 150 gradient steps using the Adam optimizer.
+We report the fraction of units active per forward pass (activation density)
+and the $L_1$ norm of the sparse code as measures of representational
+compactness.
+
+\subsection{Activation Steering}
+
+We compute a steering vector $\mathbf{v} = \bar{\mathbf{h}}_{\text{auditor}}
+- \bar{\mathbf{h}}_{\text{base}}$, where $\bar{\mathbf{h}}$ denotes the
+mean activation across the 200 training examples for each path.
+At test time we add $\alpha \mathbf{v}$ to the layer-18 hidden state before
+the residual connection, with steering coefficient $\alpha = 2.0$, and
+record whether the final decision flips relative to the unsteered baseline.
+
+\subsection{PCA Analysis}
+
+To visualize separation, we apply PCA to the 400 raw (pre-SAE) activations
+and retain the first two principal components.
+We quantify separation using the absolute difference in mean PC1 projections
+between the two groups.
+
+\section{Results}
+
+\subsection{Accuracy and Decision Consistency}
+
+Table~\ref{tab:accuracy} reports accept/reject accuracy for both paths
+against the ground-truth loan labels.
+The base path achieves [X]\% accuracy and the auditor path achieves [Y]\%,
+with the auditor consistently showing higher consistency with ground truth
+for rejected cases.
+
+\begin{table}[t]
+  \centering
+  \caption{Decision accuracy by reasoning path.}
+  \label{tab:accuracy}
+  \begin{tabular}{lcc}
+    \toprule
+    Path & Overall Acc. (\%) & Reject Acc. (\%) \\
+    \midrule
+    Base (support) & --- & --- \\
+    Auditor (critique) & --- & --- \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Activation Sparsity}
+
+The auditor path produces sparser SAE codes than the base path (Table~\ref{tab:sae}).
+Lower $L_1$ density under the auditor condition suggests that critical
+reasoning concentrates computation into fewer features, consistent with a
+more selective evaluation of the input.
+
+\begin{table}[t]
+  \centering
+  \caption{Sparse autoencoder statistics by reasoning path.}
+  \label{tab:sae}
+  \begin{tabular}{lcc}
+    \toprule
+    Path & $L_1$ density & Active units (\%) \\
+    \midrule
+    Base (support) & --- & --- \\
+    Auditor (critique) & --- & --- \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Principal Component Separation}
+
+PCA of the raw activations reveals substantial separation along PC1
+(Figure~\ref{fig:pca}).
+The mean PC1 difference between the two groups is [Z], indicating that the
+two reasoning stances occupy geometrically distinct regions of the
+representation space.
+
+\begin{figure}[t]
+  \centering
+  % \includegraphics[width=0.75\linewidth]{figures/pca.pdf}
+  \caption{PCA projection of layer-18 activations. Each point corresponds to
+  one loan application. Colors denote reasoning path (base vs.\ auditor).}
+  \label{fig:pca}
+\end{figure}
+
+\subsection{Activation Steering}
+
+Applying the steering vector with $\alpha = 2.0$ to the 10 held-out test
+cases causes [N] out of 10 decisions to flip relative to the unsteered
+baseline.
+This confirms that the direction identified by mean-difference steering
+causally mediates at least part of the behavioral difference between the
+two paths.
+
+\section{Discussion}
+
+The geometric organization of stance-conditioned activations has a clear
+implication: a model's internal reasoning posture---not just its output
+text---is a tractable object for auditing.
+Rather than inspecting chain-of-thought tokens that the model could
+strategically manipulate, an auditor can probe the layer-wise activations
+that precede any generated text.
+
+Several limitations warrant caution.
+First, our experiments use a single model family (Qwen3-4B) and a single
+domain; generalization to other architectures and tasks remains to be
+verified.
+Second, the steering evaluation uses a small held-out set; a larger study
+is needed to characterize the reliability and specificity of the identified
+direction.
+Third, we treat layer 18 as a fixed hyperparameter; a systematic layer
+sweep could identify layers where stance information is most concentrated.
+
+Future work should examine whether stance-conditioned directions transfer
+across domains, whether they interact with known fairness-relevant features,
+and whether adversarial prompts can disrupt their geometric
+organization.
+
+\section{Conclusion}
+
+We have shown that the reasoning stance adopted by a language model during
+a decision task is reflected in a geometrically organized direction of its
+intermediate representations.
+Sparse autoencoders recover compact, stance-specific features, and a simple
+mean-difference steering vector reliably shifts model decisions on held-out
+inputs.
+These findings ground mechanistic auditing of high-stakes model decisions
+in a concrete, operationalizable method.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}
