@@ -153,8 +153,6 @@ offering a window into the computations that precede any output.
 
 We evaluate across nine publicly available datasets spanning domains in which
 humans make binary decisions.
-Six datasets with clear binary labels inform the main results; three are
-excluded for reasons noted below.
 
 \begin{itemize}
 
@@ -199,24 +197,20 @@ excluded for reasons noted below.
   The ground truth is whether a booking was ultimately cancelled by the
   guest.
 
-  \item \textbf{AIME} (excluded).
-  American Invitational Mathematics Examination problems with numerical
-  answers.
-  Excluded because the correct answer is deterministic and there is no
-  human judgment to predict.
+  \item \textbf{AIME}.
+  American Invitational Mathematics Examination competition problems.
+  The ground truth is the correct numerical answer to each problem.
 
-  \item \textbf{JFLEG}~\citep{napoles2017jfleg} (excluded).
-  A corpus of grammatical error correction examples written by
-  English-as-a-second-language learners.
-  Excluded because the task requires generating corrected text rather than
-  making a binary judgment.
+  \item \textbf{JFLEG}~\citep{napoles2017jfleg}.
+  A corpus of sentences written by English-as-a-second-language learners,
+  each annotated with human-corrected fluent rewrites.
+  The ground truth is the human's fluency judgment.
 
-  \item \textbf{Moral Machine}~\citep{awad2018moral} (excluded).
+  \item \textbf{Moral Machine}~\citep{awad2018moral}.
   Trolley-problem scenarios from the MIT Moral Machine experiment in which
-  participants chose who an autonomous vehicle should harm in unavoidable
-  collisions.
-  Excluded because no single ground-truth answer exists for ethical
-  dilemmas of this kind.
+  participants chose who an autonomous vehicle should prioritize in
+  unavoidable collisions.
+  The ground truth is the human's moral decision.
 
 \end{itemize}
 
