@@ -19,15 +19,14 @@ export HF_HOME=/work1/harangju/harang/.cache/huggingface
 export UV_CACHE_DIR=/work1/harangju/harang/.cache/uv
 export PIP_CACHE_DIR=/work1/harangju/harang/.cache/pip
 
-echo "Activating venv..."
-source .venv/bin/activate || exit 1
-echo "Venv activated, python: $(which python)"
+echo "Syncing dependencies..."
+uv sync
 
 echo "Uninstalling torch..."
-pip uninstall -y torch torchvision torchaudio || true
+uv pip uninstall -y torch torchvision torchaudio || true
 
 echo "Installing CPU-only torch..."
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 
 echo "Running script..."
-python scripts/collect_stage2_steering.py
+uv run python scripts/collect_stage2_steering.py
