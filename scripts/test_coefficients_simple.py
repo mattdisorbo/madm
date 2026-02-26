@@ -19,10 +19,10 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 # ======================== CONFIG ========================
 
-MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"
+MODEL_NAME = "Qwen/Qwen3-4B"
 N_SAMPLES_PER_COEFF = 20  # Test 20 samples per coefficient
 COEFFICIENTS = [0.5, 1.0, 2.0, 3.0, 5.0]  # Coefficients to test
-LAYER = 22  # Layer for 1.5B model
+LAYER = 28  # Qwen3-4B has 36 layers
 MAX_CTX = 512
 RESERVE = 16
 SAE_STEPS = 150

@@ -30,9 +30,9 @@ args = parser.parse_args()
 
 # ======================== CONFIG ========================
 
-MODEL_NAME = "Qwen/Qwen2.5-14B-Instruct"
+MODEL_NAME = "Qwen/Qwen3-4B"
 N_SAMPLES = args.n_samples
-LAYER = 40
+LAYER = 28
 MAX_CTX = 512
 RESERVE = 16
 COEFF = args.coeff

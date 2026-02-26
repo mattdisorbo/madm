@@ -18,10 +18,10 @@ import numpy as np
 
 # ======================== CONFIG ========================
 
-MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"  # Quick test with smaller model
+MODEL_NAME = "Qwen/Qwen3-4B"
 N_SAMPLES = 100  # Updated for comprehensive test
 N_TEST = 100
-LAYER = 23  # Qwen2.5-1.5B has 28 layers; using layer 23 (~82% depth)
+LAYER = 28  # Qwen3-4B has 36 layers; using layer 28 (~78% depth)
 SAE_STEPS = 150
 MAX_CTX = 512
 RESERVE = 16
