@@ -111,7 +111,10 @@ def truncate_to_ctx(prompt: str) -> str:
 def format_prompt(prompt: str) -> str:
     """Format prompt using model's chat template (for Qwen)."""
     if tokenizer.chat_template:
-        messages = [{"role": "user", "content": prompt}]
+        messages = [
+            {"role": "system", "content": "/no_think"},
+            {"role": "user", "content": prompt}
+        ]
         return tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
     return prompt
 
@@ -135,6 +138,8 @@ def get_llm_base(prompt: str, max_tokens: int = 20):
     text = re.sub(
         r"<\|im_end\|>|<\|endoftext\|>|<\|im_start\|>|assistant|user", "", text
     ).strip()
+    # Strip thinking blocks that may leak through
+    text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
 
     return text
 
