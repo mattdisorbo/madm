@@ -10,6 +10,8 @@
 cd "${WORK}/madm"
 export PYTHONUNBUFFERED=1
 export HF_HOME=/work1/harangju/harang/.cache/huggingface
+export UV_CACHE_DIR=/work1/harangju/harang/.cache/uv
+export PIP_CACHE_DIR=/work1/harangju/harang/.cache/pip
 
 source .venv/bin/activate
 pip install --force-reinstall torch --index-url https://download.pytorch.org/whl/rocm7.1
