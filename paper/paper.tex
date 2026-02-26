@@ -401,9 +401,17 @@ rate of 5.3\%.
 The auditor achieves a raw prediction accuracy of 76.4\%, modestly
 higher, but its final accuracy of 91.9\% reflects a far higher
 delegation rate of 53.2\%.
-Internal reasoning tokens produce competitive raw predictions but do not
-expose the uncertainty that the adversarial critique instruction surfaces,
-and so leave most of the available calibration headroom unrealized.
+
+Both conditions show calibrated delegation: each defers more on cases
+where its predictions are weaker.
+CoT accuracy is 54.7\% on delegated inputs and 74.0\% on implemented
+ones; the auditor's figures are 71.9\% and 81.9\%, respectively.
+Strikingly, the cases the auditor chooses to defer are roughly as
+difficult as the cases CoT chooses to answer (71.9\% vs.\ 74.0\%),
+yet the auditor defers them anyway.
+The adversarial critique does not simply identify inputs the model
+cannot handle; it raises the bar for what counts as sufficient
+confidence to act.
 
 \section{Discussion}
 
