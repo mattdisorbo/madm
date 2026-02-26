@@ -5,7 +5,7 @@
 #SBATCH -p mi2104x
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH -t 02:00:00
+#SBATCH -t 04:00:00
 
 cd "${WORK}/madm"
 source .venv/bin/activate

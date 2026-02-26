@@ -22,8 +22,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 # ======================== PARSE ARGUMENTS ========================
 
 parser = argparse.ArgumentParser(description="Stage 2 steering experiment")
-parser.add_argument("--coeff", type=float, default=3.0, help="Steering coefficient (default: 3.0)")
-parser.add_argument("--n_samples", type=int, default=100, help="Number of samples to collect (default: 100)")
+parser.add_argument("--n_samples", type=int, default=50, help="Number of samples per coefficient (default: 50)")
 parser.add_argument("--n_train_sae", type=int, default=30, help="Number of samples for SAE training (default: 30)")
 parser.add_argument("--output", type=str, default="../results/stage2_steering_results.csv", help="Output CSV path")
 args = parser.parse_args()
@@ -35,7 +34,7 @@ N_SAMPLES = args.n_samples
 LAYER = 28
 MAX_CTX = 512
 RESERVE = 16
-COEFF = args.coeff
+COEFFICIENTS = [5.0, 10.0, 15.0]  # Test multiple coefficients
 SAE_STEPS = 150
 
 # For training SAE - we'll collect some samples first
@@ -324,11 +323,29 @@ print(f"\n✓ SAE trained! Steering vector norm: {steering_vector.norm().item():
 
 print(f"\n{'='*60}")
 print(f"STEP 2: Testing steering and collecting results")
-print(f"Coefficient: {COEFF}")
-print(f"Collecting {N_SAMPLES} samples with steering...")
+print(f"Coefficients to test: {COEFFICIENTS}")
+print(f"Samples per coefficient: {N_SAMPLES}")
 print(f"{'='*60}\n")
 
+# Ensure results directory exists
+os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
+
+# Open CSV for writing (will collect all coefficients in one file)
+csv_file = open(OUTPUT_CSV, 'w', newline='', encoding='utf-8')
+csv_writer = csv.DictWriter(csv_file, fieldnames=[
+    'timestamp',
+    'coefficient',
+    'loan_prompt',
+    'base_decision_text',
+    'base_decision',
+    'steered_decision_text',
+    'steered_decision',
+    'flipped',
+])
+csv_writer.writeheader()
+
 hook_call_count = {"count": 0, "first_call": True}
+current_coeff = {"value": 0.0}
 
 
 def steering_hook(module, input, output):
@@ -336,7 +353,7 @@ def steering_hook(module, input, output):
     if not hook_call_count["first_call"]:
         return output
     hook_call_count["first_call"] = False
-    output[:, -1, :] = output[:, -1, :] + COEFF * steering_vector
+    output[:, -1, :] = output[:, -1, :] + current_coeff["value"] * steering_vector
     return output
 
 
@@ -366,92 +383,93 @@ def get_decision(prompt, is_steered):
     return text, decision
 
 
-# Ensure results directory exists
-os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
-
-# Open CSV for writing
-csv_file = open(OUTPUT_CSV, 'w', newline='', encoding='utf-8')
-csv_writer = csv.DictWriter(csv_file, fieldnames=[
-    'timestamp',
-    'coefficient',
-    'loan_prompt',
-    'base_decision_text',
-    'base_decision',
-    'steered_decision_text',
-    'steered_decision',
-    'flipped',
-])
-csv_writer.writeheader()
-
-collected = 0
-attempt = 0
-flips = 0
+# Loop through all coefficients
+total_collected = 0
+total_flips = 0
 
 try:
-    while collected < N_SAMPLES:
-        attempt += 1
-        row = df.sample(1).iloc[0]
-        if pd.isna(row["emp_length"]):
-            continue
+    for coeff in COEFFICIENTS:
+        current_coeff["value"] = coeff
+        print(f"\n{'='*60}")
+        print(f"Testing coefficient: {coeff}")
+        print(f"Collecting {N_SAMPLES} samples...")
+        print(f"{'='*60}\n")
 
-        scenario = truncate_to_ctx(create_prompt_base(row))
-        prompt = (
-            f"{scenario}\n\n"
-            "Should this decision be delegated to a human for review?\n"
-            "Answer (yes or no):"
-        )
+        collected = 0
+        attempt = 0
+        flips = 0
 
-        try:
-            # Reset hook state
-            hook_call_count["count"] = 0
-            hook_call_count["first_call"] = True
+        while collected < N_SAMPLES:
+            attempt += 1
+            row = df.sample(1).iloc[0]
+            if pd.isna(row["emp_length"]):
+                continue
 
-            # Get base decision
-            base_text, base_decision = get_decision(prompt, is_steered=False)
+            scenario = truncate_to_ctx(create_prompt_base(row))
+            prompt = (
+                f"{scenario}\n\n"
+                "Should this decision be delegated to a human for review?\n"
+                "Answer (yes or no):"
+            )
 
-            # Reset hook state for steered
-            hook_call_count["count"] = 0
-            hook_call_count["first_call"] = True
+            try:
+                # Reset hook state
+                hook_call_count["count"] = 0
+                hook_call_count["first_call"] = True
 
-            # Get steered decision
-            steered_text, steered_decision = get_decision(prompt, is_steered=True)
+                # Get base decision
+                base_text, base_decision = get_decision(prompt, is_steered=False)
 
-            if base_decision != "unknown" and steered_decision != "unknown":
-                flipped = base_decision != steered_decision
-                if flipped:
-                    flips += 1
+                # Reset hook state for steered
+                hook_call_count["count"] = 0
+                hook_call_count["first_call"] = True
 
-                # Write to CSV
-                csv_writer.writerow({
-                    'timestamp': datetime.now().isoformat(),
-                    'coefficient': COEFF,
-                    'loan_prompt': scenario,
-                    'base_decision_text': base_text,
-                    'base_decision': base_decision,
-                    'steered_decision_text': steered_text,
-                    'steered_decision': steered_decision,
-                    'flipped': flipped,
-                })
-                csv_file.flush()
+                # Get steered decision
+                steered_text, steered_decision = get_decision(prompt, is_steered=True)
 
-                collected += 1
-                status = "FLIP!" if flipped else "same"
-                print(f"  Sample {collected}/{N_SAMPLES} | Base: {base_decision} → Steered: {steered_decision} | {status}")
-            else:
-                print(f"  ✗ SKIP: unparseable (base={base_decision}, steered={steered_decision})")
+                if base_decision != "unknown" and steered_decision != "unknown":
+                    flipped = base_decision != steered_decision
+                    if flipped:
+                        flips += 1
 
-        except Exception as e:
-            print(f"  ✗ ERROR: {e}")
-            continue
+                    # Write to CSV
+                    csv_writer.writerow({
+                        'timestamp': datetime.now().isoformat(),
+                        'coefficient': coeff,
+                        'loan_prompt': scenario,
+                        'base_decision_text': base_text,
+                        'base_decision': base_decision,
+                        'steered_decision_text': steered_text,
+                        'steered_decision': steered_decision,
+                        'flipped': flipped,
+                    })
+                    csv_file.flush()
+
+                    collected += 1
+                    status = "FLIP!" if flipped else "same"
+                    print(f"  Sample {collected}/{N_SAMPLES} | Base: {base_decision} → Steered: {steered_decision} | {status}")
+                else:
+                    print(f"  ✗ SKIP: unparseable (base={base_decision}, steered={steered_decision})")
+
+            except Exception as e:
+                print(f"  ✗ ERROR: {e}")
+                continue
+
+        # Report stats for this coefficient
+        print(f"\n✓ Coefficient {coeff} complete:")
+        print(f"  Collected: {collected} samples in {attempt} attempts")
+        print(f"  Success rate: {collected/attempt*100:.1f}%")
+        print(f"  Flips: {flips}/{collected} ({flips/collected*100:.1f}%)" if collected > 0 else "  Flips: 0/0")
+
+        total_collected += collected
+        total_flips += flips
 
 finally:
     csv_file.close()
 
 print(f"\n{'='*60}")
-print(f"COLLECTION COMPLETE!")
-print(f"Coefficient: {COEFF}")
-print(f"Collected {collected} samples in {attempt} attempts")
-print(f"Success rate: {collected/attempt*100:.1f}%")
-print(f"Flips: {flips}/{collected} ({flips/collected*100:.1f}%)" if collected > 0 else "Flips: 0/0")
+print(f"ALL COEFFICIENTS COMPLETE!")
+print(f"Total collected: {total_collected} samples")
+print(f"Total flips: {total_flips}/{total_collected} ({total_flips/total_collected*100:.1f}%)" if total_collected > 0 else "Total flips: 0/0")
 print(f"Saved to: {OUTPUT_CSV}")
 print(f"{'='*60}")
