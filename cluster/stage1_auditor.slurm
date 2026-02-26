@@ -5,15 +5,10 @@
 #SBATCH -p mi2101x
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH --gpus-per-node=1
-#SBATCH -t 02:00:00
+#SBATCH -t 04:00:00
 
 cd "${WORK}/madm"
 source .venv/bin/activate
 export PYTHONUNBUFFERED=1
-export PATH="$HOME/.local/bin:$PATH"
-
-# Force reinstall ROCm PyTorch
-uv pip install --force-reinstall torch --index-url https://download.pytorch.org/whl/rocm7.1
 
 python scripts/collect_stage1_auditor.py
