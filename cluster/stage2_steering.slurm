@@ -13,7 +13,6 @@ export HF_HOME=/work1/harangju/harang/.cache/huggingface
 
 source .venv/bin/activate
 pip install --force-reinstall torch --index-url https://download.pytorch.org/whl/rocm7.1
-pip uninstall -y transformers
-pip install transformers
+pip install --force-reinstall --no-deps transformers==4.48.0
 
 python scripts/collect_stage2_steering.py
