@@ -11,5 +11,7 @@ cd "${WORK}/madm"
 source .venv/bin/activate
 export PYTHONUNBUFFERED=1
 export HF_HOME="${WORK}/.cache/huggingface"
+export HUGGINGFACE_HUB_CACHE="${WORK}/.cache/huggingface/hub"
+export TRANSFORMERS_CACHE="${WORK}/.cache/huggingface/transformers"
 
 python scripts/collect_stage1_auditor.py
