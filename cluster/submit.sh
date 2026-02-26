@@ -15,7 +15,10 @@ SCRIPT="$1"
 REMOTE="amd:\$WORK/madm/"
 
 echo "==> Syncing code to cluster"
-rsync -av --exclude .venv --exclude outputs --exclude .git . "${REMOTE}"
+rsync -av --exclude .venv --exclude outputs --exclude .git \
+  --exclude data/FEVEROUS --exclude data/JFLEG \
+  --exclude data/MovieLens --exclude data/WikipediaToxicity \
+  . "${REMOTE}"
 
 echo "==> Ensuring logs directory exists"
 ssh amd "mkdir -p \$WORK/madm/logs"
