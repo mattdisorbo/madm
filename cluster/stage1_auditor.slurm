@@ -11,4 +11,7 @@ cd "${WORK}/madm"
 source .venv/bin/activate
 export PYTHONUNBUFFERED=1
 
+# Install ROCm PyTorch if not already installed
+pip install --reinstall torch --index-url https://download.pytorch.org/whl/rocm7.1
+
 python scripts/collect_stage1_auditor.py
