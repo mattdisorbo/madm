@@ -10,8 +10,6 @@
 cd "${WORK}/madm"
 source .venv/bin/activate
 export PYTHONUNBUFFERED=1
-export HF_HOME="${WORK}/.cache/huggingface"
-export HUGGINGFACE_HUB_CACHE="${WORK}/.cache/huggingface/hub"
-export TRANSFORMERS_CACHE="${WORK}/.cache/huggingface/transformers"
+export HF_HOME=/work1/harangju/harang/.cache/huggingface
 
 python scripts/collect_stage1_auditor.py
