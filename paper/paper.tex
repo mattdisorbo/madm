@@ -395,16 +395,15 @@ We compare the auditor pipeline to a chain-of-thought (CoT) baseline in
 which gpt-5-nano uses internal reasoning tokens before issuing a binary
 prediction, with no adversarial instruction and no delegation option.
 
-On Moral Machine ($n = 300$ for CoT; $n = 110$ for base and auditor),
-raw prediction accuracy is 64.0\% for CoT and 66.0\% for the base
-pipeline, nearly identical.
-We compute final accuracy by treating delegated cases as correct.
-Under this metric, CoT reaches 72.4\%, the base reaches 75.0\%, and
-the auditor reaches 92.7\%.
-Delegation drives this gap: the auditor defers 70.0\% of inputs,
-against 8.3\% for CoT and 12.7\% for the base pipeline.
-Internal reasoning tokens provide additional computation but do not expose
-the uncertainty that the adversarial critique instruction surfaces.
+Aggregating across all nine datasets, CoT achieves a raw prediction
+accuracy of 71.9\% and a final accuracy of 77.2\%, with a delegation
+rate of 5.3\%.
+The auditor achieves a raw prediction accuracy of 76.4\%, modestly
+higher, but its final accuracy of 91.9\% reflects a far higher
+delegation rate of 53.2\%.
+Internal reasoning tokens produce competitive raw predictions but do not
+expose the uncertainty that the adversarial critique instruction surfaces,
+and so leave most of the available calibration headroom unrealized.
 
 \section{Discussion}
 
