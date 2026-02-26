@@ -46,8 +46,7 @@ OUTPUT_CSV = args.output
 
 # ======================== LOAD MODEL ========================
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
-print(f"Loading {MODEL_NAME} on {device}...")
+print(f"Loading {MODEL_NAME}...")
 
 torch.cuda.empty_cache()
 
@@ -57,10 +56,13 @@ if tokenizer.pad_token is None:
 
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
-    torch_dtype=torch.float16,
-).to(device)
+    device_map="auto",
+    torch_dtype="auto",
+    trust_remote_code=True,
+)
 
-print("Model loaded.")
+device = next(model.parameters()).device
+print(f"Model loaded on {device}.")
 
 # ======================== LOAD DATA ========================
 
@@ -135,7 +137,10 @@ def truncate_to_ctx(prompt: str) -> str:
 def format_prompt(prompt: str) -> str:
     """Format prompt using model's chat template (for Qwen)."""
     if tokenizer.chat_template:
-        messages = [{"role": "user", "content": prompt}]
+        messages = [
+            {"role": "system", "content": "/no_think"},
+            {"role": "user", "content": prompt}
+        ]
         return tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
     return prompt
 
@@ -170,6 +175,8 @@ def get_llm_with_cache(prompt: str, max_tokens: int = 20):
     text = re.sub(
         r"<\|im_end\|>|<\|endoftext\|>|<\|im_start\|>|assistant|user", "", text
     ).strip()
+    # Strip thinking blocks that may leak through
+    text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
 
     return {"cache": cache, "text": text}
 
@@ -378,6 +385,8 @@ def get_decision(prompt, is_steered):
     text = re.sub(
         r"<\|im_end\|>|<\|endoftext\|>|<\|im_start\|>|assistant|user", "", text
     ).strip()
+    # Strip thinking blocks that may leak through
+    text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
 
     decision = parse_decision(text)
     return text, decision
