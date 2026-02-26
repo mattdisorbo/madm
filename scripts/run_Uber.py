@@ -48,7 +48,6 @@ if _args.model is not None and _args.n is not None:
     N_QWEN_XL    = 1 if QWEN_MODEL_XL    == _args.model else 0
     N_GLM        = 1 if GLM_MODEL        == _args.model else 0
     N_DEEPSEEK   = 1 if DEEPSEEK_MODEL   == _args.model else 0
-    N_SAMPLES_BASE    = _args.n
     N_SAMPLES_COT     = _args.n
 
 # Booking_Status values kept: "Success" (label 0) and "Canceled by Driver" (label 1)

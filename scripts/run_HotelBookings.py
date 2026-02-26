@@ -52,7 +52,6 @@ if _args.model is not None and _args.n is not None:
     if _args.model not in _known:
         OAI_MODEL = _args.model
         N_OAI = 1
-    N_SAMPLES_BASE    = _args.n
     N_SAMPLES_COT     = _args.n
 
 DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/hotel_bookings.csv")
