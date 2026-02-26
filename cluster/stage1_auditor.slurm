@@ -10,5 +10,6 @@
 cd "${WORK}/madm"
 source .venv/bin/activate
 export PYTHONUNBUFFERED=1
+export HF_HOME="${WORK}/.cache/huggingface"
 
 python scripts/collect_stage1_auditor.py
