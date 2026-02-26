@@ -377,6 +377,31 @@ more difficult (and thus activation-dense) cases.
   \end{tabular}
 \end{table}
 
+\subsection{Initial Divergence}
+
+To establish a clean baseline for the steering experiment, we ran a controlled
+version of the pipeline on 100 LendingClub applications where both the base
+and auditor paths operate under matched conditions.
+Each model produces an initial accept-or-reject prediction, writes an
+intermediate text, then issues a final delegation decision.
+The base model writes a \emph{support}---reasons that justify its initial
+prediction---while the auditor writes a \emph{critique}---reasons that challenge it.
+This single-word change in the intermediate instruction is the only difference
+between the two conditions.
+
+Both models agree on their initial prediction for all 100 inputs: 82 accepts
+and 18 rejects, identical across conditions.
+Despite this complete initial agreement, their final decisions diverge sharply.
+The base model implements its initial decision on every input; the auditor
+delegates on every input.
+Writing a support consolidates the model's position, whereas writing a critique
+appears sufficient to shift it toward deferral, regardless of what the initial
+prediction was.
+This divergence motivates the steering experiment below: if the only
+behavioral difference between the two models traces to a single
+intermediate instruction, a corresponding difference should be visible
+in the model's internal representations at the time of the final decision.
+
 \subsection{Causal Steering}
 
 Applying the mean-difference steering vector ($\alpha = 2.0$) to the
