@@ -48,16 +48,14 @@ OUTPUT_CSV = args.output
 
 print(f"Loading {MODEL_NAME}...")
 
-torch.cuda.empty_cache()
-
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
 
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
-    device_map="auto",
-    torch_dtype="auto",
+    device_map="cpu",
+    torch_dtype=torch.float32,
     trust_remote_code=True,
 )
 
