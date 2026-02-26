@@ -2,7 +2,7 @@
 #SBATCH -J madm-stage1
 #SBATCH -o logs/stage1_auditor.%j.out
 #SBATCH -e logs/stage1_auditor.%j.err
-#SBATCH -p mi2101x
+#SBATCH -p mi2104x
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH -t 02:00:00
