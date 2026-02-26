@@ -29,9 +29,9 @@ args = parser.parse_args()
 
 # ======================== CONFIG ========================
 
-MODEL_NAME = "Qwen/Qwen3-4B"
+MODEL_NAME = "Qwen/Qwen3-1.7B"
 N_SAMPLES = args.n_samples
-LAYER = 28
+LAYER = 16
 MAX_CTX = 512
 RESERVE = 16
 COEFFICIENTS = [5.0, 10.0, 15.0]  # Test multiple coefficients
