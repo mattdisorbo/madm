@@ -148,16 +148,88 @@ Input perturbation methods~\citep{datta2016algorithmic} probe model behavior
 from the outside; our activation-based approach probes it from the inside,
 offering a window into the computations that precede any output.
 
+\section{Data}
+\label{sec:data}
+
+We evaluate across nine publicly available datasets spanning domains in which
+humans make binary decisions.
+Six datasets with clear binary labels inform the main results; three are
+excluded for reasons noted below.
+
+\begin{itemize}
+
+  \item \textbf{LendingClub}~\citep{lending_data}.
+  Consumer loan applications from the LendingClub peer-to-peer lending
+  platform, each described by loan amount, purpose, US state, employment
+  length, and policy code.
+  The ground truth is the platform's binary accept/reject decision.
+  We sample 100{,}000 accepted and 100{,}000 rejected applications.
+
+  \item \textbf{MovieLens}~\citep{harper2015movielens}.
+  User ratings from the MovieLens collaborative-filtering benchmark.
+  Each example is a pairwise preference question: given a user's rating
+  history, which of two candidate films did they rate higher?
+  The ground truth is the user's actual higher-rated film, capturing
+  real consumer preference.
+  We use the first 1{,}000{,}000 rows of the rating file to stay within
+  memory limits.
+
+  \item \textbf{FEVEROUS}~\citep{aly2021feverous}.
+  Wikipedia-grounded claim verification in which each example is a
+  natural-language statement paired with evidence drawn from both Wikipedia
+  prose and tables.
+  The ground truth is a crowd-sourced human judgment of \textit{supported}
+  or \textit{refuted}.
+  We exclude claims labeled \textit{not enough information}, retaining
+  roughly half the original corpus.
+
+  \item \textbf{Wikipedia Toxicity}~\citep{wulczyn2017exmachina}.
+  Comments from Wikipedia talk pages rated by crowd workers for personal
+  attacks.
+  The ground truth is the majority toxicity label assigned by the
+  annotators.
+
+  \item \textbf{Uber}~\citep{uber_data}.
+  Ride-booking records from New York City indicating whether a requested
+  ride was cancelled before pickup.
+  The ground truth is the binary cancellation outcome.
+
+  \item \textbf{Hotel Bookings}~\citep{antonio2019hotel}.
+  Reservation records from two Portuguese hotels.
+  The ground truth is whether a booking was ultimately cancelled by the
+  guest.
+
+  \item \textbf{AIME} (excluded).
+  American Invitational Mathematics Examination problems with numerical
+  answers.
+  Excluded because the correct answer is deterministic and there is no
+  human judgment to predict.
+
+  \item \textbf{JFLEG}~\citep{napoles2017jfleg} (excluded).
+  A corpus of grammatical error correction examples written by
+  English-as-a-second-language learners.
+  Excluded because the task requires generating corrected text rather than
+  making a binary judgment.
+
+  \item \textbf{Moral Machine}~\citep{awad2018moral} (excluded).
+  Trolley-problem scenarios from the MIT Moral Machine experiment in which
+  participants chose who an autonomous vehicle should harm in unavoidable
+  collisions.
+  Excluded because no single ground-truth answer exists for ethical
+  dilemmas of this kind.
+
+\end{itemize}
+
 \section{Methods}
 
 \subsection{Dataset}
 
-We sample 10{,}000 accepted and 10{,}000 rejected consumer loan applications
-from a publicly available lending dataset~\citep{lending_data}.
-Each application includes loan amount, stated purpose, US state, employment
-length, and policy code.
-Employment length is normalized to $[0,1]$; all categorical fields are
-rendered as natural-language phrases.
+Input features vary by domain.
+LendingClub applications include loan amount, purpose, US state, employment
+length, and policy code; employment length is normalized to $[0,1]$ and all
+categorical fields are rendered as natural-language phrases.
+Other datasets are formatted analogously, with each row converted to a brief
+natural-language scenario.
 
 \subsection{Reasoning Pipelines}
 
