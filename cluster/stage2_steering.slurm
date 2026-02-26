@@ -14,5 +14,6 @@ export UV_CACHE_DIR=/work1/harangju/harang/.cache/uv
 export PIP_CACHE_DIR=/work1/harangju/harang/.cache/pip
 
 source .venv/bin/activate
-pip install torch --index-url https://download.pytorch.org/whl/cpu
+pip uninstall -y torch torchvision torchaudio
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 python scripts/collect_stage2_steering.py
