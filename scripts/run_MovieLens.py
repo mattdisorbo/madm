@@ -20,6 +20,7 @@ QWEN_MODEL_LARGE = "Qwen/Qwen3-8B"
 QWEN_MODEL_XL    = "Qwen/Qwen3-14B"
 GLM_MODEL        = "THUDM/glm-4-9b-chat-hf"
 DEEPSEEK_MODEL   = "deepseek-chat"
+OAI_MODEL_4O_MINI = "gpt-4o-mini"
 
 N_SAMPLES_BASE    = 0
 N_SAMPLES_OLS = 0
@@ -33,6 +34,7 @@ N_QWEN_LARGE = 0
 N_QWEN_XL    = 0
 N_GLM        = 0
 N_DEEPSEEK   = 0
+N_4O_MINI    = 0
 
 import argparse as _ap
 _p = _ap.ArgumentParser()
@@ -48,7 +50,11 @@ if _args.model is not None and _args.n is not None:
     N_QWEN_XL    = 1 if QWEN_MODEL_XL    == _args.model else 0
     N_GLM        = 1 if GLM_MODEL        == _args.model else 0
     N_DEEPSEEK   = 1 if DEEPSEEK_MODEL   == _args.model else 0
-    N_SAMPLES_COT     = _args.n
+    N_4O_MINI    = 1 if OAI_MODEL_4O_MINI == _args.model else 0
+    if _args.model == OAI_MODEL_NANO:
+        N_SAMPLES_COT  = _args.n
+    else:
+        N_SAMPLES_BASE = _args.n
 
 DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/MovieLens/movies_and_ratings_last1000000.csv")
 
@@ -307,7 +313,7 @@ def get_path(method, model):
     return os.path.join(local_dir, f'{method}_{model.split("/")[-1]}.csv')
 
 df_existing = {}
-for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN), (QWEN_MODEL_MED, N_QWEN_MED), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (QWEN_MODEL_XL, N_QWEN_XL), (GLM_MODEL, N_GLM), (DEEPSEEK_MODEL, N_DEEPSEEK)]:
+for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (OAI_MODEL_4O_MINI, N_4O_MINI), (QWEN_MODEL, N_QWEN), (QWEN_MODEL_MED, N_QWEN_MED), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (QWEN_MODEL_XL, N_QWEN_XL), (GLM_MODEL, N_GLM), (DEEPSEEK_MODEL, N_DEEPSEEK)]:
     if n > 0:
         for method in ["base", "ols", "auditor", "cot"]:
             path = get_path(method, model)
@@ -320,7 +326,7 @@ test_indices = df.loc[df['split'] == 'test'].index.tolist()
 
 results = []
 completed = 0
-total = (N_OAI + N_NANO + N_QWEN + N_QWEN_MED + N_QWEN_LARGE + N_QWEN_XL + N_GLM + N_DEEPSEEK) * (N_SAMPLES_BASE + N_SAMPLES_OLS + N_SAMPLES_AUDITOR) + N_NANO * N_SAMPLES_COT
+total = (N_OAI + N_NANO + N_4O_MINI + N_QWEN + N_QWEN_MED + N_QWEN_LARGE + N_QWEN_XL + N_GLM + N_DEEPSEEK) * (N_SAMPLES_BASE + N_SAMPLES_OLS + N_SAMPLES_AUDITOR) + N_NANO * N_SAMPLES_COT
 save_lock = threading.Lock()
 
 def save_progress():
@@ -346,7 +352,7 @@ def call_llm_tracked(row_idx, method, model):
 
 # --- Build jobs ---
 jobs = []
-for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN), (QWEN_MODEL_MED, N_QWEN_MED), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (QWEN_MODEL_XL, N_QWEN_XL), (GLM_MODEL, N_GLM), (DEEPSEEK_MODEL, N_DEEPSEEK)]:
+for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (OAI_MODEL_4O_MINI, N_4O_MINI), (QWEN_MODEL, N_QWEN), (QWEN_MODEL_MED, N_QWEN_MED), (QWEN_MODEL_LARGE, N_QWEN_LARGE), (QWEN_MODEL_XL, N_QWEN_XL), (GLM_MODEL, N_GLM), (DEEPSEEK_MODEL, N_DEEPSEEK)]:
     if n > 0:
         methods = [("base", N_SAMPLES_BASE), ("ols", N_SAMPLES_OLS), ("auditor", N_SAMPLES_AUDITOR)]
         if model == OAI_MODEL_NANO:
@@ -357,7 +363,7 @@ for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QW
                 for idx in sampled:
                     jobs.append((idx, method, model))
 
-print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, c={N_SAMPLES_COT}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x | QwenMed {N_QWEN_MED}x | QwenLarge {N_QWEN_LARGE}x | QwenXL {N_QWEN_XL}x | GLM {N_GLM}x | DeepSeek {N_DEEPSEEK}x", flush=True)
+print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, c={N_SAMPLES_COT}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | 4oMini {N_4O_MINI}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x | QwenMed {N_QWEN_MED}x | QwenLarge {N_QWEN_LARGE}x | QwenXL {N_QWEN_XL}x | GLM {N_GLM}x | DeepSeek {N_DEEPSEEK}x", flush=True)
 with ThreadPoolExecutor(max_workers=5) as executor:
     futures = [executor.submit(call_llm_tracked, idx, method, model) for idx, method, model in jobs]
     for f in as_completed(futures):
