@@ -19,14 +19,15 @@ export HF_HOME=/work1/harangju/harang/.cache/huggingface
 export UV_CACHE_DIR=/work1/harangju/harang/.cache/uv
 export PIP_CACHE_DIR=/work1/harangju/harang/.cache/pip
 
-echo "Syncing dependencies..."
-uv sync
+echo "Setting up Python environment..."
+python3 -m venv --clear .venv
+source .venv/bin/activate
 
-echo "Uninstalling torch..."
-uv pip uninstall -y torch torchvision torchaudio || true
+echo "Installing dependencies..."
+pip install --quiet numpy pandas plotly tqdm transformers datasets scikit-learn matplotlib
 
 echo "Installing CPU-only torch..."
-uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 
 echo "Running script..."
-uv run python scripts/collect_stage2_steering.py
+python scripts/collect_stage2_steering.py
