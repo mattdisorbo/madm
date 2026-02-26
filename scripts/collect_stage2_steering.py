@@ -24,7 +24,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 parser = argparse.ArgumentParser(description="Stage 2 steering experiment")
 parser.add_argument("--n_samples", type=int, default=50, help="Number of samples per coefficient (default: 50)")
 parser.add_argument("--n_train_sae", type=int, default=30, help="Number of samples for SAE training (default: 30)")
-parser.add_argument("--output", type=str, default="../results/stage2_steering_results.csv", help="Output CSV path")
+parser.add_argument("--output", type=str, default="results/stage2_steering_results.csv", help="Output CSV path")
 args = parser.parse_args()
 
 # ======================== CONFIG ========================
@@ -40,8 +40,8 @@ SAE_STEPS = 150
 # For training SAE - we'll collect some samples first
 N_TRAIN_SAE = args.n_train_sae  # Collect samples to train SAE before steering test
 
-ACCEPTED_CSV = "../data/accepted_10k.csv"
-REJECTED_CSV = "../data/rejected_10k.csv"
+ACCEPTED_CSV = "data/accepted_10k.csv"
+REJECTED_CSV = "data/rejected_10k.csv"
 OUTPUT_CSV = args.output
 
 # ======================== LOAD MODEL ========================
