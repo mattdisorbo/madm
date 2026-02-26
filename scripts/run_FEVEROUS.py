@@ -45,10 +45,6 @@ if _args.model is not None and _args.n is not None:
     N_GLM        = 1 if GLM_MODEL        == _args.model else 0
     N_DEEPSEEK   = 1 if DEEPSEEK_MODEL   == _args.model else 0
     N_SAMPLES_BASE    = _args.n
-    N_SAMPLES_AUDITOR = _args.n
-    N_SAMPLES_RF      = _args.n
-    N_SAMPLES_OLS     = _args.n
-    N_SAMPLES_GLM     = _args.n
     N_SAMPLES_COT     = _args.n
 
 DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/FEVEROUS/feverous_train_challenges.jsonl")
