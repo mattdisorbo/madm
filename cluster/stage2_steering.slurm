@@ -14,8 +14,4 @@ export UV_CACHE_DIR=/work1/harangju/harang/.cache/uv
 export PIP_CACHE_DIR=/work1/harangju/harang/.cache/pip
 
 source .venv/bin/activate
-pip install --upgrade pip
-pip install torch --index-url https://download.pytorch.org/whl/rocm7.1
-pip install transformers==4.48.0 huggingface-hub
-
 python scripts/collect_stage2_steering.py
