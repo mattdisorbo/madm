@@ -11,8 +11,9 @@ cd "${WORK}/madm"
 export PYTHONUNBUFFERED=1
 export HF_HOME=/work1/harangju/harang/.cache/huggingface
 
-uv sync
-uv pip install --reinstall torch --index-url https://download.pytorch.org/whl/rocm7.1
-uv pip install --force-reinstall --no-deps transformers
+source .venv/bin/activate
+pip install --force-reinstall torch --index-url https://download.pytorch.org/whl/rocm7.1
+pip uninstall -y transformers
+pip install transformers
 
-uv run python scripts/collect_stage2_steering.py
+python scripts/collect_stage2_steering.py
