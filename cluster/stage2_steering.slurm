@@ -15,6 +15,7 @@ export PIP_CACHE_DIR=/work1/harangju/harang/.cache/pip
 
 source .venv/bin/activate
 pip install --force-reinstall torch --index-url https://download.pytorch.org/whl/rocm7.1
-pip install --force-reinstall --no-deps transformers==4.48.0
+pip uninstall -y transformers huggingface-hub
+pip install transformers==4.48.0 huggingface-hub
 
 python scripts/collect_stage2_steering.py
