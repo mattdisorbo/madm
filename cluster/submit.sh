@@ -14,6 +14,9 @@ fi
 SCRIPT="$1"
 REMOTE="amd:\$WORK/madm/"
 
+echo "==> Pulling latest changes"
+git pull --ff-only
+
 echo "==> Syncing code to cluster"
 rsync -av --exclude .venv --exclude outputs --exclude .git --exclude data . "${REMOTE}"
 
