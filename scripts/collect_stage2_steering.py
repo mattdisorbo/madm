@@ -24,7 +24,7 @@ from tqdm import tqdm
 
 parser = argparse.ArgumentParser(description="Stage 2 steering experiment")
 parser.add_argument("--n_samples", type=int, default=50, help="Number of samples per coefficient (default: 50)")
-parser.add_argument("--n_train_sae", type=int, default=30, help="Number of samples for SAE training (default: 30)")
+parser.add_argument("--n_train_sae", type=int, default=100, help="Number of samples for SAE training (default: 100)")
 parser.add_argument("--output", type=str, default="results/stage2_steering_results.csv", help="Output CSV path")
 args = parser.parse_args()
 
