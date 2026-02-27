@@ -18,6 +18,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from tqdm import tqdm
 
 # ======================== PARSE ARGUMENTS ========================
 
@@ -164,6 +165,8 @@ def get_llm_with_cache(prompt: str, max_tokens: int = 20):
             toks,
             max_new_tokens=max_tokens,
             do_sample=False,
+            pad_token_id=tokenizer.eos_token_id,
+            attention_mask=torch.ones_like(toks),
         )
 
     handle.remove()
@@ -218,6 +221,7 @@ print(f"{'='*60}\n")
 base_X, audit_X = [], []
 train_attempt = 0
 
+pbar = tqdm(total=N_TRAIN_SAE, desc="Collecting training samples")
 while len(base_X) < N_TRAIN_SAE:
     train_attempt += 1
     row = df.sample(1).iloc[0]
@@ -288,11 +292,14 @@ while len(base_X) < N_TRAIN_SAE:
             # Extract activations from last token
             base_X.append(base_result["cache"]["mlp_out"][0, -1].detach().cpu())
             audit_X.append(audit_result["cache"]["mlp_out"][0, -1].detach().cpu())
-            print(f"  Training sample {len(base_X)}/{N_TRAIN_SAE} | Base: {base_decision} | Audit: {audit_decision}")
+            pbar.update(1)
+            pbar.set_postfix({"base": base_decision, "audit": audit_decision, "attempts": train_attempt})
 
     except Exception as e:
-        print(f"  Error: {e}")
+        pbar.write(f"  Error on attempt {train_attempt}: {e}")
         continue
+
+pbar.close()
 
 base_X = torch.stack(base_X).float().to(device)
 audit_X = torch.stack(audit_X).float().to(device)
@@ -373,7 +380,13 @@ def get_decision(prompt, is_steered):
         handle = target_layer.mlp.register_forward_hook(steering_hook)
 
     with torch.no_grad():
-        out = model.generate(toks, max_new_tokens=15, do_sample=False)
+        out = model.generate(
+            toks,
+            max_new_tokens=15,
+            do_sample=False,
+            pad_token_id=tokenizer.eos_token_id,
+            attention_mask=torch.ones_like(toks),
+        )
 
     if handle is not None:
         handle.remove()
@@ -406,6 +419,7 @@ try:
         attempt = 0
         flips = 0
 
+        pbar_coeff = tqdm(total=N_SAMPLES, desc=f"Coeff {coeff}")
         while collected < N_SAMPLES:
             attempt += 1
             row = df.sample(1).iloc[0]
@@ -454,13 +468,21 @@ try:
 
                     collected += 1
                     status = "FLIP!" if flipped else "same"
-                    print(f"  Sample {collected}/{N_SAMPLES} | Base: {base_decision} → Steered: {steered_decision} | {status}")
+                    pbar_coeff.update(1)
+                    pbar_coeff.set_postfix({
+                        "flips": flips,
+                        "base": base_decision,
+                        "steered": steered_decision,
+                        "attempts": attempt
+                    })
                 else:
-                    print(f"  ✗ SKIP: unparseable (base={base_decision}, steered={steered_decision})")
+                    pbar_coeff.write(f"  ✗ SKIP: unparseable (base={base_decision}, steered={steered_decision})")
 
             except Exception as e:
-                print(f"  ✗ ERROR: {e}")
+                pbar_coeff.write(f"  ✗ ERROR: {e}")
                 continue
+
+        pbar_coeff.close()
 
         # Report stats for this coefficient
         print(f"\n✓ Coefficient {coeff} complete:")
