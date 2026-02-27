@@ -57,7 +57,7 @@ if tokenizer.pad_token is None:
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
     device_map="auto",  # Use GPU if available, else CPU
-    torch_dtype=torch.float32,
+    torch_dtype=torch.bfloat16,  # Much faster on GPU
     trust_remote_code=True,
 )
 
