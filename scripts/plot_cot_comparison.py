@@ -142,36 +142,33 @@ FT_MODEL_IDS = {
 fig, axes = plt.subplots(1, 2, figsize=(8, 5), sharey=True)
 
 for ax, dataset in zip(axes, FT_DATASETS):
-    ft_model = FT_MODEL_IDS[dataset]
-    ft_acc   = try_load(RESULTS_DIR / dataset / f"base_{ft_model}.csv", dataset)
-    base_acc = try_load(RESULTS_DIR / dataset / f"base_{MODEL}.csv", dataset)
+    ft_model    = FT_MODEL_IDS[dataset]
+    ft_base_acc = try_load(RESULTS_DIR / dataset / f"base_{ft_model}.csv", dataset)
+    ft_aud_acc  = try_load(RESULTS_DIR / dataset / f"auditor_{ft_model}.csv", dataset)
+    base_acc    = try_load(RESULTS_DIR / dataset / f"base_{MODEL}.csv", dataset)
 
-    bars = []
-    bar_colors = []
-    bar_names  = []
+    entries = [
+        (ft_base_acc, COLORS["ft"],      "Fine-tuned Base\n(gpt-4o-mini)"),
+        (ft_aud_acc,  COLORS["auditor"], "Fine-tuned Auditor\n(gpt-4o-mini)"),
+        (base_acc,    COLORS["base"],    "Base\n(gpt-5-nano)"),
+    ]
 
-    bars.append(ft_acc if ft_acc is not None else np.nan)
-    bar_colors.append(COLORS["ft"])
-    bar_names.append("Fine-tuned\n(gpt-4o-mini)")
-
-    bars.append(base_acc if base_acc is not None else np.nan)
-    bar_colors.append(COLORS["base"])
-    bar_names.append("Base\n(gpt-5-nano)")
-
-    x_pos = np.arange(len(bars))
-    for xi, (acc, color) in enumerate(zip(bars, bar_colors)):
-        if np.isnan(acc):
-            ax.bar(xi, 0.05, 0.5, color=color, alpha=0.2, hatch="////",
+    bar_width = 0.45
+    x_pos = np.arange(len(entries))
+    for xi, (acc, color, _) in enumerate(entries):
+        val = acc if acc is not None else np.nan
+        if np.isnan(val):
+            ax.bar(xi, 0.05, bar_width, color=color, alpha=0.2, hatch="////",
                    edgecolor=color)
             ax.text(xi, 0.08, "N/A", ha="center", va="bottom",
                     fontsize=9, color="grey", style="italic")
         else:
-            ax.bar(xi, acc, 0.5, color=color)
-            ax.text(xi, acc + 0.015, f"{acc:.3f}", ha="center", va="bottom",
+            ax.bar(xi, val, bar_width, color=color)
+            ax.text(xi, val + 0.015, f"{val:.3f}", ha="center", va="bottom",
                     fontsize=10, fontweight="bold")
 
     ax.set_xticks(x_pos)
-    ax.set_xticklabels(bar_names, fontsize=10)
+    ax.set_xticklabels([e[2] for e in entries], fontsize=9)
     ax.set_title(dataset, fontsize=12)
     ax.set_ylim(0, 1.0)
     ax.tick_params(axis="x", length=0)
@@ -181,11 +178,12 @@ for ax, dataset in zip(axes, FT_DATASETS):
 axes[0].set_ylabel("Final Accuracy", fontsize=11)
 
 legend_handles = [
-    mpatches.Patch(color=COLORS["ft"],   label="Fine-tuned (gpt-4o-mini)"),
-    mpatches.Patch(color=COLORS["base"], label="Base gpt-5-nano"),
+    mpatches.Patch(color=COLORS["ft"],      label="Fine-tuned Base (gpt-4o-mini)"),
+    mpatches.Patch(color=COLORS["auditor"], label="Fine-tuned Auditor (gpt-4o-mini)"),
+    mpatches.Patch(color=COLORS["base"],    label="Base gpt-5-nano"),
 ]
 fig.legend(handles=legend_handles, frameon=False, fontsize=9,
-           loc="upper right", bbox_to_anchor=(1.0, 1.0))
+           loc="upper right", bbox_to_anchor=(1.02, 1.0))
 
 fig.suptitle("Fine-tuned vs Base gpt-5-nano Prediction Accuracy\n(HotelBookings & LendingClub)",
              fontsize=12, y=1.02)
