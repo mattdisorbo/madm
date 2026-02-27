@@ -32,11 +32,12 @@ args = parser.parse_args()
 
 MODEL_NAME = "Qwen/Qwen3-1.7B"
 N_SAMPLES = args.n_samples
-LAYER = 16
+LAYER = 23  # Last layer before LM head
 MAX_CTX = 512
 RESERVE = 16
-COEFFICIENTS = [5.0, 10.0, 15.0]  # Test multiple coefficients
+COEFFICIENTS = [10.0]  # Test single coefficient
 SAE_STEPS = 150
+SAE_CHECKPOINT = f"results/sae_layer{LAYER}_checkpoint.pt"
 
 # For training SAE - we'll collect some samples first
 N_TRAIN_SAE = args.n_train_sae  # Collect samples to train SAE before steering test
@@ -211,125 +212,155 @@ class SAE(nn.Module):
         return self.dec(z), z
 
 
-# ======================== TRAIN SAE FIRST ========================
+# ======================== TRAIN SAE FIRST (OR LOAD) ========================
 
-print(f"\n{'='*60}")
-print("STEP 1: Training SAE on base vs auditor activations")
-print(f"Collecting {N_TRAIN_SAE} samples for training...")
-print(f"{'='*60}\n")
+# Check if we already have a trained SAE
+if os.path.exists(SAE_CHECKPOINT):
+    print(f"\n{'='*60}")
+    print(f"Loading saved SAE from: {SAE_CHECKPOINT}")
+    print(f"{'='*60}\n")
 
-base_X, audit_X = [], []
-train_attempt = 0
+    checkpoint = torch.load(SAE_CHECKPOINT, map_location=device)
+    d_in = checkpoint['d_in']
+    sae = SAE(d_in, 2 * d_in).to(device)
+    sae.load_state_dict(checkpoint['sae'])
+    steering_vector = checkpoint['steering_vector'].to(device)
+    X_mean = checkpoint['X_mean'].to(device)
+    X_std = checkpoint['X_std'].to(device)
 
-pbar = tqdm(total=N_TRAIN_SAE, desc="Collecting training samples")
-while len(base_X) < N_TRAIN_SAE:
-    train_attempt += 1
-    row = df.sample(1).iloc[0]
-    if pd.isna(row["emp_length"]):
-        continue
+    print(f"✓ SAE loaded! Steering vector norm: {steering_vector.norm().item():.4f}")
+    print(f"  (Skipping 2.5hr training - using cached SAE)\n")
 
-    scenario = truncate_to_ctx(create_prompt_base(row))
+else:
+    print(f"\n{'='*60}")
+    print("STEP 1: Training SAE on base vs auditor activations")
+    print(f"Collecting {N_TRAIN_SAE} samples for training...")
+    print(f"{'='*60}\n")
 
-    try:
-        # BASE PATH: Initial decision + SUPPORT reasoning + delegation
-        # Step 1: Initial accept/reject
-        initial_prompt = (
-            f"{scenario}\n\n"
-            "Would you accept or reject this loan application?\n"
-            "Answer (accept or reject):"
-        )
-        base_initial = get_llm_with_cache(initial_prompt, max_tokens=5)
-        initial_text = base_initial["text"]
+    base_X, audit_X = [], []
+    train_attempt = 0
 
-        # Step 2: SUPPORT reasoning
-        support_prompt = (
-            f"{scenario}\n\n"
-            f"I initially think I should: {initial_text}\n\n"
-            f"To validate this decision, here are compelling reasons to SUPPORT it:\n"
-            "1."
-        )
-        support = get_llm_with_cache(support_prompt, max_tokens=150)
+    pbar = tqdm(total=N_TRAIN_SAE, desc="Collecting training samples")
+    while len(base_X) < N_TRAIN_SAE:
+        train_attempt += 1
+        row = df.sample(1).iloc[0]
+        if pd.isna(row["emp_length"]):
+            continue
 
-        # Step 3: Delegation decision
-        base_delegation_prompt = (
-            f"{scenario}\n\n"
-            f"Initial decision: {initial_text}\n"
-            f"Support for {initial_text}: {support['text']}\n\n"
-            "Given this analysis, should this decision be delegated to a human for review?\n"
-            "Answer (yes or no):"
-        )
-        base_result = get_llm_with_cache(base_delegation_prompt, max_tokens=5)
-        base_decision = parse_decision(base_result["text"])
+        scenario = truncate_to_ctx(create_prompt_base(row))
 
-        # AUDITOR PATH: Initial decision + CRITIQUE reasoning + delegation
-        # Step 1: Initial accept/reject (same as base)
-        audit_initial = get_llm_with_cache(initial_prompt, max_tokens=5)
-        audit_initial_text = audit_initial["text"]
+        try:
+            # BASE PATH: Initial decision + SUPPORT reasoning + delegation
+            # Step 1: Initial accept/reject
+            initial_prompt = (
+                f"{scenario}\n\n"
+                "Would you accept or reject this loan application?\n"
+                "Answer (accept or reject):"
+            )
+            base_initial = get_llm_with_cache(initial_prompt, max_tokens=5)
+            initial_text = base_initial["text"]
 
-        # Step 2: CRITIQUE reasoning
-        critique_prompt = (
-            f"{scenario}\n\n"
-            f"I initially think I should: {audit_initial_text}\n\n"
-            f"To ensure fairness and avoid bias, here are compelling reasons to CRITIQUE this decision:\n"
-            "1."
-        )
-        critique = get_llm_with_cache(critique_prompt, max_tokens=150)
+            # Step 2: SUPPORT reasoning
+            support_prompt = (
+                f"{scenario}\n\n"
+                f"I initially think I should: {initial_text}\n\n"
+                f"To validate this decision, here are compelling reasons to SUPPORT it:\n"
+                "1."
+            )
+            support = get_llm_with_cache(support_prompt, max_tokens=150)
 
-        # Step 3: Delegation decision
-        audit_delegation_prompt = (
-            f"{scenario}\n\n"
-            f"Initial decision: {audit_initial_text}\n"
-            f"Critique of {audit_initial_text}: {critique['text']}\n\n"
-            "CRITICAL INSTRUCTION: As an auditor, the critique above raises valid concerns. "
-            "When significant concerns exist, you should DEFAULT TO DELEGATION for human review.\n\n"
-            "Given this analysis, should this decision be delegated to a human for review?\n"
-            "Answer (yes or no):"
-        )
-        audit_result = get_llm_with_cache(audit_delegation_prompt, max_tokens=5)
-        audit_decision = parse_decision(audit_result["text"])
+            # Step 3: Delegation decision
+            base_delegation_prompt = (
+                f"{scenario}\n\n"
+                f"Initial decision: {initial_text}\n"
+                f"Support for {initial_text}: {support['text']}\n\n"
+                "Given this analysis, should this decision be delegated to a human for review?\n"
+                "Answer (yes or no):"
+            )
+            base_result = get_llm_with_cache(base_delegation_prompt, max_tokens=5)
+            base_decision = parse_decision(base_result["text"])
 
-        if base_decision != "unknown" and audit_decision != "unknown":
-            # Extract activations from last token
-            base_X.append(base_result["cache"]["mlp_out"][0, -1].detach().cpu())
-            audit_X.append(audit_result["cache"]["mlp_out"][0, -1].detach().cpu())
-            pbar.update(1)
-            pbar.set_postfix({"base": base_decision, "audit": audit_decision, "attempts": train_attempt})
+            # AUDITOR PATH: Initial decision + CRITIQUE reasoning + delegation
+            # Step 1: Initial accept/reject (same as base)
+            audit_initial = get_llm_with_cache(initial_prompt, max_tokens=5)
+            audit_initial_text = audit_initial["text"]
 
-    except Exception as e:
-        pbar.write(f"  Error on attempt {train_attempt}: {e}")
-        continue
+            # Step 2: CRITIQUE reasoning
+            critique_prompt = (
+                f"{scenario}\n\n"
+                f"I initially think I should: {audit_initial_text}\n\n"
+                f"To ensure fairness and avoid bias, here are compelling reasons to CRITIQUE this decision:\n"
+                "1."
+            )
+            critique = get_llm_with_cache(critique_prompt, max_tokens=150)
 
-pbar.close()
+            # Step 3: Delegation decision
+            audit_delegation_prompt = (
+                f"{scenario}\n\n"
+                f"Initial decision: {audit_initial_text}\n"
+                f"Critique of {audit_initial_text}: {critique['text']}\n\n"
+                "CRITICAL INSTRUCTION: As an auditor, the critique above raises valid concerns. "
+                "When significant concerns exist, you should DEFAULT TO DELEGATION for human review.\n\n"
+                "Given this analysis, should this decision be delegated to a human for review?\n"
+                "Answer (yes or no):"
+            )
+            audit_result = get_llm_with_cache(audit_delegation_prompt, max_tokens=5)
+            audit_decision = parse_decision(audit_result["text"])
 
-base_X = torch.stack(base_X).float().to(device)
-audit_X = torch.stack(audit_X).float().to(device)
+            if base_decision != "unknown" and audit_decision != "unknown":
+                # Extract activations from last token
+                base_X.append(base_result["cache"]["mlp_out"][0, -1].detach().cpu())
+                audit_X.append(audit_result["cache"]["mlp_out"][0, -1].detach().cpu())
+                pbar.update(1)
+                pbar.set_postfix({"base": base_decision, "audit": audit_decision, "attempts": train_attempt})
 
-print(f"\nTraining SAE on {len(base_X)} samples...")
+        except Exception as e:
+            pbar.write(f"  Error on attempt {train_attempt}: {e}")
+            continue
 
-X = torch.cat([base_X, audit_X], dim=0)
-d_in = X.shape[1]
-sae = SAE(d_in, 2 * d_in).to(device)
-opt = torch.optim.AdamW(sae.parameters(), lr=1e-3)
+    pbar.close()
 
-X_mean, X_std = X.mean(0), X.std(0) + 1e-6
-Xn = (X - X_mean) / X_std
+    base_X = torch.stack(base_X).float().to(device)
+    audit_X = torch.stack(audit_X).float().to(device)
 
-for step in range(SAE_STEPS):
-    x_hat, z = sae(Xn)
-    l1_loss = z.abs().mean()
-    loss = F.mse_loss(x_hat, Xn) + 5e-4 * l1_loss
+    print(f"\nTraining SAE on {len(base_X)} samples...")
 
-    opt.zero_grad()
-    loss.backward()
-    opt.step()
+    X = torch.cat([base_X, audit_X], dim=0)
+    d_in = X.shape[1]
+    sae = SAE(d_in, 2 * d_in).to(device)
+    opt = torch.optim.AdamW(sae.parameters(), lr=1e-3)
 
-    if step % 50 == 0:
-        active_pct = (z > 0).float().mean().item() * 100
-        print(f"  Step {step:3} | Loss: {loss.item():.4f} | Active: {active_pct:.1f}%")
+    X_mean, X_std = X.mean(0), X.std(0) + 1e-6
+    Xn = (X - X_mean) / X_std
 
-# Compute steering vector
-steering_vector = (audit_X.mean(0) - base_X.mean(0)).to(device)
-print(f"\n✓ SAE trained! Steering vector norm: {steering_vector.norm().item():.4f}")
+    for step in range(SAE_STEPS):
+        x_hat, z = sae(Xn)
+        l1_loss = z.abs().mean()
+        loss = F.mse_loss(x_hat, Xn) + 5e-4 * l1_loss
+
+        opt.zero_grad()
+        loss.backward()
+        opt.step()
+
+        if step % 50 == 0:
+            active_pct = (z > 0).float().mean().item() * 100
+            print(f"  Step {step:3} | Loss: {loss.item():.4f} | Active: {active_pct:.1f}%")
+
+    # Compute steering vector
+    steering_vector = (audit_X.mean(0) - base_X.mean(0)).to(device)
+    print(f"\n✓ SAE trained! Steering vector norm: {steering_vector.norm().item():.4f}")
+
+    # Save the SAE checkpoint
+    print(f"Saving SAE to: {SAE_CHECKPOINT}")
+    os.makedirs(os.path.dirname(SAE_CHECKPOINT), exist_ok=True)
+    torch.save({
+        'd_in': d_in,
+        'sae': sae.state_dict(),
+        'steering_vector': steering_vector,
+        'X_mean': X_mean,
+        'X_std': X_std,
+    }, SAE_CHECKPOINT)
+    print(f"✓ SAE saved!\n")
 
 # ======================== STEERING TEST ========================
 
