@@ -20,10 +20,11 @@ export UV_CACHE_DIR=/work1/harangju/harang/.cache/uv
 export PIP_CACHE_DIR=/work1/harangju/harang/.cache/pip
 
 echo "Setting up Python environment..."
+uv python pin 3.12
 uv sync
 
 echo "Installing ROCm torch for GPU..."
-uv pip install --reinstall torch --index-url https://download.pytorch.org/whl/rocm6.2
+uv pip install --reinstall torch --index-url https://download.pytorch.org/whl/rocm7.1
 
 echo "Running script..."
 uv run python scripts/collect_stage2_steering.py
