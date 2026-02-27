@@ -20,14 +20,10 @@ export UV_CACHE_DIR=/work1/harangju/harang/.cache/uv
 export PIP_CACHE_DIR=/work1/harangju/harang/.cache/pip
 
 echo "Setting up Python environment..."
-python3 -m venv --clear .venv
-source .venv/bin/activate
-
-echo "Installing dependencies..."
-pip install --quiet numpy pandas plotly tqdm transformers datasets scikit-learn matplotlib
+uv sync
 
 echo "Installing ROCm torch for GPU..."
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm7.1
+uv pip install --reinstall torch --index-url https://download.pytorch.org/whl/rocm6.2
 
 echo "Running script..."
-python scripts/collect_stage2_steering.py
+uv run python scripts/collect_stage2_steering.py
