@@ -27,7 +27,7 @@ echo "Installing dependencies..."
 pip install --quiet numpy pandas plotly tqdm transformers datasets scikit-learn matplotlib
 
 echo "Installing ROCm torch for GPU..."
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm7.1
 
 echo "Running script..."
 python scripts/collect_stage2_steering.py
