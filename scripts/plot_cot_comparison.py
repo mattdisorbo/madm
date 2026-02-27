@@ -144,13 +144,13 @@ fig, axes = plt.subplots(1, 2, figsize=(8, 5), sharey=True)
 for ax, dataset in zip(axes, FT_DATASETS):
     ft_model    = FT_MODEL_IDS[dataset]
     ft_base_acc = try_load(RESULTS_DIR / dataset / f"base_{ft_model}.csv", dataset)
-    ft_aud_acc  = try_load(RESULTS_DIR / dataset / f"auditor_{ft_model}.csv", dataset)
     base_acc    = try_load(RESULTS_DIR / dataset / f"base_{MODEL}.csv", dataset)
+    aud_acc     = try_load(RESULTS_DIR / dataset / f"auditor_{MODEL}.csv", dataset)
 
     entries = [
         (ft_base_acc, COLORS["ft"],      "Fine-tuned Base\n(gpt-4o-mini)"),
-        (ft_aud_acc,  COLORS["auditor"], "Fine-tuned Auditor\n(gpt-4o-mini)"),
         (base_acc,    COLORS["base"],    "Base\n(gpt-5-nano)"),
+        (aud_acc,     COLORS["auditor"], "Auditor\n(gpt-5-nano)"),
     ]
 
     bar_width = 0.45
@@ -179,13 +179,13 @@ axes[0].set_ylabel("Final Accuracy", fontsize=11)
 
 legend_handles = [
     mpatches.Patch(color=COLORS["ft"],      label="Fine-tuned Base (gpt-4o-mini)"),
-    mpatches.Patch(color=COLORS["auditor"], label="Fine-tuned Auditor (gpt-4o-mini)"),
-    mpatches.Patch(color=COLORS["base"],    label="Base gpt-5-nano"),
+    mpatches.Patch(color=COLORS["base"],    label="Base (gpt-5-nano)"),
+    mpatches.Patch(color=COLORS["auditor"], label="Auditor (gpt-5-nano)"),
 ]
 fig.legend(handles=legend_handles, frameon=False, fontsize=9,
            loc="upper right", bbox_to_anchor=(1.02, 1.0))
 
-fig.suptitle("Fine-tuned vs Base gpt-5-nano Prediction Accuracy\n(HotelBookings & LendingClub)",
+fig.suptitle("Fine-tuned Base vs Base vs Auditor — Final Accuracy\n(HotelBookings & LendingClub)",
              fontsize=12, y=1.02)
 plt.tight_layout()
 out2 = VISUALS_DIR / "finetuned_vs_base_gpt_nano.png"
