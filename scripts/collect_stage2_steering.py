@@ -35,7 +35,7 @@ N_SAMPLES = args.n_samples
 LAYER = 23  # Last layer before LM head
 MAX_CTX = 512
 RESERVE = 16
-COEFFICIENTS = [10.0]  # Test single coefficient
+COEFFICIENTS = [0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 50.0]  # Test range to find flips
 SAE_STEPS = 150
 SAE_CHECKPOINT = f"results/sae_layer{LAYER}_checkpoint.pt"
 
@@ -387,16 +387,15 @@ csv_writer = csv.DictWriter(csv_file, fieldnames=[
 ])
 csv_writer.writeheader()
 
-hook_call_count = {"count": 0, "first_call": True}
+hook_call_count = {"count": 0}
 current_coeff = {"value": 0.0}
 
 
 def steering_hook(module, input, output):
+    # Only steer on the first hook call (prompt processing, not generation)
+    if hook_call_count["count"] == 0:
+        output[:, -1, :] = output[:, -1, :] + current_coeff["value"] * steering_vector
     hook_call_count["count"] += 1
-    if not hook_call_count["first_call"]:
-        return output
-    hook_call_count["first_call"] = False
-    output[:, -1, :] = output[:, -1, :] + current_coeff["value"] * steering_vector
     return output
 
 
@@ -467,14 +466,12 @@ try:
             try:
                 # Reset hook state
                 hook_call_count["count"] = 0
-                hook_call_count["first_call"] = True
 
                 # Get base decision
                 base_text, base_decision = get_decision(prompt, is_steered=False)
 
                 # Reset hook state for steered
                 hook_call_count["count"] = 0
-                hook_call_count["first_call"] = True
 
                 # Get steered decision
                 steered_text, steered_decision = get_decision(prompt, is_steered=True)
