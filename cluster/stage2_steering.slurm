@@ -26,8 +26,8 @@ source .venv/bin/activate
 echo "Installing dependencies..."
 pip install --quiet numpy pandas plotly tqdm transformers datasets scikit-learn matplotlib
 
-echo "Installing CPU-only torch..."
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+echo "Installing ROCm torch for GPU..."
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2
 
 echo "Running script..."
 python scripts/collect_stage2_steering.py
