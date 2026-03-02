@@ -1,4 +1,4 @@
-#\!/bin/bash
+#!/bin/bash
 #SBATCH -J madm-run_JFLEG
 #SBATCH -o logs/run_JFLEG.%j.out
 #SBATCH -e logs/run_JFLEG.%j.err

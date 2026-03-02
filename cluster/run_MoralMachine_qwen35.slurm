@@ -1,4 +1,4 @@
-#\!/bin/bash
+#!/bin/bash
 #SBATCH -J madm-run_MoralMachine
 #SBATCH -o logs/run_MoralMachine.%j.out
 #SBATCH -e logs/run_MoralMachine.%j.err

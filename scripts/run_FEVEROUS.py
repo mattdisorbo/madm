@@ -1,4 +1,4 @@
-import os, re, datetime, threading, random
+import os, re, sys, datetime, threading, random
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import openai
@@ -6,9 +6,11 @@ import openai
 OAI_MODEL      = "gpt-5-mini-2025-08-07"
 OAI_MODEL_NANO = "gpt-5-nano-2025-08-07"
 QWEN_MODEL     = "Qwen/Qwen3.5-35B-A3B"
+if len(sys.argv) > 1:
+    QWEN_MODEL = sys.argv[1]
 
-N_SAMPLES_BASE    = 100
-N_SAMPLES_ADVERSARIAL = 100
+N_SAMPLES_BASE    = 50
+N_SAMPLES_ADVERSARIAL = 50
 N_OAI  = 0
 N_NANO = 0
 N_QWEN = 1

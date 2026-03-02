@@ -1,4 +1,4 @@
-#\!/bin/bash
+#!/bin/bash
 #SBATCH -J madm-run_LendingClub
 #SBATCH -o logs/run_LendingClub.%j.out
 #SBATCH -e logs/run_LendingClub.%j.err

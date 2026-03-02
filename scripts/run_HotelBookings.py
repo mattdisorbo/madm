@@ -1,4 +1,4 @@
-import os, re, datetime, threading, random
+import os, re, sys, datetime, threading, random
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
@@ -6,10 +6,12 @@ from sklearn.model_selection import train_test_split
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 QWEN_MODEL     = "Qwen/Qwen3.5-35B-A3B"
+if len(sys.argv) > 1:
+    QWEN_MODEL = sys.argv[1]
 
-N_SAMPLES_BASE    = 100
-N_SAMPLES_RF = 100
-N_SAMPLES_ADVERSARIAL = 100
+N_SAMPLES_BASE    = 50
+N_SAMPLES_RF = 50
+N_SAMPLES_ADVERSARIAL = 50
 N_OAI  = 0
 N_NANO = 0
 N_QWEN = 1

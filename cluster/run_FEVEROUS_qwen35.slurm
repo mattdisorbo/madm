@@ -1,4 +1,4 @@
-#\!/bin/bash
+#!/bin/bash
 #SBATCH -J madm-run_FEVEROUS
 #SBATCH -o logs/run_FEVEROUS.%j.out
 #SBATCH -e logs/run_FEVEROUS.%j.err

@@ -1,4 +1,4 @@
-#\!/bin/bash
+#!/bin/bash
 #SBATCH -J madm-run_Uber
 #SBATCH -o logs/run_Uber.%j.out
 #SBATCH -e logs/run_Uber.%j.err

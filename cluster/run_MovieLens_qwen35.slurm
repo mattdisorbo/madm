@@ -1,4 +1,4 @@
-#\!/bin/bash
+#!/bin/bash
 #SBATCH -J madm-run_MovieLens
 #SBATCH -o logs/run_MovieLens.%j.out
 #SBATCH -e logs/run_MovieLens.%j.err

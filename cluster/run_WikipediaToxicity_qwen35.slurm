@@ -1,4 +1,4 @@
-#\!/bin/bash
+#!/bin/bash
 #SBATCH -J madm-run_WikipediaToxicity
 #SBATCH -o logs/run_WikipediaToxicity.%j.out
 #SBATCH -e logs/run_WikipediaToxicity.%j.err

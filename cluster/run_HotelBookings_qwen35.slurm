@@ -1,4 +1,4 @@
-#\!/bin/bash
+#!/bin/bash
 #SBATCH -J madm-run_HotelBookings
 #SBATCH -o logs/run_HotelBookings.%j.out
 #SBATCH -e logs/run_HotelBookings.%j.err
