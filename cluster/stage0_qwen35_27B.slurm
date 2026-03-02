@@ -2,7 +2,7 @@
 #SBATCH -J madm-s0-27B
 #SBATCH -o logs/stage0_27B.%j.out
 #SBATCH -e logs/stage0_27B.%j.err
-#SBATCH -p mi3001x
+#SBATCH -p mi2101x
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH -t 04:00:00
