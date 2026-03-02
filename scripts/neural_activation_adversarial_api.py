@@ -1,4 +1,4 @@
-"""Neural activation auditor - API version.
+"""Neural activation adversarial - API version.
 
 Tests whether self-critique improves loan acceptance decisions using Claude API.
 Cannot perform activation steering (no layer access), but tests reasoning paths.
@@ -132,7 +132,7 @@ def get_base_support_decision(scenario: str) -> dict:
     }
 
 def get_critique_decision(scenario: str) -> dict:
-    """Auditor path: initial decision + critique + final decision."""
+    """Adversarial path: initial decision + critique + final decision."""
 
     # Initial decision
     pred_prompt = (

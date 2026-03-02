@@ -2,7 +2,7 @@
 Cross-model accuracy heatmap/bar chart: model x method final accuracy,
 averaged across datasets where data exists for that (model, method) pair.
 
-Final accuracy definition: delegated rows = correct (human assumed perfect);
+Final accuracy definition: escalated rows = correct (human assumed perfect);
 implemented rows = correct iff llm_prediction == ground_truth.
 """
 
@@ -26,9 +26,9 @@ MODELS = [
 ]
 TOOL_METHODS = {"rf", "ols", "glm"}
 TEXT_GEN_DATASETS = {"JFLEG"}
-MODE_ORDER = ["base", "auditor", "tool"]
-MODE_LABELS = {"base": "Base", "auditor": "Auditor", "tool": "Tool"}
-COLORS = {"base": "#5B8DB8", "auditor": "#E07B39", "tool": "#5FAD56"}
+MODE_ORDER = ["base", "adversarial", "tool"]
+MODE_LABELS = {"base": "Base", "adversarial": "Adversarial", "tool": "Tool"}
+COLORS = {"base": "#5B8DB8", "adversarial": "#E07B39", "tool": "#5FAD56"}
 
 
 def ground_truth_col(df):
@@ -39,15 +39,15 @@ def compute_counts(df, dataset):
     """Return (n_correct, n_rows) for row-weighted aggregation. Returns (nan, 0) for text-gen."""
     if dataset in TEXT_GEN_DATASETS:
         return np.nan, 0
-    valid = df[df["llm_delegate"].notna()].copy()
+    valid = df[df["llm_escalate"].notna()].copy()
     if valid.empty:
         return np.nan, 0
     gt_col = ground_truth_col(df)
     pred = pd.to_numeric(valid["llm_prediction"], errors="coerce")
     truth = pd.to_numeric(valid[gt_col], errors="coerce")
-    correct_implemented = (valid["llm_delegate"] == 0) & (pred == truth)
-    delegated = valid["llm_delegate"] == 1
-    n_correct = (correct_implemented | delegated).sum()
+    correct_implemented = (valid["llm_escalate"] == 0) & (pred == truth)
+    escalated = valid["llm_escalate"] == 1
+    n_correct = (correct_implemented | escalated).sum()
     return n_correct, len(valid)
 
 
@@ -109,8 +109,8 @@ plt.savefig(out1, dpi=150, bbox_inches="tight")
 plt.close()
 print(f"Saved {out1}")
 
-# ── Figure 2: auditor gain = auditor_acc - base_acc, per model ────────────────
-gain = pivot["auditor"] - pivot["base"]
+# ── Figure 2: adversarial gain = adversarial_acc - base_acc, per model ────────────────
+gain = pivot["adversarial"] - pivot["base"]
 gain = gain.dropna()
 
 fig2, ax2 = plt.subplots(figsize=(9, 4))
@@ -124,41 +124,41 @@ for bar, v in zip(bars, gain.values):
 ax2.axhline(0, color="black", linewidth=0.8)
 ax2.set_xticks(range(len(gain)))
 ax2.set_xticklabels([m.replace("-Instruct", "") for m in gain.index], rotation=30, ha="right", fontsize=9)
-ax2.set_ylabel("Auditor − Base Accuracy", fontsize=10)
-ax2.set_title("Auditor Gain over Base (row-weighted, excl. AIME & MoralMachine)", fontsize=11)
+ax2.set_ylabel("Adversarial − Base Accuracy", fontsize=10)
+ax2.set_title("Adversarial Gain over Base (row-weighted, excl. AIME & MoralMachine)", fontsize=11)
 ax2.yaxis.grid(True, linestyle="--", alpha=0.5, zorder=0)
 ax2.set_axisbelow(True)
 plt.tight_layout()
-out2 = VISUALS_DIR / "auditor_gain.png"
+out2 = VISUALS_DIR / "adversarial_gain.png"
 plt.savefig(out2, dpi=150, bbox_inches="tight")
 plt.close()
 print(f"Saved {out2}")
 
-# ── Figure 3: per-dataset heatmap of auditor gain ─────────────────────────────
+# ── Figure 3: per-dataset heatmap of adversarial gain ─────────────────────────────
 pivot_ds = df_all.groupby(["model", "mode", "dataset"]).apply(weighted_accuracy).unstack("mode")
-auditor_gain_ds = (pivot_ds["auditor"] - pivot_ds["base"]).unstack("dataset")
-auditor_gain_ds = auditor_gain_ds.reindex(index=MODELS)
+adversarial_gain_ds = (pivot_ds["adversarial"] - pivot_ds["base"]).unstack("dataset")
+adversarial_gain_ds = adversarial_gain_ds.reindex(index=MODELS)
 
 fig3, ax3 = plt.subplots(figsize=(12, 5))
 cmap = plt.cm.RdYlGn
-im = ax3.imshow(auditor_gain_ds.values.astype(float), aspect="auto", cmap=cmap, vmin=-0.3, vmax=0.3)
-ax3.set_xticks(range(len(auditor_gain_ds.columns)))
-ax3.set_xticklabels(auditor_gain_ds.columns, rotation=30, ha="right", fontsize=9)
+im = ax3.imshow(adversarial_gain_ds.values.astype(float), aspect="auto", cmap=cmap, vmin=-0.3, vmax=0.3)
+ax3.set_xticks(range(len(adversarial_gain_ds.columns)))
+ax3.set_xticklabels(adversarial_gain_ds.columns, rotation=30, ha="right", fontsize=9)
 ax3.set_yticks(range(len(MODELS)))
 ax3.set_yticklabels([m.replace("-Instruct", "") for m in MODELS], fontsize=9)
-ax3.set_title("Auditor Gain (Auditor − Base) per Model × Dataset", fontsize=11)
+ax3.set_title("Adversarial Gain (Adversarial − Base) per Model × Dataset", fontsize=11)
 plt.colorbar(im, ax=ax3, label="Accuracy gain")
 # annotate cells
 for i in range(len(MODELS)):
-    for j in range(len(auditor_gain_ds.columns)):
-        v = auditor_gain_ds.values[i, j]
+    for j in range(len(adversarial_gain_ds.columns)):
+        v = adversarial_gain_ds.values[i, j]
         if not np.isnan(v):
             ax3.text(j, i, f"{v:+.2f}", ha="center", va="center", fontsize=7,
                      color="black")
         else:
             ax3.text(j, i, "—", ha="center", va="center", fontsize=8, color="#aaa")
 plt.tight_layout()
-out3 = VISUALS_DIR / "auditor_gain_heatmap.png"
+out3 = VISUALS_DIR / "adversarial_gain_heatmap.png"
 plt.savefig(out3, dpi=150, bbox_inches="tight")
 plt.close()
 print(f"Saved {out3}")
@@ -166,5 +166,5 @@ print(f"Saved {out3}")
 # ── Print summary table ───────────────────────────────────────────────────────
 print("\n── Mean accuracy by model × method ──")
 print(pivot.round(3).to_string())
-print("\n── Auditor gain (auditor − base) ──")
+print("\n── Adversarial gain (adversarial − base) ──")
 print(gain.round(3).to_string())

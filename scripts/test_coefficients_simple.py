@@ -164,16 +164,16 @@ def get_llm_with_cache(prompt: str, max_tokens: int = 20):
 
 
 def parse_decision(text: str):
-    """Parse delegation decision (yes/no) from text."""
+    """Parse escalation decision (yes/no) from text."""
     text_lower = text.lower()
     m = re.findall(r"\b(yes|no)\b", text_lower)
 
     if m:
         last_match = m[-1]
         if last_match == "yes":
-            return "delegate"
+            return "escalate"
         elif last_match == "no":
-            return "no-delegate"
+            return "no-escalate"
 
     return "unknown"
 
@@ -205,7 +205,7 @@ if os.path.exists(CACHE_FILE):
     cached = torch.load(CACHE_FILE, map_location=device)
 
     base_X = cached["base_X"].to(device)
-    audit_X = cached["audit_X"].to(device)
+    adversarial_X = cached["adversarial_X"].to(device)
     X_mean = cached["X_mean"].to(device)
     X_std = cached["X_std"].to(device)
 
@@ -214,13 +214,13 @@ if os.path.exists(CACHE_FILE):
     sae = SAE(d_in, 2 * d_in).to(device)
     sae.load_state_dict(cached["sae_state_dict"])
 
-    print(f"✓ Loaded {len(base_X)} base samples and {len(audit_X)} audit samples")
+    print(f"✓ Loaded {len(base_X)} base samples and {len(adversarial_X)} adversarial samples")
 
 else:
     print(f"No cache found. Training SAE from scratch...")
     print(f"Collecting {N_TRAIN_SAE} samples for training...")
 
-    base_X, audit_X = [], []
+    base_X, adversarial_X = [], []
     train_attempt = 0
 
     while len(base_X) < N_TRAIN_SAE:
@@ -249,55 +249,55 @@ else:
             )
             support = get_llm_with_cache(support_prompt, max_tokens=150)
 
-            base_delegation_prompt = (
+            base_escalation_prompt = (
                 f"{scenario}\n\n"
                 f"Initial decision: {initial_text}\n"
                 f"Support for {initial_text}: {support['text']}\n\n"
-                "Given this analysis, should this decision be delegated to a human for review?\n"
+                "Given this analysis, should this decision be escalated to a human for review?\n"
                 "Answer (yes or no):"
             )
-            base_result = get_llm_with_cache(base_delegation_prompt, max_tokens=5)
+            base_result = get_llm_with_cache(base_escalation_prompt, max_tokens=5)
             base_decision = parse_decision(base_result["text"])
 
-            # AUDITOR PATH
-            audit_initial = get_llm_with_cache(initial_prompt, max_tokens=5)
-            audit_initial_text = audit_initial["text"]
+            # ADVERSARIAL PATH
+            adversarial_initial = get_llm_with_cache(initial_prompt, max_tokens=5)
+            adversarial_initial_text = adversarial_initial["text"]
 
             critique_prompt = (
                 f"{scenario}\n\n"
-                f"I initially think I should: {audit_initial_text}\n\n"
+                f"I initially think I should: {adversarial_initial_text}\n\n"
                 f"To ensure fairness and avoid bias, here are compelling reasons to CRITIQUE this decision:\n"
                 "1."
             )
             critique = get_llm_with_cache(critique_prompt, max_tokens=150)
 
-            audit_delegation_prompt = (
+            adversarial_escalation_prompt = (
                 f"{scenario}\n\n"
-                f"Initial decision: {audit_initial_text}\n"
-                f"Critique of {audit_initial_text}: {critique['text']}\n\n"
-                "CRITICAL INSTRUCTION: As an auditor, the critique above raises valid concerns. "
-                "When significant concerns exist, you should DEFAULT TO DELEGATION for human review.\n\n"
-                "Given this analysis, should this decision be delegated to a human for review?\n"
+                f"Initial decision: {adversarial_initial_text}\n"
+                f"Critique of {adversarial_initial_text}: {critique['text']}\n\n"
+                "CRITICAL INSTRUCTION: As an adversarial reviewer, the critique above raises valid concerns. "
+                "When significant concerns exist, you should DEFAULT TO ESCALATION for human review.\n\n"
+                "Given this analysis, should this decision be escalated to a human for review?\n"
                 "Answer (yes or no):"
             )
-            audit_result = get_llm_with_cache(audit_delegation_prompt, max_tokens=5)
-            audit_decision = parse_decision(audit_result["text"])
+            adversarial_result = get_llm_with_cache(adversarial_escalation_prompt, max_tokens=5)
+            adversarial_decision = parse_decision(adversarial_result["text"])
 
-            if base_decision != "unknown" and audit_decision != "unknown":
+            if base_decision != "unknown" and adversarial_decision != "unknown":
                 base_X.append(base_result["cache"]["mlp_out"][0, -1].detach().cpu())
-                audit_X.append(audit_result["cache"]["mlp_out"][0, -1].detach().cpu())
-                print(f"  Training sample {len(base_X)}/{N_TRAIN_SAE} | Base: {base_decision} | Audit: {audit_decision}")
+                adversarial_X.append(adversarial_result["cache"]["mlp_out"][0, -1].detach().cpu())
+                print(f"  Training sample {len(base_X)}/{N_TRAIN_SAE} | Base: {base_decision} | Adversarial: {adversarial_decision}")
 
         except Exception as e:
             print(f"  Error: {e}")
             continue
 
     base_X = torch.stack(base_X).float().to(device)
-    audit_X = torch.stack(audit_X).float().to(device)
+    adversarial_X = torch.stack(adversarial_X).float().to(device)
 
     print(f"\nTraining SAE on {len(base_X)} samples...")
 
-    X = torch.cat([base_X, audit_X], dim=0)
+    X = torch.cat([base_X, adversarial_X], dim=0)
     d_in = X.shape[1]
     sae = SAE(d_in, 2 * d_in).to(device)
     opt = torch.optim.AdamW(sae.parameters(), lr=1e-3)
@@ -323,7 +323,7 @@ else:
     torch.save(
         {
             "base_X": base_X.cpu(),
-            "audit_X": audit_X.cpu(),
+            "adversarial_X": adversarial_X.cpu(),
             "X_mean": X_mean.cpu(),
             "X_std": X_std.cpu(),
             "sae_state_dict": sae.state_dict(),
@@ -333,7 +333,7 @@ else:
     print(f"✓ Saved! Next run will be faster.")
 
 # Compute steering vector
-steering_vector = (audit_X.mean(0) - base_X.mean(0)).to(device)
+steering_vector = (adversarial_X.mean(0) - base_X.mean(0)).to(device)
 print(f"\n✓ Steering vector ready! Norm: {steering_vector.norm().item():.4f}")
 
 # ======================== TEST MULTIPLE COEFFICIENTS ========================
@@ -413,7 +413,7 @@ for COEFF in COEFFICIENTS:
             scenario = truncate_to_ctx(create_prompt_base(row))
             prompt = (
                 f"{scenario}\n\n"
-                "Should this decision be delegated to a human for review?\n"
+                "Should this decision be escalated to a human for review?\n"
                 "Answer (yes or no):"
             )
 

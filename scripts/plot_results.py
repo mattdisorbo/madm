@@ -2,11 +2,11 @@
 Generate per-model bar charts across datasets.
 
 For each model, produces a figure with one facet per dataset.
-X-axis: mode (base, auditor, tool=rf/ols)
+X-axis: mode (base, adversarial, tool=rf/ols)
 Y-axis: 0–1
-Bars: Final accuracy and delegation rate.
+Bars: Final accuracy and escalation rate.
 
-Final accuracy: rows where the model delegates count as correct (human assumed
+Final accuracy: rows where the model escalates count as correct (human assumed
 perfect); rows where the model implements count as correct only if
 llm_prediction == ground_truth.
 
@@ -32,10 +32,10 @@ MODELS = ["Qwen2.5-1.5B-Instruct", "gpt-5-mini-2025-08-07", "gpt-5-nano-2025-08-
           "Qwen3-1.7B", "Qwen3-4B", "Qwen3-8B", "Qwen3-14B"]
 TOOL_METHODS = {"rf", "ols", "glm"}
 
-MODE_ORDER = ["base", "auditor", "tool"]
-MODE_LABELS = {"base": "Base", "auditor": "Auditor", "tool": "Tool"}
+MODE_ORDER = ["base", "adversarial", "tool"]
+MODE_LABELS = {"base": "Base", "adversarial": "Adversarial", "tool": "Tool"}
 
-COLORS = {"accuracy": "#4C72B0", "delegation": "#DD8452"}
+COLORS = {"accuracy": "#4C72B0", "escalation": "#DD8452"}
 
 TEXT_GEN_DATASETS = {"JFLEG"}  # accuracy requires GLEU, not equality
 
@@ -45,16 +45,16 @@ def ground_truth_col(df: pd.DataFrame) -> str:
 
 
 def compute_metrics(df: pd.DataFrame, dataset: str) -> tuple[float, float]:
-    """Return (final_accuracy, delegation_rate) for a results dataframe.
+    """Return (final_accuracy, escalation_rate) for a results dataframe.
 
-    Rows where llm_delegate is NaN are excluded (incomplete entries).
-    Final accuracy: delegated rows count as correct (human assumed perfect);
+    Rows where llm_escalate is NaN are excluded (incomplete entries).
+    Final accuracy: escalated rows count as correct (human assumed perfect);
     implemented rows are correct iff llm_prediction == ground_truth.
     """
-    valid = df[df["llm_delegate"].notna()].copy()
+    valid = df[df["llm_escalate"].notna()].copy()
     if valid.empty:
         return np.nan, np.nan
-    delegation_rate = (valid["llm_delegate"] == 1).mean()
+    escalation_rate = (valid["llm_escalate"] == 1).mean()
 
     if dataset in TEXT_GEN_DATASETS:
         accuracy = np.nan
@@ -62,11 +62,11 @@ def compute_metrics(df: pd.DataFrame, dataset: str) -> tuple[float, float]:
         gt_col = ground_truth_col(df)
         pred = pd.to_numeric(valid["llm_prediction"], errors="coerce")
         truth = pd.to_numeric(valid[gt_col], errors="coerce")
-        correct_implemented = (valid["llm_delegate"] == 0) & (pred == truth)
-        delegated = valid["llm_delegate"] == 1
-        accuracy = (correct_implemented | delegated).mean()
+        correct_implemented = (valid["llm_escalate"] == 0) & (pred == truth)
+        escalated = valid["llm_escalate"] == 1
+        accuracy = (correct_implemented | escalated).mean()
 
-    return accuracy, delegation_rate
+    return accuracy, escalation_rate
 
 
 def load_dataset_modes(dataset: str, model: str) -> dict[str, tuple[float, float]]:
@@ -98,11 +98,11 @@ for model in MODELS:
         for i, mode in enumerate(MODE_ORDER):
             if mode not in modes_data:
                 continue
-            accuracy, delegation_rate = modes_data[mode]
+            accuracy, escalation_rate = modes_data[mode]
 
             if not np.isnan(accuracy):
                 ax.bar(i - width / 2, accuracy, width, color=COLORS["accuracy"])
-            ax.bar(i + width / 2, delegation_rate, width, color=COLORS["delegation"])
+            ax.bar(i + width / 2, escalation_rate, width, color=COLORS["escalation"])
 
         if dataset in TEXT_GEN_DATASETS:
             ax.set_title(dataset + "\n(accuracy n/a)", fontsize=9)
@@ -120,7 +120,7 @@ for model in MODELS:
 
     legend_handles = [
         mpatches.Patch(color=COLORS["accuracy"], label="Final Accuracy"),
-        mpatches.Patch(color=COLORS["delegation"], label="Delegation Rate"),
+        mpatches.Patch(color=COLORS["escalation"], label="Escalation Rate"),
     ]
     fig.legend(handles=legend_handles, loc="upper right", frameon=False, fontsize=9)
     fig.suptitle(model, fontsize=12, y=1.01)

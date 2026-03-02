@@ -5,12 +5,12 @@ import openai
 
 OAI_MODEL      = "gpt-5-mini-2025-08-07"
 OAI_MODEL_NANO = "gpt-5-nano-2025-08-07"
-QWEN_MODEL     = "Qwen/Qwen2.5-1.5B-Instruct"
+QWEN_MODEL     = "Qwen/Qwen3.5-35B-A3B"
 
-N_SAMPLES_BASE    = 10
-N_SAMPLES_AUDITOR = 10
-N_OAI  = 1
-N_NANO = 1
+N_SAMPLES_BASE    = 100
+N_SAMPLES_ADVERSARIAL = 100
+N_OAI  = 0
+N_NANO = 0
 N_QWEN = 1
 
 df = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/AIME_Dataset_1983_2024.csv"))
@@ -22,14 +22,21 @@ qwen_lock = threading.Lock()
 if N_QWEN > 0:
     from transformers import pipeline
     print(f"Loading {QWEN_MODEL}...")
-    qwen_pipe = pipeline("text-generation", model=QWEN_MODEL, torch_dtype="auto", device_map="auto")
+    qwen_pipe = pipeline("text-generation", model=QWEN_MODEL, torch_dtype="bfloat16", device_map="auto")
     print("Qwen loaded.")
 
 def llm(prompt, model):
     if model == QWEN_MODEL:
         with qwen_lock:
-            out = qwen_pipe([{"role": "user", "content": prompt}], max_new_tokens=2048)
-        return out[0]["generated_text"][-1]["content"]
+            messages = [{"role": "user", "content": prompt}]
+            formatted = qwen_pipe.tokenizer.apply_chat_template(
+                messages, tokenize=False, add_generation_prompt=True,
+                enable_thinking=False,
+            )
+            out = qwen_pipe(formatted, max_new_tokens=2048, return_full_text=False)
+        text = out[0]["generated_text"]
+        text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
+        return text
     else:
         r = openai.chat.completions.create(model=model, messages=[{"role": "user", "content": prompt}])
         return r.choices[0].message.content.strip()
@@ -41,7 +48,7 @@ def get_llm_base(prompt, model):
     instructions = (
         "\n\nRespond with two numbers ONLY on two lines. "
         "First, your integer solution. "
-        "Second, 0 to implement your solution or 1 to delegate to Person 1."
+        "Second, 0 to implement your solution or 1 to escalate to Person 1."
     )
     full_prompt = prompt + instructions
     response = llm(full_prompt, model)
@@ -64,7 +71,7 @@ def get_sequential_inference(scenario, model):
         pred = preds[-1] if preds else "0"
         critique = llm(f"PROBLEM: {scenario}\n\nPROPOSED SOLUTION: {thought}\n\nCritique this reasoning in 1 sentence.", model)
         decision_prompt = (f"PROBLEM: {scenario}\nSOLUTION AND REASONING: {thought}\nCRITIQUE: {critique}\n\n"
-                           "Implement your solution (0) or delegate to Person 1 (1). Respond with the digit ONLY.")
+                           "Implement your solution (0) or escalate to Person 1 (1). Respond with the digit ONLY.")
         decision = llm(decision_prompt, model)
         del_match = re.search(r'[01]', decision)
         delg = int(del_match.group()) if del_match else None
@@ -78,9 +85,9 @@ def call_llm(idx, row, method, model):
         result = get_llm_base(base, model)
         trace = f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}"
         return {**row, "prompt": base, "llm_prediction": result["pred"],
-                "llm_delegate": result["del"], "solution": row["Answer"],
+                "llm_escalate": result["del"], "solution": row["Answer"],
                 "method": method, "model": model, "trace": trace}
-    elif method == "auditor":
+    elif method == "adversarial":
         result = get_sequential_inference(base, model)
         trace = (f"[PROMPT]\n{base}\n\n"
                  f"[THOUGHT]\n{result['full_thought']}\n\n"
@@ -89,7 +96,7 @@ def call_llm(idx, row, method, model):
                  f"[DECISION]\n{result['decision']}")
         return {**row, "prompt": base, "llm_full_thought": result["full_thought"],
                 "llm_prediction": result["pred"], "llm_critique": result["critique"],
-                "llm_delegate": result["del"], "solution": row["Answer"],
+                "llm_escalate": result["del"], "solution": row["Answer"],
                 "method": method, "model": model, "trace": trace}
 
 # --- Output ---
@@ -103,7 +110,7 @@ def get_path(method, model):
 df_existing = {}
 for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN)]:
     if n > 0:
-        for method in ["base", "auditor"]:
+        for method in ["base", "adversarial"]:
             path = get_path(method, model)
             try:
                 df_existing[(method, model)] = pd.read_csv(path)
@@ -112,7 +119,7 @@ for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QW
 
 results = []
 completed = 0
-total = (N_OAI + N_NANO + N_QWEN) * (N_SAMPLES_BASE + N_SAMPLES_AUDITOR)
+total = (N_OAI + N_NANO + N_QWEN) * (N_SAMPLES_BASE + N_SAMPLES_ADVERSARIAL)
 save_lock = threading.Lock()
 
 def save_progress():
@@ -136,12 +143,12 @@ def call_llm_tracked(idx, row, method, model):
 jobs = []
 for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN)]:
     if n > 0:
-        for method, n_samples in [("base", N_SAMPLES_BASE), ("auditor", N_SAMPLES_AUDITOR)]:
+        for method, n_samples in [("base", N_SAMPLES_BASE), ("adversarial", N_SAMPLES_ADVERSARIAL)]:
             if n_samples > 0:
                 for idx, row in df.sample(n=n * n_samples).iterrows():
                     jobs.append((idx, row, method, model))
 
-print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR})")
+print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_ADVERSARIAL}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_ADVERSARIAL}) | Qwen {N_QWEN}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_ADVERSARIAL})")
 with ThreadPoolExecutor(max_workers=5) as executor:
     futures = [executor.submit(call_llm_tracked, idx, row, method, model) for idx, row, method, model in jobs]
     for f in as_completed(futures):
@@ -151,4 +158,4 @@ df_new = pd.DataFrame(results)
 for (method, model), group in df_new.groupby(['method', 'model']):
     path = get_path(method, model)
     print(f"Saved to {path}")
-    print(pd.read_csv(path)[['ID', 'llm_prediction', 'solution', 'llm_delegate', 'method', 'model']].to_string())
+    print(pd.read_csv(path)[['ID', 'llm_prediction', 'solution', 'llm_escalate', 'method', 'model']].to_string())

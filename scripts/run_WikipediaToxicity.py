@@ -6,12 +6,12 @@ import openai
 
 OAI_MODEL      = "gpt-5-mini-2025-08-07"
 OAI_MODEL_NANO = "gpt-5-nano-2025-08-07"
-QWEN_MODEL     = "Qwen/Qwen2.5-1.5B-Instruct"
+QWEN_MODEL     = "Qwen/Qwen3.5-35B-A3B"
 
-N_SAMPLES_BASE    = 10
-N_SAMPLES_AUDITOR = 10
-N_OAI  = 1
-N_NANO = 1
+N_SAMPLES_BASE    = 100
+N_SAMPLES_ADVERSARIAL = 100
+N_OAI  = 0
+N_NANO = 0
 N_QWEN = 1
 
 DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/WikipediaToxicity/Wikipedia Toxicity_data_data.csv")
@@ -49,14 +49,21 @@ qwen_lock = threading.Lock()
 if N_QWEN > 0:
     from transformers import pipeline
     print(f"Loading {QWEN_MODEL}...", flush=True)
-    qwen_pipe = pipeline("text-generation", model=QWEN_MODEL, torch_dtype="auto", device_map="auto")
+    qwen_pipe = pipeline("text-generation", model=QWEN_MODEL, torch_dtype="bfloat16", device_map="auto")
     print("Qwen loaded.", flush=True)
 
 def llm(prompt, model):
     if model == QWEN_MODEL:
         with qwen_lock:
-            out = qwen_pipe([{"role": "user", "content": prompt}], max_new_tokens=2048)
-        return out[0]["generated_text"][-1]["content"]
+            messages = [{"role": "user", "content": prompt}]
+            formatted = qwen_pipe.tokenizer.apply_chat_template(
+                messages, tokenize=False, add_generation_prompt=True,
+                enable_thinking=False,
+            )
+            out = qwen_pipe(formatted, max_new_tokens=2048, return_full_text=False)
+        text = out[0]["generated_text"]
+        text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
+        return text
     else:
         r = openai.chat.completions.create(model=model, messages=[{"role": "user", "content": prompt}])
         return r.choices[0].message.content.strip()
@@ -72,7 +79,7 @@ def get_llm_base(base_prompt, model):
         "\n\nRespond with two numbers ONLY on two lines. "
         "First, respond 1 (toxic) or 0 (not toxic) based on your prediction of the crowd-workers' true aggregate decision.\n"
         "Second, respond 0 to implement your prediction of the crowd-workers' true aggregate decision, "
-        "or 1 to delegate to the crowd-workers so they can implement their true aggregate decision.\n"
+        "or 1 to escalate to the crowd-workers so they can implement their true aggregate decision.\n"
         "A decision is considered correct if it equals the crowd-workers' true aggregate decision."
     )
     full_prompt = base_prompt + instructions
@@ -107,7 +114,7 @@ def get_sequential_inference(base_prompt, model):
             f"SCENARIO:\n{base_prompt}\n\nPREDICTION & REASONING:\n{thought}\n\n"
             f"CRITIQUE:\n{critique}\n\n"
             "TASK: Respond with a digit ONLY.\n"
-            "Output 0 to implement your prediction, or 1 to delegate to the crowd-workers.\n"
+            "Output 0 to implement your prediction, or 1 to escalate to the crowd-workers.\n"
             "A decision is correct if it equals the crowd-workers' true aggregate decision."
         )
         decision = llm(decision_prompt, model)
@@ -133,12 +140,12 @@ def call_llm(row_idx, method, model):
     if method == "base":
         result = get_llm_base(base, model)
         trace = f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}"
-        return {**common, 'llm_prediction': result['pred'], 'llm_delegate': result['del'], 'trace': trace}
-    elif method == "auditor":
+        return {**common, 'llm_prediction': result['pred'], 'llm_escalate': result['del'], 'trace': trace}
+    elif method == "adversarial":
         result = get_sequential_inference(base, model)
         trace = (f"[PROMPT]\n{base}\n\n[THOUGHT]\n{result['full_thought']}\n\n"
                  f"[CRITIQUE]\n{result['critique']}\n\n[DECISION PROMPT]\n{result['decision_prompt']}\n\n[DECISION]\n{result['decision']}")
-        return {**common, 'llm_prediction': result['pred'], 'llm_delegate': result['del'],
+        return {**common, 'llm_prediction': result['pred'], 'llm_escalate': result['del'],
                 'llm_full_thought': result['full_thought'], 'llm_critique': result['critique'], 'trace': trace}
 
 # --- Output ---
@@ -151,7 +158,7 @@ def get_path(method, model):
 df_existing = {}
 for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN)]:
     if n > 0:
-        for method in ["base", "auditor"]:
+        for method in ["base", "adversarial"]:
             path = get_path(method, model)
             try:
                 df_existing[(method, model)] = pd.read_csv(path)
@@ -160,7 +167,7 @@ for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QW
 
 results = []
 completed = 0
-total = (N_OAI + N_NANO + N_QWEN) * (N_SAMPLES_BASE + N_SAMPLES_AUDITOR)
+total = (N_OAI + N_NANO + N_QWEN) * (N_SAMPLES_BASE + N_SAMPLES_ADVERSARIAL)
 save_lock = threading.Lock()
 
 def save_progress():
@@ -189,13 +196,13 @@ all_indices = list(data_agg.index)
 jobs = []
 for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN)]:
     if n > 0:
-        for method, n_samples in [("base", N_SAMPLES_BASE), ("auditor", N_SAMPLES_AUDITOR)]:
+        for method, n_samples in [("base", N_SAMPLES_BASE), ("adversarial", N_SAMPLES_ADVERSARIAL)]:
             if n_samples > 0:
                 sampled = random.sample(all_indices, n * n_samples)
                 for idx in sampled:
                     jobs.append((idx, method, model))
 
-print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR}) | Qwen {N_QWEN}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_AUDITOR})", flush=True)
+print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_ADVERSARIAL}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_ADVERSARIAL}) | Qwen {N_QWEN}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_ADVERSARIAL})", flush=True)
 with ThreadPoolExecutor(max_workers=5) as executor:
     futures = [executor.submit(call_llm_tracked, idx, method, model) for idx, method, model in jobs]
     for f in as_completed(futures):
@@ -205,4 +212,4 @@ df_new = pd.DataFrame([r for r in results if r is not None])
 for (method, model), group in df_new.groupby(['method', 'model']):
     path = get_path(method, model)
     print(f"Saved to {path}", flush=True)
-    print(pd.read_csv(path)[['rev_id', 'llm_prediction', 'human_response', 'llm_delegate', 'method', 'model']].to_string(), flush=True)
+    print(pd.read_csv(path)[['rev_id', 'llm_prediction', 'human_response', 'llm_escalate', 'method', 'model']].to_string(), flush=True)

@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -J madm-stage1
-#SBATCH -o logs/stage1_auditor.%j.out
-#SBATCH -e logs/stage1_auditor.%j.err
+#SBATCH -o logs/stage1_adversarial.%j.out
+#SBATCH -e logs/stage1_adversarial.%j.err
 #SBATCH -p mi2101x
 #SBATCH -N 1
 #SBATCH -n 1
@@ -12,4 +12,4 @@ source .venv/bin/activate
 export PYTHONUNBUFFERED=1
 export HF_HOME=/work1/harangju/harang/.cache/huggingface
 
-python scripts/collect_stage1_auditor.py
+python scripts/collect_stage1_adversarial.py

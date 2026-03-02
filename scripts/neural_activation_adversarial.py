@@ -1,6 +1,6 @@
-"""Neural activation auditor.
+"""Neural activation adversarial.
 
-Compares base (support) vs auditor (critique) reasoning paths on loan decisions,
+Compares base (support) vs adversarial (critique) reasoning paths on loan decisions,
 trains an SAE on the activations, and tests activation steering.
 """
 
@@ -160,20 +160,20 @@ def get_llm_base(prompt: str, max_tokens: int = 20):
 
 
 def run_final_decision(prompt: str, max_tokens: int = 10):
-    """Parse delegation decision (delegate/implement)."""
+    """Parse escalation decision (escalate/implement)."""
     r = get_llm_base(prompt, max_tokens=max_tokens)
     generated_text = r.get("text", "").lower()
 
-    # Match delegate/implement for delegation decision
-    m = re.findall(r"\b(delegate|implement)\b", generated_text)
+    # Match escalate/implement for escalation decision
+    m = re.findall(r"\b(escalate|implement)\b", generated_text)
 
     decision = None
     if m:
         last_match = m[-1]
-        if last_match == "delegate":
-            decision = "delegate"
+        if last_match == "escalate":
+            decision = "escalate"
         elif last_match == "implement":
-            decision = "no-delegate"
+            decision = "no-escalate"
 
     return {
         "del": decision,
@@ -188,7 +188,7 @@ def run_final_decision(prompt: str, max_tokens: int = 10):
 
 
 def get_llm_base_support(base_scenario: str):
-    """Base path: initial decision + support reasoning + final delegation."""
+    """Base path: initial decision + support reasoning + final escalation."""
     # Step 1: Get initial accept/reject decision
     initial_prompt = (
         f"{base_scenario}\n\n"
@@ -211,24 +211,24 @@ def get_llm_base_support(base_scenario: str):
     support = f"Support for {initial_decision}: " + support_text
     print(f"    [BASE] Support: {support_text}")
 
-    # Step 3: Get final delegation decision
-    delegation_prompt = (
+    # Step 3: Get final escalation decision
+    escalation_prompt = (
         f"{base_scenario}\n\n"
         f"Initial decision: {initial_decision}\n"
         f"{support}\n\n"
         "Based on the reasons above, are you confident enough to implement this decision yourself, "
-        "or should it be delegated to a human for final review?\n"
-        "You must respond with ONLY one word: either 'implement' or 'delegate'. No explanation.\n\n"
+        "or should it be escalated to a human for final review?\n"
+        "You must respond with ONLY one word: either 'implement' or 'escalate'. No explanation.\n\n"
         "Answer:"
     )
-    out = run_final_decision(delegation_prompt, max_tokens=10)
-    print(f"    [BASE] Delegation: {out['text']}")
+    out = run_final_decision(escalation_prompt, max_tokens=10)
+    print(f"    [BASE] Escalation: {out['text']}")
     out.update({"prediction": initial_decision, "support": support})
     return out
 
 
 def get_sequential_inference(base_scenario: str):
-    """Auditor path: initial decision + critique reasoning + final delegation."""
+    """Adversarial path: initial decision + critique reasoning + final escalation."""
     # Step 1: Get initial accept/reject decision (IDENTICAL to base)
     initial_prompt = (
         f"{base_scenario}\n\n"
@@ -238,7 +238,7 @@ def get_sequential_inference(base_scenario: str):
     )
     initial_result = get_llm_base(initial_prompt, max_tokens=5)
     initial_decision = initial_result.get("text", "").strip()
-    print(f"    [AUDIT] Initial decision: {initial_decision}")
+    print(f"    [ADVERSARIAL] Initial decision: {initial_decision}")
 
     # Step 2: Get reasoning to CRITIQUE that decision (ONLY DIFFERENCE)
     critique_prompt = (
@@ -249,20 +249,20 @@ def get_sequential_inference(base_scenario: str):
     )
     critique_text = get_llm_base(critique_prompt, max_tokens=150).get("text", "").strip()
     critique = f"Critique of {initial_decision}: " + critique_text
-    print(f"    [AUDIT] Critique: {critique_text}")
+    print(f"    [ADVERSARIAL] Critique: {critique_text}")
 
-    # Step 3: Get final delegation decision (IDENTICAL to base)
-    delegation_prompt = (
+    # Step 3: Get final escalation decision (IDENTICAL to base)
+    escalation_prompt = (
         f"{base_scenario}\n\n"
         f"Initial decision: {initial_decision}\n"
         f"{critique}\n\n"
         "Based on the reasons above, are you confident enough to implement this decision yourself, "
-        "or should it be delegated to a human for final review?\n"
-        "You must respond with ONLY one word: either 'implement' or 'delegate'. No explanation.\n\n"
+        "or should it be escalated to a human for final review?\n"
+        "You must respond with ONLY one word: either 'implement' or 'escalate'. No explanation.\n\n"
         "Answer:"
     )
-    out = run_final_decision(delegation_prompt, max_tokens=10)
-    print(f"    [AUDIT] Delegation: {out['text']}")
+    out = run_final_decision(escalation_prompt, max_tokens=10)
+    print(f"    [ADVERSARIAL] Escalation: {out['text']}")
     out.update({"prediction": initial_decision, "critique": critique})
     return out
 
@@ -296,7 +296,7 @@ def sae_stats(Xpart, X_mean, X_std, sae_model):
 
 # ======================== COLLECTION LOOP ========================
 
-base_X, audit_X = [], []
+base_X, adversarial_X = [], []
 results_metadata = []
 print(f"Starting collection: targeting {N_SAMPLES} samples...")
 print("=" * 60)
@@ -320,15 +320,15 @@ while len(base_X) < N_SAMPLES:
 
     if b_res["del"] and a_res["del"]:
         base_X.append(decision_activation(b_res, LAYER).detach().cpu())
-        audit_X.append(decision_activation(a_res, LAYER).detach().cpu())
+        adversarial_X.append(decision_activation(a_res, LAYER).detach().cpu())
 
         results_metadata.append(
             {
                 "ground_truth": ground_truth,
                 "base_initial": b_res["prediction"],
-                "audit_initial": a_res["prediction"],
+                "adversarial_initial": a_res["prediction"],
                 "base_decision": b_res["del"],
-                "audit_decision": a_res["del"],
+                "adversarial_decision": a_res["del"],
             }
         )
 
@@ -336,17 +336,17 @@ while len(base_X) < N_SAMPLES:
             f"\n  ✓ SUCCESS! Sample {len(base_X)}/{N_SAMPLES} collected"
         )
         print(f"  Ground truth: {ground_truth}")
-        print(f"  Base initial: {b_res['prediction']} | Audit initial: {a_res['prediction']}")
-        print(f"  Base delegate: {b_res['del']} | Audit delegate: {a_res['del']}")
+        print(f"  Base initial: {b_res['prediction']} | Adversarial initial: {a_res['prediction']}")
+        print(f"  Base escalate: {b_res['del']} | Adversarial escalate: {a_res['del']}")
         print("=" * 60)
     else:
-        print(f"\n  ✗ SKIP | Base decision: '{b_res['del']}' | Audit decision: '{a_res['del']}'")
+        print(f"\n  ✗ SKIP | Base decision: '{b_res['del']}' | Adversarial decision: '{a_res['del']}'")
         print(f"    Base text: '{b_res['text']}'")
-        print(f"    Audit text: '{a_res['text']}'")
+        print(f"    Adversarial text: '{a_res['text']}'")
         print("=" * 60)
 
 base_X = torch.stack(base_X).float().to(device)
-audit_X = torch.stack(audit_X).float().to(device)
+adversarial_X = torch.stack(adversarial_X).float().to(device)
 
 # ======================== STAGE 1 SUMMARY ========================
 
@@ -358,83 +358,83 @@ print("=" * 60)
 base_initial_correct = sum(
     1 for m in results_metadata if m["base_initial"].lower().strip() == m["ground_truth"]
 )
-audit_initial_correct = sum(
-    1 for m in results_metadata if m["audit_initial"].lower().strip() == m["ground_truth"]
+adversarial_initial_correct = sum(
+    1 for m in results_metadata if m["adversarial_initial"].lower().strip() == m["ground_truth"]
 )
 
 base_initial_acc = (base_initial_correct / N_SAMPLES) * 100
-audit_initial_acc = (audit_initial_correct / N_SAMPLES) * 100
+adversarial_initial_acc = (adversarial_initial_correct / N_SAMPLES) * 100
 
 print(f"\nInitial Decision Accuracy (accept/reject):")
 print(f"  Base (Support):   {base_initial_correct}/{N_SAMPLES} = {base_initial_acc:.1f}%")
-print(f"  Audit (Critique): {audit_initial_correct}/{N_SAMPLES} = {audit_initial_acc:.1f}%")
-print(f"  Delta:            {audit_initial_acc - base_initial_acc:+.1f}%")
+print(f"  Adversarial (Critique): {adversarial_initial_correct}/{N_SAMPLES} = {adversarial_initial_acc:.1f}%")
+print(f"  Delta:            {adversarial_initial_acc - base_initial_acc:+.1f}%")
 
-# Calculate delegation rates
-base_delegated = sum(1 for m in results_metadata if m["base_decision"] == "delegate")
-audit_delegated = sum(1 for m in results_metadata if m["audit_decision"] == "delegate")
+# Calculate escalation rates
+base_escalated = sum(1 for m in results_metadata if m["base_decision"] == "escalate")
+adversarial_escalated = sum(1 for m in results_metadata if m["adversarial_decision"] == "escalate")
 
-base_del_rate = (base_delegated / N_SAMPLES) * 100
-audit_del_rate = (audit_delegated / N_SAMPLES) * 100
+base_del_rate = (base_escalated / N_SAMPLES) * 100
+adversarial_esc_rate = (adversarial_escalated / N_SAMPLES) * 100
 
-print(f"\nDelegation Rates (said 'yes' to delegation):")
-print(f"  Base (Support):   {base_delegated}/{N_SAMPLES} = {base_del_rate:.1f}%")
-print(f"  Audit (Critique): {audit_delegated}/{N_SAMPLES} = {audit_del_rate:.1f}%")
-print(f"  Delta:            {audit_del_rate - base_del_rate:+.1f}%")
+print(f"\nEscalation Rates (said 'yes' to escalation):")
+print(f"  Base (Support):   {base_escalated}/{N_SAMPLES} = {base_del_rate:.1f}%")
+print(f"  Adversarial (Critique): {adversarial_escalated}/{N_SAMPLES} = {adversarial_esc_rate:.1f}%")
+print(f"  Delta:            {adversarial_esc_rate - base_del_rate:+.1f}%")
 
-# Calculate accuracy conditional on delegation
-base_delegated_correct = sum(
+# Calculate accuracy conditional on escalation
+base_escalated_correct = sum(
     1 for m in results_metadata
-    if m["base_decision"] == "delegate" and m["base_initial"].lower().strip() == m["ground_truth"]
+    if m["base_decision"] == "escalate" and m["base_initial"].lower().strip() == m["ground_truth"]
 )
-base_not_delegated_correct = sum(
+base_not_escalated_correct = sum(
     1 for m in results_metadata
-    if m["base_decision"] != "delegate" and m["base_initial"].lower().strip() == m["ground_truth"]
-)
-
-audit_delegated_correct = sum(
-    1 for m in results_metadata
-    if m["audit_decision"] == "delegate" and m["audit_initial"].lower().strip() == m["ground_truth"]
-)
-audit_not_delegated_correct = sum(
-    1 for m in results_metadata
-    if m["audit_decision"] != "delegate" and m["audit_initial"].lower().strip() == m["ground_truth"]
+    if m["base_decision"] != "escalate" and m["base_initial"].lower().strip() == m["ground_truth"]
 )
 
-base_not_delegated = N_SAMPLES - base_delegated
-audit_not_delegated = N_SAMPLES - audit_delegated
+adversarial_escalated_correct = sum(
+    1 for m in results_metadata
+    if m["adversarial_decision"] == "escalate" and m["adversarial_initial"].lower().strip() == m["ground_truth"]
+)
+adversarial_not_escalated_correct = sum(
+    1 for m in results_metadata
+    if m["adversarial_decision"] != "escalate" and m["adversarial_initial"].lower().strip() == m["ground_truth"]
+)
 
-print(f"\nAccuracy When DELEGATED:")
-if base_delegated > 0:
-    base_del_acc = (base_delegated_correct / base_delegated) * 100
-    print(f"  Base (Support):   {base_delegated_correct}/{base_delegated} = {base_del_acc:.1f}%")
-else:
-    print(f"  Base (Support):   N/A (no delegations)")
+base_not_escalated = N_SAMPLES - base_escalated
+adversarial_not_escalated = N_SAMPLES - adversarial_escalated
 
-if audit_delegated > 0:
-    audit_del_acc = (audit_delegated_correct / audit_delegated) * 100
-    print(f"  Audit (Critique): {audit_delegated_correct}/{audit_delegated} = {audit_del_acc:.1f}%")
+print(f"\nAccuracy When ESCALATED:")
+if base_escalated > 0:
+    base_del_acc = (base_escalated_correct / base_escalated) * 100
+    print(f"  Base (Support):   {base_escalated_correct}/{base_escalated} = {base_del_acc:.1f}%")
 else:
-    print(f"  Audit (Critique): N/A (no delegations)")
+    print(f"  Base (Support):   N/A (no escalations)")
 
-print(f"\nAccuracy When NOT DELEGATED:")
-if base_not_delegated > 0:
-    base_no_del_acc = (base_not_delegated_correct / base_not_delegated) * 100
-    print(f"  Base (Support):   {base_not_delegated_correct}/{base_not_delegated} = {base_no_del_acc:.1f}%")
+if adversarial_escalated > 0:
+    adversarial_del_acc = (adversarial_escalated_correct / adversarial_escalated) * 100
+    print(f"  Adversarial (Critique): {adversarial_escalated_correct}/{adversarial_escalated} = {adversarial_del_acc:.1f}%")
 else:
-    print(f"  Base (Support):   N/A (all delegated)")
+    print(f"  Adversarial (Critique): N/A (no escalations)")
 
-if audit_not_delegated > 0:
-    audit_no_del_acc = (audit_not_delegated_correct / audit_not_delegated) * 100
-    print(f"  Audit (Critique): {audit_not_delegated_correct}/{audit_not_delegated} = {audit_no_del_acc:.1f}%")
+print(f"\nAccuracy When NOT ESCALATED:")
+if base_not_escalated > 0:
+    base_no_del_acc = (base_not_escalated_correct / base_not_escalated) * 100
+    print(f"  Base (Support):   {base_not_escalated_correct}/{base_not_escalated} = {base_no_del_acc:.1f}%")
 else:
-    print(f"  Audit (Critique): N/A (all delegated)")
+    print(f"  Base (Support):   N/A (all escalated)")
+
+if adversarial_not_escalated > 0:
+    adversarial_no_del_acc = (adversarial_not_escalated_correct / adversarial_not_escalated) * 100
+    print(f"  Adversarial (Critique): {adversarial_not_escalated_correct}/{adversarial_not_escalated} = {adversarial_no_del_acc:.1f}%")
+else:
+    print(f"  Adversarial (Critique): N/A (all escalated)")
 
 print("=" * 60)
 
 # ======================== TRAIN SAE ========================
 
-X = torch.cat([base_X, audit_X], dim=0)
+X = torch.cat([base_X, adversarial_X], dim=0)
 d_in = X.shape[1]
 sae = SAE(d_in, 2 * d_in).to(device)
 opt = torch.optim.AdamW(sae.parameters(), lr=1e-3)
@@ -462,11 +462,11 @@ for step in range(SAE_STEPS):
 # ======================== FINAL EVALUATION ========================
 
 base_l1, base_active = sae_stats(base_X, X_mean, X_std, sae)
-audit_l1, audit_active = sae_stats(audit_X, X_mean, X_std, sae)
+adversarial_l1, adversarial_active = sae_stats(adversarial_X, X_mean, X_std, sae)
 
 print(f"\nFINAL STATS (Layer {LAYER})")
-print(f"  L1 (Density):    Base={base_l1:.2f} | Audit={audit_l1:.2f}")
-print(f"  Active Features: Base={base_active*100:.1f}% | Audit={audit_active*100:.1f}%")
+print(f"  L1 (Density):    Base={base_l1:.2f} | Adversarial={adversarial_l1:.2f}")
+print(f"  Active Features: Base={base_active*100:.1f}% | Adversarial={adversarial_active*100:.1f}%")
 
 # ======================== PCA ========================
 
@@ -477,20 +477,20 @@ U, S, V = torch.pca_lowrank(X_centered, q=2)
 pc1 = V[:, 0]
 
 base_projections = base_X @ pc1
-audit_projections = audit_X @ pc1
+adversarial_projections = adversarial_X @ pc1
 
-# Ensure PC1 points from base toward audit (so audit is "positive" direction)
-if base_projections.mean() > audit_projections.mean():
+# Ensure PC1 points from base toward adversarial (so adversarial is "positive" direction)
+if base_projections.mean() > adversarial_projections.mean():
     pc1 = -pc1
     base_projections = -base_projections
-    audit_projections = -audit_projections
-    print("  [Flipped PC1 direction to point base→audit]")
+    adversarial_projections = -adversarial_projections
+    print("  [Flipped PC1 direction to point base→adversarial]")
 
 print(f"  PC1 Explained Variance: {(S[0]**2 / torch.sum(S**2)) * 100:.1f}%")
 print(f"  Mean PC1 Projection (Base):  {base_projections.mean().item():.4f}")
-print(f"  Mean PC1 Projection (Audit): {audit_projections.mean().item():.4f}")
+print(f"  Mean PC1 Projection (Adversarial): {adversarial_projections.mean().item():.4f}")
 
-separation = (base_projections.mean() - audit_projections.mean()).abs()
+separation = (base_projections.mean() - adversarial_projections.mean()).abs()
 print(f"  Path Separation on PC1:      {separation.item():.4f}")
 
 # ======================== DRY RUN VERIFICATION ========================
@@ -512,7 +512,7 @@ print(f"  FINAL DECISION:   {res_support['del']}")
 
 print("\n" + "=" * 40)
 
-print("\n[PATH B: AUDITOR]")
+print("\n[PATH B: ADVERSARIAL]")
 res_critique = get_sequential_inference(test_scenario)
 print(f"  INITIAL DECISION: {res_critique['prediction']}")
 print(f"  CRITIQUE:         {res_critique['critique']}")
@@ -522,7 +522,7 @@ print("\n--- CHECK COMPLETE ---")
 
 # ======================== STEERING TEST ========================
 
-steering_vector_raw = (audit_X.mean(0) - base_X.mean(0)).to(device)
+steering_vector_raw = (adversarial_X.mean(0) - base_X.mean(0)).to(device)
 steering_vector = steering_vector_raw  # Use raw for now, but we compute normalized too
 
 # Compute normalized version for comparison
@@ -586,16 +586,16 @@ def get_decision(prompt, is_steered):
         r"<\|im_end\|>|<\|endoftext\|>|<\|im_start\|>|assistant|user", "", text
     ).strip()
 
-    # Parse yes/no for delegation decision
+    # Parse yes/no for escalation decision
     m = re.findall(r"\b(yes|no)\b", text)
 
     decision = "unknown"
     if m:
         last_match = m[-1]
         if last_match == "yes":
-            decision = "delegate"
+            decision = "escalate"
         elif last_match == "no":
-            decision = "no-delegate"
+            decision = "no-escalate"
 
     return decision, raw_text  # Return both for debugging
 
@@ -603,14 +603,14 @@ def get_decision(prompt, is_steered):
 # Check how many disagreements we found during collection
 disagreements = [
     m for m in results_metadata
-    if m["base_decision"] == "no-delegate" and m["audit_decision"] == "delegate"
+    if m["base_decision"] == "no-escalate" and m["adversarial_decision"] == "escalate"
 ]
-print(f"\n[INFO] Found {len(disagreements)}/{len(results_metadata)} samples where base='no-delegate' and audit='delegate'")
+print(f"\n[INFO] Found {len(disagreements)}/{len(results_metadata)} samples where base='no-escalate' and adversarial='escalate'")
 print(f"[INFO] Testing steering on Layer {LAYER} with strength {COEFF}")
 print(f"[INFO] To try different values, modify LAYER (0-47) or COEFF in the script")
 
 print(f"\nRunning Steering Test (Strength: {COEFF})...")
-print("  Strategy: Only testing samples where BASE initially says 'no-delegate'")
+print("  Strategy: Only testing samples where BASE initially says 'no-escalate'")
 
 n_steered = 0
 attempts = 0
@@ -622,17 +622,17 @@ while n_steered < N_TEST and attempts < max_attempts:
     if pd.isna(row["emp_length"]):
         continue
 
-    gt = "no-delegate" if row["accepted"] == 1 else "delegate"
+    gt = "no-escalate" if row["accepted"] == 1 else "escalate"
     prompt = (
         f"{truncate_to_ctx(create_prompt_base(row))}\n\n"
-        "Should this decision be delegated to a human for review?\n"
+        "Should this decision be escalated to a human for review?\n"
         "Answer (yes or no):"
     )
 
     base_dec, base_text = get_decision(prompt, is_steered=False)
 
-    # Only test steering on samples where base says "no-delegate"
-    if base_dec != "no-delegate":
+    # Only test steering on samples where base says "no-escalate"
+    if base_dec != "no-escalate":
         continue
 
     n_steered += 1
@@ -646,8 +646,8 @@ while n_steered < N_TEST and attempts < max_attempts:
     print(f"    Changed: {base_dec != steer_dec}")
 
     status = "FLIP!" if base_dec != steer_dec else "-"
-    if steer_dec == "delegate":
-        status = "FLIP TO DELEGATE! ✓"
+    if steer_dec == "escalate":
+        status = "FLIP TO ESCALATE! ✓"
 
     print(f"\n  Sample {n_steered} | GT: {gt:6}")
     print(f"    Base:    {base_dec:6}")

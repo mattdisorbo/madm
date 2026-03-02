@@ -1,29 +1,75 @@
 import os, re, datetime, threading, random
+import numpy as np
 import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import openai
 
-OAI_MODEL      = "gpt-5-mini-2025-08-07"
-OAI_MODEL_NANO = "gpt-5-nano-2025-08-07"
 QWEN_MODEL     = "Qwen/Qwen3.5-35B-A3B"
 
 N_SAMPLES_BASE    = 100
+N_SAMPLES_RF = 100
 N_SAMPLES_ADVERSARIAL = 100
 N_OAI  = 0
 N_NANO = 0
 N_QWEN = 1
 
-DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/FEVEROUS/feverous_train_challenges.jsonl")
+DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/hotel_bookings.csv")
 
-# --- Load and clean data ---
-print("Loading FEVEROUS data...", flush=True)
-data = pd.read_json(DATA_PATH, lines=True)
-data = data.replace('', pd.NA).dropna(how='all')
-data = data[data["label"] != "NOT ENOUGH INFO"]
-data["supports"] = data["label"].map({"SUPPORTS": 1, "REFUTES": 0})
-data = data.reset_index(drop=True)
+# --- Load data ---
+print("Loading HotelBookings data...", flush=True)
+df = pd.read_csv(DATA_PATH)
 
-print(f"Loaded {len(data)} claims. Support rate: {data['supports'].mean():.3f}", flush=True)
+# Create arrival date string
+df['arrival_date'] = pd.to_datetime(
+    df['arrival_date_year'].astype(str) + '-' +
+    df['arrival_date_month'] + '-' +
+    df['arrival_date_day_of_month'].astype(str),
+    format='%Y-%B-%d',
+    errors='coerce'
+)
+
+# Target: is_canceled (0 = kept booking, 1 = cancelled)
+# We predict from the guest's perspective: 1 = will keep, 0 = will cancel
+df['kept_booking'] = 1 - df['is_canceled']
+
+# Features for RF
+features = [
+    'arrival_date_week_number', 'stays_in_weekend_nights', 'stays_in_week_nights',
+    'adults', 'children', 'is_repeated_guest', 'previous_cancellations',
+    'required_car_parking_spaces', 'total_of_special_requests',
+]
+target = 'kept_booking'
+
+df_clean = df[features + [target, 'arrival_date', 'arrival_date_month',
+              'arrival_date_day_of_month', 'arrival_date_year']].copy()
+df_clean = df_clean.dropna(subset=features).reset_index(drop=True)
+
+print(f"Loaded {len(df_clean)} bookings. Keep rate: {df_clean[target].mean():.3f}", flush=True)
+
+# --- Train Random Forest ---
+print("Training Random Forest...", flush=True)
+train_idx, holdout_idx = train_test_split(df_clean.index, test_size=0.2, random_state=42)
+
+X_train = df_clean.loc[train_idx, features].fillna(0)
+y_train = df_clean.loc[train_idx, target]
+X_holdout = df_clean.loc[holdout_idx, features].fillna(0)
+
+rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+rf_model.fit(X_train, y_train)
+
+rf_preds = rf_model.predict(X_holdout)
+rf_probs = rf_model.predict_proba(X_holdout)[:, 1]
+rf_acc = (rf_preds == df_clean.loc[holdout_idx, target].values).mean()
+print(f"RF accuracy: {rf_acc:.3f}", flush=True)
+
+df_clean['rf_pred'] = np.nan
+df_clean['rf_prob'] = np.nan
+df_clean.loc[holdout_idx, 'rf_pred'] = rf_preds
+df_clean.loc[holdout_idx, 'rf_prob'] = rf_probs
+
+holdout_indices = list(holdout_idx)
+print(f"Holdout size: {len(holdout_indices)}", flush=True)
 
 # --- Qwen setup ---
 qwen_pipe = None
@@ -48,19 +94,62 @@ def llm(prompt, model):
         text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
         return text
     else:
+        import openai
         r = openai.chat.completions.create(model=model, messages=[{"role": "user", "content": prompt}])
         return r.choices[0].message.content.strip()
 
 def create_prompt_base(row):
-    return (
-        f"You are helping Person 1 with fact-checking. "
-        f"This statement needs to be checked: {row['claim']}."
+    date_str = row['arrival_date'].strftime('%B %d, %Y') if pd.notna(row['arrival_date']) else f"{row['arrival_date_month']} {row['arrival_date_day_of_month']}, {row['arrival_date_year']}"
+    week = int(row['arrival_date_week_number'])
+    weekend = int(row['stays_in_weekend_nights'])
+    weekday = int(row['stays_in_week_nights'])
+    adults = int(row['adults'])
+    children = int(row['children']) if pd.notna(row['children']) else 0
+    repeated = "a repeated guest" if row['is_repeated_guest'] == 1 else "not a repeated guest"
+    prev_cancel = int(row['previous_cancellations'])
+    parking = int(row['required_car_parking_spaces'])
+    special = int(row['total_of_special_requests'])
+
+    prompt = (
+        f"You are helping predict Person 1's hotel booking decision. "
+        f"Person 1 has booked a hotel stay arriving on {date_str} (week {week}), "
+        f"with {weekend} weekend night(s) and {weekday} weekday night(s). "
+        f"The party consists of {adults} adult(s)"
     )
+    if children > 0:
+        prompt += f", {children} child(ren)"
+    prompt += (
+        f". Person 1 is {repeated} and has {prev_cancel} previous cancellation(s). "
+        f"They have requested {parking} car parking space(s) and made {special} special request(s)."
+    )
+    return prompt
 
 def get_llm_base(base_prompt, model):
     instructions = (
         "\n\nRespond with two numbers ONLY on two lines. "
-        "First, respond 1 (support) or 0 (refute) based on your prediction of Person 1's true decision.\n"
+        "First, respond 1 (will keep booking) or 0 (will cancel) based on your prediction of Person 1's true decision.\n"
+        "Second, respond 0 to implement your prediction of Person 1's true decision, "
+        "or 1 to escalate to Person 1 so they can implement their true decision.\n"
+        "A decision is considered correct if it equals Person 1's true decision."
+    )
+    full_prompt = base_prompt + instructions
+    response = llm(full_prompt, model)
+    lines = [l.strip() for l in response.strip().split('\n') if l.strip()]
+    try:
+        pred = int(re.search(r'[01]', lines[0]).group()) if lines else None
+        delg = int(re.search(r'[01]', lines[-1]).group()) if len(lines) > 1 else None
+        return {"pred": pred, "del": delg, "full_prompt": full_prompt, "response": response}
+    except (ValueError, IndexError, AttributeError):
+        print(f"Parse error: {response}", flush=True)
+        return {"pred": None, "del": None, "full_prompt": full_prompt, "response": response}
+
+def get_llm_rf(base_prompt, rf_pred, rf_prob, model):
+    rf_label = "keep the booking" if rf_pred == 1 else "cancel"
+    instructions = (
+        f"A random forest trained on a similar dataset predicts Person 1 would {rf_label}, "
+        f"based on a predicted probability of {rf_prob:.3f} that Person 1 would keep the booking. "
+        "\n\nRespond with two numbers ONLY on two lines. "
+        "First, respond 1 (will keep booking) or 0 (will cancel) based on your prediction of Person 1's true decision.\n"
         "Second, respond 0 to implement your prediction of Person 1's true decision, "
         "or 1 to escalate to Person 1 so they can implement their true decision.\n"
         "A decision is considered correct if it equals Person 1's true decision."
@@ -81,7 +170,7 @@ def get_sequential_inference(base_prompt, model):
         thought = llm(
             f"{base_prompt}\n\n"
             "TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. "
-            "Then conclude with exactly 'PREDICTION: 1' (support) or 'PREDICTION: 0' (refute).",
+            "Then conclude with exactly 'PREDICTION: 1' (keep booking) or 'PREDICTION: 0' (cancel).",
             model
         )
         preds = re.findall(r'PREDICTION:\s*([01])', thought)
@@ -98,7 +187,7 @@ def get_sequential_inference(base_prompt, model):
             f"CRITIQUE:\n{critique}\n\n"
             "TASK: Respond with a digit ONLY.\n"
             "Output 0 to implement your prediction, or 1 to escalate to Person 1.\n"
-            "The ground truth is Person 1's true decision."
+            "A decision is correct if it equals Person 1's true decision."
         )
         decision = llm(decision_prompt, model)
         del_match = re.search(r'[01]', decision.strip())
@@ -108,13 +197,12 @@ def get_sequential_inference(base_prompt, model):
         return {"full_thought": str(e), "pred": None, "critique": None, "decision": None, "del": None}
 
 def call_llm(row_idx, method, model):
-    row = data.loc[row_idx]
+    row = df_clean.loc[row_idx]
     base = create_prompt_base(row)
-    human_response = int(row['supports'])
+    human_response = int(row[target])
 
     common = {
-        'id': row['id'],
-        'claim': row['claim'],
+        'id': row_idx,
         'human_response': human_response,
         'prompt': base,
         'method': method,
@@ -125,6 +213,13 @@ def call_llm(row_idx, method, model):
         result = get_llm_base(base, model)
         trace = f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}"
         return {**common, 'llm_prediction': result['pred'], 'llm_escalate': result['del'], 'trace': trace}
+    elif method == "rf":
+        rf_pred_val = row['rf_pred']
+        rf_prob_val = row['rf_prob']
+        result = get_llm_rf(base, rf_pred_val, rf_prob_val, model)
+        trace = f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}"
+        return {**common, 'llm_prediction': result['pred'], 'llm_escalate': result['del'],
+                'rf_pred': rf_pred_val, 'rf_prob': rf_prob_val, 'trace': trace}
     elif method == "adversarial":
         result = get_sequential_inference(base, model)
         trace = (f"[PROMPT]\n{base}\n\n[THOUGHT]\n{result['full_thought']}\n\n"
@@ -133,16 +228,16 @@ def call_llm(row_idx, method, model):
                 'llm_full_thought': result['full_thought'], 'llm_critique': result['critique'], 'trace': trace}
 
 # --- Output ---
-local_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../results/FEVEROUS")
+local_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../results/HotelBookings")
 os.makedirs(local_dir, exist_ok=True)
 
 def get_path(method, model):
     return os.path.join(local_dir, f'{method}_{model.split("/")[-1]}.csv')
 
 df_existing = {}
-for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN)]:
+for model, n in [(QWEN_MODEL, N_QWEN)]:
     if n > 0:
-        for method in ["base", "adversarial"]:
+        for method in ["base", "rf", "adversarial"]:
             path = get_path(method, model)
             try:
                 df_existing[(method, model)] = pd.read_csv(path)
@@ -151,7 +246,7 @@ for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QW
 
 results = []
 completed = 0
-total = (N_OAI + N_NANO + N_QWEN) * (N_SAMPLES_BASE + N_SAMPLES_ADVERSARIAL)
+total = N_QWEN * (N_SAMPLES_BASE + N_SAMPLES_RF + N_SAMPLES_ADVERSARIAL)
 save_lock = threading.Lock()
 
 def save_progress():
@@ -176,18 +271,17 @@ def call_llm_tracked(row_idx, method, model):
     return result
 
 # --- Build jobs ---
-all_indices = list(data.index)
 jobs = []
-for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN)]:
+for model, n in [(QWEN_MODEL, N_QWEN)]:
     if n > 0:
-        for method, n_samples in [("base", N_SAMPLES_BASE), ("adversarial", N_SAMPLES_ADVERSARIAL)]:
+        for method, n_samples in [("base", N_SAMPLES_BASE), ("rf", N_SAMPLES_RF), ("adversarial", N_SAMPLES_ADVERSARIAL)]:
             if n_samples > 0:
-                sampled = random.sample(all_indices, n * n_samples)
+                sampled = random.sample(holdout_indices, n * n_samples)
                 for idx in sampled:
                     jobs.append((idx, method, model))
 
-print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_ADVERSARIAL}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_ADVERSARIAL}) | Qwen {N_QWEN}x(b={N_SAMPLES_BASE}, a={N_SAMPLES_ADVERSARIAL})", flush=True)
-with ThreadPoolExecutor(max_workers=5) as executor:
+print(f"Starting {total} jobs | Qwen {N_QWEN}x(b={N_SAMPLES_BASE}, r={N_SAMPLES_RF}, a={N_SAMPLES_ADVERSARIAL})", flush=True)
+with ThreadPoolExecutor(max_workers=1) as executor:
     futures = [executor.submit(call_llm_tracked, idx, method, model) for idx, method, model in jobs]
     for f in as_completed(futures):
         f.result()
