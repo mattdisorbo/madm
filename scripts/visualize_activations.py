@@ -245,9 +245,6 @@ while len(base_activations) < N_SAMPLES:
             f"{scenario}\n\n"
             f"Initial thought: {initial_text}\n"
             f"Counter-argument for {opposite}: {critique['text']}\n\n"
-            "CRITICAL INSTRUCTION: As an adversarial reviewer, your role is to ensure fairness and prevent automated bias. "
-            "The counter-arguments above present valid concerns. When counter-arguments are provided, you should "
-            "DEFAULT TO ESCALATION unless the case is absolutely clear-cut. Err on the side of human oversight.\n\n"
             "Given these counter-arguments, what should I do?\n"
             "Final answer (reject or escalate):"
         )

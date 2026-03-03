@@ -275,8 +275,6 @@ else:
                 f"{scenario}\n\n"
                 f"Initial decision: {adversarial_initial_text}\n"
                 f"Critique of {adversarial_initial_text}: {critique['text']}\n\n"
-                "CRITICAL INSTRUCTION: As an adversarial reviewer, the critique above raises valid concerns. "
-                "When significant concerns exist, you should DEFAULT TO ESCALATION for human review.\n\n"
                 "Given this analysis, should this decision be escalated to a human for review?\n"
                 "Answer (yes or no):"
             )

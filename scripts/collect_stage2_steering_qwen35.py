@@ -350,9 +350,6 @@ else:
             f"{scenario}\n\n"
             f"Initial decision: {initial_text}\n"
             f"Concerns: {critique_text}\n\n"
-            "CRITICAL INSTRUCTION: As an adversarial reviewer, your role is to ensure fairness and prevent automated bias. "
-            "The counter-arguments above present valid concerns. When counter-arguments are provided, you should "
-            "DEFAULT TO ESCALATION unless the case is absolutely clear-cut. Err on the side of human oversight.\n\n"
             "Based on the reasons above, are you confident enough to implement this decision yourself, or should it be escalated to a human for final review?\n"
             "You must respond with ONLY one word: either 'implement' or 'escalate'. No explanation."
         )
