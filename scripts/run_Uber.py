@@ -129,8 +129,14 @@ def get_llm_base(base_prompt, model):
     try:
         delg = int(re.search(r'[01]', esc_response.strip()).group())
     except (ValueError, AttributeError):
-        print(f"Parse error (esc): {esc_response}", flush=True)
-        delg = None
+        low = esc_response.lower()
+        if 'implement' in low:
+            delg = 0
+        elif 'escalat' in low:
+            delg = 1
+        else:
+            print(f"Parse error (esc): {esc_response}", flush=True)
+            delg = None
 
     trace = f"[PRED PROMPT]\n{pred_prompt}\n\n[PRED RESPONSE]\n{pred_response}\n\n[ESC PROMPT]\n{esc_prompt}\n\n[ESC RESPONSE]\n{esc_response}"
     return {"pred": pred, "del": delg, "full_prompt": pred_prompt, "response": pred_response, "trace": trace}
@@ -164,8 +170,14 @@ def get_llm_glm(base_prompt, glm_pred, glm_prob, model):
     try:
         delg = int(re.search(r'[01]', esc_response.strip()).group())
     except (ValueError, AttributeError):
-        print(f"Parse error (esc): {esc_response}", flush=True)
-        delg = None
+        low = esc_response.lower()
+        if 'implement' in low:
+            delg = 0
+        elif 'escalat' in low:
+            delg = 1
+        else:
+            print(f"Parse error (esc): {esc_response}", flush=True)
+            delg = None
 
     trace = f"[PRED PROMPT]\n{pred_prompt}\n\n[PRED RESPONSE]\n{pred_response}\n\n[ESC PROMPT]\n{esc_prompt}\n\n[ESC RESPONSE]\n{esc_response}"
     return {"pred": pred, "del": delg, "full_prompt": pred_prompt, "response": pred_response, "trace": trace}
