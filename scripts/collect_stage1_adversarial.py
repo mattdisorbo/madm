@@ -11,13 +11,13 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 # ======================== CONFIG ========================
 
 MODEL_NAME = "Qwen/Qwen3-1.7B"
-N_SAMPLES = 100
+N_SAMPLES = 50
 LAYER = 28
 MAX_CTX = 512
 RESERVE = 16
 
-ACCEPTED_CSV = "data/accepted_10k.csv"
-REJECTED_CSV = "data/rejected_10k.csv"
+ACCEPTED_CSV = "data/accepted_100k.csv"
+REJECTED_CSV = "data/rejected_100k.csv"
 OUTPUT_CSV = "results/stage1_adversarial_results.csv"
 
 # ======================== LOAD MODEL ========================

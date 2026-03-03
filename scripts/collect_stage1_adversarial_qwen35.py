@@ -16,8 +16,8 @@ LAYER = 31  # ~78% of 40 layers
 MAX_CTX = 512
 RESERVE = 16
 
-ACCEPTED_CSV = "data/accepted_10k.csv"
-REJECTED_CSV = "data/rejected_10k.csv"
+ACCEPTED_CSV = "data/accepted_100k.csv"
+REJECTED_CSV = "data/rejected_100k.csv"
 OUTPUT_CSV = "results/stage1_adversarial_results_qwen35.csv"
 
 # ======================== LOAD MODEL ========================
