@@ -22,7 +22,7 @@ uv pip install --reinstall torch --index-url https://download.pytorch.org/whl/ro
 MODEL="Qwen/Qwen3-8B"
 echo "=== Running all datasets with $MODEL ==="
 
-for script in run_aime run_FEVEROUS run_JFLEG run_LendingClub run_MoralMachine run_MovieLens run_WikipediaToxicity run_HotelBookings run_Uber; do
+for script in run_FEVEROUS run_JFLEG run_LendingClub run_MoralMachine run_MovieLens run_WikipediaToxicity run_HotelBookings run_Uber run_aime; do
     echo "--- Starting $script ---"
     python scripts/${script}.py "$MODEL"
     echo "--- Finished $script ---"
