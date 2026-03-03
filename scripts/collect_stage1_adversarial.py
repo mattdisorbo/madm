@@ -1,42 +1,62 @@
-"""Stage 1: Collect 100 base vs adversarial comparisons and save to CSV."""
+"""Stage 1: Collect base vs adversarial comparisons and save to CSV.
+
+Usage:
+    python collect_stage1_adversarial.py                          # Default: Qwen3-1.7B
+    python collect_stage1_adversarial.py "THUDM/glm-4-9b-chat-hf"
+    python collect_stage1_adversarial.py "Qwen/Qwen3-1.7B" --n_samples 100
+"""
 
 import os
 import re
 import csv
+import sys
+import argparse
 from datetime import datetime
 import pandas as pd
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
+# ======================== PARSE ARGUMENTS ========================
+
+parser = argparse.ArgumentParser(description="Stage 1 adversarial collection")
+parser.add_argument("model", nargs="?", default="Qwen/Qwen3-1.7B", help="HuggingFace model name")
+parser.add_argument("--n_samples", type=int, default=50)
+args = parser.parse_args()
+
 # ======================== CONFIG ========================
 
-MODEL_NAME = "Qwen/Qwen3-1.7B"
-N_SAMPLES = 50
-LAYER = 28
+MODEL_NAME = args.model
+MODEL_SHORT = MODEL_NAME.split("/")[-1]
+N_SAMPLES = args.n_samples
 MAX_CTX = 512
 RESERVE = 16
 
 ACCEPTED_CSV = "data/accepted_10k.csv"
 REJECTED_CSV = "data/rejected_10k.csv"
-OUTPUT_CSV = "results/stage1_adversarial_results.csv"
+OUTPUT_CSV = f"results/stage1_adversarial_results_{MODEL_SHORT}.csv"
 
 # ======================== LOAD MODEL ========================
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Loading {MODEL_NAME} on {device}...")
 
-torch.cuda.empty_cache()
+if device == "cuda":
+    torch.cuda.empty_cache()
 
-tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+IS_QWEN = "qwen" in MODEL_NAME.lower()
+
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
 if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
 
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
-    torch_dtype=torch.float16,
+    torch_dtype=torch.bfloat16,
+    trust_remote_code=True,
 ).to(device)
 
-print("Model loaded.")
+NUM_LAYERS = model.config.num_hidden_layers
+print(f"Model loaded. {NUM_LAYERS} layers.")
 
 # ======================== LOAD DATA ========================
 
@@ -109,12 +129,12 @@ def truncate_to_ctx(prompt: str) -> str:
 
 
 def format_prompt(prompt: str) -> str:
-    """Format prompt using model's chat template (for Qwen)."""
+    """Format prompt using model's chat template."""
     if tokenizer.chat_template:
-        messages = [
-            {"role": "system", "content": "/no_think"},
-            {"role": "user", "content": prompt}
-        ]
+        messages = []
+        if IS_QWEN:
+            messages.append({"role": "system", "content": "/no_think"})
+        messages.append({"role": "user", "content": prompt})
         return tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
     return prompt
 
