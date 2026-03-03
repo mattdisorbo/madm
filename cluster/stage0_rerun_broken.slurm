@@ -16,23 +16,17 @@ export PIP_CACHE_DIR=/work1/harangju/harang/.cache/pip
 export TMPDIR=/work1/harangju/harang/.cache/tmp
 mkdir -p "$UV_CACHE_DIR" "$PIP_CACHE_DIR" "$TMPDIR"
 
-uv pip install --upgrade transformers statsmodels
 uv pip install --reinstall torch --index-url https://download.pytorch.org/whl/rocm7.1
+uv pip install --upgrade transformers statsmodels
+python -c "import torch; print(f'torch {torch.__version__}')"
 
-# Delete bad results and re-run broken combos
-# 1.7B: LendingClub base (44/50 pred NaN), MovieLens base+ols (23/50 esc NaN)
-# 4B: MovieLens base (50/50 esc NaN)
+# Re-run MovieLens combos that were deleted but never re-ran
+# (LendingClub 1.7B already fixed in job 275993)
 
-echo "=== Deleting bad results ==="
-rm -f results/LendingClub/base_Qwen3-1.7B.csv
-rm -f results/MovieLens/base_Qwen3-1.7B.csv results/MovieLens/ols_Qwen3-1.7B.csv
-rm -f results/MovieLens/base_Qwen3-4B.csv
-
-echo "=== Re-running 1.7B broken datasets ==="
-python scripts/run_LendingClub.py "Qwen/Qwen3-1.7B"
+echo "=== Re-running MovieLens 1.7B (base + ols) ==="
 python scripts/run_MovieLens.py "Qwen/Qwen3-1.7B"
 
-echo "=== Re-running 4B broken datasets ==="
+echo "=== Re-running MovieLens 4B (base) ==="
 python scripts/run_MovieLens.py "Qwen/Qwen3-4B"
 
 echo "=== All re-runs complete ==="
