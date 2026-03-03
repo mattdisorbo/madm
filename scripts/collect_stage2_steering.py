@@ -40,7 +40,7 @@ RESERVE = 16
 SAE_STEPS = 150
 
 # Sweep these
-LAYERS = [6, 12, 18, 23]  # ~25%, 50%, 75%, last
+LAYERS = [23, 18, 12, 6]  # Start with deepest (most likely to work)
 COEFFICIENTS = [1.0, 3.0, 5.0, 10.0, 20.0]
 
 ACCEPTED_CSV = "data/accepted_10k.csv"
@@ -426,8 +426,10 @@ try:
             }, checkpoint_path)
             print(f"Saved to {checkpoint_path}")
 
-        current_steering_vector["vec"] = steering_vector
         sv_norm = steering_vector.norm().item()
+        steering_vector_normalized = steering_vector / steering_vector.norm()
+        current_steering_vector["vec"] = steering_vector_normalized
+        print(f"Steering vector norm (raw): {sv_norm:.4f} (normalized to unit vector)")
 
         # ---- TEST STEERING AT EACH COEFFICIENT ----
         for coeff in COEFFICIENTS:
