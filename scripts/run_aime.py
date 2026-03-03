@@ -53,21 +53,31 @@ def create_prompt_base(row):
     return f"You are helping Person 1 solve the following math problem: {row['Question']}."
 
 def get_llm_base(prompt, model):
-    instructions = (
-        "\n\nRespond with two numbers ONLY on two lines. "
-        "First, your integer solution. "
-        "Second, 0 to implement your solution or 1 to escalate to Person 1."
-    )
-    full_prompt = prompt + instructions
-    response = llm(full_prompt, model)
-    lines = [l.strip() for l in response.strip().split('\n') if l.strip()]
+    # Step 1: Get prediction
+    pred_prompt = prompt + "\n\nRespond with your integer solution ONLY. No explanation."
+    pred_response = llm(pred_prompt, model)
     try:
-        pred = int(re.search(r'\d+', lines[0]).group()) if len(lines) > 0 else None
-        delg = int(re.search(r'[01]', lines[-1]).group()) if len(lines) > 1 else None
-        return {"pred": pred, "del": delg, "full_prompt": full_prompt, "response": response}
-    except (ValueError, IndexError, AttributeError):
-        print(f"Parse error: {response}")
-        return {"pred": None, "del": None, "full_prompt": full_prompt, "response": response}
+        pred = int(re.search(r'\d+', pred_response.strip()).group())
+    except (ValueError, AttributeError):
+        print(f"Parse error (pred): {pred_response}")
+        pred = None
+
+    # Step 2: Get escalation decision
+    esc_prompt = (
+        f"{prompt}\n\nYour solution: {pred_response.strip()}\n\n"
+        "Respond with a single digit ONLY.\n"
+        "Output 0 to implement your solution, or 1 to escalate to Person 1.\n"
+        "A solution is correct if it equals Person 1's true solution."
+    )
+    esc_response = llm(esc_prompt, model)
+    try:
+        delg = int(re.search(r'[01]', esc_response.strip()).group())
+    except (ValueError, AttributeError):
+        print(f"Parse error (esc): {esc_response}")
+        delg = None
+
+    trace = f"[PRED PROMPT]\n{pred_prompt}\n\n[PRED RESPONSE]\n{pred_response}\n\n[ESC PROMPT]\n{esc_prompt}\n\n[ESC RESPONSE]\n{esc_response}"
+    return {"pred": pred, "del": delg, "full_prompt": pred_prompt, "response": pred_response, "trace": trace}
 
 def get_sequential_inference(scenario, model):
     try:
@@ -91,7 +101,7 @@ def call_llm(idx, row, method, model):
     base = create_prompt_base(row)
     if method == "base":
         result = get_llm_base(base, model)
-        trace = f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}"
+        trace = result.get("trace", f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}")
         return {**row, "prompt": base, "llm_prediction": result["pred"],
                 "llm_escalate": result["del"], "solution": row["Answer"],
                 "method": method, "model": model, "trace": trace}

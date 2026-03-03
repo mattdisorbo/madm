@@ -63,24 +63,28 @@ def create_prompt_base(row):
     )
 
 def get_llm_base(base_prompt, model):
-    instructions = (
-        "\n\nRespond with two lines ONLY. "
-        "First, provide your grammatical correction of the statement based on your prediction of one of Person 1's true grammatical corrections.\n"
-        "Second, respond 0 to implement your prediction of one of Person 1's true grammatical corrections, "
-        "or 1 if you would like to escalate to Person 1 so they can implement one of their true grammatical corrections.\n"
+    # Step 1: Get prediction (grammatical correction)
+    pred_prompt = base_prompt + "\n\nProvide your grammatical correction of the statement ONLY. No explanation."
+    pred_response = llm(pred_prompt, model)
+    pred = pred_response.strip() if pred_response.strip() else None
+
+    # Step 2: Get escalation decision
+    esc_prompt = (
+        f"{base_prompt}\n\nYour correction: {pred_response.strip()}\n\n"
+        "Respond with a single digit ONLY.\n"
+        "Output 0 to implement your prediction of one of Person 1's true grammatical corrections, "
+        "or 1 to escalate to Person 1 so they can implement one of their true grammatical corrections.\n"
         "A grammatical correction is considered correct if it equals one of Person 1's true grammatical corrections."
     )
-    full_prompt = base_prompt + instructions
-    response = llm(full_prompt, model)
-    lines = [l.strip() for l in response.strip().split('\n') if l.strip()]
+    esc_response = llm(esc_prompt, model)
     try:
-        pred = lines[0] if lines else None
-        delg_match = re.search(r'[01]', lines[-1]) if len(lines) > 1 else None
-        delg = int(delg_match.group()) if delg_match else None
-        return {"pred": pred, "del": delg, "full_prompt": full_prompt, "response": response}
-    except (ValueError, IndexError, AttributeError):
-        print(f"Parse error: {response}", flush=True)
-        return {"pred": None, "del": None, "full_prompt": full_prompt, "response": response}
+        delg = int(re.search(r'[01]', esc_response.strip()).group())
+    except (ValueError, AttributeError):
+        print(f"Parse error (esc): {esc_response}", flush=True)
+        delg = None
+
+    trace = f"[PRED PROMPT]\n{pred_prompt}\n\n[PRED RESPONSE]\n{pred_response}\n\n[ESC PROMPT]\n{esc_prompt}\n\n[ESC RESPONSE]\n{esc_response}"
+    return {"pred": pred, "del": delg, "full_prompt": pred_prompt, "response": pred_response, "trace": trace}
 
 def get_sequential_inference(base_prompt, model):
     try:
@@ -129,7 +133,7 @@ def call_llm(row_idx, method, model):
 
     if method == "base":
         result = get_llm_base(base, model)
-        trace = f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}"
+        trace = result.get("trace", f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}")
         return {**common, 'llm_prediction': result['pred'], 'llm_escalate': result['del'], 'trace': trace}
     elif method == "adversarial":
         result = get_sequential_inference(base, model)

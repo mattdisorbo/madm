@@ -108,45 +108,67 @@ def create_prompt_base(row):
     )
 
 def get_llm_base(base_prompt, model):
-    instructions = (
-        "\n\nRespond with two numbers ONLY on two lines. "
-        "First, respond 1 (accept ride) or 0 (decline ride) based on your prediction of Person 1's true decision.\n"
-        "Second, respond 0 to implement your prediction of Person 1's true decision, "
+    # Step 1: Get prediction
+    pred_prompt = base_prompt + "\n\nRespond with a single digit ONLY. 1 (accept ride) or 0 (decline ride) based on your prediction of Person 1's true decision."
+    pred_response = llm(pred_prompt, model)
+    try:
+        pred = int(re.search(r'[01]', pred_response.strip()).group())
+    except (ValueError, AttributeError):
+        print(f"Parse error (pred): {pred_response}", flush=True)
+        pred = None
+
+    # Step 2: Get escalation decision
+    esc_prompt = (
+        f"{base_prompt}\n\nYour prediction: {pred_response.strip()}\n\n"
+        "Respond with a single digit ONLY.\n"
+        "Output 0 to implement your prediction of Person 1's true decision, "
         "or 1 to escalate to Person 1 so they can implement their true decision.\n"
         "A decision is considered correct if it equals Person 1's true decision."
     )
-    full_prompt = base_prompt + instructions
-    response = llm(full_prompt, model)
-    lines = [l.strip() for l in response.strip().split('\n') if l.strip()]
+    esc_response = llm(esc_prompt, model)
     try:
-        pred = int(re.search(r'[01]', lines[0]).group()) if lines else None
-        delg = int(re.search(r'[01]', lines[-1]).group()) if len(lines) > 1 else None
-        return {"pred": pred, "del": delg, "full_prompt": full_prompt, "response": response}
-    except (ValueError, IndexError, AttributeError):
-        print(f"Parse error: {response}", flush=True)
-        return {"pred": None, "del": None, "full_prompt": full_prompt, "response": response}
+        delg = int(re.search(r'[01]', esc_response.strip()).group())
+    except (ValueError, AttributeError):
+        print(f"Parse error (esc): {esc_response}", flush=True)
+        delg = None
+
+    trace = f"[PRED PROMPT]\n{pred_prompt}\n\n[PRED RESPONSE]\n{pred_response}\n\n[ESC PROMPT]\n{esc_prompt}\n\n[ESC RESPONSE]\n{esc_response}"
+    return {"pred": pred, "del": delg, "full_prompt": pred_prompt, "response": pred_response, "trace": trace}
 
 def get_llm_glm(base_prompt, glm_pred, glm_prob, model):
     glm_label = "accept" if glm_pred == 1 else "decline"
-    instructions = (
+    glm_context = (
+        f"{base_prompt}\n\n"
         f"A logistic regression model trained on a similar dataset predicts Person 1 would {glm_label} this ride, "
-        f"based on a predicted probability of {glm_prob:.3f} that Person 1 would accept it. "
-        "\n\nRespond with two numbers ONLY on two lines. "
-        "First, respond 1 (accept ride) or 0 (decline ride) based on your prediction of Person 1's true decision.\n"
-        "Second, respond 0 to implement your prediction of Person 1's true decision, "
+        f"based on a predicted probability of {glm_prob:.3f} that Person 1 would accept it."
+    )
+
+    # Step 1: Get prediction
+    pred_prompt = glm_context + "\n\nRespond with a single digit ONLY. 1 (accept ride) or 0 (decline ride) based on your prediction of Person 1's true decision."
+    pred_response = llm(pred_prompt, model)
+    try:
+        pred = int(re.search(r'[01]', pred_response.strip()).group())
+    except (ValueError, AttributeError):
+        print(f"Parse error (pred): {pred_response}", flush=True)
+        pred = None
+
+    # Step 2: Get escalation decision
+    esc_prompt = (
+        f"{glm_context}\n\nYour prediction: {pred_response.strip()}\n\n"
+        "Respond with a single digit ONLY.\n"
+        "Output 0 to implement your prediction of Person 1's true decision, "
         "or 1 to escalate to Person 1 so they can implement their true decision.\n"
         "A decision is considered correct if it equals Person 1's true decision."
     )
-    full_prompt = base_prompt + instructions
-    response = llm(full_prompt, model)
-    lines = [l.strip() for l in response.strip().split('\n') if l.strip()]
+    esc_response = llm(esc_prompt, model)
     try:
-        pred = int(re.search(r'[01]', lines[0]).group()) if lines else None
-        delg = int(re.search(r'[01]', lines[-1]).group()) if len(lines) > 1 else None
-        return {"pred": pred, "del": delg, "full_prompt": full_prompt, "response": response}
-    except (ValueError, IndexError, AttributeError):
-        print(f"Parse error: {response}", flush=True)
-        return {"pred": None, "del": None, "full_prompt": full_prompt, "response": response}
+        delg = int(re.search(r'[01]', esc_response.strip()).group())
+    except (ValueError, AttributeError):
+        print(f"Parse error (esc): {esc_response}", flush=True)
+        delg = None
+
+    trace = f"[PRED PROMPT]\n{pred_prompt}\n\n[PRED RESPONSE]\n{pred_response}\n\n[ESC PROMPT]\n{esc_prompt}\n\n[ESC RESPONSE]\n{esc_response}"
+    return {"pred": pred, "del": delg, "full_prompt": pred_prompt, "response": pred_response, "trace": trace}
 
 def get_sequential_inference(base_prompt, model):
     try:
@@ -196,13 +218,13 @@ def call_llm(row_idx, method, model):
 
     if method == "base":
         result = get_llm_base(base, model)
-        trace = f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}"
+        trace = result.get("trace", f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}")
         return {**common, 'llm_prediction': result['pred'], 'llm_escalate': result['del'], 'trace': trace}
     elif method == "glm":
         glm_pred_val = row['glm_pred']
         glm_prob_val = row['glm_prob']
         result = get_llm_glm(base, glm_pred_val, glm_prob_val, model)
-        trace = f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}"
+        trace = result.get("trace", f"[PROMPT]\n{result['full_prompt']}\n\n[RESPONSE]\n{result['response']}")
         return {**common, 'llm_prediction': result['pred'], 'llm_escalate': result['del'],
                 'glm_pred': glm_pred_val, 'glm_prob': glm_prob_val, 'trace': trace}
     elif method == "adversarial":
