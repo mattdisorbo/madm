@@ -7,27 +7,16 @@
 #SBATCH -n 1
 #SBATCH -t 04:00:00
 
-set -x  # Enable debugging
-set -e  # Exit on error
-
-echo "Starting job..."
-cd "${WORK}/madm" || exit 1
-echo "Changed to directory: $(pwd)"
-
+cd "${WORK}/madm"
+source .venv/bin/activate
 export PYTHONUNBUFFERED=1
 export HF_HOME=/work1/harangju/harang/.cache/huggingface
 export UV_CACHE_DIR=/work1/harangju/harang/.cache/uv
 export PIP_CACHE_DIR=/work1/harangju/harang/.cache/pip
+export TMPDIR=/work1/harangju/harang/.cache/tmp
+mkdir -p "$UV_CACHE_DIR" "$PIP_CACHE_DIR" "$TMPDIR"
 
-echo "Setting up Python environment..."
-python3 -m venv --clear .venv
-source .venv/bin/activate
+uv pip install --upgrade transformers
+uv pip install --reinstall torch --index-url https://download.pytorch.org/whl/rocm7.1
 
-echo "Installing dependencies..."
-pip install --quiet numpy pandas plotly tqdm transformers datasets scikit-learn matplotlib
-
-echo "Installing ROCm torch for GPU..."
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2
-
-echo "Running script..."
 python scripts/collect_stage2_steering.py
