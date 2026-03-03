@@ -16,8 +16,8 @@ LAYER = 28
 MAX_CTX = 512
 RESERVE = 16
 
-ACCEPTED_CSV = "data/accepted_100k.csv"
-REJECTED_CSV = "data/rejected_100k.csv"
+ACCEPTED_CSV = "data/accepted_10k.csv"
+REJECTED_CSV = "data/rejected_10k.csv"
 OUTPUT_CSV = "results/stage1_adversarial_results.csv"
 
 # ======================== LOAD MODEL ========================
@@ -162,13 +162,13 @@ def parse_loan_decision(text: str):
 def parse_escalation_decision(text: str):
     """Parse implement/escalate decision from text."""
     text_lower = text.lower()
-    m = re.findall(r"\b(implement(?:ed|ing|ation)?|escalat(?:e|ed|ing|ion))\b", text_lower)
+    m = re.findall(r"\b(implement(?:ed|ing|ation)?|escal(?:at(?:e|ed|ing|ion))?)\b", text_lower)
 
     if m:
         last_match = m[-1]
         if last_match.startswith("implement"):
             return "implement"
-        elif last_match.startswith("escalat"):
+        elif last_match.startswith("escal"):
             return "escalate"
 
     return "unknown"
