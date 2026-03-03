@@ -92,11 +92,17 @@ if N_QWEN > 0:
 def llm(prompt, model):
     if model == QWEN_MODEL:
         with qwen_lock:
-            messages = [{"role": "user", "content": prompt}]
-            formatted = qwen_pipe.tokenizer.apply_chat_template(
-                messages, tokenize=False, add_generation_prompt=True,
-                enable_thinking=False,
-            )
+            if "Qwen3.5" in QWEN_MODEL:
+                messages = [{"role": "user", "content": prompt}]
+                formatted = qwen_pipe.tokenizer.apply_chat_template(
+                    messages, tokenize=False, add_generation_prompt=True,
+                    enable_thinking=False,
+                )
+            else:
+                messages = [{"role": "system", "content": "/no_think"}, {"role": "user", "content": prompt}]
+                formatted = qwen_pipe.tokenizer.apply_chat_template(
+                    messages, tokenize=False, add_generation_prompt=True,
+                )
             out = qwen_pipe(formatted, max_new_tokens=2048, return_full_text=False)
         text = out[0]["generated_text"]
         text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
