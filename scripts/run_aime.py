@@ -11,9 +11,9 @@ if len(sys.argv) > 1:
 
 N_SAMPLES_BASE    = 50
 N_SAMPLES_ADVERSARIAL = 50
-N_OAI  = 0
-N_NANO = 0
-N_QWEN = 1
+N_OAI  = int(os.environ.get("N_OAI", 0))
+N_NANO = int(os.environ.get("N_NANO", 0))
+N_QWEN = int(os.environ.get("N_QWEN", 1))
 
 df = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/AIME_Dataset_1983_2024.csv"))
 

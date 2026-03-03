@@ -12,9 +12,9 @@ if len(sys.argv) > 1:
 
 N_SAMPLES_BASE    = 50
 N_SAMPLES_ADVERSARIAL = 50
-N_OAI  = 0
-N_NANO = 0
-N_QWEN = 1
+N_OAI  = int(os.environ.get("N_OAI", 0))
+N_NANO = int(os.environ.get("N_NANO", 0))
+N_QWEN = int(os.environ.get("N_QWEN", 1))
 
 DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../data/WikipediaToxicity/Wikipedia Toxicity_data_data.csv")
 
