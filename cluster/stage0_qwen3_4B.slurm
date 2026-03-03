@@ -16,7 +16,7 @@ export PIP_CACHE_DIR=/work1/harangju/harang/.cache/pip
 export TMPDIR=/work1/harangju/harang/.cache/tmp
 mkdir -p "$UV_CACHE_DIR" "$PIP_CACHE_DIR" "$TMPDIR"
 
-uv pip install --upgrade transformers
+uv pip install --upgrade transformers statsmodels
 uv pip install --reinstall torch --index-url https://download.pytorch.org/whl/rocm7.1
 
 MODEL="Qwen/Qwen3-4B"

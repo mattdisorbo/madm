@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J madm-s0-q3-1.7B
-#SBATCH -o logs/stage0_q3_1.7B.%j.out
-#SBATCH -e logs/stage0_q3_1.7B.%j.err
+#SBATCH -J madm-s0-q3-8B-fix
+#SBATCH -o logs/stage0_q3_8B_fix.%j.out
+#SBATCH -e logs/stage0_q3_8B_fix.%j.err
 #SBATCH -p mi3001x
 #SBATCH -N 1
 #SBATCH -n 1
@@ -19,13 +19,13 @@ mkdir -p "$UV_CACHE_DIR" "$PIP_CACHE_DIR" "$TMPDIR"
 uv pip install --upgrade transformers statsmodels
 uv pip install --reinstall torch --index-url https://download.pytorch.org/whl/rocm7.1
 
-MODEL="Qwen/Qwen3-1.7B"
-echo "=== Running all datasets with $MODEL ==="
+MODEL="Qwen/Qwen3-8B"
+echo "=== Running missing datasets with $MODEL ==="
 
-for script in run_aime run_FEVEROUS run_JFLEG run_LendingClub run_MoralMachine run_MovieLens run_WikipediaToxicity run_HotelBookings run_Uber; do
+for script in run_LendingClub run_MovieLens; do
     echo "--- Starting $script ---"
     python scripts/${script}.py "$MODEL"
     echo "--- Finished $script ---"
 done
 
-echo "=== All datasets complete ==="
+echo "=== Fix complete ==="
