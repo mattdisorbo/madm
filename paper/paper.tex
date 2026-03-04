@@ -95,15 +95,21 @@ The base agent constructs a supporting argument before its final decision;
 the auditor constructs a counter-argument.
 The prompts differ by a single instruction: \emph{support your reasoning}
 versus \emph{critique your reasoning}.
-Despite this minimal difference, three findings emerge.
+Despite this minimal difference, four findings emerge.
 
-First, prediction accuracy is roughly flat across reasoning methods---the
-adversarial pipeline does not help the model guess better (Figure~\ref{fig:main_results}).
-Second, the adversarial auditor dramatically increases escalation rates,
+First, prediction accuracy is roughly flat across all reasoning
+methods---the adversarial pipeline does not help the model guess better
+(Figure~\ref{fig:main_results}).
+Second, the adversarial pipeline dramatically increases escalation rates,
 routing uncertain cases to human review that the base model would have
 handled incorrectly.
 This escalation is what drives the final accuracy improvement.
-Third, activation analysis reveals that critique and support engage
+Third, two control conditions---an agreeable critique oriented toward
+implementation and a multiagent pipeline combining both
+perspectives---produce escalation rates and final accuracy nearly identical
+to the supportive base path, demonstrating that the adversarial framing
+itself, not the mere presence of a critique step, is the active ingredient.
+Fourth, activation analysis reveals that critique and support engage
 geometrically distinct circuits, and a steering vector derived from their
 difference causally shifts decisions at test time.
 
@@ -365,17 +371,32 @@ final decision changes relative to the unsteered baseline.
 
 \subsection{Decision Quality and Escalation}
 
-Figure~\ref{fig:main_results} summarizes performance across all nine
+Figure~\ref{fig:main_results} summarizes performance across all eight
 datasets, aggregated over the four Qwen3 model sizes.
-The left panel shows that prediction accuracy is similar for the base and
-adversarial paths---the critique step does not help the model guess better.
-The dashed line marks the naive (majority class) baseline; both methods
-barely exceed it.
-The center panel reveals the mechanism: the adversarial auditor escalates
-far more aggressively, routing uncertain cases to human review.
-The right panel shows that this escalation drives large gains in final
-accuracy, because cases the model would have gotten wrong are instead
-handled by a human reviewer.
+Prediction accuracy is roughly flat across all four pipelines and barely
+exceeds the naive (majority class) baseline, confirming that the critique
+step does not help the model guess better.
+The center panel reveals the mechanism: the adversarial pipeline escalates
+far more aggressively than all other methods, routing uncertain cases to
+human review.
+This escalation drives large gains in final accuracy, because cases the
+model would have gotten wrong are instead handled by a human reviewer.
+
+The agreeable and multiagent pipelines are particularly informative as
+controls.
+The base pipeline and the agreeable pipeline produce nearly identical
+escalation rates and final accuracy, despite the agreeable pipeline
+including an explicit critique step.
+A critique oriented toward implementation rather than escalation does not
+meaningfully change the model's behavior relative to the supportive base
+path.
+The multiagent pipeline, which receives both an adversarial and an agreeable
+critique, escalates at roughly the same low rate as the agreeable path
+alone, suggesting that the implementation-focused critique dominates when
+both perspectives are present.
+These comparisons isolate the active ingredient: the adversarial framing
+itself, not the mere presence of a second reasoning step, is what drives
+the escalation gains.
 
 \begin{figure}[t]
   \centering
@@ -394,17 +415,22 @@ handled by a human reviewer.
 
 \subsection{LLM Overconfidence}
 
-The base model escalates on only a small fraction of cases, well below the
-rate at which its predictions are incorrect.
-The auditor path recovers a substantial share of this miscalibration,
-redirecting uncertain cases toward human review rather than committing
-to a wrong answer.
+The base, agreeable, and multiagent pipelines all escalate well below the
+rate at which their predictions are incorrect.
+Only the adversarial path recovers a substantial share of this
+miscalibration, redirecting uncertain cases toward human review rather than
+committing to a wrong answer.
+The similarity between the base and agreeable escalation rates reinforces
+the interpretation that the default mode of a language model is supportive
+reasoning: asked to critique for implementation, the model behaves as
+though it were asked to support.
 
-These results illustrate that the primary opportunity for adversarial
-improvement lies in escalation rather than raw prediction skill.
+These results illustrate that the primary opportunity for improvement lies
+in escalation rather than raw prediction skill.
 A model that predicted randomly but escalated perfectly would outperform a
 highly accurate but overconfident model in settings where escalation is
-possible; the auditor moves in that direction without any retraining.
+possible; the adversarial pipeline moves in that direction without any
+retraining.
 
 \subsection{Representational Separation}
 
@@ -474,6 +500,11 @@ reconstruct the kind of reasoning that justified similar decisions in its
 training data than to identify the specific conditions that should trigger
 uncertainty.
 Support is a recall task; critique is a detection task.
+The agreeable control confirms this interpretation: even when explicitly
+asked to critique, a model given an implementation-oriented frame produces
+escalation behavior indistinguishable from the supportive base path.
+The default computational mode of the model is confirmation, and only an
+adversarial frame breaks out of it.
 This asymmetry explains why a minimal instruction change---one word
 distinguishing ``support'' from ``critique''---is sufficient to activate a
 qualitatively different circuit.
