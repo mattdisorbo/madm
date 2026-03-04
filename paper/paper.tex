@@ -12,6 +12,8 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc}
 
 \doublespacing
 
@@ -229,20 +231,95 @@ natural-language scenario.
 \subsection{Reasoning Pipelines}
 
 Each example is formatted as a brief scenario and presented to
-Qwen3 models (1.7B, 4B, 8B, 14B)~\citep{qwen3} under one of two
-multi-step instructions.
+Qwen3 models (1.7B, 4B, 8B, 14B)~\citep{qwen3} under one of four
+multi-step instructions (Figure~\ref{fig:pipelines}).
 
-\emph{Base path (predict-support-evaluate).} The model produces an initial
-accept or reject decision, constructs an argument that supports that
-decision, then issues a final decision.
+\emph{Base.} The model produces an initial prediction, constructs an
+argument that supports that prediction, then issues a final decision.
 
-\emph{Auditor path (predict-critique-evaluate).} The model produces an
-initial decision, constructs a counter-argument against that decision, then
-issues a final decision.
+\emph{Adversarial.} The model produces an initial prediction, then
+constructs a counter-argument against that prediction. The critique
+explicitly asks whether the case should be escalated to human review.
+A final decision follows in light of the critique.
 
-Both paths share the same input and the same three-step structure; only the
-instruction governing the intermediate step differs.
+\emph{Agreeable.} The model produces an initial prediction, then constructs
+a critique focused on implementation rather than escalation.
+The critique asks how to best carry out the predicted decision, reinforcing
+rather than challenging the initial prediction.
+
+\emph{Multiagent.} The model produces an initial prediction, then generates
+two separate critiques: one adversarial (oriented toward escalation) and one
+agreeable (oriented toward implementation). A final decision integrates both
+perspectives.
+
+All four paths share the same input and the same predict-critique-decide
+structure; only the instruction governing the intermediate step differs.
 All generations are capped at 512 tokens to control for length confounds.
+
+\begin{figure}[t]
+  \centering
+  \begin{tikzpicture}[
+    node distance=0.6cm,
+    box/.style={
+      draw, rounded corners=3pt, minimum height=0.55cm,
+      font=\footnotesize, inner sep=4pt, line width=0.4pt
+    },
+    bluebox/.style={box, fill=blue!15, draw=blue!50},
+    redbox/.style={box, fill=red!15, draw=red!50},
+    arr/.style={-{Stealth[length=4pt]}, line width=0.4pt},
+    lbl/.style={font=\footnotesize\bfseries, anchor=east},
+  ]
+  % --- Base ---
+  \node[lbl] (lb) at (0, 0) {Base};
+  \node[box, right=0.4cm of lb] (b1) {Scenario};
+  \node[box, right=of b1] (b2) {Predict};
+  \node[bluebox, right=of b2] (b3) {Support};
+  \node[box, right=of b3] (b4) {Decide};
+  \draw[arr] (b1) -- (b2);
+  \draw[arr] (b2) -- (b3);
+  \draw[arr] (b3) -- (b4);
+
+  % --- Adversarial ---
+  \node[lbl] (la) at (0, -1.1) {Adversarial};
+  \node[box, right=0.4cm of la] (a1) {Scenario};
+  \node[box, right=of a1] (a2) {Predict};
+  \node[redbox, right=of a2] (a3) {Critique: escalation};
+  \node[box, right=of a3] (a4) {Decide};
+  \draw[arr] (a1) -- (a2);
+  \draw[arr] (a2) -- (a3);
+  \draw[arr] (a3) -- (a4);
+
+  % --- Agreeable ---
+  \node[lbl] (lg) at (0, -2.2) {Agreeable};
+  \node[box, right=0.4cm of lg] (g1) {Scenario};
+  \node[box, right=of g1] (g2) {Predict};
+  \node[bluebox, right=of g2] (g3) {Critique: implementation};
+  \node[box, right=of g3] (g4) {Decide};
+  \draw[arr] (g1) -- (g2);
+  \draw[arr] (g2) -- (g3);
+  \draw[arr] (g3) -- (g4);
+
+  % --- Multiagent ---
+  \node[lbl] (lm) at (0, -3.55) {Multiagent};
+  \node[box, right=0.4cm of lm] (m1) {Scenario};
+  \node[box, right=of m1] (m2) {Predict};
+  \node[redbox, right=of m2, yshift=0.4cm] (m3a) {Critique: escalation};
+  \node[bluebox, right=of m2, yshift=-0.4cm] (m3b) {Critique: implementation};
+  \node[box, right=2.2cm of m3a, yshift=-0.4cm] (m4) {Decide};
+  \draw[arr] (m1) -- (m2);
+  \draw[arr] (m2) -- (m3a);
+  \draw[arr] (m2) -- (m3b);
+  \draw[arr] (m3a) -- (m4);
+  \draw[arr] (m3b) -- (m4);
+  \end{tikzpicture}
+  \caption{The four reasoning pipelines. All share a predict-critique-decide
+           structure. The middle step varies: \textcolor{blue!70}{blue}
+           denotes supportive or implementation-focused reasoning;
+           \textcolor{red!70}{red} denotes adversarial, escalation-focused
+           reasoning. The multiagent path generates both critiques in
+           parallel before a final decision.}
+  \label{fig:pipelines}
+\end{figure}
 
 \subsection{Escalation}
 
@@ -304,8 +381,11 @@ handled by a human reviewer.
   \centering
   \includegraphics[width=\linewidth]{figures/fig_main.pdf}
   \caption{Prediction accuracy, escalation rate, and final accuracy for the
-           base and adversarial reasoning paths, aggregated across nine
-           datasets and four Qwen3 models (1.7B, 4B, 8B, 14B).
+           four reasoning pipelines, aggregated across eight datasets and
+           four Qwen3 models (1.7B, 4B, 8B, 14B).
+           Prediction accuracy is flat across methods, but the adversarial
+           pipeline escalates far more aggressively, driving the highest
+           final accuracy.
            Bar heights are row-weighted means; error bars show $\pm 1$
            standard error.
            The dashed line marks naive (majority class) accuracy.}
