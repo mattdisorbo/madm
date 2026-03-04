@@ -135,9 +135,11 @@ def get_adversarial_chain(scenario):
 
 # ======================== SUPPRESS <think> ========================
 
-# Find token IDs to suppress
-think_token_ids = tokenizer.encode("<think>", add_special_tokens=False)
-print(f"Suppressing <think> token IDs: {think_token_ids}")
+# Find token IDs to suppress (both <think> and </think>)
+think_token_ids = set(tokenizer.encode("<think>", add_special_tokens=False) +
+                      tokenizer.encode("</think>", add_special_tokens=False) +
+                      tokenizer.encode("<|im_end|>", add_special_tokens=False))
+print(f"Suppressing token IDs: {think_token_ids}")
 
 
 def get_decision_from_logits(logits):
