@@ -9,9 +9,9 @@ QWEN_MODEL     = "Qwen/Qwen3.5-35B-A3B"
 if len(sys.argv) > 1:
     QWEN_MODEL = sys.argv[1]
 
-N_SAMPLES_BASE    = 50
-N_SAMPLES_RF = 50
-N_SAMPLES_ADVERSARIAL = 50
+N_SAMPLES_BASE    = int(os.environ.get("N_SAMPLES_BASE", 50))
+N_SAMPLES_RF = int(os.environ.get("N_SAMPLES_ADVERSARIAL", 50))
+N_SAMPLES_ADVERSARIAL = int(os.environ.get("N_SAMPLES_ADVERSARIAL", 50))
 N_OAI  = int(os.environ.get("N_OAI", 0))
 N_NANO = int(os.environ.get("N_NANO", 0))
 N_QWEN = int(os.environ.get("N_QWEN", 1))
