@@ -15,6 +15,8 @@ if len(sys.argv) > 1:
 N_SAMPLES_BASE    = int(os.environ.get("N_SAMPLES_BASE", 50))
 N_SAMPLES_OLS = int(os.environ.get("N_SAMPLES_ADVERSARIAL", 50))
 N_SAMPLES_ADVERSARIAL = int(os.environ.get("N_SAMPLES_ADVERSARIAL", 50))
+N_SAMPLES_AGREEABLE = int(os.environ.get("N_SAMPLES_AGREEABLE", 50))
+N_SAMPLES_MULTIAGENT = int(os.environ.get("N_SAMPLES_MULTIAGENT", 50))
 N_OAI  = int(os.environ.get("N_OAI", 0))
 N_NANO = int(os.environ.get("N_NANO", 0))
 N_QWEN = int(os.environ.get("N_QWEN", 1))
@@ -239,6 +241,77 @@ def get_sequential_inference(base_prompt, model):
     except Exception as e:
         return {"full_thought": str(e), "pred": None, "critique": None, "decision": None, "del": None}
 
+def get_agreeable_inference(base_prompt, model):
+    try:
+        thought = llm(
+            f"{base_prompt}\n\n"
+            "TASK: Predict which movie Person 1 would rate higher.\n"
+            "Explain your reasoning in 1 sentence. Then conclude with exactly:\n"
+            "'PREDICTION: 1' (first movie) or 'PREDICTION: 2' (second movie).",
+            model
+        )
+        preds = re.findall(r'PREDICTION:\s*([12])', thought)
+        pred = int(preds[-1]) if preds else 1
+
+        critique = llm(
+            f"SCENARIO:\n{base_prompt}\n\nPROPOSED LOGIC:\n{thought}\n\n"
+            "TASK: Give one reason why this prediction should be implemented automatically instead of being escalated to Person 1.",
+            model
+        )
+
+        decision_prompt = (
+            f"SCENARIO:\n{base_prompt}\n\nPREDICTION & REASONING:\n{thought}\n\n"
+            f"CRITIQUE:\n{critique}\n\n"
+            "TASK: Respond with a digit ONLY.\n"
+            "Output 0 to implement your prediction, or 1 to escalate to Person 1.\n"
+            "A decision is correct if it matches the movie Person 1 would rate higher."
+        )
+        decision = llm(decision_prompt, model)
+        del_match = re.search(r'[01]', decision.strip())
+        final_del = int(del_match.group()) if del_match else 1
+        return {"full_thought": thought, "pred": pred, "critique": critique, "decision_prompt": decision_prompt, "decision": decision, "del": final_del}
+    except Exception as e:
+        return {"full_thought": str(e), "pred": None, "critique": None, "decision": None, "del": None}
+
+def get_multiagent_inference(base_prompt, model):
+    try:
+        thought = llm(
+            f"{base_prompt}\n\n"
+            "TASK: Predict which movie Person 1 would rate higher.\n"
+            "Explain your reasoning in 1 sentence. Then conclude with exactly:\n"
+            "'PREDICTION: 1' (first movie) or 'PREDICTION: 2' (second movie).",
+            model
+        )
+        preds = re.findall(r'PREDICTION:\s*([12])', thought)
+        pred = int(preds[-1]) if preds else 1
+
+        critique_escalate = llm(
+            f"SCENARIO:\n{base_prompt}\n\nPROPOSED LOGIC:\n{thought}\n\n"
+            "TASK: Give one reason why this decision should be escalated to Person 1 instead of being implemented automatically.",
+            model
+        )
+
+        critique_implement = llm(
+            f"SCENARIO:\n{base_prompt}\n\nPROPOSED LOGIC:\n{thought}\n\n"
+            "TASK: Give one reason why this prediction should be implemented automatically instead of being escalated to Person 1.",
+            model
+        )
+
+        decision_prompt = (
+            f"SCENARIO:\n{base_prompt}\n\nPREDICTION & REASONING:\n{thought}\n\n"
+            f"CRITIQUE (pro-escalation):\n{critique_escalate}\n\n"
+            f"CRITIQUE (pro-implementation):\n{critique_implement}\n\n"
+            "TASK: Respond with a digit ONLY.\n"
+            "Output 0 to implement your prediction, or 1 to escalate to Person 1.\n"
+            "A decision is correct if it matches the movie Person 1 would rate higher."
+        )
+        decision = llm(decision_prompt, model)
+        del_match = re.search(r'[01]', decision.strip())
+        final_del = int(del_match.group()) if del_match else 1
+        return {"full_thought": thought, "pred": pred, "critique_escalate": critique_escalate, "critique_implement": critique_implement, "decision_prompt": decision_prompt, "decision": decision, "del": final_del}
+    except Exception as e:
+        return {"full_thought": str(e), "pred": None, "critique_escalate": None, "critique_implement": None, "decision": None, "del": None}
+
 def call_llm(row_idx, method, model):
     base, answer_key, pred_key = create_prompt_base(row_idx)
     if base is None:
@@ -275,6 +348,20 @@ def call_llm(row_idx, method, model):
                  f"[CRITIQUE]\n{result['critique']}\n\n[DECISION PROMPT]\n{result['decision_prompt']}\n\n[DECISION]\n{result['decision']}")
         return {**common, 'llm_prediction': result['pred'], 'llm_escalate': result['del'],
                 'llm_full_thought': result['full_thought'], 'llm_critique': result['critique'], 'trace': trace}
+    elif method == "agreeable":
+        result = get_agreeable_inference(base, model)
+        trace = (f"[PROMPT]\n{base}\n\n[THOUGHT]\n{result['full_thought']}\n\n"
+                 f"[CRITIQUE]\n{result['critique']}\n\n[DECISION PROMPT]\n{result['decision_prompt']}\n\n[DECISION]\n{result['decision']}")
+        return {**common, 'llm_prediction': result['pred'], 'llm_escalate': result['del'],
+                'llm_full_thought': result['full_thought'], 'llm_critique': result['critique'], 'trace': trace}
+    elif method == "multiagent":
+        result = get_multiagent_inference(base, model)
+        trace = (f"[PROMPT]\n{base}\n\n[THOUGHT]\n{result['full_thought']}\n\n"
+                 f"[CRITIQUE ESCALATE]\n{result['critique_escalate']}\n\n[CRITIQUE IMPLEMENT]\n{result['critique_implement']}\n\n"
+                 f"[DECISION PROMPT]\n{result['decision_prompt']}\n\n[DECISION]\n{result['decision']}")
+        return {**common, 'llm_prediction': result['pred'], 'llm_escalate': result['del'],
+                'llm_full_thought': result['full_thought'], 'llm_critique_escalate': result['critique_escalate'],
+                'llm_critique_implement': result['critique_implement'], 'trace': trace}
 
 # --- Output ---
 local_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../results/MovieLens")
@@ -286,7 +373,7 @@ def get_path(method, model):
 df_existing = {}
 for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN)]:
     if n > 0:
-        for method in ["base", "ols", "adversarial"]:
+        for method in ["base", "ols", "adversarial", "agreeable", "multiagent"]:
             path = get_path(method, model)
             try:
                 df_existing[(method, model)] = pd.read_csv(path)
@@ -297,7 +384,7 @@ test_indices = df.loc[df['split'] == 'test'].index.tolist()
 
 results = []
 completed = 0
-total = (N_OAI + N_NANO + N_QWEN) * (N_SAMPLES_BASE + N_SAMPLES_OLS + N_SAMPLES_ADVERSARIAL)
+total = (N_OAI + N_NANO + N_QWEN) * (N_SAMPLES_BASE + N_SAMPLES_OLS + N_SAMPLES_ADVERSARIAL + N_SAMPLES_AGREEABLE + N_SAMPLES_MULTIAGENT)
 save_lock = threading.Lock()
 
 def save_progress():
@@ -325,13 +412,13 @@ def call_llm_tracked(row_idx, method, model):
 jobs = []
 for model, n in [(OAI_MODEL, N_OAI), (OAI_MODEL_NANO, N_NANO), (QWEN_MODEL, N_QWEN)]:
     if n > 0:
-        for method, n_samples in [("base", N_SAMPLES_BASE), ("ols", N_SAMPLES_OLS), ("adversarial", N_SAMPLES_ADVERSARIAL)]:
+        for method, n_samples in [("base", N_SAMPLES_BASE), ("ols", N_SAMPLES_OLS), ("adversarial", N_SAMPLES_ADVERSARIAL), ("agreeable", N_SAMPLES_AGREEABLE), ("multiagent", N_SAMPLES_MULTIAGENT)]:
             if n_samples > 0:
                 sampled = random.sample(test_indices, n * n_samples)
                 for idx in sampled:
                     jobs.append((idx, method, model))
 
-print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_ADVERSARIAL}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_ADVERSARIAL}) | Qwen {N_QWEN}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_ADVERSARIAL})", flush=True)
+print(f"Starting {total} jobs | OAI {N_OAI}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_ADVERSARIAL}, ag={N_SAMPLES_AGREEABLE}, m={N_SAMPLES_MULTIAGENT}) | Nano {N_NANO}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_ADVERSARIAL}, ag={N_SAMPLES_AGREEABLE}, m={N_SAMPLES_MULTIAGENT}) | Qwen {N_QWEN}x(b={N_SAMPLES_BASE}, o={N_SAMPLES_OLS}, a={N_SAMPLES_ADVERSARIAL}, ag={N_SAMPLES_AGREEABLE}, m={N_SAMPLES_MULTIAGENT})", flush=True)
 with ThreadPoolExecutor(max_workers=5) as executor:
     futures = [executor.submit(call_llm_tracked, idx, method, model) for idx, method, model in jobs]
     for f in as_completed(futures):
