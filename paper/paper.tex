@@ -23,8 +23,7 @@
 }
 
 % -----------------------------------------------------------------------
-\title{Adversarial Reasoning Improves Language Model Decisions\\
-       through Distinct Neural Circuits}
+\title{Adversarial Reasoning Improves Multi-Agent Decision-Making}
 
 \author[1]{Author One}
 \author[1]{Author Two}
@@ -38,18 +37,19 @@
 \maketitle
 
 \begin{abstract}
-Language models deployed in high-stakes settings tend to be overconfident:
+Large language models (LLMs) deployed in high-stakes settings tend to be overconfident:
 they commit to decisions even when their predictions are poor, because their
 training encourages coherent support for an answer rather than valid
 critique of it.
 We study whether a structured adversarial pipeline---predict, critique,
 evaluate---can correct this tendency without providing the model any new
 information.
-In a consumer loan approval task, the adversarial auditor reliably improves
-decision quality over a single-agent base that constructs supporting
-arguments.
-The gains arise primarily from better-calibrated delegation, as the auditor
-surfaces uncertainty that the base model suppresses.
+Across nine datasets spanning loan approval, fact-checking, content
+moderation, and mathematical reasoning, the adversarial auditor reliably
+improves final decision quality over a single-agent baseline.
+The gains arise not from better predictions but from better-calibrated
+escalation: the auditor surfaces uncertainty that the base model suppresses,
+routing uncertain cases to human review.
 Capturing hidden-state activations from an intermediate layer of Qwen3-4B,
 we find that the auditor and base paths occupy geometrically distinct regions
 of the representation space, despite nearly identical prompts.
@@ -61,13 +61,13 @@ probed.
 
 \section{Introduction}
 
-Large language models are increasingly asked to make consequential
-judgments---approving credit, screening candidates, triaging medical
-requests---yet they exhibit a systematic failure mode that is distinct
-from ordinary inaccuracy.
-Even when a model's prediction is wrong, it rarely flags uncertainty or
-defers to a human reviewer.
-Calibration research documents this overconfidence
+Large language models can process decisions orders of magnitude faster than
+humans, but there is often a large gap between their accuracy and the
+accuracy that high-stakes settings require.
+When that gap exists, the right response is not to decide faster but to
+escalate: to flag uncertainty and route the case to a human reviewer.
+LLMs are bad at this.
+Calibration research documents their overconfidence
 broadly~\citep{kadavath2022language,xiong2024can}, but the underlying
 cause is underappreciated: the pretraining objective rewards producing
 coherent, well-supported answers, not identifying the conditions under
@@ -81,25 +81,26 @@ Rather than prompting a single model to decide, we introduce an adversarial
 auditor that sees the initial decision and is asked to argue against it
 before a final verdict is produced.
 The pipeline has three steps: (1) the base agent predicts, (2) the auditor
-critiques, and (3) the base agent evaluates in light of the critique.
+critiques, and (3) the base agent decides whether to implement or escalate
+in light of the critique.
 Crucially, no new information enters the system at any step; any performance
 gain must come from reorganizing the model's existing computation.
 
-We study this setup on consumer loan approval, a domain with ground-truth
-labels, socially significant stakes, and a published dataset~\citep{lending_data}.
+We evaluate this setup across nine datasets spanning loan approval,
+fact-checking, content moderation, moral reasoning, and
+mathematics~(Section~\ref{sec:data}).
 The base agent constructs a supporting argument before its final decision;
 the auditor constructs a counter-argument.
 The prompts differ by a single instruction: \emph{support your reasoning}
 versus \emph{critique your reasoning}.
 Despite this minimal difference, three findings emerge.
 
-First, the adversarial auditor improves decision quality over the base agent
-without increasing the volume of cases delegated, suggesting that the gains
-come from better decisions on the cases the model does handle.
-Second, LLMs are poorly calibrated in the base condition: they rarely
-delegate even on inputs they get wrong.
-The auditor recovers much of the available headroom by surfacing uncertainty
-that supportive reasoning suppresses.
+First, prediction accuracy is roughly flat across reasoning methods---the
+adversarial pipeline does not help the model guess better (Figure~\ref{fig:main_results}).
+Second, the adversarial auditor dramatically increases escalation rates,
+routing uncertain cases to human review that the base model would have
+handled incorrectly.
+This escalation is what drives the final accuracy improvement.
 Third, activation analysis reveals that critique and support engage
 geometrically distinct circuits, and a steering vector derived from their
 difference causally shifts decisions at test time.
@@ -227,8 +228,9 @@ natural-language scenario.
 
 \subsection{Reasoning Pipelines}
 
-Each application is formatted as a brief scenario and presented to
-Qwen3-4B~\citep{qwen3} under one of two multi-step instructions.
+Each example is formatted as a brief scenario and presented to
+Qwen3 models (1.7B, 4B, 8B, 14B)~\citep{qwen3} under one of two
+multi-step instructions.
 
 \emph{Base path (predict-support-evaluate).} The model produces an initial
 accept or reject decision, constructs an argument that supports that
@@ -242,13 +244,14 @@ Both paths share the same input and the same three-step structure; only the
 instruction governing the intermediate step differs.
 All generations are capped at 512 tokens to control for length confounds.
 
-\subsection{Delegation}
+\subsection{Escalation}
 
-In addition to accept and reject, models may output a \emph{delegate}
-response, indicating that the case is too uncertain to decide and should be
-referred for human review.
-We measure delegation rate as the fraction of inputs that receive this
-response, and decision quality as accuracy on the non-delegated subset.
+In addition to predicting an outcome, models decide whether to
+\emph{implement} their prediction or \emph{escalate} it to a human for
+final review.
+We measure escalation rate as the fraction of inputs routed to human review,
+and final accuracy as accuracy on implemented cases plus 100\% credit for
+escalated cases (since a human reviewer would decide correctly).
 
 \subsection{Activation Capture}
 
@@ -283,52 +286,45 @@ final decision changes relative to the unsteered baseline.
 
 \section{Results}
 
-\subsection{Decision Quality and Delegation}
+\subsection{Decision Quality and Escalation}
 
-Figures~\ref{fig:accuracy} and~\ref{fig:delegation} summarize performance
-across both reasoning paths and all models.
-The auditor path achieves higher decision quality than the base path despite
-operating on identical inputs.
-Notably, the two paths produce comparable delegation rates, indicating that
-the auditor's gains reflect improved decisions on the cases it does handle
-rather than a more aggressive policy of deferral.
+Figure~\ref{fig:main_results} summarizes performance across all nine
+datasets, aggregated over the four Qwen3 model sizes.
+The left panel shows that prediction accuracy is similar for the base and
+adversarial paths---the critique step does not help the model guess better.
+The center panel reveals the mechanism: the adversarial auditor escalates
+far more aggressively, routing uncertain cases to human review.
+The right panel shows that this escalation drives large gains in final
+accuracy, because cases the model would have gotten wrong are instead
+handled by a human reviewer.
+Stars in the left panel mark the naive (majority class) baseline; on
+several datasets the models barely exceed it, underscoring why escalation
+is critical.
 
 \begin{figure}[t]
   \centering
-  \begin{subfigure}[b]{0.48\linewidth}
-    \includegraphics[width=\linewidth]{figures/fig_accuracy.pdf}
-    \caption{Final accuracy by model and reasoning method.
-             Error bars show $\pm 1$ standard error across datasets.}
-    \label{fig:accuracy}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[b]{0.48\linewidth}
-    \includegraphics[width=\linewidth]{figures/fig_delegation.pdf}
-    \caption{Delegation rate by model and reasoning method.
-             Error bars show $\pm 1$ standard error across datasets.}
-    \label{fig:delegation}
-  \end{subfigure}
-  \caption{Performance of the base and auditor reasoning paths across seven
-           models. Bar heights are row-weighted means; error bars reflect
-           variability across evaluation datasets.}
+  \includegraphics[width=\linewidth]{figures/fig_main.pdf}
+  \caption{Prediction accuracy, escalation rate, and final accuracy for the
+           base and adversarial reasoning paths across nine datasets.
+           Bar heights are row-weighted means across four Qwen3 models
+           (1.7B, 4B, 8B, 14B); error bars show $\pm 1$ standard error
+           across models.
+           Stars mark naive (majority class) accuracy.}
   \label{fig:main_results}
 \end{figure}
 
 \subsection{LLM Overconfidence}
 
-The base model delegates on only [X]\% of cases, well below the
-[Y]\% rate at which its predictions are incorrect.
-Among inputs where the base model is wrong, it delegates on fewer than
-[Z]\% of them, confirming that its confidence does not track its accuracy.
-The auditor path recovers a substantial share of this miscalibration:
-among base-model errors, the auditor delegates on [W]\% of inputs,
+The base model escalates on only a small fraction of cases, well below the
+rate at which its predictions are incorrect.
+The auditor path recovers a substantial share of this miscalibration,
 redirecting uncertain cases toward human review rather than committing
 to a wrong answer.
 
-These figures illustrate that the primary opportunity for adversarial
-improvement lies in calibration rather than raw prediction skill.
-A model that predicted randomly but delegated perfectly would outperform a
-highly accurate but overconfident model in settings where delegation is
+These results illustrate that the primary opportunity for adversarial
+improvement lies in escalation rather than raw prediction skill.
+A model that predicted randomly but escalated perfectly would outperform a
+highly accurate but overconfident model in settings where escalation is
 possible; the auditor moves in that direction without any retraining.
 
 \subsection{Representational Separation}
@@ -346,7 +342,7 @@ difference reflects stance, not verdict.
   % \includegraphics[width=0.75\linewidth]{figures/pca.pdf}
   \caption{PCA projection of layer-18 activations for 200 loan applications.
   Each point is one application; shape encodes the final decision
-  (accept, reject, delegate) and color encodes the reasoning path
+  (accept, reject, escalate) and color encodes the reasoning path
   (base vs.\ auditor).
   The two paths separate along PC1 despite receiving identical inputs.}
   \label{fig:pca}
@@ -360,7 +356,7 @@ Lower $L_1$ density under the auditor condition suggests that critical
 reasoning relies on a smaller set of features, consistent with a more
 selective evaluation of input evidence.
 This sparsity difference persists when conditioning on decision outcome,
-ruling out the possibility that it is a byproduct of the auditor delegating
+ruling out the possibility that it is a byproduct of the auditor escalating
 more difficult (and thus activation-dense) cases.
 
 \begin{table}[t]
@@ -391,13 +387,13 @@ distinguishes adversarial from supportive reasoning.
 
 \section{Discussion}
 
-\paragraph{Why does the base model fail to delegate?}
+\paragraph{Why does the base model fail to escalate?}
 The pretraining objective on text corpora rewards coherent, well-supported
 output.
-A model that encounters a loan application will find it easier to
-reconstruct the kind of reasoning that approved or denied similar
-applications in its training data than to identify the specific
-conditions that should trigger uncertainty.
+A model that encounters a decision scenario will find it easier to
+reconstruct the kind of reasoning that justified similar decisions in its
+training data than to identify the specific conditions that should trigger
+uncertainty.
 Support is a recall task; critique is a detection task.
 This asymmetry explains why a minimal instruction change---one word
 distinguishing ``support'' from ``critique''---is sufficient to activate a
@@ -425,15 +421,14 @@ inspection, since it operates on representations that precede any generated
 text.
 
 \paragraph{Limitations.}
-These experiments use a single model (Qwen3-4B) and a single domain.
 The steering evaluation uses a small held-out set of 10 cases, which is
 insufficient to characterize the full reliability and specificity of the
 identified direction.
 Layer 18 was chosen based on exploratory analysis; a systematic sweep could
 identify layers where stance information is more concentrated.
-Future work should examine transfer across domains, interaction with known
-fairness-relevant input features, and behavior under adversarial prompts
-designed to confound the critique circuit.
+Future work should examine interaction with known fairness-relevant input
+features and behavior under adversarial prompts designed to confound the
+critique circuit.
 
 \section{Conclusion}
 
@@ -441,7 +436,7 @@ A single-word difference in a prompt is enough to activate a distinct neural
 circuit in a language model and measurably improve its decision quality.
 The mechanism is calibration: adversarial critique surfaces uncertainty that
 supportive reasoning suppresses, redirecting confident errors toward
-appropriate delegation.
+appropriate escalation.
 The circuit difference is geometrically organized in activation space,
 sparse under dictionary learning, and causally sufficient---a steering vector
 derived from it shifts decisions without any prompt change.
