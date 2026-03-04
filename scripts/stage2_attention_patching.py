@@ -139,20 +139,24 @@ def get_adversarial_chain(scenario):
     return initial_text, critique_text, final_prompt
 
 
-# ======================== SUPPRESS <think> ========================
+# ======================== ALLOWED TOKENS ========================
 
-# Find all special token IDs to suppress
-special_ids = set(tokenizer.all_special_ids)
-for tok_str in ["<think>", "</think>", "<|im_end|>", "<|im_start|>", "<|endoftext|>"]:
-    special_ids.update(tokenizer.encode(tok_str, add_special_tokens=False))
-print(f"Suppressing {len(special_ids)} special token IDs")
+# Allowlist approach: only permit tokens that could start "implement", "escalate", "0", or "1"
+allowed_ids = set()
+for word in ["implement", "Implement", "IMPLEMENT", "escalate", "Escalate", "ESCALATE",
+             "escal", "Escal", "ESCAL", "imp", "Imp", "IMP", "0", "1"]:
+    ids = tokenizer.encode(word, add_special_tokens=False)
+    if ids:
+        allowed_ids.add(ids[0])
+print(f"Allowed {len(allowed_ids)} token IDs for decision")
 
 
 def get_decision_from_logits(logits):
-    """Get the next token decision, suppressing all special tokens."""
-    for tid in special_ids:
-        logits[tid] = -float('inf')
-    next_token = logits.argmax().item()
+    """Get the next token decision, only allowing decision-relevant tokens."""
+    mask = torch.full_like(logits, -float('inf'))
+    for tid in allowed_ids:
+        mask[tid] = logits[tid]
+    next_token = mask.argmax().item()
     next_text = tokenizer.decode([next_token])
     return next_text
 
