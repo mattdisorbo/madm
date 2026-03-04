@@ -292,24 +292,23 @@ Figure~\ref{fig:main_results} summarizes performance across all nine
 datasets, aggregated over the four Qwen3 model sizes.
 The left panel shows that prediction accuracy is similar for the base and
 adversarial paths---the critique step does not help the model guess better.
+The dashed line marks the naive (majority class) baseline; both methods
+barely exceed it.
 The center panel reveals the mechanism: the adversarial auditor escalates
 far more aggressively, routing uncertain cases to human review.
 The right panel shows that this escalation drives large gains in final
 accuracy, because cases the model would have gotten wrong are instead
 handled by a human reviewer.
-Stars in the left panel mark the naive (majority class) baseline; on
-several datasets the models barely exceed it, underscoring why escalation
-is critical.
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=\linewidth]{figures/fig_main.pdf}
   \caption{Prediction accuracy, escalation rate, and final accuracy for the
-           base and adversarial reasoning paths across nine datasets.
-           Bar heights are row-weighted means across four Qwen3 models
-           (1.7B, 4B, 8B, 14B); error bars show $\pm 1$ standard error
-           across models.
-           Stars mark naive (majority class) accuracy.}
+           base and adversarial reasoning paths, aggregated across nine
+           datasets and four Qwen3 models (1.7B, 4B, 8B, 14B).
+           Bar heights are row-weighted means; error bars show $\pm 1$
+           standard error.
+           The dashed line marks naive (majority class) accuracy.}
   \label{fig:main_results}
 \end{figure}
 

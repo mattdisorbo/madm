@@ -1,4 +1,7 @@
-"""Generate the main 3-panel figure: prediction accuracy, escalation rate, final accuracy."""
+"""Generate the main 3-panel figure: prediction accuracy, escalation rate, final accuracy.
+
+Aggregated across all datasets and all Qwen3 models into a single bar per method.
+"""
 import json
 import numpy as np
 import pandas as pd
@@ -22,80 +25,62 @@ data = json.loads(r'''
 
 df = pd.DataFrame(data)
 
-# Aggregate across models: row-weighted mean and SE per (dataset, method)
-agg = []
-for (ds, mth), g in df.groupby(["dataset", "method"]):
-    total_n = g["n"].sum()
-    for metric in ["pred_acc", "esc_rate", "final_acc"]:
+# Aggregate across ALL datasets and models: row-weighted grand mean per method
+# SE comes from treating each (dataset, model) combo as an observation
+metrics = ["pred_acc", "esc_rate", "final_acc"]
+methods = ["base", "adversarial"]
+
+agg = {}
+for mth in methods:
+    g = df[df["method"] == mth]
+    agg[mth] = {}
+    for metric in metrics:
         wmean = np.average(g[metric], weights=g["n"])
-        # SE: treat each model's estimate as an observation, weight by n
-        # Use weighted variance / effective n
+        # SE across (dataset, model) observations, weighted by n
         wvar = np.average((g[metric] - wmean)**2, weights=g["n"])
         k = len(g)
         se = np.sqrt(wvar / k) if k > 1 else 0
-        agg.append({"dataset": ds, "method": mth, "metric": metric, "mean": wmean, "se": se, "n": total_n})
-    # Naive acc (same across methods for a dataset, use weighted mean)
-    naive = np.average(g["naive_acc"], weights=g["n"])
-    agg.append({"dataset": ds, "method": mth, "metric": "naive_acc", "mean": naive, "se": 0, "n": total_n})
+        agg[mth][metric] = (wmean, se)
 
-agg = pd.DataFrame(agg)
-
-# Dataset display order and labels
-ds_order = ["AIME", "FEVEROUS", "LendingClub", "MoralMachine", "MovieLens", "HotelBookings", "Uber", "WikipediaToxicity"]
-ds_labels = ["AIME", "FEVEROUS", "Lending\nClub", "Moral\nMachine", "Movie\nLens", "Hotel\nBookings", "Uber", "Wikipedia\nToxicity"]
+# Naive accuracy (grand mean across all rows, method-independent)
+naive_mean = np.average(df["naive_acc"], weights=df["n"])
 
 # Colors
 c_base = "#4878CF"
 c_adv = "#D65F5F"
 
-fig, axes = plt.subplots(1, 3, figsize=(10, 3.2), sharey=False)
+fig, axes = plt.subplots(1, 3, figsize=(7, 2.8), sharey=False)
 panels = [
     ("pred_acc", "Prediction Accuracy", True),
     ("esc_rate", "Escalation Rate", False),
     ("final_acc", "Final Accuracy", False),
 ]
 
-x = np.arange(len(ds_order))
+x = np.array([0])
 w = 0.35
 
 for ax, (metric, title, show_naive) in zip(axes, panels):
-    for i, (mth, color, label, offset) in enumerate([
+    for mth, color, label, offset in [
         ("base", c_base, "Base", -w/2),
         ("adversarial", c_adv, "Adversarial", w/2),
-    ]):
-        means = []
-        ses = []
-        for ds in ds_order:
-            row = agg[(agg["dataset"] == ds) & (agg["method"] == mth) & (agg["metric"] == metric)]
-            if len(row):
-                means.append(row["mean"].values[0])
-                ses.append(row["se"].values[0])
-            else:
-                means.append(0)
-                ses.append(0)
-        ax.bar(x + offset, means, w, yerr=ses, color=color, label=label,
-               capsize=2, edgecolor="white", linewidth=0.5)
+    ]:
+        mean, se = agg[mth][metric]
+        ax.bar(x + offset, [mean], w, yerr=[se], color=color, label=label,
+               capsize=3, edgecolor="white", linewidth=0.5)
 
     if show_naive:
-        # Add stars for naive accuracy
-        for j, ds in enumerate(ds_order):
-            row = agg[(agg["dataset"] == ds) & (agg["method"] == "base") & (agg["metric"] == "naive_acc")]
-            if len(row):
-                naive_val = row["mean"].values[0]
-                ax.plot(j, naive_val, marker="*", color="black", markersize=8, zorder=5,
-                        markeredgewidth=0.5, markeredgecolor="black")
-        # Add to legend
-        ax.plot([], [], marker="*", color="black", markersize=8, linestyle="none", label="Naive (majority class)")
+        ax.axhline(naive_mean, color="black", linestyle="--", linewidth=0.8, zorder=0)
+        ax.text(0.5, naive_mean + 0.02, f"Naive ({naive_mean:.2f})", ha="center",
+                fontsize=7, color="black", transform=ax.get_yaxis_transform())
 
     ax.set_title(title)
-    ax.set_xticks(x)
-    ax.set_xticklabels(ds_labels, fontsize=7, linespacing=0.85)
+    ax.set_xticks([])
     ax.set_ylim(0, 1.08)
     ax.set_ylabel("")
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
 
-axes[0].legend(loc="upper right", framealpha=0.9, fontsize=7)
+axes[0].legend(loc="upper left", framealpha=0.9, fontsize=7)
 fig.tight_layout()
 fig.savefig("paper/figures/fig_main.pdf", bbox_inches="tight")
 print("Saved paper/figures/fig_main.pdf")
