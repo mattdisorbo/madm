@@ -133,6 +133,22 @@ def get_adversarial_chain(scenario):
     return initial_text, critique_text, final_prompt
 
 
+# ======================== SUPPRESS <think> ========================
+
+# Find token IDs to suppress
+think_token_ids = tokenizer.encode("<think>", add_special_tokens=False)
+print(f"Suppressing <think> token IDs: {think_token_ids}")
+
+
+def get_decision_from_logits(logits):
+    """Get the next token decision, suppressing <think> tokens."""
+    for tid in think_token_ids:
+        logits[tid] = -float('inf')
+    next_token = logits.argmax().item()
+    next_text = tokenizer.decode([next_token])
+    return next_text
+
+
 # ======================== ACTIVATION CACHING ========================
 
 def get_all_attention_outputs(prompt):
@@ -147,7 +163,6 @@ def get_all_attention_outputs(prompt):
 
     for layer_idx in range(n_layers):
         def hook(module, input, output, idx=layer_idx):
-            # Attention output is the first element of the tuple
             if isinstance(output, tuple):
                 cache[idx] = output[0].detach().clone()
             else:
@@ -161,10 +176,8 @@ def get_all_attention_outputs(prompt):
     for h in handles:
         h.remove()
 
-    # Get the predicted next token
-    logits = outputs.logits[0, -1]
-    next_token = logits.argmax().item()
-    next_text = tokenizer.decode([next_token])
+    logits = outputs.logits[0, -1].clone()
+    next_text = get_decision_from_logits(logits)
 
     return cache, toks, next_text
 
@@ -190,10 +203,8 @@ def forward_with_patch(toks, patch_cache, patch_layer):
 
     handle.remove()
 
-    logits = outputs.logits[0, -1]
-    next_token = logits.argmax().item()
-    next_text = tokenizer.decode([next_token])
-    return next_text
+    logits = outputs.logits[0, -1].clone()
+    return get_decision_from_logits(logits)
 
 
 def forward_with_steering(toks, steering_vec, layer, coeff):
@@ -215,10 +226,8 @@ def forward_with_steering(toks, steering_vec, layer, coeff):
 
     handle.remove()
 
-    logits = outputs.logits[0, -1]
-    next_token = logits.argmax().item()
-    next_text = tokenizer.decode([next_token])
-    return next_text
+    logits = outputs.logits[0, -1].clone()
+    return get_decision_from_logits(logits)
 
 
 # ======================== PHASE 1: ACTIVATION PATCHING ========================
