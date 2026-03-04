@@ -96,10 +96,16 @@ def get_llm_base(prompt, max_tokens=20):
 
 
 def parse_decision(text):
-    text_lower = text.lower()
-    m = re.findall(r"\b(implement(?:ed|ing|ation)?|escal(?:at(?:e|ed|ing|ion))?)\b", text_lower)
+    text_lower = text.strip().lower()
+    # Match full words or partial first tokens (e.g. "escal" from "escalate")
+    if re.search(r"implement|^imp", text_lower):
+        return "implement"
+    if re.search(r"escal|^esc", text_lower):
+        return "escalate"
+    # Also check for digit decisions (0=implement, 1=escalate)
+    m = re.search(r"^[01]$", text_lower.strip())
     if m:
-        return "implement" if m[-1].startswith("implement") else "escalate"
+        return "implement" if m.group() == "0" else "escalate"
     return "unknown"
 
 
@@ -135,16 +141,16 @@ def get_adversarial_chain(scenario):
 
 # ======================== SUPPRESS <think> ========================
 
-# Find token IDs to suppress (both <think> and </think>)
-think_token_ids = set(tokenizer.encode("<think>", add_special_tokens=False) +
-                      tokenizer.encode("</think>", add_special_tokens=False) +
-                      tokenizer.encode("<|im_end|>", add_special_tokens=False))
-print(f"Suppressing token IDs: {think_token_ids}")
+# Find all special token IDs to suppress
+special_ids = set(tokenizer.all_special_ids)
+for tok_str in ["<think>", "</think>", "<|im_end|>", "<|im_start|>", "<|endoftext|>"]:
+    special_ids.update(tokenizer.encode(tok_str, add_special_tokens=False))
+print(f"Suppressing {len(special_ids)} special token IDs")
 
 
 def get_decision_from_logits(logits):
-    """Get the next token decision, suppressing <think> tokens."""
-    for tid in think_token_ids:
+    """Get the next token decision, suppressing all special tokens."""
+    for tid in special_ids:
         logits[tid] = -float('inf')
     next_token = logits.argmax().item()
     next_text = tokenizer.decode([next_token])
