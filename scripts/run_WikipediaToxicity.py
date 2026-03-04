@@ -83,21 +83,21 @@ def create_prompt_base(row):
     )
 
 def get_llm_base(base_prompt, model):
-    # Step 1: Get prediction with reasoning
+    # Step 1: Get prediction only (no reasoning)
     pred_prompt = (
         f"{base_prompt}\n\n"
-        "TASK: Predict the crowd-workers' aggregate decision. Explain your reasoning in 1 sentence. "
-        "Then conclude with exactly 'PREDICTION: 1' (toxic) or 'PREDICTION: 0' (not toxic)."
+        "TASK: Respond with a single digit ONLY. "
+        "1 (toxic) or 0 (not toxic) based on your prediction of the crowd-workers' true aggregate decision."
     )
     pred_response = llm(pred_prompt, model)
-    preds = re.findall(r'PREDICTION:\s*([01])', pred_response)
-    pred = int(preds[-1]) if preds else None
+    preds = re.findall(r'[01]', pred_response.strip())
+    pred = int(preds[0]) if preds else None
     if pred is None:
         print(f"Parse error (pred): {pred_response}", flush=True)
 
-    # Step 2: Get escalation decision (with reasoning context, no critique)
+    # Step 2: Get escalation decision
     esc_prompt = (
-        f"SCENARIO:\n{base_prompt}\n\nPREDICTION & REASONING:\n{pred_response}\n\n"
+        f"SCENARIO:\n{base_prompt}\n\nYour prediction: {pred_response.strip()}\n\n"
         "TASK: Respond with a digit ONLY.\n"
         "Output 0 to implement your prediction, or 1 to escalate to the crowd-workers.\n"
         "A decision is considered correct if it equals the crowd-workers' true aggregate decision."
@@ -131,7 +131,7 @@ def get_sequential_inference(base_prompt, model):
 
         critique = llm(
             f"SCENARIO:\n{base_prompt}\n\nPROPOSED LOGIC:\n{thought}\n\n"
-            "TASK: Critique this reasoning in 1 sentence.",
+            "TASK: Give one reason why this decision should be escalated to the crowd-workers instead of being implemented automatically.",
             model
         )
 

@@ -53,28 +53,24 @@ def create_prompt_base(row):
     return f"You are helping Person 1 solve the following math problem: {row['Question']}."
 
 def get_llm_base(prompt, model):
-    # Step 1: Get prediction with reasoning
+    # Step 1: Get prediction only (no reasoning)
     pred_prompt = (
         f"{prompt}\n\n"
-        "Solve the math problem step by step, "
-        "then conclude with 'SOLUTION: <integer>'."
+        "TASK: Respond with a single integer ONLY. "
+        "What is the numerical answer to this math problem?"
     )
     pred_response = llm(pred_prompt, model)
-    preds = re.findall(r'SOLUTION:\s*(\d+)', pred_response)
-    if not preds:
-        preds = re.findall(r'\\boxed\{(\d+)\}', pred_response)
-    if not preds:
-        preds = re.findall(r'\$\s*(\d+)\s*\$\s*$', pred_response, re.MULTILINE)
-    if not preds:
-        preds = re.findall(r'(?:answer|result|equal(?:s)?|is)\s*(?:is\s*)?[\$\s]*(\d+)', pred_response, re.IGNORECASE)
-    pred = int(preds[-1]) if preds else None
+    preds = re.findall(r'(\d+)', pred_response.strip())
+    pred = int(preds[0]) if preds else None
     if pred is None:
         print(f"Parse error (pred): {pred_response}")
 
-    # Step 2: Get escalation decision (with reasoning context, no critique)
+    # Step 2: Get escalation decision
     esc_prompt = (
-        f"PROBLEM: {prompt}\nSOLUTION AND REASONING: {pred_response}\n\n"
-        "Implement your solution (0) or escalate to Person 1 (1). Respond with the digit ONLY."
+        f"PROBLEM:\n{prompt}\n\nYour answer: {pred_response.strip()}\n\n"
+        "TASK: Respond with a digit ONLY.\n"
+        "Output 0 to implement your answer, or 1 to escalate to Person 1.\n"
+        "A decision is correct if it equals Person 1's true answer."
     )
     esc_response = llm(esc_prompt, model)
     try:
@@ -104,9 +100,12 @@ def get_sequential_inference(scenario, model):
         if not preds:
             preds = re.findall(r'(?:answer|result|equal(?:s)?|is)\s*(?:is\s*)?[\$\s]*(\d+)', thought, re.IGNORECASE)
         pred = preds[-1] if preds else "0"
-        critique = llm(f"PROBLEM: {scenario}\n\nPROPOSED SOLUTION: {thought}\n\nCritique this reasoning in 1 sentence.", model)
+        critique = llm(f"PROBLEM: {scenario}\n\nPROPOSED SOLUTION: {thought}\n\n"
+                       "TASK: Give one reason why this solution should be escalated to Person 1 instead of being implemented automatically.", model)
         decision_prompt = (f"PROBLEM: {scenario}\nSOLUTION AND REASONING: {thought}\nCRITIQUE: {critique}\n\n"
-                           "Implement your solution (0) or escalate to Person 1 (1). Respond with the digit ONLY.")
+                           "TASK: Respond with a digit ONLY.\n"
+                           "Output 0 to implement your solution, or 1 to escalate to Person 1.\n"
+                           "A decision is correct if it equals Person 1's true answer.")
         decision = llm(decision_prompt, model)
         del_match = re.search(r'[01]', decision)
         delg = int(del_match.group()) if del_match else None
