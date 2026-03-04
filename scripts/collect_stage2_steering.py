@@ -40,8 +40,8 @@ RESERVE = 16
 SAE_STEPS = 150
 
 # Sweep these
-LAYERS = [23, 18, 12, 6]  # Start with deepest (most likely to work)
-COEFFICIENTS = [1.0, 3.0, 5.0, 10.0, 20.0]
+LAYERS = [23, 18]
+COEFFICIENTS = [3.0, 10.0, 30.0, 60.0]
 
 ACCEPTED_CSV = "data/accepted_10k.csv"
 REJECTED_CSV = "data/rejected_10k.csv"
