@@ -63,6 +63,10 @@ def get_llm_base(prompt, model):
     preds = re.findall(r'SOLUTION:\s*(\d+)', pred_response)
     if not preds:
         preds = re.findall(r'\\boxed\{(\d+)\}', pred_response)
+    if not preds:
+        preds = re.findall(r'\$\s*(\d+)\s*\$\s*$', pred_response, re.MULTILINE)
+    if not preds:
+        preds = re.findall(r'(?:answer|result|equal(?:s)?|is)\s*(?:is\s*)?[\$\s]*(\d+)', pred_response, re.IGNORECASE)
     pred = int(preds[-1]) if preds else None
     if pred is None:
         print(f"Parse error (pred): {pred_response}")
@@ -95,6 +99,10 @@ def get_sequential_inference(scenario, model):
         preds = re.findall(r'SOLUTION:\s*(\d+)', thought)
         if not preds:
             preds = re.findall(r'\\boxed\{(\d+)\}', thought)
+        if not preds:
+            preds = re.findall(r'\$\s*(\d+)\s*\$\s*$', thought, re.MULTILINE)
+        if not preds:
+            preds = re.findall(r'(?:answer|result|equal(?:s)?|is)\s*(?:is\s*)?[\$\s]*(\d+)', thought, re.IGNORECASE)
         pred = preds[-1] if preds else "0"
         critique = llm(f"PROBLEM: {scenario}\n\nPROPOSED SOLUTION: {thought}\n\nCritique this reasoning in 1 sentence.", model)
         decision_prompt = (f"PROBLEM: {scenario}\nSOLUTION AND REASONING: {thought}\nCRITIQUE: {critique}\n\n"
