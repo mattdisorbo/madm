@@ -53,21 +53,24 @@ def create_prompt_base(row):
     return f"You are helping Person 1 solve the following math problem: {row['Question']}."
 
 def get_llm_base(prompt, model):
-    # Step 1: Get prediction
-    pred_prompt = prompt + "\n\nRespond with your integer solution ONLY. No explanation."
+    # Step 1: Get prediction with reasoning
+    pred_prompt = (
+        f"{prompt}\n\n"
+        "Solve the math problem step by step, "
+        "then conclude with 'SOLUTION: <integer>'."
+    )
     pred_response = llm(pred_prompt, model)
-    try:
-        pred = int(re.search(r'\d+', pred_response.strip()).group())
-    except (ValueError, AttributeError):
+    preds = re.findall(r'SOLUTION:\s*(\d+)', pred_response)
+    if not preds:
+        preds = re.findall(r'\\boxed\{(\d+)\}', pred_response)
+    pred = int(preds[-1]) if preds else None
+    if pred is None:
         print(f"Parse error (pred): {pred_response}")
-        pred = None
 
-    # Step 2: Get escalation decision
+    # Step 2: Get escalation decision (with reasoning context, no critique)
     esc_prompt = (
-        f"{prompt}\n\nYour solution: {pred_response.strip()}\n\n"
-        "Respond with a single digit ONLY.\n"
-        "Output 0 to implement your solution, or 1 to escalate to Person 1.\n"
-        "A solution is correct if it equals Person 1's true solution."
+        f"PROBLEM: {prompt}\nSOLUTION AND REASONING: {pred_response}\n\n"
+        "Implement your solution (0) or escalate to Person 1 (1). Respond with the digit ONLY."
     )
     esc_response = llm(esc_prompt, model)
     try:

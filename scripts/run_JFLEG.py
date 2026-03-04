@@ -63,18 +63,24 @@ def create_prompt_base(row):
     )
 
 def get_llm_base(base_prompt, model):
-    # Step 1: Get prediction (grammatical correction)
-    pred_prompt = base_prompt + "\n\nProvide your grammatical correction of the statement ONLY. No explanation."
+    # Step 1: Get prediction with reasoning
+    pred_prompt = (
+        f"{base_prompt}\n\n"
+        "TASK: Predict one of Person 1's grammatical corrections. Explain your reasoning in 1 sentence. "
+        "Then conclude with exactly 'CORRECTION: your grammatical correction here'."
+    )
     pred_response = llm(pred_prompt, model)
-    pred = pred_response.strip() if pred_response.strip() else None
+    preds = re.findall(r'CORRECTION:\s*(.*)', pred_response)
+    pred = preds[-1].strip() if preds else None
+    if pred is None:
+        print(f"Parse error (pred): {pred_response}", flush=True)
 
-    # Step 2: Get escalation decision
+    # Step 2: Get escalation decision (with reasoning context, no critique)
     esc_prompt = (
-        f"{base_prompt}\n\nYour correction: {pred_response.strip()}\n\n"
-        "Respond with a single digit ONLY.\n"
-        "Output 0 to implement your prediction of one of Person 1's true grammatical corrections, "
-        "or 1 to escalate to Person 1 so they can implement one of their true grammatical corrections.\n"
-        "A grammatical correction is considered correct if it equals one of Person 1's true grammatical corrections."
+        f"SCENARIO:\n{base_prompt}\n\nCORRECTION & REASONING:\n{pred_response}\n\n"
+        "TASK: Respond with a digit ONLY.\n"
+        "Output 0 to implement your prediction, or 1 to escalate to Person 1.\n"
+        "The ground truth is one of Person 1's true grammatical corrections."
     )
     esc_response = llm(esc_prompt, model)
     try:

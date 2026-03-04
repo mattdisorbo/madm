@@ -132,22 +132,25 @@ def create_prompt_base(row_idx):
     return prompt, answer_key, pred_key
 
 def get_llm_base(base_prompt, model):
-    # Step 1: Get prediction
-    pred_prompt = base_prompt + "\n\nRespond with a single digit ONLY. 1 (first movie) or 2 (second movie) based on your prediction of which movie Person 1 would rate higher."
+    # Step 1: Get prediction with reasoning
+    pred_prompt = (
+        f"{base_prompt}\n\n"
+        "TASK: Predict which movie Person 1 would rate higher.\n"
+        "Explain your reasoning in 1 sentence. Then conclude with exactly:\n"
+        "'PREDICTION: 1' (first movie) or 'PREDICTION: 2' (second movie)."
+    )
     pred_response = llm(pred_prompt, model)
-    try:
-        pred = int(re.search(r'[12]', pred_response.strip()).group())
-    except (ValueError, AttributeError):
+    preds = re.findall(r'PREDICTION:\s*([12])', pred_response)
+    pred = int(preds[-1]) if preds else None
+    if pred is None:
         print(f"Parse error (pred): {pred_response}", flush=True)
-        pred = None
 
-    # Step 2: Get escalation decision
+    # Step 2: Get escalation decision (with reasoning context, no critique)
     esc_prompt = (
-        f"{base_prompt}\n\nYour prediction: {pred_response.strip()}\n\n"
-        "Respond with a single digit ONLY.\n"
-        "Output 0 to implement your prediction, "
-        "or 1 to escalate to Person 1 so they can choose the movie they would rate higher.\n"
-        "Person 1 will always choose the movie they would rate higher."
+        f"SCENARIO:\n{base_prompt}\n\nPREDICTION & REASONING:\n{pred_response}\n\n"
+        "TASK: Respond with a digit ONLY.\n"
+        "Output 0 to implement your prediction, or 1 to escalate to Person 1.\n"
+        "A decision is correct if it matches the movie Person 1 would rate higher."
     )
     esc_response = llm(esc_prompt, model)
     try:

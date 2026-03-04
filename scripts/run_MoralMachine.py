@@ -174,22 +174,24 @@ def create_prompt_base(row):
     return prompt
 
 def get_llm_base(base_prompt, model):
-    # Step 1: Get prediction
-    pred_prompt = base_prompt + "\n\nRespond with a single digit ONLY. 1 (swerve) or 0 (do not swerve) based on your prediction of Person 1's true decision."
+    # Step 1: Get prediction with reasoning
+    pred_prompt = (
+        f"{base_prompt}\n\n"
+        "TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. "
+        "Then conclude with exactly 'PREDICTION: 1' (swerve) or 'PREDICTION: 0' (do not swerve)."
+    )
     pred_response = llm(pred_prompt, model)
-    try:
-        pred = int(re.search(r'[01]', pred_response.strip()).group())
-    except (ValueError, AttributeError):
+    preds = re.findall(r'PREDICTION:\s*([01])', pred_response)
+    pred = int(preds[-1]) if preds else None
+    if pred is None:
         print(f"Parse error (pred): {pred_response}", flush=True)
-        pred = None
 
-    # Step 2: Get escalation decision
+    # Step 2: Get escalation decision (with reasoning context, no critique)
     esc_prompt = (
-        f"{base_prompt}\n\nYour prediction: {pred_response.strip()}\n\n"
-        "Respond with a single digit ONLY.\n"
-        "Output 0 to implement your prediction of Person 1's true decision, "
-        "or 1 to escalate to Person 1 so they can implement their true decision.\n"
-        "A decision is considered correct if it equals Person 1's true decision."
+        f"SCENARIO:\n{base_prompt}\n\nPREDICTION & REASONING:\n{pred_response}\n\n"
+        "TASK: Respond with a digit ONLY.\n"
+        "Output 0 to implement your prediction, or 1 to escalate to Person 1.\n"
+        "A decision is correct if it equals Person 1's true decision."
     )
     esc_response = llm(esc_prompt, model)
     try:

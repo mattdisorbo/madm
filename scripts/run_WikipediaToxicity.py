@@ -83,22 +83,24 @@ def create_prompt_base(row):
     )
 
 def get_llm_base(base_prompt, model):
-    # Step 1: Get prediction
-    pred_prompt = base_prompt + "\n\nRespond with a single digit ONLY. 1 (toxic) or 0 (not toxic) based on your prediction of the crowd-workers' true aggregate decision."
+    # Step 1: Get prediction with reasoning
+    pred_prompt = (
+        f"{base_prompt}\n\n"
+        "TASK: Predict the crowd-workers' aggregate decision. Explain your reasoning in 1 sentence. "
+        "Then conclude with exactly 'PREDICTION: 1' (toxic) or 'PREDICTION: 0' (not toxic)."
+    )
     pred_response = llm(pred_prompt, model)
-    try:
-        pred = int(re.search(r'[01]', pred_response.strip()).group())
-    except (ValueError, AttributeError):
+    preds = re.findall(r'PREDICTION:\s*([01])', pred_response)
+    pred = int(preds[-1]) if preds else None
+    if pred is None:
         print(f"Parse error (pred): {pred_response}", flush=True)
-        pred = None
 
-    # Step 2: Get escalation decision
+    # Step 2: Get escalation decision (with reasoning context, no critique)
     esc_prompt = (
-        f"{base_prompt}\n\nYour prediction: {pred_response.strip()}\n\n"
-        "Respond with a single digit ONLY.\n"
-        "Output 0 to implement your prediction of the crowd-workers' true aggregate decision, "
-        "or 1 to escalate to the crowd-workers so they can implement their true aggregate decision.\n"
-        "A decision is considered correct if it equals the crowd-workers' true aggregate decision."
+        f"SCENARIO:\n{base_prompt}\n\nPREDICTION & REASONING:\n{pred_response}\n\n"
+        "TASK: Respond with a digit ONLY.\n"
+        "Output 0 to implement your prediction, or 1 to escalate to the crowd-workers.\n"
+        "A decision is correct if it equals the crowd-workers' true aggregate decision."
     )
     esc_response = llm(esc_prompt, model)
     try:
