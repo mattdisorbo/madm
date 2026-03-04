@@ -191,7 +191,7 @@ def get_llm_rf(base_prompt, rf_pred, rf_prob, model):
         "Respond with a single digit ONLY.\n"
         "Output 0 to implement your prediction of Person 1's true decision, "
         "or 1 to escalate to Person 1 so they can implement their true decision.\n"
-        "A decision is considered correct if it equals Person 1's true decision."
+        "A decision is correct if it equals Person 1's true decision."
     )
     esc_response = llm(esc_prompt, model)
     try:

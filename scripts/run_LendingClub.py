@@ -138,7 +138,7 @@ def get_llm_base(base_prompt, model):
         f"SCENARIO:\n{base_prompt}\n\nPREDICTION & REASONING:\n{pred_response}\n\n"
         "TASK: Respond with a digit ONLY.\n"
         "Output 0 to implement your prediction, or 1 to escalate to Person 1.\n"
-        "A decision is correct if it equals Person 1's true decision."
+        "A decision is considered correct if it equals Person 1's true decision."
     )
     esc_response = llm(esc_prompt, model)
     try:
@@ -225,7 +225,7 @@ def get_sequential_inference(base_prompt, model):
             f"CRITIQUE:\n{critique}\n\n"
             "TASK: Respond with a digit ONLY.\n"
             "Output 0 to implement your prediction, or 1 to escalate to Person 1.\n"
-            "A decision is correct if it equals Person 1's true decision."
+            "A decision is considered correct if it equals Person 1's true decision."
         )
         decision = llm(decision_prompt, model)
         del_match = re.search(r'[01]', decision.strip())

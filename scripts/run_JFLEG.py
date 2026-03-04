@@ -80,7 +80,7 @@ def get_llm_base(base_prompt, model):
         f"SCENARIO:\n{base_prompt}\n\nCORRECTION & REASONING:\n{pred_response}\n\n"
         "TASK: Respond with a digit ONLY.\n"
         "Output 0 to implement your prediction, or 1 to escalate to Person 1.\n"
-        "The ground truth is one of Person 1's true grammatical corrections."
+        "A correction is considered correct if it equals one of Person 1's true grammatical corrections."
     )
     esc_response = llm(esc_prompt, model)
     try:
@@ -120,7 +120,7 @@ def get_sequential_inference(base_prompt, model):
             f"CRITIQUE:\n{critique}\n\n"
             "TASK: Respond with a digit ONLY.\n"
             "Output 0 to implement your prediction, or 1 to escalate to Person 1.\n"
-            "The ground truth is one of Person 1's true grammatical corrections."
+            "A correction is considered correct if it equals one of Person 1's true grammatical corrections."
         )
         decision = llm(decision_prompt, model)
         delg_match = re.search(r'[01]', decision.strip())
