@@ -432,6 +432,41 @@ highly accurate but overconfident model in settings where escalation is
 possible; the adversarial pipeline moves in that direction without any
 retraining.
 
+\subsection{Utility Under Escalation Cost}
+
+The escalation gains of the adversarial pipeline come at a price: every
+escalated case requires human review.
+To quantify this tradeoff, we define a simple utility function.
+Implementing a correct decision yields $+1$, implementing an incorrect
+decision yields $-1$, and escalating yields $+1 - c$, where $c$ is the
+cost of human review.
+Figure~\ref{fig:utility} plots expected utility as a function of $c$ for
+each pipeline.
+
+The adversarial pipeline dominates at low escalation cost, reflecting its
+ability to route uncertain cases to human review.
+As $c$ increases, however, the high escalation rate becomes a liability,
+and the adversarial line crosses below the agreeable and multiagent
+pipelines at $c \approx 0.75$.
+The base pipeline performs worst across nearly the entire range, dropping
+below zero utility before $c = 1$.
+The agreeable and multiagent pipelines occupy a middle ground, maintaining
+moderate utility even at high escalation cost because they rarely escalate.
+The crossover point provides a practical decision rule: adversarial
+prompting is the preferred strategy whenever human review costs less than
+roughly 75\% of the value of a correct decision.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.75\linewidth]{figures/fig_utility.pdf}
+  \caption{Expected utility as a function of escalation cost $c$.
+           Implementing a correct decision yields $+1$, an incorrect
+           decision yields $-1$, and escalating yields $+1 - c$.
+           The adversarial pipeline dominates at low cost but crosses
+           below the agreeable and multiagent pipelines near $c = 0.75$.}
+  \label{fig:utility}
+\end{figure}
+
 \subsection{Representational Separation}
 
 PCA of the layer-18 activations reveals clear geometric separation between
