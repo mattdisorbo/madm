@@ -266,145 +266,110 @@ trace from the LendingClub dataset (Qwen3-8B).
 
 \begin{figure*}[t]
   \centering
-  \begin{subfigure}[t]{0.23\textwidth}
-    \centering
-    \begin{tikzpicture}[
-      node distance=0.35cm,
-      step/.style={
-        draw, rounded corners=3pt, text width=\linewidth-12pt,
-        font=\scriptsize, inner sep=5pt, line width=0.4pt, align=left
-      },
-      header/.style={font=\scriptsize\bfseries, anchor=west},
-      arr/.style={-{Stealth[length=3pt]}, line width=0.4pt},
-    ]
-    \node[header] (h) at (0,0) {Scenario};
-    \node[step, below=0.15cm of h, anchor=north west] (s) at (h.south west)
+  \tikzset{
+    step/.style={
+      draw, rounded corners=3pt, font=\footnotesize,
+      inner sep=5pt, line width=0.4pt, align=left, text width=12.5cm
+    },
+    redstep/.style={step, fill=red!10, draw=red!50},
+    bluestep/.style={step, fill=blue!10, draw=blue!50},
+    lbl/.style={font=\footnotesize\bfseries, text width=2cm, align=right, anchor=east},
+    arr/.style={-{Stealth[length=3pt]}, line width=0.4pt},
+  }
+
+  %% ---- Base ----
+  \textbf{(a) Base}\par\smallskip
+  \begin{tikzpicture}
+    \node[lbl] (l1) at (0,0) {Scenario};
+    \node[step, right=0.3cm of l1] (s1)
       {A loan applicant requests \$15{,}000 for debt consolidation.
        Employed 3 years, DTI 14.2\%, credit score 720.};
-    \node[header, below=0.35cm of s.south west, anchor=west] (hp) {Predict + Decide};
-    \node[step, below=0.15cm of hp, anchor=north west] (p) at (hp.south west)
-      {Prediction: \textbf{approve} (1)\\
-       Decision: \textbf{implement} (0)};
-    \draw[arr] (s.south) -- (hp.north -| s.south);
-    \end{tikzpicture}
-    \caption{Base}
-    \label{fig:pipe-base}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.23\textwidth}
-    \centering
-    \begin{tikzpicture}[
-      node distance=0.35cm,
-      step/.style={
-        draw, rounded corners=3pt, text width=\linewidth-12pt,
-        font=\scriptsize, inner sep=5pt, line width=0.4pt, align=left
-      },
-      redstep/.style={step, fill=red!10, draw=red!50},
-      header/.style={font=\scriptsize\bfseries, anchor=west},
-      arr/.style={-{Stealth[length=3pt]}, line width=0.4pt},
-    ]
-    \node[header] (h) at (0,0) {Scenario};
-    \node[step, below=0.15cm of h, anchor=north west] (s) at (h.south west)
+    \node[lbl, below=0.3cm of l1] (l2) {Predict + Decide};
+    \node[step, right=0.3cm of l2] (s2)
+      {Prediction: \textbf{approve} (1). \quad Decision: \textbf{implement} (0).};
+    \draw[arr] ([xshift=0.5cm]s1.south west) -- ([xshift=0.5cm]s2.north west);
+  \end{tikzpicture}
+
+  \bigskip
+
+  %% ---- Adversarial ----
+  \textbf{(b) Adversarial}\par\smallskip
+  \begin{tikzpicture}
+    \node[lbl] (l1) at (0,0) {Scenario};
+    \node[step, right=0.3cm of l1] (s1)
       {A loan applicant requests \$15{,}000 for debt consolidation.
        Employed 8 years, DTI 24.1\%, credit score 705.};
-    \node[header, below=0.35cm of s.south west, anchor=west] (hp) {Predict};
-    \node[step, below=0.15cm of hp, anchor=north west] (p) at (hp.south west)
+    \node[lbl, below=0.3cm of l1] (l2) {Predict};
+    \node[step, right=0.3cm of l2] (s2)
       {The applicant has stable employment and a good credit score.
-       \textbf{Prediction: approve} (1)};
-    \node[header, below=0.35cm of p.south west, anchor=west] (hc)
-      {\textcolor{red!70}{Critique: escalation}};
-    \node[redstep, below=0.15cm of hc, anchor=north west] (c) at (hc.south west)
+       \textbf{Prediction: approve} (1).};
+    \node[lbl, below=0.3cm of l2] (l3) {\textcolor{red!70}{Critique}};
+    \node[redstep, right=0.3cm of l3] (s3)
       {The loan amount is significant for debt consolidation.
        Person~1 should review the debt structure before deciding.};
-    \node[header, below=0.35cm of c.south west, anchor=west] (hd) {Decide};
-    \node[step, below=0.15cm of hd, anchor=north west] (d) at (hd.south west)
-      {Decision: \textbf{escalate} (1)};
-    \draw[arr] (s.south) -- (hp.north -| s.south);
-    \draw[arr] (p.south) -- (hc.north -| p.south);
-    \draw[arr] (c.south) -- (hd.north -| c.south);
-    \end{tikzpicture}
-    \caption{Adversarial}
-    \label{fig:pipe-adversarial}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.23\textwidth}
-    \centering
-    \begin{tikzpicture}[
-      node distance=0.35cm,
-      step/.style={
-        draw, rounded corners=3pt, text width=\linewidth-12pt,
-        font=\scriptsize, inner sep=5pt, line width=0.4pt, align=left
-      },
-      bluestep/.style={step, fill=blue!10, draw=blue!50},
-      header/.style={font=\scriptsize\bfseries, anchor=west},
-      arr/.style={-{Stealth[length=3pt]}, line width=0.4pt},
-    ]
-    \node[header] (h) at (0,0) {Scenario};
-    \node[step, below=0.15cm of h, anchor=north west] (s) at (h.south west)
+    \node[lbl, below=0.3cm of l3] (l4) {Decide};
+    \node[step, right=0.3cm of l4] (s4)
+      {Decision: \textbf{escalate} (1).};
+    \draw[arr] ([xshift=0.5cm]s1.south west) -- ([xshift=0.5cm]s2.north west);
+    \draw[arr] ([xshift=0.5cm]s2.south west) -- ([xshift=0.5cm]s3.north west);
+    \draw[arr] ([xshift=0.5cm]s3.south west) -- ([xshift=0.5cm]s4.north west);
+  \end{tikzpicture}
+
+  \bigskip
+
+  %% ---- Agreeable ----
+  \textbf{(c) Agreeable}\par\smallskip
+  \begin{tikzpicture}
+    \node[lbl] (l1) at (0,0) {Scenario};
+    \node[step, right=0.3cm of l1] (s1)
       {A loan applicant requests \$3{,}300 for debt consolidation.
        Employed 3 years, DTI 17.8\%, credit score 720.};
-    \node[header, below=0.35cm of s.south west, anchor=west] (hp) {Predict};
-    \node[step, below=0.15cm of hp, anchor=north west] (p) at (hp.south west)
+    \node[lbl, below=0.3cm of l1] (l2) {Predict};
+    \node[step, right=0.3cm of l2] (s2)
       {The applicant has a good credit score and manageable DTI.
-       \textbf{Prediction: approve} (1)};
-    \node[header, below=0.35cm of p.south west, anchor=west] (hc)
-      {\textcolor{blue!70}{Critique: implementation}};
-    \node[bluestep, below=0.15cm of hc, anchor=north west] (c) at (hc.south west)
+       \textbf{Prediction: approve} (1).};
+    \node[lbl, below=0.3cm of l2] (l3) {\textcolor{blue!70}{Critique}};
+    \node[bluestep, right=0.3cm of l3] (s3)
       {All factors fall within standard lending criteria. The decision
        is objective and repeatable without human review.};
-    \node[header, below=0.35cm of c.south west, anchor=west] (hd) {Decide};
-    \node[step, below=0.15cm of hd, anchor=north west] (d) at (hd.south west)
-      {Decision: \textbf{escalate} (1)};
-    \draw[arr] (s.south) -- (hp.north -| s.south);
-    \draw[arr] (p.south) -- (hc.north -| p.south);
-    \draw[arr] (c.south) -- (hd.north -| c.south);
-    \end{tikzpicture}
-    \caption{Agreeable}
-    \label{fig:pipe-agreeable}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}[t]{0.23\textwidth}
-    \centering
-    \begin{tikzpicture}[
-      node distance=0.35cm,
-      step/.style={
-        draw, rounded corners=3pt, text width=\linewidth-12pt,
-        font=\scriptsize, inner sep=5pt, line width=0.4pt, align=left
-      },
-      redstep/.style={step, fill=red!10, draw=red!50},
-      bluestep/.style={step, fill=blue!10, draw=blue!50},
-      header/.style={font=\scriptsize\bfseries, anchor=west},
-      arr/.style={-{Stealth[length=3pt]}, line width=0.4pt},
-    ]
-    \node[header] (h) at (0,0) {Scenario};
-    \node[step, below=0.15cm of h, anchor=north west] (s) at (h.south west)
+    \node[lbl, below=0.3cm of l3] (l4) {Decide};
+    \node[step, right=0.3cm of l4] (s4)
+      {Decision: \textbf{escalate} (1).};
+    \draw[arr] ([xshift=0.5cm]s1.south west) -- ([xshift=0.5cm]s2.north west);
+    \draw[arr] ([xshift=0.5cm]s2.south west) -- ([xshift=0.5cm]s3.north west);
+    \draw[arr] ([xshift=0.5cm]s3.south west) -- ([xshift=0.5cm]s4.north west);
+  \end{tikzpicture}
+
+  \bigskip
+
+  %% ---- Multiagent ----
+  \textbf{(d) Multiagent}\par\smallskip
+  \begin{tikzpicture}
+    \node[lbl] (l1) at (0,0) {Scenario};
+    \node[step, right=0.3cm of l1] (s1)
       {A loan applicant requests \$13{,}000 for debt consolidation.
        Employed 10+ years, DTI 8.7\%, credit score 745.};
-    \node[header, below=0.35cm of s.south west, anchor=west] (hp) {Predict};
-    \node[step, below=0.15cm of hp, anchor=north west] (p) at (hp.south west)
+    \node[lbl, below=0.3cm of l1] (l2) {Predict};
+    \node[step, right=0.3cm of l2] (s2)
       {The applicant has a stable employment history and low DTI.
-       \textbf{Prediction: approve} (1)};
-    \node[header, below=0.35cm of p.south west, anchor=west] (hce)
-      {\textcolor{red!70}{Critique: escalation}};
-    \node[redstep, below=0.15cm of hce, anchor=north west] (ce) at (hce.south west)
+       \textbf{Prediction: approve} (1).};
+    \node[lbl, below=0.3cm of l2] (l3) {\textcolor{red!70}{Critique 1}};
+    \node[redstep, right=0.3cm of l3] (s3)
       {Debt consolidation may indicate underlying financial stress.
        Person~1 should review the specific debts.};
-    \node[header, below=0.35cm of ce.south west, anchor=west] (hci)
-      {\textcolor{blue!70}{Critique: implementation}};
-    \node[bluestep, below=0.15cm of hci, anchor=north west] (ci) at (hci.south west)
+    \node[lbl, below=0.3cm of l3] (l4) {\textcolor{blue!70}{Critique 2}};
+    \node[bluestep, right=0.3cm of l4] (s4)
       {All key criteria are met: stable employment, low DTI, strong
        credit score. Suitable for automated processing.};
-    \node[header, below=0.35cm of ci.south west, anchor=west] (hd) {Decide};
-    \node[step, below=0.15cm of hd, anchor=north west] (d) at (hd.south west)
-      {Decision: \textbf{implement} (0)};
-    \draw[arr] (s.south) -- (hp.north -| s.south);
-    \draw[arr] (p.south) -- (hce.north -| p.south);
-    \draw[arr] (ce.south) -- (hci.north -| ce.south);
-    \draw[arr] (ci.south) -- (hd.north -| ci.south);
-    \end{tikzpicture}
-    \caption{Multiagent}
-    \label{fig:pipe-multiagent}
-  \end{subfigure}
+    \node[lbl, below=0.3cm of l4] (l5) {Decide};
+    \node[step, right=0.3cm of l5] (s5)
+      {Decision: \textbf{implement} (0).};
+    \draw[arr] ([xshift=0.5cm]s1.south west) -- ([xshift=0.5cm]s2.north west);
+    \draw[arr] ([xshift=0.5cm]s2.south west) -- ([xshift=0.5cm]s3.north west);
+    \draw[arr] ([xshift=0.5cm]s3.south west) -- ([xshift=0.5cm]s4.north west);
+    \draw[arr] ([xshift=0.5cm]s4.south west) -- ([xshift=0.5cm]s5.north west);
+  \end{tikzpicture}
+
   \caption{Example traces from the LendingClub dataset (Qwen3-8B) for each
            reasoning pipeline. The base path predicts and decides in a single
            step. The adversarial, agreeable, and multiagent paths insert
