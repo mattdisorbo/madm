@@ -52,13 +52,13 @@ improves final decision quality over a single-agent baseline.
 The gains arise not from better predictions but from better-calibrated
 escalation: the auditor surfaces uncertainty that the base model suppresses,
 routing uncertain cases to human review.
-Capturing hidden-state activations from an intermediate layer of Qwen3-4B,
-we find that the auditor and base paths occupy geometrically distinct regions
-of the representation space, despite nearly identical prompts.
-A steering vector derived from this separation causally shifts model
-decisions on held-out inputs, demonstrating that adversarial reasoning
-engages a different neural circuit and that this circuit can be directly
-probed.
+Activation patching across all 36 layers of Qwen3-4B reveals that the
+adversarial critique's causal influence is concentrated in a narrow band
+of middle layers, peaking at layer~19 where patching flips 45\% of
+decisions.
+A steering vector derived from this layer shifts decisions without any
+prompt change, demonstrating that adversarial reasoning engages a
+localizable neural circuit that can be directly probed.
 \end{abstract}
 
 \section{Introduction}
@@ -109,9 +109,9 @@ implementation and a multiagent pipeline combining both
 perspectives---produce escalation rates and final accuracy nearly identical
 to the supportive base path, demonstrating that the adversarial framing
 itself, not the mere presence of a critique step, is the active ingredient.
-Fourth, activation analysis reveals that critique and support engage
-geometrically distinct circuits, and a steering vector derived from their
-difference causally shifts decisions at test time.
+Fourth, activation patching localizes the critique's causal influence to a
+narrow band of middle layers in Qwen3-4B, and a steering vector derived from
+the peak layer shifts decisions at test time without any prompt change.
 
 \section{Related Work}
 
@@ -336,36 +336,32 @@ We measure escalation rate as the fraction of inputs routed to human review,
 and final accuracy as accuracy on implemented cases plus 100\% credit for
 escalated cases (since a human reviewer would decide correctly).
 
-\subsection{Activation Capture}
+\subsection{Activation Patching}
 
-We register a forward hook on the MLP output at layer 18 of Qwen3-4B
-(36 layers total) and record the hidden state at the final decision token.
-This produces a vector in $\mathbb{R}^{d}$, where $d$ is the model's hidden
-dimension.
-We collect 200 paired activations---one base-path and one auditor-path
-vector per application---yielding 400 vectors in total.
+We use activation patching to identify which layers mediate the behavioral
+difference between the agreeable and adversarial pipelines.
+For each of 50 loan applications, we run both the agreeable and adversarial
+chains through Qwen3-4B (36 layers) using greedy decoding, matching the
+stage~0 protocol exactly.
+Samples where the two pipelines disagree (20 of 50) form the analysis set.
 
-\subsection{Sparse Autoencoder}
+For each disagreeing sample, we cache the attention output at every layer
+via forward hooks during a single forward pass on the final decision prompt.
+We then re-run the agreeable prompt through \texttt{generate()}, patching
+in the adversarial attention output at one layer at a time during the
+initial prefill pass.
+A layer is considered causal if the patched generation flips the agreeable
+decision from ``implement'' to ``escalate,'' matching the adversarial outcome.
 
-We train a one-hidden-layer SAE with an expansion factor of 4 and an $L_1$
-sparsity penalty on the 400 vectors.
-The SAE is trained for 150 Adam steps.
-Activation density (fraction of units active per pass) and $L_1$ norm of
-the sparse code serve as measures of representational compactness.
+\subsection{Steering Vectors}
 
-\subsection{PCA and Steering}
-
-To characterize the geometry of stance-conditioned representations, we apply
-PCA to the raw activations and retain the top two components.
-Separation is quantified as the difference in mean PC1 projections between
-the two groups.
-
-For causal analysis, we compute a steering vector
-$\mathbf{v} = \bar{\mathbf{h}}_{\text{auditor}} - \bar{\mathbf{h}}_{\text{base}}$,
-where each $\bar{\mathbf{h}}$ is the mean over the 200 training examples.
-At test time, we add $\alpha \mathbf{v}$ (with $\alpha = 2.0$) to the
-layer-18 hidden state before the residual connection and record whether the
-final decision changes relative to the unsteered baseline.
+For the top three layers identified by patching, we compute a steering vector
+$\mathbf{v} = \overline{\mathbf{h}}_{\text{adv}} - \overline{\mathbf{h}}_{\text{agree}}$,
+where each $\overline{\mathbf{h}}$ is the mean attention output at the final
+token position, averaged over the 20 disagreeing samples.
+We normalize $\mathbf{v}$ to unit length and add $\alpha \mathbf{v}$ to the
+attention output during the prefill pass of an agreeable generation, testing
+coefficients $\alpha \in \{5, 20, 50, 100\}$.
 
 \section{Results}
 
@@ -467,63 +463,45 @@ roughly 75\% of the value of a correct decision.
   \label{fig:utility}
 \end{figure}
 
-\subsection{Representational Separation}
+\subsection{Localization of Critique Influence}
 
-PCA of the layer-18 activations reveals clear geometric separation between
-reasoning paths (Figure~\ref{fig:pca}).
-The mean PC1 difference between the base and auditor groups is [Z],
-a separation that is not explained by decision outcome alone.
-Base-path accept and auditor-path accept activations differ from each other,
-as do their reject counterparts, indicating that the representational
-difference reflects stance, not verdict.
+Figure~\ref{fig:stage2} shows the flip rate for each layer when
+adversarial attention outputs are patched into the agreeable generation.
+Layer~19 produces the highest flip rate at 45\% (9 of 20 disagreements),
+with layers~18 and~20 each reaching 30\%.
+The last third of the network (layers 24--35) shows no patching effect
+at all, indicating that the critique's influence is fully encoded by the
+middle layers and passes through unchanged thereafter.
+The early layers (0--4) show moderate activity, consistent with initial
+divergence in how the two critique types are represented.
 
 \begin{figure}[t]
   \centering
-  % \includegraphics[width=0.75\linewidth]{figures/pca.pdf}
-  \caption{PCA projection of layer-18 activations for 200 loan applications.
-  Each point is one application; shape encodes the final decision
-  (accept, reject, escalate) and color encodes the reasoning path
-  (base vs.\ auditor).
-  The two paths separate along PC1 despite receiving identical inputs.}
-  \label{fig:pca}
+  \includegraphics[width=0.85\linewidth]{figures/fig_stage2.pdf}
+  \caption{Activation patching and steering flip rates by layer in Qwen3-4B.
+  Blue bars show the fraction of disagreeing samples (out of 20) whose
+  agreeable decision flips to the adversarial outcome when that layer's
+  attention output is patched.
+  Red bars show the fraction flipped by a steering vector at
+  $\alpha = 20$.
+  The critique's causal influence peaks sharply at layer~19.}
+  \label{fig:stage2}
 \end{figure}
-
-\subsection{SAE Sparsity}
-
-The SAE encodes auditor-path activations more sparsely than base-path
-activations (Table~\ref{tab:sae}).
-Lower $L_1$ density under the auditor condition suggests that critical
-reasoning relies on a smaller set of features, consistent with a more
-selective evaluation of input evidence.
-This sparsity difference persists when conditioning on decision outcome,
-ruling out the possibility that it is a byproduct of the auditor escalating
-more difficult (and thus activation-dense) cases.
-
-\begin{table}[t]
-  \centering
-  \caption{Sparse autoencoder statistics by reasoning path.}
-  \label{tab:sae}
-  \begin{tabular}{lcc}
-    \toprule
-    Path & $L_1$ density & Active units (\%) \\
-    \midrule
-    Base (predict-support-evaluate)   & --- & --- \\
-    Auditor (predict-critique-evaluate) & --- & --- \\
-    \bottomrule
-  \end{tabular}
-\end{table}
 
 \subsection{Causal Steering}
 
-Applying the mean-difference steering vector ($\alpha = 2.0$) to the
-layer-18 hidden state causes [N] of 10 held-out decisions to flip relative
-to the unsteered baseline.
-This result establishes that the activation direction identified by PCA is
-not merely correlational: it causally mediates the behavioral difference
-between the two reasoning paths.
-The model can therefore be steered toward the auditor's decision posture
-without any prompt change, by directly injecting the direction that
-distinguishes adversarial from supportive reasoning.
+The steering vector at layer~19 flips 4 of 20 samples (20\%) at
+$\alpha = 20$, and layer~20 matches this rate.
+Layer~18 shows no steering effect despite its 30\% patching rate,
+suggesting that its causal role depends on sample-specific activation
+patterns rather than a shared directional component.
+The gap between patching (45\%) and steering (20\%) at layer~19 confirms
+that some of the critique's influence is sample-specific, while a
+consistent ``escalate more'' direction accounts for roughly half of the
+effect.
+The model can be steered toward the adversarial decision posture without
+any prompt change, by injecting a single direction into the attention
+output at layer~19.
 
 \section{Discussion}
 
@@ -566,11 +544,11 @@ inspection, since it operates on representations that precede any generated
 text.
 
 \paragraph{Limitations.}
-The steering evaluation uses a small held-out set of 10 cases, which is
-insufficient to characterize the full reliability and specificity of the
-identified direction.
-Layer 18 was chosen based on exploratory analysis; a systematic sweep could
-identify layers where stance information is more concentrated.
+The activation patching analysis uses 50 samples from a single dataset
+(LendingClub) and a single model (Qwen3-4B), yielding 20 disagreements
+for the causal analysis.
+Replication across datasets, model sizes, and model families would
+strengthen the generality of the layer~19 localization finding.
 Future work should examine interaction with known fairness-relevant input
 features and behavior under adversarial prompts designed to confound the
 critique circuit.
@@ -582,9 +560,9 @@ circuit in a language model and measurably improve its decision quality.
 The mechanism is calibration: adversarial critique surfaces uncertainty that
 supportive reasoning suppresses, redirecting confident errors toward
 appropriate escalation.
-The circuit difference is geometrically organized in activation space,
-sparse under dictionary learning, and causally sufficient---a steering vector
-derived from it shifts decisions without any prompt change.
+Activation patching localizes the critique's causal influence to a narrow
+band of middle layers, and a steering vector derived from this region
+shifts decisions without any prompt change.
 These results open a path toward lightweight, activation-based auditing of
 model decision-making that does not depend on inspecting generated text.
 
