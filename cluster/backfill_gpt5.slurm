@@ -16,7 +16,7 @@ export PIP_CACHE_DIR=/work1/harangju/harang/.cache/pip
 export TMPDIR=/work1/harangju/harang/.cache/tmp
 mkdir -p "$UV_CACHE_DIR" "$PIP_CACHE_DIR" "$TMPDIR"
 
-uv pip install --upgrade openai
+uv pip install --upgrade openai typing_extensions
 
 export N_QWEN=0
 
