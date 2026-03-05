@@ -308,7 +308,7 @@ trace from the LendingClub dataset (Qwen3-8B).
     \node[lbl] (l2) at (0,0) {Predict};
     \node[step, right=0.2cm of l2] (s2)
       {Stable employment, manageable DTI, decent credit score. \textbf{Prediction: approve.}};
-    \node[lbl, below=0.15cm of l2] (l3) {\textcolor{red!70}{Critique}};
+    \node[lbl, below=0.15cm of l2] (l3) {\textcolor{red!70}{Argue: escalate}};
     \node[redstep, right=0.2cm of l3] (s3)
       {DTI may not reflect the full financial picture. Review savings and income stability.};
     \node[lbl, below=0.15cm of l3] (l4) {Decide};
@@ -326,7 +326,7 @@ trace from the LendingClub dataset (Qwen3-8B).
     \node[lbl] (l2) at (0,0) {Predict};
     \node[step, right=0.2cm of l2] (s2)
       {Stable employment, manageable DTI, decent credit score. \textbf{Prediction: approve.}};
-    \node[lbl, below=0.15cm of l2] (l3) {\textcolor{blue!70}{Critique}};
+    \node[lbl, below=0.15cm of l2] (l3) {\textcolor{blue!70}{Argue: implement}};
     \node[bluestep, right=0.2cm of l3] (s3)
       {Meets standard lending criteria with low default risk. Suitable for automated approval.};
     \node[lbl, below=0.15cm of l3] (l4) {Decide};
@@ -344,10 +344,10 @@ trace from the LendingClub dataset (Qwen3-8B).
     \node[lbl] (l2) at (0,0) {Predict};
     \node[step, right=0.2cm of l2] (s2)
       {Stable employment, manageable DTI, decent credit score. \textbf{Prediction: approve.}};
-    \node[lbl, below=0.15cm of l2] (l3) {\textcolor{red!70}{Critique 1}};
+    \node[lbl, below=0.15cm of l2] (l3) {\textcolor{red!70}{Argue: escalate}};
     \node[redstep, right=0.2cm of l3] (s3)
       {DTI may not reflect the full financial picture. Review savings and income stability.};
-    \node[lbl, below=0.15cm of l3] (l4) {\textcolor{blue!70}{Critique 2}};
+    \node[lbl, below=0.15cm of l3] (l4) {\textcolor{blue!70}{Argue: implement}};
     \node[bluestep, right=0.2cm of l4] (s4)
       {Meets standard lending criteria with low default risk. Suitable for automated approval.};
     \node[lbl, below=0.15cm of l4] (l5) {Decide};
@@ -364,8 +364,8 @@ trace from the LendingClub dataset (Qwen3-8B).
            The model predicts the human officer's decision, then implements
            or escalates. All four methods predict \emph{approve}, but only
            the adversarial path escalates.
-           \textcolor{red!70}{Red} = escalation-focused critique;
-           \textcolor{blue!70}{blue} = implementation-focused critique.
+           \textcolor{red!70}{Red} = argues for escalation;
+           \textcolor{blue!70}{blue} = argues for implementation.
            Critique text is abridged.}
   \label{fig:pipelines}
 \end{figure*}
