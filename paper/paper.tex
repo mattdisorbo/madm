@@ -91,11 +91,10 @@ gain must come from reorganizing the model's existing computation.
 We evaluate this setup across nine datasets spanning loan approval,
 fact-checking, content moderation, moral reasoning, and
 mathematics~(Section~\ref{sec:data}).
-The base agent constructs a supporting argument before its final decision;
-the auditor constructs a counter-argument.
-The prompts differ by a single instruction: \emph{support your reasoning}
-versus \emph{critique your reasoning}.
-Despite this minimal difference, four findings emerge.
+The base agent predicts and decides in a single step;
+the adversarial pipeline inserts a critique that asks whether the case
+should be escalated to human review.
+Despite this minimal addition, four findings emerge.
 
 First, prediction accuracy is roughly flat across all reasoning
 methods---the adversarial pipeline does not help the model guess better
@@ -107,7 +106,7 @@ This escalation is what drives the final accuracy improvement.
 Third, two control conditions---an agreeable critique oriented toward
 implementation and a multiagent pipeline combining both
 perspectives---produce escalation rates and final accuracy nearly identical
-to the supportive base path, demonstrating that the adversarial framing
+to the base path, demonstrating that the adversarial framing
 itself, not the mere presence of a critique step, is the active ingredient.
 Fourth, activation patching localizes the critique's causal influence to a
 narrow band of middle layers in Qwen3-4B, and a steering vector derived from
@@ -240,8 +239,8 @@ Each example is formatted as a brief scenario and presented to
 Qwen3 models (1.7B, 4B, 8B, 14B)~\citep{qwen3} under one of four
 multi-step instructions (Figure~\ref{fig:pipelines}).
 
-\emph{Base.} The model produces an initial prediction, constructs an
-argument that supports that prediction, then issues a final decision.
+\emph{Base.} The model produces a prediction and an escalation decision
+in a single step, with no intermediate critique.
 
 \emph{Adversarial.} The model produces an initial prediction, then
 constructs a counter-argument against that prediction. The critique
@@ -258,74 +257,164 @@ two separate critiques: one adversarial (oriented toward escalation) and one
 agreeable (oriented toward implementation). A final decision integrates both
 perspectives.
 
-All four paths share the same input and the same predict-critique-decide
-structure; only the instruction governing the intermediate step differs.
+The base path predicts and decides in a single step; the other three
+paths insert one or two intermediate critiques between prediction and
+decision. Only the framing of that critique differs.
 All generations are capped at 512 tokens to control for length confounds.
+Figure~\ref{fig:pipelines} illustrates each pipeline with an example
+trace from the LendingClub dataset (Qwen3-8B).
 
-\begin{figure}[t]
+\begin{figure*}[t]
   \centering
-  \begin{tikzpicture}[
-    node distance=0.6cm,
-    box/.style={
-      draw, rounded corners=3pt, minimum height=0.55cm,
-      font=\footnotesize, inner sep=4pt, line width=0.4pt
-    },
-    bluebox/.style={box, fill=blue!15, draw=blue!50},
-    redbox/.style={box, fill=red!15, draw=red!50},
-    arr/.style={-{Stealth[length=4pt]}, line width=0.4pt},
-    lbl/.style={font=\footnotesize\bfseries, anchor=east},
-  ]
-  % --- Base ---
-  \node[lbl] (lb) at (0, 0) {Base};
-  \node[box, right=0.4cm of lb] (b1) {Scenario};
-  \node[box, right=of b1] (b2) {Predict};
-  \node[bluebox, right=of b2] (b3) {Support};
-  \node[box, right=of b3] (b4) {Decide};
-  \draw[arr] (b1) -- (b2);
-  \draw[arr] (b2) -- (b3);
-  \draw[arr] (b3) -- (b4);
-
-  % --- Adversarial ---
-  \node[lbl] (la) at (0, -1.1) {Adversarial};
-  \node[box, right=0.4cm of la] (a1) {Scenario};
-  \node[box, right=of a1] (a2) {Predict};
-  \node[redbox, right=of a2] (a3) {Critique: escalation};
-  \node[box, right=of a3] (a4) {Decide};
-  \draw[arr] (a1) -- (a2);
-  \draw[arr] (a2) -- (a3);
-  \draw[arr] (a3) -- (a4);
-
-  % --- Agreeable ---
-  \node[lbl] (lg) at (0, -2.2) {Agreeable};
-  \node[box, right=0.4cm of lg] (g1) {Scenario};
-  \node[box, right=of g1] (g2) {Predict};
-  \node[bluebox, right=of g2] (g3) {Critique: implementation};
-  \node[box, right=of g3] (g4) {Decide};
-  \draw[arr] (g1) -- (g2);
-  \draw[arr] (g2) -- (g3);
-  \draw[arr] (g3) -- (g4);
-
-  % --- Multiagent ---
-  \node[lbl] (lm) at (0, -3.55) {Multiagent};
-  \node[box, right=0.4cm of lm] (m1) {Scenario};
-  \node[box, right=of m1] (m2) {Predict};
-  \node[redbox, right=of m2, yshift=0.4cm] (m3a) {Critique: escalation};
-  \node[bluebox, right=of m2, yshift=-0.4cm] (m3b) {Critique: implementation};
-  \node[box, right=2.2cm of m3a, yshift=-0.4cm] (m4) {Decide};
-  \draw[arr] (m1) -- (m2);
-  \draw[arr] (m2) -- (m3a);
-  \draw[arr] (m2) -- (m3b);
-  \draw[arr] (m3a) -- (m4);
-  \draw[arr] (m3b) -- (m4);
-  \end{tikzpicture}
-  \caption{The four reasoning pipelines. All share a predict-critique-decide
-           structure. The middle step varies: \textcolor{blue!70}{blue}
-           denotes supportive or implementation-focused reasoning;
-           \textcolor{red!70}{red} denotes adversarial, escalation-focused
-           reasoning. The multiagent path generates both critiques in
-           parallel before a final decision.}
+  \begin{subfigure}[t]{0.23\textwidth}
+    \centering
+    \begin{tikzpicture}[
+      node distance=0.35cm,
+      step/.style={
+        draw, rounded corners=3pt, text width=\linewidth-12pt,
+        font=\scriptsize, inner sep=5pt, line width=0.4pt, align=left
+      },
+      header/.style={font=\scriptsize\bfseries, anchor=west},
+      arr/.style={-{Stealth[length=3pt]}, line width=0.4pt},
+    ]
+    \node[header] (h) at (0,0) {Scenario};
+    \node[step, below=0.15cm of h, anchor=north west] (s) at (h.south west)
+      {A loan applicant requests \$15{,}000 for debt consolidation.
+       Employed 3 years, DTI 14.2\%, credit score 720.};
+    \node[header, below=0.35cm of s.south west, anchor=west] (hp) {Predict + Decide};
+    \node[step, below=0.15cm of hp, anchor=north west] (p) at (hp.south west)
+      {Prediction: \textbf{approve} (1)\\
+       Decision: \textbf{implement} (0)};
+    \draw[arr] (s.south) -- (hp.north -| s.south);
+    \end{tikzpicture}
+    \caption{Base}
+    \label{fig:pipe-base}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.23\textwidth}
+    \centering
+    \begin{tikzpicture}[
+      node distance=0.35cm,
+      step/.style={
+        draw, rounded corners=3pt, text width=\linewidth-12pt,
+        font=\scriptsize, inner sep=5pt, line width=0.4pt, align=left
+      },
+      redstep/.style={step, fill=red!10, draw=red!50},
+      header/.style={font=\scriptsize\bfseries, anchor=west},
+      arr/.style={-{Stealth[length=3pt]}, line width=0.4pt},
+    ]
+    \node[header] (h) at (0,0) {Scenario};
+    \node[step, below=0.15cm of h, anchor=north west] (s) at (h.south west)
+      {A loan applicant requests \$15{,}000 for debt consolidation.
+       Employed 8 years, DTI 24.1\%, credit score 705.};
+    \node[header, below=0.35cm of s.south west, anchor=west] (hp) {Predict};
+    \node[step, below=0.15cm of hp, anchor=north west] (p) at (hp.south west)
+      {The applicant has stable employment and a good credit score.
+       \textbf{Prediction: approve} (1)};
+    \node[header, below=0.35cm of p.south west, anchor=west] (hc)
+      {\textcolor{red!70}{Critique: escalation}};
+    \node[redstep, below=0.15cm of hc, anchor=north west] (c) at (hc.south west)
+      {The loan amount is significant for debt consolidation.
+       Person~1 should review the debt structure before deciding.};
+    \node[header, below=0.35cm of c.south west, anchor=west] (hd) {Decide};
+    \node[step, below=0.15cm of hd, anchor=north west] (d) at (hd.south west)
+      {Decision: \textbf{escalate} (1)};
+    \draw[arr] (s.south) -- (hp.north -| s.south);
+    \draw[arr] (p.south) -- (hc.north -| p.south);
+    \draw[arr] (c.south) -- (hd.north -| c.south);
+    \end{tikzpicture}
+    \caption{Adversarial}
+    \label{fig:pipe-adversarial}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.23\textwidth}
+    \centering
+    \begin{tikzpicture}[
+      node distance=0.35cm,
+      step/.style={
+        draw, rounded corners=3pt, text width=\linewidth-12pt,
+        font=\scriptsize, inner sep=5pt, line width=0.4pt, align=left
+      },
+      bluestep/.style={step, fill=blue!10, draw=blue!50},
+      header/.style={font=\scriptsize\bfseries, anchor=west},
+      arr/.style={-{Stealth[length=3pt]}, line width=0.4pt},
+    ]
+    \node[header] (h) at (0,0) {Scenario};
+    \node[step, below=0.15cm of h, anchor=north west] (s) at (h.south west)
+      {A loan applicant requests \$3{,}300 for debt consolidation.
+       Employed 3 years, DTI 17.8\%, credit score 720.};
+    \node[header, below=0.35cm of s.south west, anchor=west] (hp) {Predict};
+    \node[step, below=0.15cm of hp, anchor=north west] (p) at (hp.south west)
+      {The applicant has a good credit score and manageable DTI.
+       \textbf{Prediction: approve} (1)};
+    \node[header, below=0.35cm of p.south west, anchor=west] (hc)
+      {\textcolor{blue!70}{Critique: implementation}};
+    \node[bluestep, below=0.15cm of hc, anchor=north west] (c) at (hc.south west)
+      {All factors fall within standard lending criteria. The decision
+       is objective and repeatable without human review.};
+    \node[header, below=0.35cm of c.south west, anchor=west] (hd) {Decide};
+    \node[step, below=0.15cm of hd, anchor=north west] (d) at (hd.south west)
+      {Decision: \textbf{escalate} (1)};
+    \draw[arr] (s.south) -- (hp.north -| s.south);
+    \draw[arr] (p.south) -- (hc.north -| p.south);
+    \draw[arr] (c.south) -- (hd.north -| c.south);
+    \end{tikzpicture}
+    \caption{Agreeable}
+    \label{fig:pipe-agreeable}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.23\textwidth}
+    \centering
+    \begin{tikzpicture}[
+      node distance=0.35cm,
+      step/.style={
+        draw, rounded corners=3pt, text width=\linewidth-12pt,
+        font=\scriptsize, inner sep=5pt, line width=0.4pt, align=left
+      },
+      redstep/.style={step, fill=red!10, draw=red!50},
+      bluestep/.style={step, fill=blue!10, draw=blue!50},
+      header/.style={font=\scriptsize\bfseries, anchor=west},
+      arr/.style={-{Stealth[length=3pt]}, line width=0.4pt},
+    ]
+    \node[header] (h) at (0,0) {Scenario};
+    \node[step, below=0.15cm of h, anchor=north west] (s) at (h.south west)
+      {A loan applicant requests \$13{,}000 for debt consolidation.
+       Employed 10+ years, DTI 8.7\%, credit score 745.};
+    \node[header, below=0.35cm of s.south west, anchor=west] (hp) {Predict};
+    \node[step, below=0.15cm of hp, anchor=north west] (p) at (hp.south west)
+      {The applicant has a stable employment history and low DTI.
+       \textbf{Prediction: approve} (1)};
+    \node[header, below=0.35cm of p.south west, anchor=west] (hce)
+      {\textcolor{red!70}{Critique: escalation}};
+    \node[redstep, below=0.15cm of hce, anchor=north west] (ce) at (hce.south west)
+      {Debt consolidation may indicate underlying financial stress.
+       Person~1 should review the specific debts.};
+    \node[header, below=0.35cm of ce.south west, anchor=west] (hci)
+      {\textcolor{blue!70}{Critique: implementation}};
+    \node[bluestep, below=0.15cm of hci, anchor=north west] (ci) at (hci.south west)
+      {All key criteria are met: stable employment, low DTI, strong
+       credit score. Suitable for automated processing.};
+    \node[header, below=0.35cm of ci.south west, anchor=west] (hd) {Decide};
+    \node[step, below=0.15cm of hd, anchor=north west] (d) at (hd.south west)
+      {Decision: \textbf{implement} (0)};
+    \draw[arr] (s.south) -- (hp.north -| s.south);
+    \draw[arr] (p.south) -- (hce.north -| p.south);
+    \draw[arr] (ce.south) -- (hci.north -| ce.south);
+    \draw[arr] (ci.south) -- (hd.north -| ci.south);
+    \end{tikzpicture}
+    \caption{Multiagent}
+    \label{fig:pipe-multiagent}
+  \end{subfigure}
+  \caption{Example traces from the LendingClub dataset (Qwen3-8B) for each
+           reasoning pipeline. The base path predicts and decides in a single
+           step. The adversarial, agreeable, and multiagent paths insert
+           intermediate critiques: \textcolor{red!70}{red} denotes
+           escalation-focused reasoning; \textcolor{blue!70}{blue} denotes
+           implementation-focused reasoning. Despite receiving a pro-implementation
+           critique, the agreeable path still escalates, illustrating the
+           model's default tendency toward caution.}
   \label{fig:pipelines}
-\end{figure}
+\end{figure*}
 
 \subsection{Escalation}
 
@@ -384,8 +473,7 @@ The base pipeline and the agreeable pipeline produce nearly identical
 escalation rates and final accuracy, despite the agreeable pipeline
 including an explicit critique step.
 A critique oriented toward implementation rather than escalation does not
-meaningfully change the model's behavior relative to the supportive base
-path.
+meaningfully change the model's behavior relative to the base path.
 The multiagent pipeline, which receives both an adversarial and an agreeable
 critique, escalates at roughly the same low rate as the agreeable path
 alone, suggesting that the implementation-focused critique dominates when
@@ -515,12 +603,11 @@ uncertainty.
 Support is a recall task; critique is a detection task.
 The agreeable control confirms this interpretation: even when explicitly
 asked to critique, a model given an implementation-oriented frame produces
-escalation behavior indistinguishable from the supportive base path.
+escalation behavior indistinguishable from the base path.
 The default computational mode of the model is confirmation, and only an
 adversarial frame breaks out of it.
-This asymmetry explains why a minimal instruction change---one word
-distinguishing ``support'' from ``critique''---is sufficient to activate a
-qualitatively different circuit.
+This asymmetry explains why inserting a single escalation-oriented
+critique step is sufficient to activate a qualitatively different circuit.
 
 \paragraph{Information-free improvement.}
 The auditor adds no external information: no new features, no retrieved
