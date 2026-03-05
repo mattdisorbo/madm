@@ -103,10 +103,16 @@ THOUGHT_CONFIDENCE_PROMPT = (
     "Then conclude with exactly 'SOLUTION: <integer>'."
 )
 
-# -- Step 2: Evaluation prompts --
-EVAL_RESTATE = (
-    "TASK: Restate your solution and the key reasoning behind it."
+# -- Base: single-call prompt (solve + reason + decide) --
+BASE_PROMPT = (
+    "TASK: Solve this math problem step by step. Explain your reasoning. "
+    "Then conclude with exactly 'SOLUTION: <integer>'.\n"
+    "Then, respond with a digit ONLY on a new line.\n"
+    "Output 0 to implement your solution, or 1 to escalate to Person 1.\n"
+    "A decision is correct if it equals Person 1's true answer."
 )
+
+# -- Step 2: Evaluation prompts --
 EVAL_SELFCRITIC = (
     "TASK: Critique your own reasoning. What are the strengths and weaknesses of your solution?"
 )
@@ -130,6 +136,27 @@ DECISION_TASK = (
     "A decision is correct if it equals Person 1's true answer."
 )
 
+def get_base_inference(base_prompt, model):
+    """Base control: single LLM call for solve + reason + decide."""
+    try:
+        prompt_full = f"{base_prompt}\n\n{BASE_PROMPT}"
+        response = llm(prompt_full, model)
+        pred = parse_prediction(response)
+        if pred is None:
+            print(f"Parse error (pred): {response}", flush=True)
+        final_del = parse_decision(response.split("SOLUTION")[-1] if "SOLUTION" in response else response)
+        if final_del is None:
+            print(f"Parse error (decision): {response}", flush=True)
+        trace = f"[PROMPT]\n{prompt_full}\n\n[RESPONSE]\n{response}"
+        return {
+            "pred": pred, "del": final_del,
+            "thought": response, "evaluation": None,
+            "decision": response, "trace": trace,
+        }
+    except Exception as e:
+        return {"pred": None, "del": None, "thought": str(e),
+                "evaluation": None, "decision": None, "trace": str(e)}
+
 def get_inference(base_prompt, model, method):
     try:
         # Step 1: Solve + reason (+ confidence for confidence method)
@@ -142,7 +169,6 @@ def get_inference(base_prompt, model, method):
 
         # Step 2: Evaluate
         eval_prompts = {
-            "base": EVAL_RESTATE,
             "selfcritic": EVAL_SELFCRITIC,
             "confidence": EVAL_CONFIDENCE,
             "counterfactual": EVAL_COUNTERFACTUAL,
@@ -188,7 +214,10 @@ def get_inference(base_prompt, model, method):
 def call_llm(idx, row, method, model):
     base = create_prompt_base(row)
 
-    result = get_inference(base, model, method)
+    if method == "base":
+        result = get_base_inference(base, model)
+    else:
+        result = get_inference(base, model, method)
     return {
         **row,
         'prompt': base,

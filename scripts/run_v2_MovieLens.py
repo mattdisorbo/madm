@@ -168,10 +168,16 @@ THOUGHT_CONFIDENCE_PROMPT = (
     "Then conclude with exactly 'PREDICTION: 1' (first movie) or 'PREDICTION: 2' (second movie)."
 )
 
-# ── Step 2: Evaluation prompts ──
-EVAL_RESTATE = (
-    "TASK: Restate your prediction and the key reason behind it."
+# ── Base: single-call prompt (predict + reason + decide) ──
+BASE_PROMPT = (
+    "TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. "
+    "Then conclude with exactly 'PREDICTION: 1' (first movie) or 'PREDICTION: 2' (second movie).\n"
+    "Then, respond with a digit ONLY on a new line.\n"
+    "Output 0 to implement your prediction, or 1 to escalate to Person 1.\n"
+    "A decision is correct if it matches the movie Person 1 would rate higher."
 )
+
+# ── Step 2: Evaluation prompts ──
 EVAL_SELFCRITIC = (
     "TASK: Critique your own reasoning. What are the strengths and weaknesses of your prediction?"
 )
@@ -195,6 +201,27 @@ DECISION_TASK = (
     "A decision is correct if it matches the movie Person 1 would rate higher."
 )
 
+def get_base_inference(base_prompt, model):
+    """Base control: single LLM call for predict + reason + decide."""
+    try:
+        prompt_full = f"{base_prompt}\n\n{BASE_PROMPT}"
+        response = llm(prompt_full, model)
+        pred = parse_prediction(response)
+        if pred is None:
+            print(f"Parse error (pred): {response}", flush=True)
+        final_del = parse_decision(response.split("PREDICTION")[-1] if "PREDICTION" in response else response)
+        if final_del is None:
+            print(f"Parse error (decision): {response}", flush=True)
+        trace = f"[PROMPT]\n{prompt_full}\n\n[RESPONSE]\n{response}"
+        return {
+            "pred": pred, "del": final_del,
+            "thought": response, "evaluation": None,
+            "decision": response, "trace": trace,
+        }
+    except Exception as e:
+        return {"pred": None, "del": None, "thought": str(e),
+                "evaluation": None, "decision": None, "trace": str(e)}
+
 def get_inference(base_prompt, model, method):
     try:
         # Step 1: Predict + reason (+ confidence for confidence method)
@@ -207,7 +234,6 @@ def get_inference(base_prompt, model, method):
 
         # Step 2: Evaluate
         eval_prompts = {
-            "base": EVAL_RESTATE,
             "selfcritic": EVAL_SELFCRITIC,
             "confidence": EVAL_CONFIDENCE,
             "counterfactual": EVAL_COUNTERFACTUAL,
@@ -272,7 +298,10 @@ def call_llm(row_idx, method, model):
         'method': method, 'model': model,
     }
 
-    result = get_inference(base, model, method)
+    if method == "base":
+        result = get_base_inference(base, model)
+    else:
+        result = get_inference(base, model, method)
     return {
         **common,
         'llm_prediction': result['pred'],
