@@ -21,7 +21,7 @@ uv pip install --upgrade transformers typing_extensions
 
 MODEL="Qwen/Qwen3-14B"
 
-export N_SAMPLES_BASE=100
+export N_SAMPLES_CONTROL=100
 export N_SAMPLES_SELFCRITIC=100
 export N_SAMPLES_CONFIDENCE=100
 export N_SAMPLES_COUNTERFACTUAL=100

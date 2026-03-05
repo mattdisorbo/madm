@@ -12,7 +12,7 @@ QWEN_MODEL     = "Qwen/Qwen3-4B"
 if len(sys.argv) > 1:
     QWEN_MODEL = sys.argv[1]
 
-N_SAMPLES_BASE         = int(os.environ.get("N_SAMPLES_BASE", 50))
+N_SAMPLES_CONTROL         = int(os.environ.get("N_SAMPLES_CONTROL", 50))
 N_SAMPLES_SELFCRITIC   = int(os.environ.get("N_SAMPLES_SELFCRITIC", 50))
 N_SAMPLES_CONFIDENCE   = int(os.environ.get("N_SAMPLES_CONFIDENCE", 50))
 N_SAMPLES_COUNTERFACTUAL = int(os.environ.get("N_SAMPLES_COUNTERFACTUAL", 50))
@@ -311,7 +311,7 @@ def call_llm(row_idx, method, model):
         'model': model,
     }
 
-    if method == "base":
+    if method == "control":
         result = get_base_inference(base, model)
     else:
         result = get_inference(base, model, method)
@@ -331,9 +331,9 @@ os.makedirs(local_dir, exist_ok=True)
 def get_path(method, model):
     return os.path.join(local_dir, f'{method}_{model.split("/")[-1]}.csv')
 
-METHODS = ["base", "selfcritic", "confidence", "counterfactual", "evidence"]
+METHODS = ["control", "selfcritic", "confidence", "counterfactual", "evidence"]
 N_SAMPLES = {
-    "base": N_SAMPLES_BASE,
+    "control": N_SAMPLES_CONTROL,
     "selfcritic": N_SAMPLES_SELFCRITIC,
     "confidence": N_SAMPLES_CONFIDENCE,
     "counterfactual": N_SAMPLES_COUNTERFACTUAL,
