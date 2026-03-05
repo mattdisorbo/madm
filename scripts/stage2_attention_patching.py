@@ -20,8 +20,9 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 # ======================== CONFIG ========================
 
-MODEL_NAME = "Qwen/Qwen3-1.7B"
-N_SAMPLES = 15
+import sys
+MODEL_NAME = sys.argv[1] if len(sys.argv) > 1 else "Qwen/Qwen3-1.7B"
+N_SAMPLES = int(os.environ.get("N_SAMPLES", 15))
 MAX_CTX = 512
 RESERVE = 16
 
