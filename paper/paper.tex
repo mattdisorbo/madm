@@ -277,16 +277,28 @@ trace from the LendingClub dataset (Qwen3-8B).
     arr/.style={-{Stealth[length=2.5pt]}, line width=0.3pt},
   }
 
+  %% ---- Shared task and scenario ----
+  \begin{tikzpicture}
+    \node[lbl] (l0) at (0,0) {Task};
+    \node[step, right=0.2cm of l0, fill=gray!8] (s0)
+      {Predict the human loan officer's decision, then \textbf{implement} your
+       prediction or \textbf{escalate} to the officer for final review.};
+    \node[lbl, below=0.15cm of l0] (l1) {Scenario};
+    \node[step, right=0.2cm of l1, fill=gray!8] (s1)
+      {Loan: \$5{,}000 for debt consolidation. Employed 3 years, DTI 10.1\%, credit score 695.};
+    \draw[arr] ([xshift=0.4cm]s0.south west) -- ([xshift=0.4cm]s1.north west);
+  \end{tikzpicture}
+
+  \medskip
+  \hrule
+  \medskip
+
   %% ---- Base ----
   \textbf{\small (a) Base}\par\vspace{2pt}
   \begin{tikzpicture}
-    \node[lbl] (l1) at (0,0) {Scenario};
-    \node[step, right=0.2cm of l1] (s1)
-      {Loan: \$5{,}000 for debt consolidation. Employed 3 years, DTI 10.1\%, credit score 695.};
-    \node[lbl, below=0.15cm of l1] (l2) {Predict + Decide};
+    \node[lbl] (l2) at (0,0) {Predict + Decide};
     \node[step, right=0.2cm of l2] (s2)
       {Prediction: \textbf{approve}. \enspace Decision: \textbf{implement}.};
-    \draw[arr] ([xshift=0.4cm]s1.south west) -- ([xshift=0.4cm]s2.north west);
   \end{tikzpicture}
 
   \medskip
@@ -294,10 +306,7 @@ trace from the LendingClub dataset (Qwen3-8B).
   %% ---- Adversarial ----
   \textbf{\small (b) Adversarial}\par\vspace{2pt}
   \begin{tikzpicture}
-    \node[lbl] (l1) at (0,0) {Scenario};
-    \node[step, right=0.2cm of l1] (s1)
-      {Loan: \$5{,}000 for debt consolidation. Employed 3 years, DTI 10.1\%, credit score 695.};
-    \node[lbl, below=0.15cm of l1] (l2) {Predict};
+    \node[lbl] (l2) at (0,0) {Predict};
     \node[step, right=0.2cm of l2] (s2)
       {Stable employment, manageable DTI, decent credit score. \textbf{Prediction: approve.}};
     \node[lbl, below=0.15cm of l2] (l3) {\textcolor{red!70}{Critique}};
@@ -306,7 +315,6 @@ trace from the LendingClub dataset (Qwen3-8B).
     \node[lbl, below=0.15cm of l3] (l4) {Decide};
     \node[step, right=0.2cm of l4] (s4)
       {Decision: \textbf{escalate}.};
-    \draw[arr] ([xshift=0.4cm]s1.south west) -- ([xshift=0.4cm]s2.north west);
     \draw[arr] ([xshift=0.4cm]s2.south west) -- ([xshift=0.4cm]s3.north west);
     \draw[arr] ([xshift=0.4cm]s3.south west) -- ([xshift=0.4cm]s4.north west);
   \end{tikzpicture}
@@ -316,10 +324,7 @@ trace from the LendingClub dataset (Qwen3-8B).
   %% ---- Agreeable ----
   \textbf{\small (c) Agreeable}\par\vspace{2pt}
   \begin{tikzpicture}
-    \node[lbl] (l1) at (0,0) {Scenario};
-    \node[step, right=0.2cm of l1] (s1)
-      {Loan: \$5{,}000 for debt consolidation. Employed 3 years, DTI 10.1\%, credit score 695.};
-    \node[lbl, below=0.15cm of l1] (l2) {Predict};
+    \node[lbl] (l2) at (0,0) {Predict};
     \node[step, right=0.2cm of l2] (s2)
       {Stable employment, manageable DTI, decent credit score. \textbf{Prediction: approve.}};
     \node[lbl, below=0.15cm of l2] (l3) {\textcolor{blue!70}{Critique}};
@@ -328,7 +333,6 @@ trace from the LendingClub dataset (Qwen3-8B).
     \node[lbl, below=0.15cm of l3] (l4) {Decide};
     \node[step, right=0.2cm of l4] (s4)
       {Decision: \textbf{implement}.};
-    \draw[arr] ([xshift=0.4cm]s1.south west) -- ([xshift=0.4cm]s2.north west);
     \draw[arr] ([xshift=0.4cm]s2.south west) -- ([xshift=0.4cm]s3.north west);
     \draw[arr] ([xshift=0.4cm]s3.south west) -- ([xshift=0.4cm]s4.north west);
   \end{tikzpicture}
@@ -338,10 +342,7 @@ trace from the LendingClub dataset (Qwen3-8B).
   %% ---- Multiagent ----
   \textbf{\small (d) Multiagent}\par\vspace{2pt}
   \begin{tikzpicture}
-    \node[lbl] (l1) at (0,0) {Scenario};
-    \node[step, right=0.2cm of l1] (s1)
-      {Loan: \$5{,}000 for debt consolidation. Employed 3 years, DTI 10.1\%, credit score 695.};
-    \node[lbl, below=0.15cm of l1] (l2) {Predict};
+    \node[lbl] (l2) at (0,0) {Predict};
     \node[step, right=0.2cm of l2] (s2)
       {Stable employment, manageable DTI, decent credit score. \textbf{Prediction: approve.}};
     \node[lbl, below=0.15cm of l2] (l3) {\textcolor{red!70}{Critique 1}};
@@ -353,20 +354,20 @@ trace from the LendingClub dataset (Qwen3-8B).
     \node[lbl, below=0.15cm of l4] (l5) {Decide};
     \node[step, right=0.2cm of l5] (s5)
       {Decision: \textbf{implement}.};
-    \draw[arr] ([xshift=0.4cm]s1.south west) -- ([xshift=0.4cm]s2.north west);
     \draw[arr] ([xshift=0.4cm]s2.south west) -- ([xshift=0.4cm]s3.north west);
     \draw[arr] ([xshift=0.4cm]s3.south west) -- ([xshift=0.4cm]s4.north west);
     \draw[arr] ([xshift=0.4cm]s4.south west) -- ([xshift=0.4cm]s5.north west);
   \end{tikzpicture}
 
   \caption{Illustrative traces for a LendingClub applicant under each
-           pipeline. This example was constructed from representative model
-           outputs to show all four methods on the same input; actual
-           experiments sample independently per method. All four predict
-           \emph{approve}, but only the adversarial path escalates.
-           \textcolor{red!70}{Red} denotes escalation-focused critique;
-           \textcolor{blue!70}{blue} denotes implementation-focused critique.
-           The base path has no intermediate critique.}
+           pipeline, constructed from representative Qwen3-8B outputs
+           (actual experiments sample independently per method).
+           The model predicts the human officer's decision, then implements
+           or escalates. All four methods predict \emph{approve}, but only
+           the adversarial path escalates.
+           \textcolor{red!70}{Red} = escalation-focused critique;
+           \textcolor{blue!70}{blue} = implementation-focused critique.
+           Critique text is abridged.}
   \label{fig:pipelines}
 \end{figure*}
 
