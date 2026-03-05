@@ -268,107 +268,106 @@ trace from the LendingClub dataset (Qwen3-8B).
   \centering
   \tikzset{
     step/.style={
-      draw, rounded corners=3pt, font=\footnotesize,
-      inner sep=5pt, line width=0.4pt, align=left, text width=11.2cm
+      draw, rounded corners=2pt, font=\scriptsize,
+      inner sep=3pt, line width=0.3pt, align=left, text width=11.5cm
     },
     redstep/.style={step, fill=red!10, draw=red!50},
     bluestep/.style={step, fill=blue!10, draw=blue!50},
-    lbl/.style={font=\footnotesize\bfseries, text width=2.8cm, align=right, anchor=east},
-    arr/.style={-{Stealth[length=3pt]}, line width=0.4pt},
+    lbl/.style={font=\scriptsize\bfseries, text width=2.2cm, align=right, anchor=east},
+    arr/.style={-{Stealth[length=2.5pt]}, line width=0.3pt},
   }
 
   %% ---- Base ----
-  \textbf{(a) Base}\par\smallskip
+  \textbf{\small (a) Base}\par\vspace{2pt}
   \begin{tikzpicture}
     \node[lbl] (l1) at (0,0) {Scenario};
-    \node[step, right=0.3cm of l1] (s1)
-      {A loan applicant requests \$7{,}950 for debt consolidation.\\
+    \node[step, right=0.2cm of l1] (s1)
+      {A loan applicant requests \$7{,}950 for debt consolidation.
        DTI 20.5\%, credit score 700.};
-    \node[lbl, below=0.3cm of l1] (l2) {Predict + Decide};
-    \node[step, right=0.3cm of l2] (s2)
-      {Prediction: \textbf{approve} (1).\\
-       Decision: \textbf{implement} (0).};
-    \draw[arr] ([xshift=0.5cm]s1.south west) -- ([xshift=0.5cm]s2.north west);
+    \node[lbl, below=0.15cm of l1] (l2) {Predict + Decide};
+    \node[step, right=0.2cm of l2] (s2)
+      {Prediction: \textbf{approve} (1). \enspace Decision: \textbf{implement} (0).};
+    \draw[arr] ([xshift=0.4cm]s1.south west) -- ([xshift=0.4cm]s2.north west);
   \end{tikzpicture}
 
-  \bigskip
+  \medskip
 
   %% ---- Adversarial ----
-  \textbf{(b) Adversarial}\par\smallskip
+  \textbf{\small (b) Adversarial}\par\vspace{2pt}
   \begin{tikzpicture}
     \node[lbl] (l1) at (0,0) {Scenario};
-    \node[step, right=0.3cm of l1] (s1)
-      {A loan applicant requests \$5{,}000 for debt consolidation.\\
+    \node[step, right=0.2cm of l1] (s1)
+      {A loan applicant requests \$5{,}000 for debt consolidation.
        Employed 3 years, DTI 10.1\%, credit score 695.};
-    \node[lbl, below=0.3cm of l1] (l2) {Predict};
-    \node[step, right=0.3cm of l2] (s2)
-      {The applicant has stable employment, a manageable DTI, and a decent credit score.\\
+    \node[lbl, below=0.15cm of l1] (l2) {Predict};
+    \node[step, right=0.2cm of l2] (s2)
+      {The applicant has stable employment, a manageable DTI, and a decent credit score.
        \textbf{Prediction: approve} (1).};
-    \node[lbl, below=0.3cm of l2] (l3) {\textcolor{red!70}{Critique}};
-    \node[redstep, right=0.3cm of l3] (s3)
-      {The DTI of 10.1\% may not reflect the full financial picture.\\
+    \node[lbl, below=0.15cm of l2] (l3) {\textcolor{red!70}{Critique}};
+    \node[redstep, right=0.2cm of l3] (s3)
+      {The DTI of 10.1\% may not reflect the full financial picture.
        Person~1 should review savings, emergency funds, and income stability.};
-    \node[lbl, below=0.3cm of l3] (l4) {Decide};
-    \node[step, right=0.3cm of l4] (s4)
+    \node[lbl, below=0.15cm of l3] (l4) {Decide};
+    \node[step, right=0.2cm of l4] (s4)
       {Decision: \textbf{escalate} (1).};
-    \draw[arr] ([xshift=0.5cm]s1.south west) -- ([xshift=0.5cm]s2.north west);
-    \draw[arr] ([xshift=0.5cm]s2.south west) -- ([xshift=0.5cm]s3.north west);
-    \draw[arr] ([xshift=0.5cm]s3.south west) -- ([xshift=0.5cm]s4.north west);
+    \draw[arr] ([xshift=0.4cm]s1.south west) -- ([xshift=0.4cm]s2.north west);
+    \draw[arr] ([xshift=0.4cm]s2.south west) -- ([xshift=0.4cm]s3.north west);
+    \draw[arr] ([xshift=0.4cm]s3.south west) -- ([xshift=0.4cm]s4.north west);
   \end{tikzpicture}
 
-  \bigskip
+  \medskip
 
   %% ---- Agreeable ----
-  \textbf{(c) Agreeable}\par\smallskip
+  \textbf{\small (c) Agreeable}\par\vspace{2pt}
   \begin{tikzpicture}
     \node[lbl] (l1) at (0,0) {Scenario};
-    \node[step, right=0.3cm of l1] (s1)
-      {A loan applicant requests \$13{,}000 for debt consolidation.\\
+    \node[step, right=0.2cm of l1] (s1)
+      {A loan applicant requests \$13{,}000 for debt consolidation.
        Employed 1 year, DTI 9.5\%, credit score 700.};
-    \node[lbl, below=0.3cm of l1] (l2) {Predict};
-    \node[step, right=0.3cm of l2] (s2)
-      {The applicant has a low DTI, a reasonable credit score, and stable employment.\\
+    \node[lbl, below=0.15cm of l1] (l2) {Predict};
+    \node[step, right=0.2cm of l2] (s2)
+      {The applicant has a low DTI, a reasonable credit score, and stable employment.
        \textbf{Prediction: approve} (1).};
-    \node[lbl, below=0.3cm of l2] (l3) {\textcolor{blue!70}{Critique}};
-    \node[bluestep, right=0.3cm of l3] (s3)
-      {The applicant meets standard lending criteria with low default risk.\\
+    \node[lbl, below=0.15cm of l2] (l3) {\textcolor{blue!70}{Critique}};
+    \node[bluestep, right=0.2cm of l3] (s3)
+      {The applicant meets standard lending criteria with low default risk.
        The decision is straightforward and suitable for automated approval.};
-    \node[lbl, below=0.3cm of l3] (l4) {Decide};
-    \node[step, right=0.3cm of l4] (s4)
+    \node[lbl, below=0.15cm of l3] (l4) {Decide};
+    \node[step, right=0.2cm of l4] (s4)
       {Decision: \textbf{implement} (0).};
-    \draw[arr] ([xshift=0.5cm]s1.south west) -- ([xshift=0.5cm]s2.north west);
-    \draw[arr] ([xshift=0.5cm]s2.south west) -- ([xshift=0.5cm]s3.north west);
-    \draw[arr] ([xshift=0.5cm]s3.south west) -- ([xshift=0.5cm]s4.north west);
+    \draw[arr] ([xshift=0.4cm]s1.south west) -- ([xshift=0.4cm]s2.north west);
+    \draw[arr] ([xshift=0.4cm]s2.south west) -- ([xshift=0.4cm]s3.north west);
+    \draw[arr] ([xshift=0.4cm]s3.south west) -- ([xshift=0.4cm]s4.north west);
   \end{tikzpicture}
 
-  \bigskip
+  \medskip
 
   %% ---- Multiagent ----
-  \textbf{(d) Multiagent}\par\smallskip
+  \textbf{\small (d) Multiagent}\par\vspace{2pt}
   \begin{tikzpicture}
     \node[lbl] (l1) at (0,0) {Scenario};
-    \node[step, right=0.3cm of l1] (s1)
-      {A loan applicant requests \$8{,}400 for debt consolidation.\\
+    \node[step, right=0.2cm of l1] (s1)
+      {A loan applicant requests \$8{,}400 for debt consolidation.
        Employed 8 years, DTI 38.0\%, credit score 660.};
-    \node[lbl, below=0.3cm of l1] (l2) {Predict};
-    \node[step, right=0.3cm of l2] (s2)
-      {The applicant has stable employment and moderate creditworthiness.\\
+    \node[lbl, below=0.15cm of l1] (l2) {Predict};
+    \node[step, right=0.2cm of l2] (s2)
+      {The applicant has stable employment and moderate creditworthiness.
        \textbf{Prediction: approve} (1).};
-    \node[lbl, below=0.3cm of l2] (l3) {\textcolor{red!70}{Critique 1}};
-    \node[redstep, right=0.3cm of l3] (s3)
-      {The DTI of 38.0\% is relatively high, suggesting limited capacity for new debt.\\
+    \node[lbl, below=0.15cm of l2] (l3) {\textcolor{red!70}{Critique 1}};
+    \node[redstep, right=0.2cm of l3] (s3)
+      {The DTI of 38.0\% is high, suggesting limited capacity for new debt.
        Person~1 should review existing debts before deciding.};
-    \node[lbl, below=0.3cm of l3] (l4) {\textcolor{blue!70}{Critique 2}};
-    \node[bluestep, right=0.3cm of l4] (s4)
-      {The applicant meets standard criteria: 8 years employed, DTI below 40\%, score of 660.\\
-       Consistent with standard underwriting guidelines for automated approval.};
-    \node[lbl, below=0.3cm of l4] (l5) {Decide};
-    \node[step, right=0.3cm of l5] (s5)
+    \node[lbl, below=0.15cm of l3] (l4) {\textcolor{blue!70}{Critique 2}};
+    \node[bluestep, right=0.2cm of l4] (s4)
+      {The applicant meets standard criteria: 8 years employed, DTI below 40\%, score of 660.
+       Consistent with underwriting guidelines for automated approval.};
+    \node[lbl, below=0.15cm of l4] (l5) {Decide};
+    \node[step, right=0.2cm of l5] (s5)
       {Decision: \textbf{implement} (0).};
-    \draw[arr] ([xshift=0.5cm]s1.south west) -- ([xshift=0.5cm]s2.north west);
-    \draw[arr] ([xshift=0.5cm]s2.south west) -- ([xshift=0.5cm]s3.north west);
-    \draw[arr] ([xshift=0.5cm]s3.south west) -- ([xshift=0.5cm]s4.north west);
-    \draw[arr] ([xshift=0.5cm]s4.south west) -- ([xshift=0.5cm]s5.north west);
+    \draw[arr] ([xshift=0.4cm]s1.south west) -- ([xshift=0.4cm]s2.north west);
+    \draw[arr] ([xshift=0.4cm]s2.south west) -- ([xshift=0.4cm]s3.north west);
+    \draw[arr] ([xshift=0.4cm]s3.south west) -- ([xshift=0.4cm]s4.north west);
+    \draw[arr] ([xshift=0.4cm]s4.south west) -- ([xshift=0.4cm]s5.north west);
   \end{tikzpicture}
 
   \caption{Example traces from the LendingClub dataset (Qwen3-8B). All four
