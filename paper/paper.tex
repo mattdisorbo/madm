@@ -269,11 +269,11 @@ trace from the LendingClub dataset (Qwen3-8B).
   \tikzset{
     step/.style={
       draw, rounded corners=3pt, font=\footnotesize,
-      inner sep=5pt, line width=0.4pt, align=left, text width=12.5cm
+      inner sep=5pt, line width=0.4pt, align=left, text width=11.2cm
     },
     redstep/.style={step, fill=red!10, draw=red!50},
     bluestep/.style={step, fill=blue!10, draw=blue!50},
-    lbl/.style={font=\footnotesize\bfseries, text width=2cm, align=right, anchor=east},
+    lbl/.style={font=\footnotesize\bfseries, text width=2.8cm, align=right, anchor=east},
     arr/.style={-{Stealth[length=3pt]}, line width=0.4pt},
   }
 
@@ -282,11 +282,12 @@ trace from the LendingClub dataset (Qwen3-8B).
   \begin{tikzpicture}
     \node[lbl] (l1) at (0,0) {Scenario};
     \node[step, right=0.3cm of l1] (s1)
-      {A loan applicant requests \$15{,}000 for debt consolidation.
-       Employed 3 years, DTI 14.2\%, credit score 720.};
+      {A loan applicant requests \$7{,}950 for debt consolidation.\\
+       DTI 20.5\%, credit score 700.};
     \node[lbl, below=0.3cm of l1] (l2) {Predict + Decide};
     \node[step, right=0.3cm of l2] (s2)
-      {Prediction: \textbf{approve} (1). \quad Decision: \textbf{implement} (0).};
+      {Prediction: \textbf{approve} (1).\\
+       Decision: \textbf{implement} (0).};
     \draw[arr] ([xshift=0.5cm]s1.south west) -- ([xshift=0.5cm]s2.north west);
   \end{tikzpicture}
 
@@ -297,16 +298,16 @@ trace from the LendingClub dataset (Qwen3-8B).
   \begin{tikzpicture}
     \node[lbl] (l1) at (0,0) {Scenario};
     \node[step, right=0.3cm of l1] (s1)
-      {A loan applicant requests \$15{,}000 for debt consolidation.
-       Employed 8 years, DTI 24.1\%, credit score 705.};
+      {A loan applicant requests \$5{,}000 for debt consolidation.\\
+       Employed 3 years, DTI 10.1\%, credit score 695.};
     \node[lbl, below=0.3cm of l1] (l2) {Predict};
     \node[step, right=0.3cm of l2] (s2)
-      {The applicant has stable employment and a good credit score.
+      {The applicant has stable employment, a manageable DTI, and a decent credit score.\\
        \textbf{Prediction: approve} (1).};
     \node[lbl, below=0.3cm of l2] (l3) {\textcolor{red!70}{Critique}};
     \node[redstep, right=0.3cm of l3] (s3)
-      {The loan amount is significant for debt consolidation.
-       Person~1 should review the debt structure before deciding.};
+      {The DTI of 10.1\% may not reflect the full financial picture.\\
+       Person~1 should review savings, emergency funds, and income stability.};
     \node[lbl, below=0.3cm of l3] (l4) {Decide};
     \node[step, right=0.3cm of l4] (s4)
       {Decision: \textbf{escalate} (1).};
@@ -322,19 +323,19 @@ trace from the LendingClub dataset (Qwen3-8B).
   \begin{tikzpicture}
     \node[lbl] (l1) at (0,0) {Scenario};
     \node[step, right=0.3cm of l1] (s1)
-      {A loan applicant requests \$3{,}300 for debt consolidation.
-       Employed 3 years, DTI 17.8\%, credit score 720.};
+      {A loan applicant requests \$13{,}000 for debt consolidation.\\
+       Employed 1 year, DTI 9.5\%, credit score 700.};
     \node[lbl, below=0.3cm of l1] (l2) {Predict};
     \node[step, right=0.3cm of l2] (s2)
-      {The applicant has a good credit score and manageable DTI.
+      {The applicant has a low DTI, a reasonable credit score, and stable employment.\\
        \textbf{Prediction: approve} (1).};
     \node[lbl, below=0.3cm of l2] (l3) {\textcolor{blue!70}{Critique}};
     \node[bluestep, right=0.3cm of l3] (s3)
-      {All factors fall within standard lending criteria. The decision
-       is objective and repeatable without human review.};
+      {The applicant meets standard lending criteria with low default risk.\\
+       The decision is straightforward and suitable for automated approval.};
     \node[lbl, below=0.3cm of l3] (l4) {Decide};
     \node[step, right=0.3cm of l4] (s4)
-      {Decision: \textbf{escalate} (1).};
+      {Decision: \textbf{implement} (0).};
     \draw[arr] ([xshift=0.5cm]s1.south west) -- ([xshift=0.5cm]s2.north west);
     \draw[arr] ([xshift=0.5cm]s2.south west) -- ([xshift=0.5cm]s3.north west);
     \draw[arr] ([xshift=0.5cm]s3.south west) -- ([xshift=0.5cm]s4.north west);
@@ -347,20 +348,20 @@ trace from the LendingClub dataset (Qwen3-8B).
   \begin{tikzpicture}
     \node[lbl] (l1) at (0,0) {Scenario};
     \node[step, right=0.3cm of l1] (s1)
-      {A loan applicant requests \$13{,}000 for debt consolidation.
-       Employed 10+ years, DTI 8.7\%, credit score 745.};
+      {A loan applicant requests \$8{,}400 for debt consolidation.\\
+       Employed 8 years, DTI 38.0\%, credit score 660.};
     \node[lbl, below=0.3cm of l1] (l2) {Predict};
     \node[step, right=0.3cm of l2] (s2)
-      {The applicant has a stable employment history and low DTI.
+      {The applicant has stable employment and moderate creditworthiness.\\
        \textbf{Prediction: approve} (1).};
     \node[lbl, below=0.3cm of l2] (l3) {\textcolor{red!70}{Critique 1}};
     \node[redstep, right=0.3cm of l3] (s3)
-      {Debt consolidation may indicate underlying financial stress.
-       Person~1 should review the specific debts.};
+      {The DTI of 38.0\% is relatively high, suggesting limited capacity for new debt.\\
+       Person~1 should review existing debts before deciding.};
     \node[lbl, below=0.3cm of l3] (l4) {\textcolor{blue!70}{Critique 2}};
     \node[bluestep, right=0.3cm of l4] (s4)
-      {All key criteria are met: stable employment, low DTI, strong
-       credit score. Suitable for automated processing.};
+      {The applicant meets standard criteria: 8 years employed, DTI below 40\%, score of 660.\\
+       Consistent with standard underwriting guidelines for automated approval.};
     \node[lbl, below=0.3cm of l4] (l5) {Decide};
     \node[step, right=0.3cm of l5] (s5)
       {Decision: \textbf{implement} (0).};
@@ -370,14 +371,12 @@ trace from the LendingClub dataset (Qwen3-8B).
     \draw[arr] ([xshift=0.5cm]s4.south west) -- ([xshift=0.5cm]s5.north west);
   \end{tikzpicture}
 
-  \caption{Example traces from the LendingClub dataset (Qwen3-8B) for each
-           reasoning pipeline. The base path predicts and decides in a single
-           step. The adversarial, agreeable, and multiagent paths insert
-           intermediate critiques: \textcolor{red!70}{red} denotes
-           escalation-focused reasoning; \textcolor{blue!70}{blue} denotes
-           implementation-focused reasoning. Despite receiving a pro-implementation
-           critique, the agreeable path still escalates, illustrating the
-           model's default tendency toward caution.}
+  \caption{Example traces from the LendingClub dataset (Qwen3-8B). All four
+           pipelines predict \emph{approve}, but only the adversarial path
+           escalates to human review. \textcolor{red!70}{Red} denotes
+           escalation-focused critique; \textcolor{blue!70}{blue} denotes
+           implementation-focused critique. The base path has no intermediate
+           critique and decides in a single step.}
   \label{fig:pipelines}
 \end{figure*}
 
