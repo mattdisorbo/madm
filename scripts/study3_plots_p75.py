@@ -86,7 +86,6 @@ print(f'Saved pred_accuracy_vs_base_rate_{MODEL}_p75.png')
 # Plot 2: Escalation Rate vs. Hint Strength (75% threshold)
 # ══════════════════════════════════════════════════════════════════════════════
 fig, ax = plt.subplots(figsize=(8, 6))
-ax.plot([0, 1], [1, 0], 'k--', alpha=0.4, label='1 - base rate')
 for ds in ['LendingClub', 'HotelBookings', 'MoralMachine', 'WikipediaToxicity']:
     if ds not in datasets:
         continue
