@@ -94,8 +94,8 @@ for ds in ['LendingClub', 'HotelBookings', 'MoralMachine', 'WikipediaToxicity']:
     y = [r['esc_rate'] for r in rows]
     se = [r['esc_se'] for r in rows]
     ax.errorbar(x, y, yerr=se, marker='o', capsize=3, label=ds, color=COLORS[ds])
-ax.axvline(0.75, color='k', linestyle=':', alpha=0.4, label='75% base rate')
-ax.axhline(0.50, color='k', linestyle=':', alpha=0.4, label='50% escalation threshold')
+ax.axvline(0.75, color='black', linestyle=':', linewidth=1.5, label='75% base rate')
+ax.axhline(0.50, color='black', linestyle=':', linewidth=1.5, label='50% escalation threshold')
 ax.set_xlabel('Base Rate (Hint Strength)')
 ax.set_ylabel('Escalation Rate')
 ax.set_title(f'Escalation Rate vs. Hint Strength ({MODEL})')
