@@ -8,25 +8,32 @@ import openai
 
 DATASET = os.environ.get("DATASET", "HotelBookings")
 MODEL = os.environ.get("MODEL", "Qwen/Qwen3.5-9B")
+PROVIDER = os.environ.get("PROVIDER", "together")  # "together" or "openai"
 N_PER_CONDITION = int(os.environ.get("N_PER_CONDITION", "250"))
 WORKERS = int(os.environ.get("WORKERS", "20"))
-COT = os.environ.get("COT", "1") == "1"
+THINKING = os.environ.get("THINKING", "0") == "1"
 COST_RATIO = os.environ.get("COST_RATIO", "")  # e.g. "4" means c_w/c_e = 4
 OUTPUT_DIR = "results/study3"
 
-client = openai.OpenAI(
-    api_key=os.environ["TOGETHER_API_KEY"],
-    base_url="https://api.together.xyz/v1",
-)
+if PROVIDER == "openai":
+    client = openai.OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+else:
+    client = openai.OpenAI(
+        api_key=os.environ["TOGETHER_API_KEY"],
+        base_url="https://api.together.xyz/v1",
+    )
 
 # ============================================================
-# LLM helpers (thinking ON)
+# LLM helpers
 # ============================================================
 def llm(messages, max_tokens=256):
     """Returns (content, thinking) tuple."""
     if isinstance(messages, str):
         messages = [{"role": "user", "content": messages}]
     kwargs = dict(model=MODEL, messages=messages, max_tokens=max_tokens)
+    # Disable thinking for Qwen3.5 models on Together when THINKING is off
+    if not THINKING and PROVIDER == "together" and "Qwen3.5" in MODEL:
+        kwargs["extra_body"] = {"chat_template_kwargs": {"enable_thinking": False}}
     r = client.chat.completions.create(**kwargs)
     msg = r.choices[0].message
     text = (msg.content or "").strip()
@@ -618,7 +625,8 @@ DATASETS = {
 def process_sample(scenario, gt, hint, predict_prompt, escalate_prompt):
     try:
         prompt = f"{scenario}\n\n{hint}\n\n{predict_prompt}"
-        thought, think_predict = llm(prompt, max_tokens=16384)
+        max_tok = 16384 if THINKING else 512
+        thought, think_predict = llm(prompt, max_tokens=max_tok)
         pred = parse_prediction(thought)
         if pred is None:
             return None
@@ -638,7 +646,7 @@ def process_sample(scenario, gt, hint, predict_prompt, escalate_prompt):
             {"role": "user", "content": prompt},
             {"role": "assistant", "content": thought},
             {"role": "user", "content": esc_prompt_full},
-        ], max_tokens=16384)
+        ], max_tokens=max_tok)
         esc = parse_escalation_cot(esc_text)
         if esc is None:
             return None
@@ -669,7 +677,8 @@ if __name__ == "__main__":
     ds = DATASETS[DATASET]
     print(f"Dataset: {DATASET}")
     print(f"Model: {MODEL}")
-    print(f"Mode: cot (thinking ON)")
+    print(f"Provider: {PROVIDER}")
+    print(f"Thinking: {'ON' if THINKING else 'OFF'}")
     print(f"Cost ratio: {COST_RATIO or 'none (baseline)'}")
     print(f"N per condition: {N_PER_CONDITION}")
     print(f"Workers: {WORKERS}")
@@ -693,7 +702,8 @@ if __name__ == "__main__":
         base_rate = cond["base_rate"]
 
         cost_tag = f"_cost{COST_RATIO}" if COST_RATIO else ""
-        out_path = f"{OUTPUT_DIR}/{DATASET}_{name}{cost_tag}_{model_short}.csv"
+        think_tag = "" if THINKING else "_nothink"
+        out_path = f"{OUTPUT_DIR}/{DATASET}_{name}{cost_tag}{think_tag}_{model_short}.csv"
         if os.path.exists(out_path):
             print(f"\n  Skipping {name} (already exists: {out_path})")
             continue
@@ -764,7 +774,8 @@ if __name__ == "__main__":
 
     summary = pd.DataFrame(summary_rows)
     cost_tag = f"_cost{COST_RATIO}" if COST_RATIO else ""
-    summary.to_csv(f"{OUTPUT_DIR}/{DATASET}_summary{cost_tag}_{model_short}.csv", index=False)
+    think_tag = "" if THINKING else "_nothink"
+    summary.to_csv(f"{OUTPUT_DIR}/{DATASET}_summary{cost_tag}{think_tag}_{model_short}.csv", index=False)
     print(f"\n\n{'='*60}")
     print("SUMMARY")
     print(f"{'='*60}")
