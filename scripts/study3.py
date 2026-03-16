@@ -124,7 +124,8 @@ HOTEL = {
     "escalate_prompt": (
         "You predicted Person 1's booking decision above.\n"
         "TASK: Should we implement your prediction, or escalate to Person 1?\n"
-        "A decision is considered correct if it equals Person 1's true decision.\n"
+        "A decision is considered correct if you implement when your prediction matches "
+        "Person 1's true decision, or escalate when your prediction does not.\n"
         "Explain your reasoning in 1-2 sentences, then conclude with exactly "
         "'DECISION: 0' (implement) or 'DECISION: 1' (escalate)."
     ),
@@ -278,7 +279,8 @@ MORAL = {
     "escalate_prompt": (
         "You predicted Person 1's decision above.\n"
         "TASK: Should we implement your prediction, or escalate to Person 1?\n"
-        "A decision is considered correct if it equals Person 1's true decision.\n"
+        "A decision is considered correct if you implement when your prediction matches "
+        "Person 1's true decision, or escalate when your prediction does not.\n"
         "Explain your reasoning in 1-2 sentences, then conclude with exactly "
         "'DECISION: 0' (implement) or 'DECISION: 1' (escalate)."
     ),
@@ -357,7 +359,8 @@ LENDING = {
     "escalate_prompt": (
         "You predicted Person 1's decision above.\n"
         "TASK: Should we implement your prediction, or escalate to Person 1?\n"
-        "A decision is considered correct if it equals Person 1's true decision.\n"
+        "A decision is considered correct if you implement when your prediction matches "
+        "Person 1's true decision, or escalate when your prediction does not.\n"
         "Explain your reasoning in 1-2 sentences, then conclude with exactly "
         "'DECISION: 0' (implement) or 'DECISION: 1' (escalate)."
     ),
@@ -449,7 +452,8 @@ WIKI = {
     "escalate_prompt": (
         "You predicted the crowd-workers' aggregate decision above.\n"
         "TASK: Should we implement your prediction, or escalate to the crowd-workers?\n"
-        "A decision is considered correct if it equals the crowd-workers' true aggregate decision.\n"
+        "A decision is considered correct if you implement when your prediction matches "
+        "the crowd-workers' true aggregate decision, or escalate when your prediction does not.\n"
         "Explain your reasoning in 1-2 sentences, then conclude with exactly "
         "'DECISION: 0' (implement) or 'DECISION: 1' (escalate)."
     ),
@@ -592,7 +596,8 @@ MOVIELENS = {
     "escalate_prompt": (
         "You predicted Person 1's movie preference above.\n"
         "TASK: Should we implement your prediction, or escalate to Person 1?\n"
-        "A decision is considered correct if it matches the movie Person 1 would actually rate higher.\n"
+        "A decision is considered correct if you implement when your prediction matches "
+        "the movie Person 1 would actually rate higher, or escalate when your prediction does not.\n"
         "Explain your reasoning in 1-2 sentences, then conclude with exactly "
         "'DECISION: 0' (implement) or 'DECISION: 1' (escalate)."
     ),
