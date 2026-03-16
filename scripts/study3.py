@@ -12,6 +12,7 @@ PROVIDER = os.environ.get("PROVIDER", "together")  # "together" or "openai"
 N_PER_CONDITION = int(os.environ.get("N_PER_CONDITION", "250"))
 WORKERS = int(os.environ.get("WORKERS", "20"))
 THINKING = os.environ.get("THINKING", "0") == "1"
+NOHINT = os.environ.get("NOHINT", "0") == "1"
 COST_RATIO = os.environ.get("COST_RATIO", "")  # e.g. "4" means c_w/c_e = 4
 OUTPUT_DIR = "results/study3"
 
@@ -624,7 +625,10 @@ DATASETS = {
 # ============================================================
 def process_sample(scenario, gt, hint, predict_prompt, escalate_prompt):
     try:
-        prompt = f"{scenario}\n\n{hint}\n\n{predict_prompt}"
+        if NOHINT:
+            prompt = f"{scenario}\n\n{predict_prompt}"
+        else:
+            prompt = f"{scenario}\n\n{hint}\n\n{predict_prompt}"
         max_tok = 16384 if THINKING else 512
         thought, think_predict = llm(prompt, max_tokens=max_tok)
         pred = parse_prediction(thought)
@@ -679,6 +683,7 @@ if __name__ == "__main__":
     print(f"Model: {MODEL}")
     print(f"Provider: {PROVIDER}")
     print(f"Thinking: {'ON' if THINKING else 'OFF'}")
+    print(f"Hint: {'OFF' if NOHINT else 'ON'}")
     print(f"Cost ratio: {COST_RATIO or 'none (baseline)'}")
     print(f"N per condition: {N_PER_CONDITION}")
     print(f"Workers: {WORKERS}")
@@ -703,7 +708,8 @@ if __name__ == "__main__":
 
         cost_tag = f"_cost{COST_RATIO}" if COST_RATIO else ""
         think_tag = "_think" if THINKING else "_nothink"
-        out_path = f"{OUTPUT_DIR}/{DATASET}_{name}{cost_tag}{think_tag}_{model_short}.csv"
+        hint_tag = "_nohint" if NOHINT else ""
+        out_path = f"{OUTPUT_DIR}/{DATASET}_{name}{cost_tag}{think_tag}{hint_tag}_{model_short}.csv"
         if os.path.exists(out_path):
             print(f"\n  Skipping {name} (already exists: {out_path})")
             continue
@@ -775,7 +781,8 @@ if __name__ == "__main__":
     summary = pd.DataFrame(summary_rows)
     cost_tag = f"_cost{COST_RATIO}" if COST_RATIO else ""
     think_tag = "_think" if THINKING else "_nothink"
-    summary.to_csv(f"{OUTPUT_DIR}/{DATASET}_summary{cost_tag}{think_tag}_{model_short}.csv", index=False)
+    hint_tag = "_nohint" if NOHINT else ""
+    summary.to_csv(f"{OUTPUT_DIR}/{DATASET}_summary{cost_tag}{think_tag}{hint_tag}_{model_short}.csv", index=False)
     print(f"\n\n{'='*60}")
     print("SUMMARY")
     print(f"{'='*60}")
