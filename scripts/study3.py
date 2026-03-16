@@ -640,10 +640,8 @@ def process_sample(scenario, gt, hint, predict_prompt, escalate_prompt):
         if COST_RATIO:
             ratio = int(COST_RATIO)
             esc_prompt_full = (
-                f"The labor cost of escalating to a human is c_l = 1. "
-                f"The cost of implementing a wrong answer is c_w = {ratio}. "
-                f"A wrong implementation costs {ratio}x more than escalation."
-                f"\n\n{escalate_prompt}"
+                f"Implementing a wrong answer costs {ratio}x more than escalating.\n\n"
+                f"{escalate_prompt}"
             )
 
         esc_text, think_escalate = llm([
