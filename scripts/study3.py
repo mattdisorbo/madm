@@ -612,7 +612,7 @@ DATASETS = {
 # ============================================================
 def process_sample(scenario, gt, hint, predict_prompt, escalate_prompt):
     try:
-        prompt = f"{scenario}\n\nHINT: {hint}\n\n{predict_prompt}"
+        prompt = f"{scenario}\n\n{hint}\n\n{predict_prompt}"
         thought, think_predict = llm(prompt, max_tokens=16384)
         pred = parse_prediction(thought)
         if pred is None:
