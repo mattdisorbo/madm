@@ -658,6 +658,8 @@ def process_sample(scenario, gt, hint, predict_prompt, escalate_prompt):
             "prediction": pred,
             "correct": int(pred == gt),
             "escalate": esc,
+            "prompt": prompt,
+            "esc_prompt": esc_prompt_full,
             "thought": thought,
             "esc_reasoning": esc_text,
             "thinking_predict": think_predict,
