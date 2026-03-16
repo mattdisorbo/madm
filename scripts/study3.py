@@ -629,7 +629,7 @@ def process_sample(scenario, gt, hint, predict_prompt, escalate_prompt):
             prompt = f"{scenario}\n\n{predict_prompt}"
         else:
             prompt = f"{scenario}\n\n{hint}\n\n{predict_prompt}"
-        max_tok = 16384 if THINKING else 512
+        max_tok = 4096 if THINKING else 512
         thought, think_predict = llm(prompt, max_tokens=max_tok)
         pred = parse_prediction(thought)
         if pred is None:
