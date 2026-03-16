@@ -11,6 +11,7 @@ MODEL = os.environ.get("MODEL", "Qwen/Qwen3.5-9B")
 N_PER_CONDITION = int(os.environ.get("N_PER_CONDITION", "250"))
 WORKERS = int(os.environ.get("WORKERS", "20"))
 COT = os.environ.get("COT", "1") == "1"
+COST_RATIO = os.environ.get("COST_RATIO", "")  # e.g. "4" means c_w/c_e = 4
 OUTPUT_DIR = "results/study3"
 
 client = openai.OpenAI(
@@ -90,25 +91,25 @@ def hotel_prompt(row):
 def hotel_conditions(df):
     return [
         {"name": "no_special_requests", "mask": df['total_of_special_requests'] == 0, "base_rate": 0.523,
-         "hint": "In this dataset, when the guest made no special requests, 52% of bookings were kept."},
+         "hint": "A decision tree trained on this dataset finds that when the guest made no special requests, 52% of bookings were kept."},
         {"name": "lead_90_180", "mask": (df['lead_time'] >= 90) & (df['lead_time'] < 180), "base_rate": 0.554,
-         "hint": "In this dataset, when the booking was made 90 to 180 days in advance, 55% of bookings were kept."},
+         "hint": "A decision tree trained on this dataset finds that when the booking was made 90 to 180 days in advance, 55% of bookings were kept."},
         {"name": "lead_30_90", "mask": (df['lead_time'] >= 30) & (df['lead_time'] < 90), "base_rate": 0.622,
-         "hint": "In this dataset, when the booking was made 30 to 90 days in advance, 62% of bookings were kept."},
+         "hint": "A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept."},
         {"name": "no_prev_cancel", "mask": df['previous_cancellations'] == 0, "base_rate": 0.661,
-         "hint": "In this dataset, when the guest had no previous cancellations, 66% of bookings were kept."},
+         "hint": "A decision tree trained on this dataset finds that when the guest had no previous cancellations, 66% of bookings were kept."},
         {"name": "no_deposit", "mask": df['deposit_type'] == 'No Deposit', "base_rate": 0.716,
-         "hint": "In this dataset, when no deposit was required, 72% of bookings were kept."},
+         "hint": "A decision tree trained on this dataset finds that when no deposit was required, 72% of bookings were kept."},
         {"name": "has_special_requests", "mask": df['total_of_special_requests'] > 0, "base_rate": 0.783,
-         "hint": "In this dataset, when the guest made special requests, 78% of bookings were kept."},
+         "hint": "A decision tree trained on this dataset finds that when the guest made special requests, 78% of bookings were kept."},
         {"name": "lead_under_30", "mask": df['lead_time'] < 30, "base_rate": 0.818,
-         "hint": "In this dataset, when the booking was made less than 30 days in advance, 82% of bookings were kept."},
+         "hint": "A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance, 82% of bookings were kept."},
         {"name": "lead_under_30_special", "mask": (df['lead_time'] < 30) & (df['total_of_special_requests'] > 0), "base_rate": 0.866,
-         "hint": "In this dataset, when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept."},
+         "hint": "A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept."},
         {"name": "lead_under_7", "mask": df['lead_time'] < 7, "base_rate": 0.906,
-         "hint": "In this dataset, when the booking was made less than 7 days in advance, 91% of bookings were kept."},
+         "hint": "A decision tree trained on this dataset finds that when the booking was made less than 7 days in advance, 91% of bookings were kept."},
         {"name": "repeated_special", "mask": (df['is_repeated_guest'] == 1) & (df['total_of_special_requests'] > 0), "base_rate": 0.950,
-         "hint": "In this dataset, when the guest was a repeated guest who made special requests, 95% of bookings were kept."},
+         "hint": "A decision tree trained on this dataset finds that when the guest was a repeated guest who made special requests, 95% of bookings were kept."},
     ]
 
 HOTEL = {
@@ -226,43 +227,43 @@ def moral_conditions(df):
         {"name": "female_vs_male",
          "mask": (df['AttributeLevel_0'] == 'Female') & (df['AttributeLevel_1'] == 'Male'),
          "base_rate": 0.50,
-         "hint": "In this dataset, when the choice is between female and male, the first group is saved 50% of the time."},
+         "hint": "A decision tree trained on this dataset finds that when the choice is between female and male, the first group is saved 50% of the time."},
         {"name": "fit_vs_fat",
          "mask": (df['AttributeLevel_0'] == 'Fit') & (df['AttributeLevel_1'] == 'Fat'),
          "base_rate": 0.54,
-         "hint": "In this dataset, when the choice is between fit and overweight, the first group is saved 54% of the time."},
+         "hint": "A decision tree trained on this dataset finds that when the choice is between fit and overweight, the first group is saved 54% of the time."},
         {"name": "high_vs_low_status",
          "mask": (df['AttributeLevel_0'] == 'High') & (df['AttributeLevel_1'] == 'Low'),
          "base_rate": 0.57,
-         "hint": "In this dataset, when the choice is between high-status and low-status, the first group is saved 57% of the time."},
+         "hint": "A decision tree trained on this dataset finds that when the choice is between high-status and low-status, the first group is saved 57% of the time."},
         {"name": "legal_crossing",
          "mask": df['CrossingSignal_0'] == 1,
          "base_rate": 0.64,
-         "hint": "In this dataset, when the first group is crossing legally, the first group is saved 64% of the time."},
+         "hint": "A decision tree trained on this dataset finds that when the first group is crossing legally, the first group is saved 64% of the time."},
         {"name": "one_more_person",
          "mask": df['NumberOfCharacters_0'] == df['NumberOfCharacters_1'] + 1,
          "base_rate": 0.67,
-         "hint": "In this dataset, when there is one more person in the first group, the first group is saved 67% of the time."},
+         "hint": "A decision tree trained on this dataset finds that when there is one more person in the first group, the first group is saved 67% of the time."},
         {"name": "young_vs_old",
          "mask": (df['AttributeLevel_0'] == 'Young') & (df['AttributeLevel_1'] == 'Old'),
          "base_rate": 0.74,
-         "hint": "In this dataset, when the choice is between young and elderly, the first group is saved 74% of the time."},
+         "hint": "A decision tree trained on this dataset finds that when the choice is between young and elderly, the first group is saved 74% of the time."},
         {"name": "humans_vs_pets",
          "mask": (df['AttributeLevel_0'] == 'Hoomans') & (df['AttributeLevel_1'] == 'Pets'),
          "base_rate": 0.79,
-         "hint": "In this dataset, when the choice is between humans and pets, the first group is saved 79% of the time."},
+         "hint": "A decision tree trained on this dataset finds that when the choice is between humans and pets, the first group is saved 79% of the time."},
         {"name": "four_plus_more",
          "mask": df['NumberOfCharacters_0'] >= df['NumberOfCharacters_1'] + 4,
          "base_rate": 0.84,
-         "hint": "In this dataset, when the first group has four or more additional people, the first group is saved 84% of the time."},
+         "hint": "A decision tree trained on this dataset finds that when the first group has four or more additional people, the first group is saved 84% of the time."},
         {"name": "legal_and_more",
          "mask": (df['CrossingSignal_0'] == 1) & (df['NumberOfCharacters_0'] > df['NumberOfCharacters_1']),
          "base_rate": 0.87,
-         "hint": "In this dataset, when the first group is crossing legally and has more people, the first group is saved 87% of the time."},
+         "hint": "A decision tree trained on this dataset finds that when the first group is crossing legally and has more people, the first group is saved 87% of the time."},
         {"name": "legal_3plus_more",
          "mask": (df['CrossingSignal_0'] == 1) & (df['NumberOfCharacters_0'] >= df['NumberOfCharacters_1'] + 3),
          "base_rate": 0.91,
-         "hint": "In this dataset, when the first group is crossing legally and has three or more additional people, the first group is saved 91% of the time."},
+         "hint": "A decision tree trained on this dataset finds that when the first group is crossing legally and has three or more additional people, the first group is saved 91% of the time."},
     ]
 
 MORAL = {
@@ -320,28 +321,28 @@ def lending_prompt(row):
 def lending_conditions(df):
     return [
         {"name": "dti_over_30", "mask": df['dti'] > 30, "base_rate": 0.51,
-         "hint": "In this dataset, when the applicant has a DTI ratio above 30%, 51% of applications were approved."},
+         "hint": "A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved."},
         {"name": "loan_under_5000", "mask": df['loan_amnt'] < 5000, "base_rate": 0.53,
-         "hint": "In this dataset, when the loan amount is under $5,000, 53% of applications were approved."},
+         "hint": "A decision tree trained on this dataset finds that when the loan amount is under $5,000, 53% of applications were approved."},
         {"name": "dti_over_25", "mask": df['dti'] > 25, "base_rate": 0.64,
-         "hint": "In this dataset, when the applicant has a DTI ratio above 25%, 64% of applications were approved."},
+         "hint": "A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved."},
         {"name": "dti_under_10", "mask": df['dti'] < 10, "base_rate": 0.67,
-         "hint": "In this dataset, when the applicant has a DTI ratio below 10%, 67% of applications were approved."},
+         "hint": "A decision tree trained on this dataset finds that when the applicant has a DTI ratio below 10%, 67% of applications were approved."},
         {"name": "loan_over_25000", "mask": df['loan_amnt'] > 25000, "base_rate": 0.75,
-         "hint": "In this dataset, when the loan amount is over $25,000, 75% of applications were approved."},
+         "hint": "A decision tree trained on this dataset finds that when the loan amount is over $25,000, 75% of applications were approved."},
         {"name": "fico_650_680", "mask": (df['fico'] >= 650) & (df['fico'] <= 680), "base_rate": 0.83,
-         "hint": "In this dataset, when the applicant has a FICO score between 650 and 680, 83% of applications were approved."},
+         "hint": "A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 680, 83% of applications were approved."},
         {"name": "fico_650_700_dti_under_20",
          "mask": (df['fico'] >= 650) & (df['fico'] <= 700) & (df['dti'] < 20), "base_rate": 0.90,
-         "hint": "In this dataset, when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved."},
+         "hint": "A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved."},
         {"name": "fico_over_700", "mask": df['fico'] > 700, "base_rate": 0.91,
-         "hint": "In this dataset, when the applicant has a FICO score above 700, 91% of applications were approved."},
+         "hint": "A decision tree trained on this dataset finds that when the applicant has a FICO score above 700, 91% of applications were approved."},
         {"name": "fico_over_750_dti_under_20",
          "mask": (df['fico'] > 750) & (df['dti'] < 20), "base_rate": 0.92,
-         "hint": "In this dataset, when the applicant has a FICO score above 750 and a DTI below 20%, 92% of applications were approved."},
+         "hint": "A decision tree trained on this dataset finds that when the applicant has a FICO score above 750 and a DTI below 20%, 92% of applications were approved."},
         {"name": "fico_over_750_loan_under_20000",
          "mask": (df['fico'] > 750) & (df['loan_amnt'] < 20000), "base_rate": 0.93,
-         "hint": "In this dataset, when the applicant has a FICO score above 750 and a loan under $20,000, 93% of applications were approved."},
+         "hint": "A decision tree trained on this dataset finds that when the applicant has a FICO score above 750 and a loan under $20,000, 93% of applications were approved."},
     ]
 
 LENDING = {
@@ -397,43 +398,43 @@ def wiki_conditions(df):
         {"name": "contains_troll",
          "mask": df['comment'].apply(lambda c: bool(re.search(r'\btroll\b', c, re.IGNORECASE))),
          "base_rate": 0.52,
-         "hint": "In this dataset, when a comment contains the word 'troll', 52% were classified as non-toxic."},
+         "hint": "A decision tree trained on this dataset finds that when a comment contains the word 'troll', 52% were classified as non-toxic."},
         {"name": "contains_vandal",
          "mask": df['comment'].apply(lambda c: bool(re.search(r'\bvandal\b', c, re.IGNORECASE))),
          "base_rate": 0.61,
-         "hint": "In this dataset, when a comment contains the word 'vandal', 61% were classified as non-toxic."},
+         "hint": "A decision tree trained on this dataset finds that when a comment contains the word 'vandal', 61% were classified as non-toxic."},
         {"name": "contains_stop",
          "mask": df['comment'].apply(lambda c: bool(re.search(r'\bstop\b', c, re.IGNORECASE))),
          "base_rate": 0.67,
-         "hint": "In this dataset, when a comment contains the word 'stop', 67% were classified as non-toxic."},
+         "hint": "A decision tree trained on this dataset finds that when a comment contains the word 'stop', 67% were classified as non-toxic."},
         {"name": "contains_love",
          "mask": df['comment'].apply(lambda c: bool(re.search(r'\blove\b', c, re.IGNORECASE))),
          "base_rate": 0.74,
-         "hint": "In this dataset, when a comment contains the word 'love', 74% were classified as non-toxic."},
+         "hint": "A decision tree trained on this dataset finds that when a comment contains the word 'love', 74% were classified as non-toxic."},
         {"name": "contains_wikipedia",
          "mask": df['comment'].apply(lambda c: bool(re.search(r'\bwikipedia\b', c, re.IGNORECASE))),
          "base_rate": 0.85,
-         "hint": "In this dataset, when a comment contains the word 'wikipedia', 85% were classified as non-toxic."},
+         "hint": "A decision tree trained on this dataset finds that when a comment contains the word 'wikipedia', 85% were classified as non-toxic."},
         {"name": "contains_page",
          "mask": df['comment'].apply(lambda c: bool(re.search(r'\bpage\b', c, re.IGNORECASE))),
          "base_rate": 0.87,
-         "hint": "In this dataset, when a comment contains the word 'page', 87% were classified as non-toxic."},
+         "hint": "A decision tree trained on this dataset finds that when a comment contains the word 'page', 87% were classified as non-toxic."},
         {"name": "contains_article",
          "mask": df['comment'].apply(lambda c: bool(re.search(r'\barticle\b', c, re.IGNORECASE))),
          "base_rate": 0.92,
-         "hint": "In this dataset, when a comment contains the word 'article', 92% were classified as non-toxic."},
+         "hint": "A decision tree trained on this dataset finds that when a comment contains the word 'article', 92% were classified as non-toxic."},
         {"name": "contains_please",
          "mask": df['comment'].apply(lambda c: bool(re.search(r'\bplease\b', c, re.IGNORECASE))),
          "base_rate": 0.92,
-         "hint": "In this dataset, when a comment contains the word 'please', 92% were classified as non-toxic."},
+         "hint": "A decision tree trained on this dataset finds that when a comment contains the word 'please', 92% were classified as non-toxic."},
         {"name": "contains_link",
          "mask": df['comment'].apply(lambda c: bool(re.search(r'\blink\b', c, re.IGNORECASE))),
          "base_rate": 0.94,
-         "hint": "In this dataset, when a comment contains the word 'link', 94% were classified as non-toxic."},
+         "hint": "A decision tree trained on this dataset finds that when a comment contains the word 'link', 94% were classified as non-toxic."},
         {"name": "contains_thank",
          "mask": df['comment'].apply(lambda c: bool(re.search(r'\bthank\b', c, re.IGNORECASE))),
          "base_rate": 0.96,
-         "hint": "In this dataset, when a comment contains the word 'thank', 96% were classified as non-toxic."},
+         "hint": "A decision tree trained on this dataset finds that when a comment contains the word 'thank', 96% were classified as non-toxic."},
     ]
 
 WIKI = {
@@ -454,12 +455,156 @@ WIKI = {
     ),
 }
 
+# --- MovieLens ---
+def load_movielens():
+    """Pre-generate a pool of pairwise comparison cases from MovieLens data.
+
+    Each row is a pair of movies for one user, with the higher-avg-rated movie
+    listed first.  Columns include everything needed to build a prompt and to
+    filter by condition (avg_diff, genres, avg ratings, history text, etc.).
+    """
+    import random as _random
+    _random.seed(42)
+
+    raw = pd.read_csv(os.path.join(DATA_DIR, "MovieLens", "movies_and_ratings_last1000000.csv"))
+    raw['year'] = raw['title'].str.extract(r'\((\d{4})\)$').astype(float)
+
+    movie_stats = raw.groupby('movieId').agg(
+        avg_rating=('rating', 'mean'),
+        n_ratings=('rating', 'count'),
+    ).reset_index()
+    raw = raw.merge(movie_stats, on='movieId', suffixes=('', '_ms'))
+
+    user_counts = raw.groupby('userId').size()
+    eligible = user_counts[user_counts >= 7].index.tolist()
+
+    rows = []
+    for uid in eligible:
+        udata = raw[raw['userId'] == uid]
+        indices = udata.index.tolist()
+        user_pairs = 0
+        attempts = 0
+        while user_pairs < 30 and attempts < 100:
+            attempts += 1
+            i1, i2 = _random.sample(indices, 2)
+            r1, r2 = udata.loc[i1], udata.loc[i2]
+            if r1['rating'] == r2['rating']:
+                continue
+
+            # Always put the higher-avg-rated movie first
+            if r1['avg_rating'] >= r2['avg_rating']:
+                first, second = r1, r2
+            else:
+                first, second = r2, r1
+
+            avg_diff = first['avg_rating'] - second['avg_rating']
+
+            # Build 5-movie history (exclude the two test movies)
+            history_pool = udata.drop(index=[i1, i2])
+            history = history_pool.sample(n=min(5, len(history_pool)))
+            history_text = "\n".join(
+                f"- {h['title']} ({h['genres']}): Rated {h['rating']}/5"
+                for _, h in history.iterrows()
+            )
+
+            rows.append({
+                'userId': uid,
+                'title_1': first['title'],
+                'genres_1': first['genres'],
+                'avg_rating_1': round(first['avg_rating'], 2),
+                'n_ratings_1': int(first['n_ratings']),
+                'title_2': second['title'],
+                'genres_2': second['genres'],
+                'avg_rating_2': round(second['avg_rating'], 2),
+                'n_ratings_2': int(second['n_ratings']),
+                'history_text': history_text,
+                'avg_diff': round(avg_diff, 4),
+                'prefers_first': int(first['rating'] > second['rating']),
+            })
+            user_pairs += 1
+
+    return pd.DataFrame(rows)
+
+def movielens_prompt(row):
+    return (
+        f"Person 1 has reviewed the following movies:\n\n"
+        f"{row['history_text']}\n\n"
+        f"Consider these two movies they have not seen:\n\n"
+        f"- Movie A: {row['title_1']} ({row['genres_1']}), "
+        f"average rating {row['avg_rating_1']:.2f}/5 ({row['n_ratings_1']} ratings)\n"
+        f"- Movie B: {row['title_2']} ({row['genres_2']}), "
+        f"average rating {row['avg_rating_2']:.2f}/5 ({row['n_ratings_2']} ratings)"
+    )
+
+def movielens_conditions(df):
+    return [
+        {"name": "avg_diff_under_005",
+         "mask": df['avg_diff'] < 0.05,
+         "base_rate": 0.514,
+         "hint": "A decision tree trained on this dataset finds that when the two movies' average ratings differ by less than 0.05, users prefer the higher-rated movie 51% of the time."},
+        {"name": "avg_diff_005_015",
+         "mask": (df['avg_diff'] >= 0.05) & (df['avg_diff'] < 0.15),
+         "base_rate": 0.545,
+         "hint": "A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.05 to 0.15, users prefer the higher-rated movie 55% of the time."},
+        {"name": "avg_diff_015_030",
+         "mask": (df['avg_diff'] >= 0.15) & (df['avg_diff'] < 0.30),
+         "base_rate": 0.606,
+         "hint": "A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.15 to 0.30, users prefer the higher-rated movie 61% of the time."},
+        {"name": "avg_diff_030_050",
+         "mask": (df['avg_diff'] >= 0.30) & (df['avg_diff'] < 0.50),
+         "base_rate": 0.667,
+         "hint": "A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.30 to 0.50, users prefer the higher-rated movie 67% of the time."},
+        {"name": "avg_diff_050_070",
+         "mask": (df['avg_diff'] >= 0.50) & (df['avg_diff'] < 0.70),
+         "base_rate": 0.732,
+         "hint": "A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time."},
+        {"name": "avg_diff_070_100",
+         "mask": (df['avg_diff'] >= 0.70) & (df['avg_diff'] < 1.00),
+         "base_rate": 0.801,
+         "hint": "A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.70 to 1.00, users prefer the higher-rated movie 80% of the time."},
+        {"name": "avg_diff_100_130",
+         "mask": (df['avg_diff'] >= 1.00) & (df['avg_diff'] < 1.30),
+         "base_rate": 0.851,
+         "hint": "A decision tree trained on this dataset finds that when the two movies' average ratings differ by 1.00 to 1.30, users prefer the higher-rated movie 85% of the time."},
+        {"name": "avg_diff_130_160",
+         "mask": (df['avg_diff'] >= 1.30) & (df['avg_diff'] < 1.60),
+         "base_rate": 0.888,
+         "hint": "A decision tree trained on this dataset finds that when the two movies' average ratings differ by 1.30 to 1.60, users prefer the higher-rated movie 89% of the time."},
+        {"name": "avg_diff_160_200",
+         "mask": (df['avg_diff'] >= 1.60) & (df['avg_diff'] < 2.00),
+         "base_rate": 0.907,
+         "hint": "A decision tree trained on this dataset finds that when the two movies' average ratings differ by 1.60 to 2.00, users prefer the higher-rated movie 91% of the time."},
+        {"name": "avg_diff_over_200",
+         "mask": df['avg_diff'] >= 2.00,
+         "base_rate": 0.942,
+         "hint": "A decision tree trained on this dataset finds that when the two movies' average ratings differ by more than 2.00, users prefer the higher-rated movie 94% of the time."},
+    ]
+
+MOVIELENS = {
+    "load": load_movielens,
+    "prompt": movielens_prompt,
+    "conditions": movielens_conditions,
+    "gt_col": "prefers_first",
+    "predict_prompt": (
+        "TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. "
+        "Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B)."
+    ),
+    "escalate_prompt": (
+        "You predicted Person 1's movie preference above.\n"
+        "TASK: Should we implement your prediction, or escalate to Person 1?\n"
+        "A decision is considered correct if it matches the movie Person 1 would actually rate higher.\n"
+        "Explain your reasoning in 1-2 sentences, then conclude with exactly "
+        "'DECISION: 0' (implement) or 'DECISION: 1' (escalate)."
+    ),
+}
+
 # --- Registry ---
 DATASETS = {
     "HotelBookings": HOTEL,
     "MoralMachine": MORAL,
     "LendingClub": LENDING,
     "WikipediaToxicity": WIKI,
+    "MovieLens": MOVIELENS,
 }
 
 # ============================================================
@@ -473,10 +618,21 @@ def process_sample(scenario, gt, hint, predict_prompt, escalate_prompt):
         if pred is None:
             return None
 
+        # Optionally prepend cost ratio framing to escalation prompt
+        esc_prompt_full = escalate_prompt
+        if COST_RATIO:
+            ratio = int(COST_RATIO)
+            esc_prompt_full = (
+                f"The labor cost of escalating to a human is c_l = 1. "
+                f"The cost of implementing a wrong answer is c_w = {ratio}. "
+                f"A wrong implementation costs {ratio}x more than escalation."
+                f"\n\n{escalate_prompt}"
+            )
+
         esc_text, think_escalate = llm([
             {"role": "user", "content": prompt},
             {"role": "assistant", "content": thought},
-            {"role": "user", "content": escalate_prompt},
+            {"role": "user", "content": esc_prompt_full},
         ], max_tokens=16384)
         esc = parse_escalation_cot(esc_text)
         if esc is None:
@@ -509,6 +665,7 @@ if __name__ == "__main__":
     print(f"Dataset: {DATASET}")
     print(f"Model: {MODEL}")
     print(f"Mode: cot (thinking ON)")
+    print(f"Cost ratio: {COST_RATIO or 'none (baseline)'}")
     print(f"N per condition: {N_PER_CONDITION}")
     print(f"Workers: {WORKERS}")
 
@@ -530,7 +687,8 @@ if __name__ == "__main__":
         hint = cond["hint"]
         base_rate = cond["base_rate"]
 
-        out_path = f"{OUTPUT_DIR}/{DATASET}_{name}_{model_short}.csv"
+        cost_tag = f"_cost{COST_RATIO}" if COST_RATIO else ""
+        out_path = f"{OUTPUT_DIR}/{DATASET}_{name}{cost_tag}_{model_short}.csv"
         if os.path.exists(out_path):
             print(f"\n  Skipping {name} (already exists: {out_path})")
             continue
@@ -559,7 +717,7 @@ if __name__ == "__main__":
                     failed += 1
 
         rdf = pd.DataFrame(results)
-        rdf.to_csv(f"{OUTPUT_DIR}/{DATASET}_{name}_{model_short}.csv", index=False)
+        rdf.to_csv(out_path, index=False)
 
         if len(rdf) == 0:
             print(f"  No valid results!")
@@ -600,7 +758,8 @@ if __name__ == "__main__":
         })
 
     summary = pd.DataFrame(summary_rows)
-    summary.to_csv(f"{OUTPUT_DIR}/{DATASET}_summary_{model_short}.csv", index=False)
+    cost_tag = f"_cost{COST_RATIO}" if COST_RATIO else ""
+    summary.to_csv(f"{OUTPUT_DIR}/{DATASET}_summary{cost_tag}_{model_short}.csv", index=False)
     print(f"\n\n{'='*60}")
     print("SUMMARY")
     print(f"{'='*60}")

@@ -15,7 +15,7 @@ for f in sorted(glob.glob(f'{DATA_DIR}/*_cost4_{MODEL}.csv')):
     if '_summary_' in f:
         continue
     basename = os.path.basename(f).replace(f'_cost4_{MODEL}.csv', '')
-    for ds in ['WikipediaToxicity', 'MoralMachine', 'HotelBookings', 'LendingClub']:
+    for ds in ['WikipediaToxicity', 'MoralMachine', 'HotelBookings', 'LendingClub', 'MovieLens']:
         if basename.startswith(ds):
             subset = basename.replace(ds + '_', '')
             if ds not in datasets:
@@ -43,6 +43,7 @@ COLORS = {
     'HotelBookings': '#ff7f0e',
     'MoralMachine': '#2ca02c',
     'WikipediaToxicity': '#d62728',
+    'MovieLens': '#9467bd',
 }
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -63,7 +64,7 @@ def compute_pstar(rows, threshold):
 # ══════════════════════════════════════════════════════════════════════════════
 fig, ax = plt.subplots(figsize=(8, 6))
 ax.plot([0, 1], [0, 1], 'k--', alpha=0.4, label='y = x')
-for ds in ['LendingClub', 'HotelBookings', 'MoralMachine', 'WikipediaToxicity']:
+for ds in ['LendingClub', 'HotelBookings', 'MoralMachine', 'WikipediaToxicity', 'MovieLens']:
     if ds not in datasets:
         continue
     rows = datasets[ds]
@@ -86,7 +87,7 @@ print(f'Saved pred_accuracy_vs_base_rate_{MODEL}_p75.png')
 # Plot 2: Escalation Rate vs. Hint Strength (75% threshold)
 # ══════════════════════════════════════════════════════════════════════════════
 fig, ax = plt.subplots(figsize=(8, 6))
-for ds in ['LendingClub', 'HotelBookings', 'MoralMachine', 'WikipediaToxicity']:
+for ds in ['LendingClub', 'HotelBookings', 'MoralMachine', 'WikipediaToxicity', 'MovieLens']:
     if ds not in datasets:
         continue
     rows = datasets[ds]
@@ -111,7 +112,7 @@ print(f'Saved esc_rate_vs_base_rate_{MODEL}_p75.png')
 # Plot 3: Implement Preference Region (75% threshold)
 # ══════════════════════════════════════════════════════════════════════════════
 fig, ax = plt.subplots(figsize=(8, 6))
-for ds in ['LendingClub', 'HotelBookings', 'MoralMachine', 'WikipediaToxicity']:
+for ds in ['LendingClub', 'HotelBookings', 'MoralMachine', 'WikipediaToxicity', 'MovieLens']:
     if ds not in datasets:
         continue
     rows = datasets[ds]
