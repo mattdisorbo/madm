@@ -1,0 +1,165 @@
+id,claim,human_response,prompt,method,model,llm_prediction,llm_escalate,llm_thought,llm_evaluation,trace,timestamp
+94088,"Russian international footballer Denis Glushakov played with five teams from 2006 to 2019, appearing in 400 matches and making 60 goals.",0,"You are helping Person 1 with fact-checking. This statement needs to be checked: Russian international footballer Denis Glushakov played with five teams from 2006 to 2019, appearing in 400 matches and making 60 goals..",counterfactual,Qwen/Qwen3.5-9B,0,0,"The statement is factually incorrect because Denis Glushakov's professional career spanned from 2006 to 2021 (not 2019), involved seven clubs (not five), and his recorded statistics do not align with the specific figures of 400 matches and 60 goals provided.
+
+PREDICTION: 0","To change my prediction from **0 (False)** to **1 (True)**, the scenario would need to undergo significant structural changes, not just minor tweaks. My prediction is **highly sensitive** to the specific numbers provided (7 vs. 5 clubs, 2021 vs. 2019 end date, and the specific match/goal counts).
+
+Here is a breakdown of what would need to change and the sensitivity analysis:
+
+### 1. What needs to be different?
+
+For the statement to become factually accurate, **multiple** of the following core facts would need to align with Denis Glushakov's actual career history:
+
+*   **Career End Date:** The statement claims he retired or left professional football in **2019**. In reality, Glushakov's last professional match was in **2021** (playing for FC Nizhny Novgorod). Changing the end date to 2019 would immediately make the statement false regarding the *duration* of the career.
+*   **Number of Clubs:** The statement claims **five** teams. Glushakov played for **seven** distinct clubs during his professional tenure:
+    1.  Dynamo Moscow
+    2.  Spartak Moscow
+    3.  Zarya Bratsk
+    4.  Krylia Sovetov Samara
+    5.  Rubin Kazan
+    6.  Krasnodar
+    7.  Nizhny Novgorod
+    *Note: If we strictly count only Top Division (Premier/FNL) clubs, the number might vary by interpretation, but generally, it exceeds five when including his loan spells and later career. Even if we argue he only ""played"" for five major teams, the other two discrepancies remain.*
+*   **Statistical Totals:** The statement cites **400 matches** and **60 goals**.
+    *   *Actual Stats:* According to Transfermarkt and official Russian Football Union data, Glushakov made approximately **350–360 appearances** (depending on how cup matches and lower divisions are counted) and scored roughly **35–40 goals**.
+    *   To make the statement true, the numbers would need to be adjusted to reflect his actual ~350 matches and ~35 goals, or the scenario would have to describe a *hypothetical* career that never happened (which contradicts the premise of fact-checking a real person).
+
+### 2. Sensitivity Analysis
+
+My prediction is **extremely sensitive** to small changes in the details because this is a **multi-constraint fact-checking task**.
+
+*   **The ""AND"" Logic:** The statement combines three distinct claims using implicit logical conjunction (A AND B AND C):
+    1.  Duration: 2006–2019
+    2.  Count: 5 teams
+    3.  Stats: 400 matches, 60 goals
+    *   If Claim 1 is true, but Claim 2 is false, the whole statement is **False**.
+    *   If Claim 2 is true, but Claim 3 is false, the whole statement is **False**.
+*   **Threshold Sensitivity:**
+    *   **Small Change (Sensitivity: High):** If the statement said ""six teams"" instead of ""five,"" the prediction remains **0**.
+    *   **Small Change (Sensitivity: High):** If the statement said ""450 matches"" instead of ""400,"" the prediction remains **0** (as the actual count is lower).
+    *   **Large Change (Sensitivity: Medium):** If the statement changed the end year to **2021**, the prediction *might* shift to **1** **only if** the number of teams (7 vs 5) and the stats (400/60 vs ~350/~35) were *also* corrected. Changing just one number is rarely enough to flip a multi-part factual claim.
+
+### Conclusion
+My prediction would only change if the scenario described a **different player** entirely, or if the details were revised to match Glushakov's **actual** stats (2006–2021, 7 clubs, ~350 matches, ~35 goals).
+
+Because the statement gets three specific numbers wrong (End Year, Club Count, Match/Goal counts) simultaneously, the robustness of the ""False"" prediction is very high. It would require a **comprehensive rewrite** of the statistics to turn this into a True statement, rather than a simple adjustment of a single digit.","[THOUGHT PROMPT]
+You are helping Person 1 with fact-checking. This statement needs to be checked: Russian international footballer Denis Glushakov played with five teams from 2006 to 2019, appearing in 400 matches and making 60 goals..
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (support) or 'PREDICTION: 0' (refute).
+
+[THOUGHT]
+The statement is factually incorrect because Denis Glushakov's professional career spanned from 2006 to 2021 (not 2019), involved seven clubs (not five), and his recorded statistics do not align with the specific figures of 400 matches and 60 goals provided.
+
+PREDICTION: 0
+
+[EVAL PROMPT]
+SCENARIO:
+You are helping Person 1 with fact-checking. This statement needs to be checked: Russian international footballer Denis Glushakov played with five teams from 2006 to 2019, appearing in 400 matches and making 60 goals..
+
+PREDICTION & REASONING:
+The statement is factually incorrect because Denis Glushakov's professional career spanned from 2006 to 2021 (not 2019), involved seven clubs (not five), and his recorded statistics do not align with the specific figures of 400 matches and 60 goals provided.
+
+PREDICTION: 0
+
+TASK: What would need to be different about this scenario for your prediction to change? How sensitive is your prediction to small changes in the details?
+
+[EVALUATION]
+To change my prediction from **0 (False)** to **1 (True)**, the scenario would need to undergo significant structural changes, not just minor tweaks. My prediction is **highly sensitive** to the specific numbers provided (7 vs. 5 clubs, 2021 vs. 2019 end date, and the specific match/goal counts).
+
+Here is a breakdown of what would need to change and the sensitivity analysis:
+
+### 1. What needs to be different?
+
+For the statement to become factually accurate, **multiple** of the following core facts would need to align with Denis Glushakov's actual career history:
+
+*   **Career End Date:** The statement claims he retired or left professional football in **2019**. In reality, Glushakov's last professional match was in **2021** (playing for FC Nizhny Novgorod). Changing the end date to 2019 would immediately make the statement false regarding the *duration* of the career.
+*   **Number of Clubs:** The statement claims **five** teams. Glushakov played for **seven** distinct clubs during his professional tenure:
+    1.  Dynamo Moscow
+    2.  Spartak Moscow
+    3.  Zarya Bratsk
+    4.  Krylia Sovetov Samara
+    5.  Rubin Kazan
+    6.  Krasnodar
+    7.  Nizhny Novgorod
+    *Note: If we strictly count only Top Division (Premier/FNL) clubs, the number might vary by interpretation, but generally, it exceeds five when including his loan spells and later career. Even if we argue he only ""played"" for five major teams, the other two discrepancies remain.*
+*   **Statistical Totals:** The statement cites **400 matches** and **60 goals**.
+    *   *Actual Stats:* According to Transfermarkt and official Russian Football Union data, Glushakov made approximately **350–360 appearances** (depending on how cup matches and lower divisions are counted) and scored roughly **35–40 goals**.
+    *   To make the statement true, the numbers would need to be adjusted to reflect his actual ~350 matches and ~35 goals, or the scenario would have to describe a *hypothetical* career that never happened (which contradicts the premise of fact-checking a real person).
+
+### 2. Sensitivity Analysis
+
+My prediction is **extremely sensitive** to small changes in the details because this is a **multi-constraint fact-checking task**.
+
+*   **The ""AND"" Logic:** The statement combines three distinct claims using implicit logical conjunction (A AND B AND C):
+    1.  Duration: 2006–2019
+    2.  Count: 5 teams
+    3.  Stats: 400 matches, 60 goals
+    *   If Claim 1 is true, but Claim 2 is false, the whole statement is **False**.
+    *   If Claim 2 is true, but Claim 3 is false, the whole statement is **False**.
+*   **Threshold Sensitivity:**
+    *   **Small Change (Sensitivity: High):** If the statement said ""six teams"" instead of ""five,"" the prediction remains **0**.
+    *   **Small Change (Sensitivity: High):** If the statement said ""450 matches"" instead of ""400,"" the prediction remains **0** (as the actual count is lower).
+    *   **Large Change (Sensitivity: Medium):** If the statement changed the end year to **2021**, the prediction *might* shift to **1** **only if** the number of teams (7 vs 5) and the stats (400/60 vs ~350/~35) were *also* corrected. Changing just one number is rarely enough to flip a multi-part factual claim.
+
+### Conclusion
+My prediction would only change if the scenario described a **different player** entirely, or if the details were revised to match Glushakov's **actual** stats (2006–2021, 7 clubs, ~350 matches, ~35 goals).
+
+Because the statement gets three specific numbers wrong (End Year, Club Count, Match/Goal counts) simultaneously, the robustness of the ""False"" prediction is very high. It would require a **comprehensive rewrite** of the statistics to turn this into a True statement, rather than a simple adjustment of a single digit.
+
+[DECISION PROMPT]
+SCENARIO:
+You are helping Person 1 with fact-checking. This statement needs to be checked: Russian international footballer Denis Glushakov played with five teams from 2006 to 2019, appearing in 400 matches and making 60 goals..
+
+PREDICTION & REASONING:
+The statement is factually incorrect because Denis Glushakov's professional career spanned from 2006 to 2021 (not 2019), involved seven clubs (not five), and his recorded statistics do not align with the specific figures of 400 matches and 60 goals provided.
+
+PREDICTION: 0
+
+EVALUATION:
+To change my prediction from **0 (False)** to **1 (True)**, the scenario would need to undergo significant structural changes, not just minor tweaks. My prediction is **highly sensitive** to the specific numbers provided (7 vs. 5 clubs, 2021 vs. 2019 end date, and the specific match/goal counts).
+
+Here is a breakdown of what would need to change and the sensitivity analysis:
+
+### 1. What needs to be different?
+
+For the statement to become factually accurate, **multiple** of the following core facts would need to align with Denis Glushakov's actual career history:
+
+*   **Career End Date:** The statement claims he retired or left professional football in **2019**. In reality, Glushakov's last professional match was in **2021** (playing for FC Nizhny Novgorod). Changing the end date to 2019 would immediately make the statement false regarding the *duration* of the career.
+*   **Number of Clubs:** The statement claims **five** teams. Glushakov played for **seven** distinct clubs during his professional tenure:
+    1.  Dynamo Moscow
+    2.  Spartak Moscow
+    3.  Zarya Bratsk
+    4.  Krylia Sovetov Samara
+    5.  Rubin Kazan
+    6.  Krasnodar
+    7.  Nizhny Novgorod
+    *Note: If we strictly count only Top Division (Premier/FNL) clubs, the number might vary by interpretation, but generally, it exceeds five when including his loan spells and later career. Even if we argue he only ""played"" for five major teams, the other two discrepancies remain.*
+*   **Statistical Totals:** The statement cites **400 matches** and **60 goals**.
+    *   *Actual Stats:* According to Transfermarkt and official Russian Football Union data, Glushakov made approximately **350–360 appearances** (depending on how cup matches and lower divisions are counted) and scored roughly **35–40 goals**.
+    *   To make the statement true, the numbers would need to be adjusted to reflect his actual ~350 matches and ~35 goals, or the scenario would have to describe a *hypothetical* career that never happened (which contradicts the premise of fact-checking a real person).
+
+### 2. Sensitivity Analysis
+
+My prediction is **extremely sensitive** to small changes in the details because this is a **multi-constraint fact-checking task**.
+
+*   **The ""AND"" Logic:** The statement combines three distinct claims using implicit logical conjunction (A AND B AND C):
+    1.  Duration: 2006–2019
+    2.  Count: 5 teams
+    3.  Stats: 400 matches, 60 goals
+    *   If Claim 1 is true, but Claim 2 is false, the whole statement is **False**.
+    *   If Claim 2 is true, but Claim 3 is false, the whole statement is **False**.
+*   **Threshold Sensitivity:**
+    *   **Small Change (Sensitivity: High):** If the statement said ""six teams"" instead of ""five,"" the prediction remains **0**.
+    *   **Small Change (Sensitivity: High):** If the statement said ""450 matches"" instead of ""400,"" the prediction remains **0** (as the actual count is lower).
+    *   **Large Change (Sensitivity: Medium):** If the statement changed the end year to **2021**, the prediction *might* shift to **1** **only if** the number of teams (7 vs 5) and the stats (400/60 vs ~350/~35) were *also* corrected. Changing just one number is rarely enough to flip a multi-part factual claim.
+
+### Conclusion
+My prediction would only change if the scenario described a **different player** entirely, or if the details were revised to match Glushakov's **actual** stats (2006–2021, 7 clubs, ~350 matches, ~35 goals).
+
+Because the statement gets three specific numbers wrong (End Year, Club Count, Match/Goal counts) simultaneously, the robustness of the ""False"" prediction is very high. It would require a **comprehensive rewrite** of the statistics to turn this into a True statement, rather than a simple adjustment of a single digit.
+
+TASK: Respond with a digit ONLY.
+Output 0 to implement your prediction, or 1 to escalate to Person 1.
+A decision is considered correct if it equals Person 1's true decision.
+
+[DECISION]
+0",2026-03-06 00:17:51
