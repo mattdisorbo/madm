@@ -702,7 +702,7 @@ if __name__ == "__main__":
         base_rate = cond["base_rate"]
 
         cost_tag = f"_cost{COST_RATIO}" if COST_RATIO else ""
-        think_tag = "" if THINKING else "_nothink"
+        think_tag = "_think" if THINKING else "_nothink"
         out_path = f"{OUTPUT_DIR}/{DATASET}_{name}{cost_tag}{think_tag}_{model_short}.csv"
         if os.path.exists(out_path):
             print(f"\n  Skipping {name} (already exists: {out_path})")
@@ -774,7 +774,7 @@ if __name__ == "__main__":
 
     summary = pd.DataFrame(summary_rows)
     cost_tag = f"_cost{COST_RATIO}" if COST_RATIO else ""
-    think_tag = "" if THINKING else "_nothink"
+    think_tag = "_think" if THINKING else "_nothink"
     summary.to_csv(f"{OUTPUT_DIR}/{DATASET}_summary{cost_tag}{think_tag}_{model_short}.csv", index=False)
     print(f"\n\n{'='*60}")
     print("SUMMARY")
