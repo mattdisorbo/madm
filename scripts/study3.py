@@ -623,7 +623,7 @@ DATASETS = {
 # ============================================================
 # Process sample
 # ============================================================
-def process_sample(scenario, gt, hint, predict_prompt, escalate_prompt):
+def process_sample(scenario, gt, hint, predict_prompt, escalate_prompt, condition_name=""):
     try:
         if NOHINT:
             prompt = f"{scenario}\n\n{predict_prompt}"
@@ -654,6 +654,7 @@ def process_sample(scenario, gt, hint, predict_prompt, escalate_prompt):
             return None
 
         return {
+            "condition": condition_name,
             "ground_truth": gt,
             "prediction": pred,
             "correct": int(pred == gt),
@@ -727,7 +728,7 @@ if __name__ == "__main__":
         failed = 0
         with ThreadPoolExecutor(max_workers=WORKERS) as executor:
             futures = {
-                executor.submit(process_sample, s, g, hint, predict_prompt, escalate_prompt): i
+                executor.submit(process_sample, s, g, hint, predict_prompt, escalate_prompt, name): i
                 for i, (s, g) in enumerate(zip(scenarios, gts))
             }
             for f in tqdm(as_completed(futures), total=len(futures), desc=name):
