@@ -17,10 +17,10 @@ export TMPDIR=/work1/harangju/harang/.cache/tmp
 mkdir -p "$UV_CACHE_DIR" "$PIP_CACHE_DIR" "$TMPDIR"
 export TOGETHER_API_KEY=unused  # study3.py import requires this
 
-# Quick test: ~5 min
-python scripts/grpo_escalation.py --quick --output-dir outputs/grpo_quick
+# Full run
+python scripts/grpo_escalation.py --output-dir outputs/grpo_full
 
-# Full run (uncomment after quick test works):
-# python scripts/grpo_escalation.py --output-dir outputs/grpo_escalation
+# Evaluate
+python scripts/grpo_eval.py --adapter outputs/grpo_full --n 20
 
 echo "DONE at $(date)"
