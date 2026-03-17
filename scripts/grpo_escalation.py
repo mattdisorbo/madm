@@ -206,9 +206,9 @@ def main():
         batch_size = 4
         max_steps = args.max_steps or 100
     else:
-        n_per_condition = 200
+        n_per_condition = 50   # 50 x 10 x 6 = 3000 examples
         num_generations = 16
-        epochs = 3
+        epochs = 1
         batch_size = 8
         max_steps = -1
 
