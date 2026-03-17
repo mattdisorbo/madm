@@ -234,7 +234,7 @@ def main():
         per_device_train_batch_size=batch_size,
         num_train_epochs=epochs,
         max_steps=max_steps,
-        learning_rate=1e-4,
+        learning_rate=2e-5,
         logging_steps=1,
         save_steps=500,
         bf16=True,
