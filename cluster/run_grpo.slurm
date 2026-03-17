@@ -5,7 +5,6 @@
 #SBATCH -p mi2508x
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH --gpus=1
 #SBATCH -t 02:00:00
 
 cd "${WORK}/madm"
