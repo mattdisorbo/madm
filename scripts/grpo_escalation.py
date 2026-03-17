@@ -95,17 +95,31 @@ def build_dataset(n_repeats=1):
 
 # ---- Reward function ----
 
+_reward_log_count = 0
+
 def reward_fn(completions, prompts=None, hint=None, base_rate=None, cost_ratio=None, optimal=None, **kwargs):
     """Reward: +1 for matching optimal, -1 for not."""
+    global _reward_log_count
     rewards = []
     for i, completion in enumerate(completions):
         text = completion[0]["content"] if isinstance(completion, list) else completion
         text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
         match = re.search(r'[01]', text)
+        if _reward_log_count < 5:
+            print(f"  [DEBUG] completion type={type(completion)}, text=[{text[:100]}], match={match}", flush=True)
+            _reward_log_count += 1
         if match is None:
-            rewards.append(-1.0)
-            continue
-        pred = int(match.group())
+            # Try word-based parsing
+            low = text.lower()
+            if 'implement' in low and 'escalat' not in low:
+                pred = 0
+            elif 'escalat' in low and 'implement' not in low:
+                pred = 1
+            else:
+                rewards.append(-1.0)
+                continue
+        else:
+            pred = int(match.group())
         opt = optimal[i] if isinstance(optimal, list) else optimal
         rewards.append(1.0 if pred == opt else -1.0)
     return rewards
@@ -117,6 +131,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", default="Qwen/Qwen3-1.7B")
     parser.add_argument("--quick", action="store_true", help="Tiny run for testing")
+    parser.add_argument("--max-steps", type=int, default=None, help="Override max training steps")
     parser.add_argument("--output-dir", default="outputs/grpo_escalation")
     args = parser.parse_args()
 
@@ -125,7 +140,7 @@ def main():
         num_generations = 4
         epochs = 1
         batch_size = 4
-        max_steps = 20
+        max_steps = args.max_steps or 20
     else:
         n_repeats = 50      # 50 x 10 x 6 = 3000 examples
         num_generations = 8
@@ -155,7 +170,7 @@ def main():
     config = GRPOConfig(
         output_dir=args.output_dir,
         num_generations=num_generations,
-        max_completion_length=64,
+        max_completion_length=32,
         per_device_train_batch_size=batch_size,
         num_train_epochs=epochs,
         max_steps=max_steps,
