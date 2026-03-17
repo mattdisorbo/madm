@@ -208,9 +208,9 @@ def main():
     else:
         n_per_condition = 50   # 50 x 10 x 6 = 3000 examples
         num_generations = 16
-        epochs = 1
+        epochs = 3
         batch_size = 8
-        max_steps = -1
+        max_steps = 500
 
     print(f"Model: {args.model}")
     print(f"Quick mode: {args.quick}", flush=True)
@@ -219,9 +219,9 @@ def main():
     print(f"Dataset: {len(dataset)} examples", flush=True)
 
     peft_config = LoraConfig(
-        r=16,
-        lora_alpha=32,
-        target_modules=["q_proj", "v_proj"],
+        r=64,
+        lora_alpha=128,
+        target_modules="all-linear",
         lora_dropout=0.05,
         bias="none",
         task_type="CAUSAL_LM",
@@ -234,7 +234,7 @@ def main():
         per_device_train_batch_size=batch_size,
         num_train_epochs=epochs,
         max_steps=max_steps,
-        learning_rate=5e-6,
+        learning_rate=1e-4,
         logging_steps=1,
         save_steps=500,
         bf16=True,
