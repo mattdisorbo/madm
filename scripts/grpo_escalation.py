@@ -11,11 +11,36 @@ Usage:
 
 import argparse
 import re
+import types
 import torch
 from datasets import Dataset
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from trl import GRPOTrainer, GRPOConfig
 from peft import LoraConfig
+
+
+def patch_rotary_for_rocm(model):
+    """Patch rotary embeddings to compute on CPU (avoids ROCm HIP crash)."""
+    patched = 0
+    for name, module in model.named_modules():
+        if "rotary" in name.lower() or type(module).__name__.endswith("RotaryEmbedding"):
+            @torch.no_grad()
+            def _safe_forward(self, x, position_ids):
+                inv_freq_expanded = self.inv_freq[None, :, None].float().expand(
+                    position_ids.shape[0], -1, 1)
+                position_ids_expanded = position_ids[:, None, :].float()
+                device = x.device
+                freqs = (inv_freq_expanded.cpu() @ position_ids_expanded.cpu()
+                         ).transpose(1, 2).to(device)
+                emb = torch.cat((freqs, freqs), dim=-1)
+                cos = emb.cos() * self.attention_scaling
+                sin = emb.sin() * self.attention_scaling
+                return cos.to(dtype=x.dtype), sin.to(dtype=x.dtype)
+            module.forward = types.MethodType(_safe_forward, module)
+            patched += 1
+    if patched:
+        print(f"Patched {patched} rotary embedding instances for ROCm", flush=True)
+    return model
 
 # ---- Dataset construction ----
 
@@ -143,15 +168,21 @@ def main():
         generation_kwargs={"do_sample": True, "temperature": 0.7},
     )
 
+    # Load model manually so we can patch rotary embeddings for ROCm
+    print(f"Loading model {args.model}...", flush=True)
+    model = AutoModelForCausalLM.from_pretrained(args.model, torch_dtype=torch.bfloat16)
+    if torch.cuda.is_available():
+        model = patch_rotary_for_rocm(model)
+
     trainer = GRPOTrainer(
-        model=args.model,
+        model=model,
         args=config,
         reward_funcs=reward_fn,
         train_dataset=dataset,
         peft_config=peft_config,
     )
 
-    print("Starting training...")
+    print("Starting training...", flush=True)
     trainer.train()
 
     trainer.save_model(args.output_dir)
