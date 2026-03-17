@@ -98,7 +98,7 @@ def build_dataset(n_repeats=1):
 _reward_log_count = 0
 
 def reward_fn(completions, prompts=None, hint=None, base_rate=None, cost_ratio=None, optimal=None, **kwargs):
-    """Reward: +1 for matching optimal, -1 for not."""
+    """Cost-based reward: implement pays -R*(1-base_rate), escalate pays -1."""
     global _reward_log_count
     rewards = []
     for i, completion in enumerate(completions):
@@ -120,8 +120,13 @@ def reward_fn(completions, prompts=None, hint=None, base_rate=None, cost_ratio=N
                 continue
         else:
             pred = int(match.group())
-        opt = optimal[i] if isinstance(optimal, list) else optimal
-        rewards.append(1.0 if pred == opt else -1.0)
+        br = base_rate[i] if isinstance(base_rate, list) else base_rate
+        R = cost_ratio[i] if isinstance(cost_ratio, list) else cost_ratio
+        R = float(R)
+        if pred == 1:  # escalate
+            rewards.append(-1.0)
+        else:  # implement
+            rewards.append(-R * (1 - br))
     return rewards
 
 
@@ -136,14 +141,14 @@ def main():
     args = parser.parse_args()
 
     if args.quick:
-        n_repeats = 2       # 2 repeats x 10 hints x 6 ratios = 120 examples
-        num_generations = 4
-        epochs = 1
+        n_repeats = 5       # 5 repeats x 10 hints x 6 ratios = 300 examples
+        num_generations = 16
+        epochs = 3
         batch_size = 4
-        max_steps = args.max_steps or 20
+        max_steps = args.max_steps or 100
     else:
         n_repeats = 50      # 50 x 10 x 6 = 3000 examples
-        num_generations = 8
+        num_generations = 16
         epochs = 3
         batch_size = 8
         max_steps = -1
@@ -180,7 +185,7 @@ def main():
         bf16=True,
         gradient_accumulation_steps=2,
         report_to="none",
-        generation_kwargs={"do_sample": True, "temperature": 0.7},
+        generation_kwargs={"do_sample": True, "temperature": 1.2},
     )
 
     # Load model manually so we can patch rotary embeddings for ROCm
