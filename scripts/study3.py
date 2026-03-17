@@ -16,7 +16,15 @@ NOHINT = os.environ.get("NOHINT", "0") == "1"
 COST_RATIO = os.environ.get("COST_RATIO", "")  # e.g. "4" means c_w/c_e = 4
 OUTPUT_DIR = "results/study3"
 
-if PROVIDER == "openai":
+if PROVIDER == "local":
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+    import torch
+    _tokenizer = AutoTokenizer.from_pretrained(MODEL)
+    _model = AutoModelForCausalLM.from_pretrained(
+        MODEL, torch_dtype=torch.float16, device_map="auto",
+    )
+    client = None
+elif PROVIDER == "openai":
     client = openai.OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 else:
     client = openai.OpenAI(
@@ -29,18 +37,52 @@ else:
 # ============================================================
 def llm(messages, max_tokens=256):
     """Returns (content, thinking) tuple."""
+    import time as _time
     if isinstance(messages, str):
         messages = [{"role": "user", "content": messages}]
+
+    if PROVIDER == "local":
+        enable = THINKING
+        text_input = _tokenizer.apply_chat_template(
+            messages, tokenize=False, add_generation_prompt=True,
+            enable_thinking=enable,
+        )
+        inputs = _tokenizer(text_input, return_tensors="pt").to(_model.device)
+        with torch.no_grad():
+            out = _model.generate(**inputs, max_new_tokens=max_tokens)
+        new_tokens = out[0][inputs["input_ids"].shape[1]:]
+        raw = _tokenizer.decode(new_tokens, skip_special_tokens=True)
+        thinking = ""
+        text = raw
+        think_match = re.search(r'<think>(.*?)</think>', raw, flags=re.DOTALL)
+        if think_match:
+            thinking = think_match.group(1).strip()
+            text = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
+        return text, thinking
+
     kwargs = dict(model=MODEL, messages=messages, max_tokens=max_tokens)
     # Disable thinking for Qwen3.5 models on Together when THINKING is off
     if not THINKING and PROVIDER == "together" and "Qwen3.5" in MODEL:
         kwargs["extra_body"] = {"chat_template_kwargs": {"enable_thinking": False}}
-    r = client.chat.completions.create(**kwargs)
-    msg = r.choices[0].message
-    text = (msg.content or "").strip()
-    text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
-    thinking = getattr(msg, 'reasoning', None) or ""
-    return text, thinking
+    for attempt in range(5):
+        try:
+            r = client.chat.completions.create(**kwargs)
+            msg = r.choices[0].message
+            raw = (msg.content or "").strip()
+            thinking = getattr(msg, 'reasoning', None) or ""
+            text = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
+            if not text and thinking:
+                # Together may put everything in reasoning; check if answer is at the end
+                text = re.sub(r'<think>.*?</think>', '', thinking, flags=re.DOTALL).strip()
+            if THINKING and not text:
+                finish = r.choices[0].finish_reason
+                print(f"  [DEBUG] empty content. finish={finish} raw_len={len(raw)} reasoning_len={len(thinking)}", flush=True)
+            return text, thinking
+        except Exception as e:
+            if attempt == 4:
+                raise
+            wait = 2 ** attempt + 1
+            _time.sleep(wait)
 
 def parse_prediction(text):
     preds = re.findall(r'PREDICTION:\s*([01])', text)
@@ -629,10 +671,11 @@ def process_sample(scenario, gt, hint, predict_prompt, escalate_prompt, conditio
             prompt = f"{scenario}\n\n{predict_prompt}"
         else:
             prompt = f"{scenario}\n\n{hint}\n\n{predict_prompt}"
-        max_tok = 4096 if THINKING else 512
+        max_tok = 2048 if THINKING else 512
         thought, think_predict = llm(prompt, max_tokens=max_tok)
         pred = parse_prediction(thought)
         if pred is None:
+            print(f"  [FAIL] parse_prediction returned None. Output: {thought[:200]}", flush=True)
             return None
 
         # Optionally prepend cost ratio framing to escalation prompt
@@ -651,6 +694,7 @@ def process_sample(scenario, gt, hint, predict_prompt, escalate_prompt, conditio
         ], max_tokens=max_tok)
         esc = parse_escalation_cot(esc_text)
         if esc is None:
+            print(f"  [FAIL] parse_escalation returned None. Output: {esc_text[:200]}", flush=True)
             return None
 
         return {
@@ -668,7 +712,7 @@ def process_sample(scenario, gt, hint, predict_prompt, escalate_prompt, conditio
             "timestamp": datetime.datetime.now().isoformat(),
         }
     except Exception as e:
-        print(f"  Error: {e}")
+        print(f"  [ERROR] {type(e).__name__}: {e}", flush=True)
         return None
 
 # ============================================================
