@@ -219,9 +219,9 @@ def main():
     print(f"Dataset: {len(dataset)} examples", flush=True)
 
     peft_config = LoraConfig(
-        r=64,
-        lora_alpha=128,
-        target_modules="all-linear",
+        r=16,
+        lora_alpha=32,
+        target_modules=["q_proj", "v_proj"],
         lora_dropout=0.05,
         bias="none",
         task_type="CAUSAL_LM",
