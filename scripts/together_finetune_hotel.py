@@ -296,10 +296,18 @@ def cmd_evaluate():
     results_df.to_csv(OUTPUT_DIR / "eval_results.csv", index=False)
     print(f"\nResults saved to {OUTPUT_DIR / 'eval_results.csv'}")
 
+    # Save row-level predictions
+    pred_cols = ["hint_condition", "cost_ratio", "ground_truth", "prediction", "optimal_label"]
+    pred_cols += [c for c in holdout_df.columns if c.startswith("pred_")]
+    holdout_df[pred_cols].to_csv(OUTPUT_DIR / "eval_predictions.csv", index=False)
+    print(f"Row-level predictions saved to {OUTPUT_DIR / 'eval_predictions.csv'}")
+
     # Summary
     print("\n=== SUMMARY ===")
-    for label in ["baseline", "finetuned"]:
+    for label in [l for _, l in models_to_eval]:
         sub = results_df[results_df["model"] == label]
+        if len(sub) == 0:
+            continue
         print(f"\n{label}:")
         print(f"  Overall match with optimal: {sub['match'].mean():.1%}")
         print(f"  Mean escalation rate: {sub['esc_rate'].mean():.1%}")
