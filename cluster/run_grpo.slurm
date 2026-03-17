@@ -15,6 +15,7 @@ export UV_CACHE_DIR=/work1/harangju/harang/.cache/uv
 export PIP_CACHE_DIR=/work1/harangju/harang/.cache/pip
 export TMPDIR=/work1/harangju/harang/.cache/tmp
 mkdir -p "$UV_CACHE_DIR" "$PIP_CACHE_DIR" "$TMPDIR"
+export TOGETHER_API_KEY=unused  # study3.py import requires this
 
 # Quick test: ~5 min
 python scripts/grpo_escalation.py --quick --output-dir outputs/grpo_quick
