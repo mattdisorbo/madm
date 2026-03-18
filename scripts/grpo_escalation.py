@@ -249,7 +249,7 @@ def main():
         gradient_accumulation_steps=2,
         report_to="none",
         generation_batch_size=16,
-        generation_kwargs={"do_sample": True, "temperature": 1.2},
+        generation_kwargs={"do_sample": True, "temperature": 0.8},
     )
 
     # Load model manually so we can patch rotary embeddings for ROCm
