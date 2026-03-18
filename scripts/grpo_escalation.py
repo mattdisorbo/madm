@@ -295,7 +295,8 @@ def main():
         model_kwargs.pop("mm_token_type_ids", None)
         return _orig_validate(model_kwargs)
     model._validate_model_kwargs = _patched_validate
-    if torch.cuda.is_available():
+    # Skip rotary patch for Qwen3.5 — different architecture than Qwen3
+    if torch.cuda.is_available() and "qwen3.5" not in args.model.lower():
         model = patch_rotary_for_rocm(model)
 
     trainer = GRPOTrainer(
