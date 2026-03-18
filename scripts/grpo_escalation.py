@@ -276,7 +276,7 @@ def main():
         learning_rate=2e-5,
         beta=0.1,  # KL penalty to prevent entropy collapse
         logging_steps=1,
-        save_steps=500,
+        save_steps=100,
         bf16=True,
         gradient_accumulation_steps=2,
         report_to="none",
