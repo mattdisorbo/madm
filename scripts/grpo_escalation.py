@@ -193,7 +193,7 @@ def reward_fn(completions, pred_correct=None, cost_ratio=None, **kwargs):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", default="Qwen/Qwen3-1.7B")
+    parser.add_argument("--model", default="Qwen/Qwen2.5-1.5B-Instruct")
     parser.add_argument("--quick", action="store_true", help="Tiny run for testing")
     parser.add_argument("--max-steps", type=int, default=None, help="Override max training steps")
     parser.add_argument("--output-dir", default="outputs/grpo_escalation")
