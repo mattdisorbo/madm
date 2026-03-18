@@ -160,6 +160,10 @@ def format_reward_fn(completions, **kwargs):
     return rewards
 
 
+_step_count = 0
+_decision_log = []  # collect (decision, R, pred_correct) for periodic reporting
+
+
 def cost_reward_fn(completions, pred_correct=None, cost_ratio=None, **kwargs):
     """Cost-based reward using actual prediction correctness.
 
@@ -168,7 +172,8 @@ def cost_reward_fn(completions, pred_correct=None, cost_ratio=None, **kwargs):
     - Implement + prediction wrong: -R (wrong-answer cost)
     - Unparseable: -1
     """
-    global _reward_log_count
+    global _reward_log_count, _step_count, _decision_log
+    _step_count += 1
     rewards = []
     for i, completion in enumerate(completions):
         text = completion[0]["content"] if isinstance(completion, list) else completion
@@ -181,11 +186,14 @@ def cost_reward_fn(completions, pred_correct=None, cost_ratio=None, **kwargs):
         decision = parse_decision(text)
         if decision is None:
             rewards.append(-1.0)
+            _decision_log.append((None, None, None))
             continue
 
         correct = pred_correct[i] if isinstance(pred_correct, list) else pred_correct
         R = cost_ratio[i] if isinstance(cost_ratio, list) else cost_ratio
         R = float(R)
+
+        _decision_log.append((decision, R, correct))
 
         if decision == 1:  # escalate
             rewards.append(-1.0)
@@ -193,6 +201,30 @@ def cost_reward_fn(completions, pred_correct=None, cost_ratio=None, **kwargs):
             rewards.append(0.0)
         else:  # implement wrong prediction
             rewards.append(-R)
+
+    # Periodic report every 50 steps
+    if _step_count % 50 == 0 and _decision_log:
+        recent = _decision_log[-500:]  # last ~500 decisions
+        parseable = [(d, r, c) for d, r, c in recent if d is not None]
+        unparseable = len(recent) - len(parseable)
+        print(f"\n  === Step {_step_count} Report ===", flush=True)
+        print(f"  Parseable: {len(parseable)}/{len(recent)} ({len(parseable)/len(recent):.0%})", flush=True)
+        if parseable:
+            esc_total = sum(1 for d, _, _ in parseable if d == 1)
+            print(f"  Overall esc rate: {esc_total/len(parseable):.0%}", flush=True)
+            print(f"  {'R':>3}  {'Esc%':>6}  {'N':>4}", flush=True)
+            for R in [2, 4, 8, 10, 20, 50]:
+                at_r = [(d, c) for d, r, c in parseable if r == R]
+                if at_r:
+                    esc = sum(1 for d, _ in at_r if d == 1)
+                    print(f"  {R:>3}  {esc/len(at_r):>6.0%}  {len(at_r):>4}", flush=True)
+            # Sample outputs
+            sample_texts = []
+            for d, r, c in parseable[-5:]:
+                sample_texts.append(f"d={d} R={r} correct={c}")
+            print(f"  Recent: {sample_texts}", flush=True)
+        print(flush=True)
+
     return rewards
 
 
@@ -200,7 +232,7 @@ def cost_reward_fn(completions, pred_correct=None, cost_ratio=None, **kwargs):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", default="Qwen/Qwen2.5-1.5B-Instruct")
+    parser.add_argument("--model", default="Qwen/Qwen2.5-7B-Instruct")
     parser.add_argument("--quick", action="store_true", help="Tiny run for testing")
     parser.add_argument("--max-steps", type=int, default=None, help="Override max training steps")
     parser.add_argument("--output-dir", default="outputs/grpo_escalation")

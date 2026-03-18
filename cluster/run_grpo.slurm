@@ -5,7 +5,7 @@
 #SBATCH -p mi2508x
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH -t 02:00:00
+#SBATCH -t 06:00:00
 
 cd "${WORK}/madm"
 source .venv/bin/activate
@@ -21,6 +21,6 @@ export TOGETHER_API_KEY=unused  # study3.py import requires this
 python scripts/grpo_escalation.py --output-dir outputs/grpo_full
 
 # Evaluate
-python scripts/grpo_eval.py --model Qwen/Qwen2.5-1.5B-Instruct --adapter outputs/grpo_full --n 20
+python scripts/grpo_eval.py --model Qwen/Qwen2.5-7B-Instruct --adapter outputs/grpo_full --n 20
 
 echo "DONE at $(date)"
