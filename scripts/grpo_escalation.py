@@ -288,11 +288,13 @@ def main():
     # Load model manually so we can patch for ROCm and fix multimodal issues
     print(f"Loading model {args.model}...", flush=True)
     model = AutoModelForCausalLM.from_pretrained(args.model, torch_dtype=torch.bfloat16)
-    # Qwen3.5 adds mm_token_type_ids which breaks generation — remove it
-    if hasattr(model.config, "mm_token_type_ids"):
-        delattr(model.config, "mm_token_type_ids")
-    if hasattr(model, "generation_config") and hasattr(model.generation_config, "mm_token_type_ids"):
-        delattr(model.generation_config, "mm_token_type_ids")
+    # Qwen3.5 tokenizer produces mm_token_type_ids which breaks generation
+    # Monkey-patch the model's prepare_inputs_for_generation to drop it
+    _orig_prepare = model.prepare_inputs_for_generation
+    def _patched_prepare(*args, **kwargs):
+        kwargs.pop("mm_token_type_ids", None)
+        return _orig_prepare(*args, **kwargs)
+    model.prepare_inputs_for_generation = _patched_prepare
     if torch.cuda.is_available():
         model = patch_rotary_for_rocm(model)
 
