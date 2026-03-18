@@ -289,12 +289,12 @@ def main():
     print(f"Loading model {args.model}...", flush=True)
     model = AutoModelForCausalLM.from_pretrained(args.model, torch_dtype=torch.bfloat16)
     # Qwen3.5 tokenizer produces mm_token_type_ids which breaks generation
-    # Monkey-patch the model's prepare_inputs_for_generation to drop it
-    _orig_prepare = model.prepare_inputs_for_generation
-    def _patched_prepare(*args, **kwargs):
-        kwargs.pop("mm_token_type_ids", None)
-        return _orig_prepare(*args, **kwargs)
-    model.prepare_inputs_for_generation = _patched_prepare
+    # Patch _validate_model_kwargs to ignore it
+    _orig_validate = model._validate_model_kwargs
+    def _patched_validate(model_kwargs):
+        model_kwargs.pop("mm_token_type_ids", None)
+        return _orig_validate(model_kwargs)
+    model._validate_model_kwargs = _patched_validate
     if torch.cuda.is_available():
         model = patch_rotary_for_rocm(model)
 
