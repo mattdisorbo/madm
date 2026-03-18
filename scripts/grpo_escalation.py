@@ -104,17 +104,11 @@ def build_dataset(n_per_condition=50, seed=42):
             prompt_with_hint = f"{scenario}\n\n{hint}\n\n{PREDICT_PROMPT}"
 
             for R in COST_RATIOS:
-                esc_prompt = (
-                    f"Implementing a wrong answer costs {R}x more than escalating.\n\n"
-                    f"{ESCALATE_PROMPT}"
-                )
-                # The full prompt is the escalation decision prompt
-                # (scenario + hint + predict prompt is context,
-                #  the model's "prediction" is given, then ask to escalate or not)
                 full_prompt = (
-                    f"{scenario}\n\n{hint}\n\n"
-                    f"An LLM predicted: {pred_text}.\n\n"
-                    f"{esc_prompt}"
+                    f"{hint}\n"
+                    f"An LLM predicted: {pred_text}.\n"
+                    f"Cost ratio R = {R}. A wrong implementation costs {R}x more than escalating.\n"
+                    f"Output 0 to implement or 1 to escalate."
                 )
                 rows.append({
                     "prompt": full_prompt,
@@ -153,7 +147,20 @@ def parse_decision(text):
     return None
 
 
-def reward_fn(completions, pred_correct=None, cost_ratio=None, **kwargs):
+def format_reward_fn(completions, **kwargs):
+    """Reward for clean output format: +1 if output is just '0' or '1', 0 otherwise."""
+    rewards = []
+    for completion in completions:
+        text = completion[0]["content"] if isinstance(completion, list) else completion
+        text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
+        if text in ("0", "1"):
+            rewards.append(1.0)
+        else:
+            rewards.append(0.0)
+    return rewards
+
+
+def cost_reward_fn(completions, pred_correct=None, cost_ratio=None, **kwargs):
     """Cost-based reward using actual prediction correctness.
 
     - Escalate: -1 (labor cost)
@@ -166,9 +173,9 @@ def reward_fn(completions, pred_correct=None, cost_ratio=None, **kwargs):
     for i, completion in enumerate(completions):
         text = completion[0]["content"] if isinstance(completion, list) else completion
 
-        if _reward_log_count < 5:
+        if _reward_log_count < 10:
             decision = parse_decision(text)
-            print(f"  [DEBUG] text=[{text[:80]}] decision={decision}", flush=True)
+            print(f"  [DEBUG] text=[{text[:60]}] decision={decision}", flush=True)
             _reward_log_count += 1
 
         decision = parse_decision(text)
@@ -230,7 +237,7 @@ def main():
     config = GRPOConfig(
         output_dir=args.output_dir,
         num_generations=num_generations,
-        max_completion_length=32,
+        max_completion_length=8,
         per_device_train_batch_size=batch_size,
         num_train_epochs=epochs,
         max_steps=max_steps,
@@ -254,7 +261,7 @@ def main():
     trainer = GRPOTrainer(
         model=model,
         args=config,
-        reward_funcs=reward_fn,
+        reward_funcs=[format_reward_fn, cost_reward_fn],
         train_dataset=dataset,
         peft_config=peft_config,
     )

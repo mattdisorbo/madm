@@ -67,14 +67,11 @@ def eval_model(model, tokenizer, device, n_per_condition=20, seed=42):
             pred_text = "kept booking" if prediction == 1 else "cancelled"
 
             for R in COST_RATIOS:
-                esc_prompt = (
-                    f"Implementing a wrong answer costs {R}x more than escalating.\n\n"
-                    f"{ESCALATE_PROMPT}"
-                )
                 full_prompt = (
-                    f"{scenario}\n\n{hint}\n\n"
-                    f"An LLM predicted: {pred_text}.\n\n"
-                    f"{esc_prompt}"
+                    f"{hint}\n"
+                    f"An LLM predicted: {pred_text}.\n"
+                    f"Cost ratio R = {R}. A wrong implementation costs {R}x more than escalating.\n"
+                    f"Output 0 to implement or 1 to escalate."
                 )
 
                 messages = [{"role": "user", "content": full_prompt}]
@@ -82,7 +79,7 @@ def eval_model(model, tokenizer, device, n_per_condition=20, seed=42):
                 inputs = tokenizer(text, return_tensors="pt").to(device)
 
                 with torch.no_grad():
-                    out = model.generate(**inputs, max_new_tokens=32, do_sample=False)
+                    out = model.generate(**inputs, max_new_tokens=8, do_sample=False)
                 gen = tokenizer.decode(out[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True)
                 decision = parse_decision(gen)
 
