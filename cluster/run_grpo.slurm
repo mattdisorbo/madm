@@ -21,6 +21,6 @@ export TOGETHER_API_KEY=unused  # study3.py import requires this
 python scripts/grpo_escalation.py --output-dir outputs/grpo_full
 
 # Evaluate
-python scripts/grpo_eval.py --model Qwen/Qwen2.5-7B-Instruct --adapter outputs/grpo_full --n 20
+python scripts/grpo_eval.py --model Qwen/Qwen3.5-9B --adapter outputs/grpo_full --n 20
 
 echo "DONE at $(date)"

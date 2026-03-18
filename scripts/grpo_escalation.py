@@ -232,7 +232,7 @@ def cost_reward_fn(completions, pred_correct=None, cost_ratio=None, **kwargs):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", default="Qwen/Qwen2.5-7B-Instruct")
+    parser.add_argument("--model", default="Qwen/Qwen3.5-9B")
     parser.add_argument("--quick", action="store_true", help="Tiny run for testing")
     parser.add_argument("--max-steps", type=int, default=None, help="Override max training steps")
     parser.add_argument("--output-dir", default="outputs/grpo_escalation")
@@ -248,7 +248,7 @@ def main():
         n_per_condition = 50   # 50 x 10 x 6 = 3000 examples
         num_generations = 16
         epochs = 3
-        batch_size = 8
+        batch_size = 4
         max_steps = 500
 
     print(f"Model: {args.model}")
@@ -281,6 +281,7 @@ def main():
         gradient_accumulation_steps=2,
         report_to="none",
         generation_batch_size=16,
+        chat_template_kwargs={"enable_thinking": False},
         generation_kwargs={"do_sample": True, "temperature": 0.8},
     )
 
