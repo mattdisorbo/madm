@@ -1,0 +1,1158 @@
+condition,ground_truth,prediction,correct,escalate,prompt,esc_prompt,thought,esc_reasoning,thinking_predict,thinking_escalate,timestamp
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $6,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 40.7%, and a credit score of 644.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the decision tree's node where DTI > 30% yields a slight majority approval (51%) and the applicant's credit score is moderate (644) despite short employment, I predict approval.  
+PREDICTION: 1","The model's prediction is low-confidence (only a 51% approval rate at the DTI>30% node) and the applicant has mixed signals (short employment, high DTI, borderline credit), so a human review is warranted.  
+DECISION: 1",,,2026-03-17T17:48:30.010544
+dti_over_30,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,000 for Credit card refinancing. They have been employed for < 1 year, a debt-to-income ratio of 56.3%, and a credit score of 731.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Despite a strong credit score (731), the applicant's very high DTI (56.3%) and employment under one year — combined with the decision tree result that applicants with DTI >30% are approved only 51% of the time — lead me to recommend rejecting the application.  
+PREDICTION: 0","The case is borderline—credit score is strong but DTI is very high and employment is short, and the decision-tree outcome (51% approval for DTI >30%) indicates high uncertainty—so escalate for Person 1 to review additional context.  
+DECISION: 1",,,2026-03-17T17:48:30.247572
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $6,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 32.7%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although the applicant falls into the DTI > 30% branch where only 51% were approved, their 10+ years of employment, decent 680 credit score, and moderate $6,000 request make approval slightly more likely.  
+PREDICTION: 1","The approval prediction rests on a marginally favorable split (51%) for DTI > 30% and some positive signals (10+ years employment, 680 score), but overall confidence is low given the near-even historical approval rate. Because of this uncertainty and the importance of a correct final decision, escalate to Person 1.  
+DECISION: 1",,,2026-03-17T17:48:30.296017
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $7,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 47.4%, and a credit score of 638.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant falls into the decision-tree node for DTI > 30% where 51% of applications were approved, so I predict approval despite short employment and a fair credit score.  
+PREDICTION: 1","The decision-tree node's 51% approval rate is essentially a coin flip and the applicant's short employment, high DTI, and fair credit make the prediction low-confidence, so this should be escalated for Person 1's judgment.  
+DECISION: 1",,,2026-03-17T17:48:30.393317
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,000 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 30.5%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant falls into the DTI > 30% branch where 51% were approved and has a fair credit score (685) despite short employment, I predict approval.  
+PREDICTION: 1","The model's prediction is low-confidence (only 51% approval in this branch) and the applicant's short employment and borderline credit score add uncertainty, so escalate for human review.  
+DECISION: 1",,,2026-03-17T17:48:30.445244
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $6,000 for other. They have been employed for 8 years, a debt-to-income ratio of 32.0%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant falls into the DTI>30% node with a slight majority approval (51%) and additionally has a decent credit score (685), stable employment of 8 years, and a modest $6,000 request that favor creditworthiness, I predict approval.  
+PREDICTION: 1","The model's prediction is based on a marginal 51% approval rate for the DTI>30% node, so confidence is low despite supportive factors (credit score 685, 8 years employment, $6,000 request). Because this is a borderline case that benefits from human judgment, escalate to Person 1.  
+DECISION: 1",,,2026-03-17T17:48:31.442783
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,800 for major_purchase. They have been employed for 10+ years, a debt-to-income ratio of 33.5%, and a credit score of 690.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's 10+ years of employment, a reasonable credit score of 690, a relatively small $4,800 request, and the decision-tree finding that applicants with DTI > 30% are approved 51% of the time, I lean to approve as the profile is marginally favorable.  
+PREDICTION: 1","The prediction is low-confidence because the decision-tree shows only a 51% approval rate for DTI > 30% (near a coin flip) and the applicant's profile is borderline despite long employment and decent credit, so this should be escalated for Person 1's judgment.  
+DECISION: 1",,,2026-03-17T17:48:32.213083
+dti_over_30,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 56.6%, and a credit score of 656.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I would reject because the applicant's very high DTI (56.6%), short employment history (<1 year), and only borderline credit score (656) indicate high risk despite the decision tree's marginal 51% approval rate for DTI >30%.  
+PREDICTION: 0","Escalate to Person 1 because this is a borderline case—the decision tree shows only a marginal 51% approval for DTI >30%, and the applicant's very high DTI and short employment history are material risk factors that warrant human review.  
+DECISION: 1",,,2026-03-17T17:48:33.280803
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $13,650 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 36.3%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is 36.3% (above 30%) and the decision tree shows a slight majority (51%) of such applicants are approved—combined with a reasonable 675 credit score and 2 years' employment—I predict approval.  
+PREDICTION: 1","The model's approval probability is only 51% for applicants with DTI > 30%, which is nearly a toss-up and does not provide strong confidence despite the applicant's 675 score and 2 years' employment, so escalate for human review.  
+DECISION: 1",,,2026-03-17T17:48:36.665590
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $6,000 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 35.0%, and a credit score of 690.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's 35% DTI falls into the >30% group with a 51% approval rate and they have a reasonably strong credit score (690) and two years' employment, I lean to approve.  
+PREDICTION: 1","The model's 51% approval rate for DTI >30% is essentially a coin-flip and given the borderline risk and limited features available, this should be escalated for Person 1's judgment.  
+DECISION: 1",,,2026-03-17T17:48:36.710675
+dti_over_30,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $17,800 for Car financing. They have been employed for < 1 year, a debt-to-income ratio of 100.0%, and a credit score of 605.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the extremely high DTI (100%), short employment (<1 year), and only fair credit score (605), despite the decision tree showing a 51% approval rate for DTI>30%, the prudent choice is to reject the loan.  
+PREDICTION: 0","The model's 51% approval rate for DTI>30% is essentially a coin flip and, combined with conflicting signals (100% DTI, <1 year employment, 605 score), creates substantial uncertainty about whether my reject prediction matches Person 1's judgment. Therefore escalate to Person 1 for final review.  
+DECISION: 1",,,2026-03-17T17:48:37.064461
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $28,000 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 36.9%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is above 30% where the decision tree shows a slight majority (51%) of approvals, and they have a fair-to-good credit score of 680 plus two years' employment indicating some stability, I would approve the loan.  
+PREDICTION: 1","The model's signal is weak (only a 51% approval rate for DTI > 30%) and the applicant is borderline with a 680 score and just two years' employment, so escalate to Person 1 for human review.  
+DECISION: 1",,,2026-03-17T17:48:38.025722
+dti_over_30,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $18,550 for Car financing. They have been employed for < 1 year, a debt-to-income ratio of 100.0%, and a credit score of 619.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's extremely high DTI (100%), short employment tenure (<1 year), and only fair credit score (619), the risk outweighs the marginal 51% approval rate for DTI > 30%, so I would reject the loan.
+PREDICTION: 0","Given the high DTI, short employment tenure, and borderline credit score combined with possible lender policies or discretionary considerations that only Person 1 can apply, escalate this recommendation for their review rather than implementing it automatically.  
+DECISION: 1",,,2026-03-17T17:48:39.341205
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for Other. They have been employed for < 1 year, a debt-to-income ratio of 39.3%, and a credit score of 773.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although employment under 1 year and a 39.3% DTI are negatives, the applicant's excellent credit score (773) combined with the model's slightly favorable 51% approval rate for DTI>30% leads me to approve. 
+PREDICTION: 1","The model's 51% approval rate for DTI>30% and the applicant's short employment history make the approve prediction low-confidence despite a high credit score, so this should be escalated for human review.  
+DECISION: 1",,,2026-03-17T17:48:40.308540
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $21,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 39.3%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given that the decision tree shows a slight majority approval (51%) for DTI > 30% and the applicant also has long-term employment and a decent 680 credit score, I predict approval.  
+PREDICTION: 1","The model's support for approval is marginal (51% for DTI > 30%) and the applicant's features are mixed, so escalate to Person 1 for human review.  
+DECISION: 1",,,2026-03-17T17:48:43.144189
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $25,200 for debt_consolidation. They have been employed for 5 years, a debt-to-income ratio of 30.9%, and a credit score of 725.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although the applicant's DTI is just above the 30% threshold where approvals are only slightly more likely (51%), their strong credit score (725) and five years of stable employment indicate sufficient creditworthiness to approve the $25,200 debt-consolidation loan.
+PREDICTION: 1","I recommend escalating: we cannot verify whether my prediction matches Person 1's true decision, and this case is borderline (DTI just over the 30% threshold with only a 51% approval rate), so human confirmation is warranted.  
+DECISION: 1",,,2026-03-17T17:48:44.211503
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $11,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 34.1%, and a credit score of 672.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the decision tree's slight historical tilt toward approval for DTI >30% (51% approved) and the applicant's fair credit score of 672—despite short employment—I'd lean to approve the consolidation loan.  
+PREDICTION: 1","The decision is borderline: the model's signal is weak (only 51% approvals for DTI >30%) and the applicant's short employment (<1 year) raises risk, so escalate to Person 1 for a final judgment.  
+DECISION: 1",,,2026-03-17T17:48:44.486923
+dti_over_30,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 34.9%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because their DTI >30% places them in a branch with a marginal 51% approval rate but their long employment history, reasonable credit score (665), and small $2,000 debt-consolidation request increase the likelihood of approval, I predict approval.
+PREDICTION: 1","The branch probability is only slightly above chance (51%), but the applicant’s long employment, reasonable credit score (665), and small $2,000 request make approval more likely than rejection, so implementing the prediction is reasonable.  
+DECISION: 0",,,2026-03-17T17:48:44.533124
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $7,000 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 33.2%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's DTI of 33.2% puts them in the tree leaf with a 51% approval rate, and combined with a fair credit score of 665 and 2 years employment this marginal majority supports approving the loan.  
+PREDICTION: 1","The model's prediction rests on a leaf with only a 51% approval rate (near chance) and borderline signals (credit score 665, 2 years employment), so uncertainty is high and a human review is warranted.  
+DECISION: 1",,,2026-03-17T17:48:44.994756
+dti_over_30,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $19,025 for Car financing. They have been employed for < 1 year, a debt-to-income ratio of 100.0%, and a credit score of 603.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's very high DTI (100%), short employment tenure (<1 year), and only fair credit (603) — despite the decision tree's marginal 51% approval rate for DTI >30% — the prudent choice is to reject the loan.  
+PREDICTION: 0","We should escalate because we cannot be certain my rejection matches Person 1's true decision and this is a high-risk case (100% DTI, <1 year employment, fair credit) where human review is warranted.  
+DECISION: 1",,,2026-03-17T17:48:45.470505
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $35,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 33.6%, and a credit score of 709.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's solid credit score (709), moderate DTI of 33.6% (in a branch with a slight 51% approval rate) and despite short employment tenure (<1 year), I would approve the $35,000 consolidation loan. 
+PREDICTION: 1","Given the marginal approval probability (51%) for DTI >30%, the applicant's short employment (<1 year) and the financial risk of a $35,000 consolidation loan, this case is borderline and should be reviewed by Person 1 to confirm factors the model doesn’t capture.  
+DECISION: 1",,,2026-03-17T17:48:46.118047
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,950 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 31.3%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's DTI >30% falls into a node with only a 51% approval rate, but their stable 10+ years employment and reasonable 660 credit score slightly tip the balance toward approval.  
+PREDICTION: 1","The training-node approval rate is only 51% for DTI >30%, so the case is essentially a coin flip despite the applicant's steady employment and fair credit, making it prudent to defer to the loan officer for final judgment.  
+DECISION: 1",,,2026-03-17T17:48:47.537038
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $12,500 for credit_card. They have been employed for 5 years, a debt-to-income ratio of 30.7%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI of 30.7% falls into the decision-tree branch with a 51% approval rate and they have a decent credit score (675) plus 5 years' employment, I predict approval.  
+PREDICTION: 1","The model's approval probability is only marginally above chance (51%) and the available features are limited, so confidence in matching Person 1's true decision is low. Therefore we should escalate to Person 1 for a definitive judgment.  
+DECISION: 1",,,2026-03-17T17:48:49.172143
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,000 for debt_consolidation. They have been employed for 1 year, a debt-to-income ratio of 31.9%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's DTI is 31.9% (above 30%) and the decision tree reports a 51% approval rate for that group, the model predicts approval. 
+PREDICTION: 1","The model's prediction is barely above chance (51% approval) and the applicant's attributes (DTI just over threshold, 1 year employment, credit score 675) leave substantial uncertainty, so this should be escalated to the loan officer for a final judgment.  
+DECISION: 1",,,2026-03-17T17:48:50.735469
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 67.5%, and a credit score of 612.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because their DTI is 67.5%, which places them in the decision-tree node where 51% of applicants were approved, the model would slightly favor approval despite short employment and a 612 score.  
+PREDICTION: 1","Escalate to Person 1 because the model's 51% approval rate in that DTI>30% node indicates low confidence, and the applicant's very high DTI (67.5%), short employment (<1 year), and borderline credit (612) increase risk and warrant manual review.  
+DECISION: 1",,,2026-03-17T17:48:53.970400
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $35,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 33.4%, and a credit score of 690.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree shows a slight majority (51%) of approvals for DTI >30% and the applicant also has a solid 690 credit score and 10+ years of employment, I would approve the loan.
+PREDICTION: 1","The model's 51% approval rate for DTI >30% is essentially a coin flip and, given the loan size and that Person 1 is the decision-maker, this borderline prediction should be escalated for human review.  
+DECISION: 1",,,2026-03-17T17:48:54.188796
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for major_purchase. They have been employed for < 1 year, a debt-to-income ratio of 37.0%, and a credit score of 726.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the model rule for DTI >30% yields a slight majority of approvals (51%) and this applicant also has a strong credit score (726) despite short employment, I predict approval.  
+PREDICTION: 1","The model rule is weak (only 51% approvals for DTI >30%) and the applicant has conflicting signals (good credit score but employment <1 year), so I have low confidence in an automated approval. Escalate to Person 1 for human review.  
+DECISION: 1",,,2026-03-17T17:48:55.549200
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $7,875 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 30.5%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree branch for DTI >30% yields a slight majority of approvals (51%) and this applicant's DTI is 30.5% with a fair credit score of 665, so the model-supported choice is to approve despite missing employment duration.  
+PREDICTION: 1","Escalate: the model's approval signal is very weak (51%) and the applicant's employment duration is missing, so there's insufficient confidence to implement without human review.  
+DECISION: 1",,,2026-03-17T17:48:59.022333
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,500 for Other. They have been employed for < 1 year, a debt-to-income ratio of 34.2%, and a credit score of 591.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although their short employment and low credit score are risks, the decision-tree rule for DTI > 30% yields a slight majority approval (51%), so the model would approve.  
+PREDICTION: 1","The model's 51% approval for DTI > 30% is marginal and, combined with the applicant's short employment and low credit score, creates enough uncertainty and risk that this should be escalated for human review.  
+DECISION: 1",,,2026-03-17T17:49:01.655353
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $11,325 for debt_consolidation. They have been employed for 5 years, a debt-to-income ratio of 32.6%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is just above 30% (a branch with a 51% approval rate) and they have a reasonable 665 credit score plus 5 years' employment which lean positive, I predict approval.  
+PREDICTION: 1","The model's approval rate for DTI >30% is essentially a coin flip (51%), and the applicant's metrics are borderline, so escalate to Person 1 for human review.  
+DECISION: 1",,,2026-03-17T17:49:01.872632
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $40,000 for other. They have been employed for 3 years, a debt-to-income ratio of 31.7%, and a credit score of 730.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although the decision tree leaf for DTI >30% yields only a 51% approval rate, the applicant's strong 730 credit score and 3 years' employment tilt the balance toward approval. 
+PREDICTION: 1","The model's leaf is nearly a coin flip (51% approval) and the case has mixed signals—slightly high DTI but good credit and stable employment—so it's borderline and merits human review.  
+DECISION: 1",,,2026-03-17T17:49:02.301660
+dti_over_30,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 41.8%, and a credit score of 592.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although the decision tree shows a 51% approval rate for DTI >30%, this applicant’s high DTI (41.8%), short employment history (<1 year), and low credit score (592) increase risk and warrant rejection.  
+PREDICTION: 0","The model's signal is borderline (51% approval for DTI >30%) and the applicant has multiple risk factors (low credit score, short employment), so given the uncertainty and the loan officer's authority this case should be escalated for human review.  
+DECISION: 1",,,2026-03-17T17:49:03.178810
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $40,000 for small_business. They have been employed for 10+ years, a debt-to-income ratio of 32.1%, and a credit score of 700.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although the applicant falls into a DTI >30% node with only a 51% approval rate, their strong 700 credit score and 10+ years of employment make approval the more justified choice.  
+PREDICTION: 1","The model's 51% approval rate for DTI >30% is essentially a coin flip and Person 1 (the loan officer) likely has additional business-specific information and judgment to apply, so escalate for final review.  
+DECISION: 1",,,2026-03-17T17:49:03.680251
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 33.5%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because applicants with DTI >30% were approved 51% of the time and this borrower has 10+ years of employment, a fair credit score of 670, and is requesting a moderate $10,000 for debt consolidation, I lean to approve.  
+PREDICTION: 1","The model's approval rate for DTI >30% is only 51%, so given this very weak signal despite the applicant's long employment and fair credit score, confidence in the automatic approve prediction is low. Escalate to Person 1 for a final decision.  
+DECISION: 1",,,2026-03-17T17:49:04.626229
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $12,800 for credit_card. They have been employed for 5 years, a debt-to-income ratio of 43.1%, and a credit score of 700.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Despite a DTI of 43.1% (where the tree shows only a 51% approval rate), the applicant’s solid credit score of 700 and five years of employment tilt the decision toward approval.  
+PREDICTION: 1","The model's prediction is borderline (51% approval for DTI>30%) and we lack certainty about Person 1's true decision, so it's safer to escalate for human review.  
+DECISION: 1",,,2026-03-17T17:49:05.993943
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $17,000 for debt_consolidation. They have been employed for 5 years, a debt-to-income ratio of 35.5%, and a credit score of 706.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although the decision tree shows applicants with DTI >30% were approved only 51% of the time, this applicant's solid credit score of 706 and five years of steady employment outweigh the marginal DTI risk, so I would approve the loan.
+PREDICTION: 1","Escalate: the model-based signal is marginal (DTI>30% group only 51% approved) and the choice hinges on lender policy and any unstated risk factors, so a human loan officer should confirm.  
+DECISION: 1",,,2026-03-17T17:49:06.073136
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $16,950 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 38.6%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant falls into the DTI >30% group which had a 51% approval rate, and with a 680 credit score and two years' employment the factors slightly favor approval.  
+PREDICTION: 1","The model's signal is very weak (51% approval for DTI >30%) and the available applicant details are limited, so there is substantial uncertainty about whether my predicted approval matches Person 1's true decision. Escalate to Person 1 for human review.  
+DECISION: 1",,,2026-03-17T17:49:10.654909
+dti_over_30,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 53.8%, and a credit score of 628.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although the decision tree shows a marginal 51% approval rate for DTI >30%, the applicant's high DTI (53.8%), short employment tenure (<1 year), and only fair credit score (628) indicate elevated risk, so I would reject the application.  
+PREDICTION: 0","The decision tree's 51% approval rate for DTI >30% and the applicant's risky profile (DTI 53.8%, <1 year employment, credit score 628) make the outcome uncertain and warrant human review for context and exceptions, so escalate to Person 1.  
+DECISION: 1",,,2026-03-17T17:49:12.007385
+dti_over_30,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 47.0%, and a credit score of 565.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Despite the decision-tree node showing a marginal 51% approval rate for applicants with DTI >30%, this applicant’s high DTI (47%), poor credit score (565), and under‑1‑year employment make rejection the safer decision.  
+PREDICTION: 0","The decision node is nearly balanced (51% approval) and important risks—47% DTI, credit score 565, and employment <1 year—warrant human judgment rather than automated implementation.  
+DECISION: 1",,,2026-03-17T17:49:12.608016
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $30,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 31.1%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows a slight majority (51%) of applicants with DTI >30% were approved, and given this applicant's stable 10+ years of employment and a fair-to-good 675 credit score, I predict approval.  
+PREDICTION: 1","The model's approval signal is weak (51% for DTI >30%) and given the narrow margin and remaining uncertainty about other case-specific factors, this should be escalated for human review.  
+DECISION: 1",,,2026-03-17T17:49:14.380845
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $16,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 52.3%, and a credit score of 720.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although the applicant has high DTI (52.3%) and short employment (<1 year), their strong credit score (720) and the decision-tree node where 51% of DTI>30% cases were approved lead me to approve, as the slight majority outcome and creditworthiness outweigh the risks.  
+PREDICTION: 1","The model's approval signal is weak (only 51% for DTI>30%) and the applicant's high DTI and short employment create material risk, so escalate to Person 1 for human judgment.  
+DECISION: 1",,,2026-03-17T17:49:17.568517
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $15,000 for debt_consolidation. They have been employed for 5 years, a debt-to-income ratio of 34.3%, and a credit score of 705.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is just above 30% (historical approval rate 51%) and they have a solid 705 credit score with 5 years' employment, the balance of factors favors approving the loan.  
+PREDICTION: 1","The historical approval rate for applicants with DTI >30% is nearly coin-flip (51%), and while the 705 score and 5 years' employment lean positive, the decision remains borderline so it's safer to get Person 1's confirmation.  
+DECISION: 1",,,2026-03-17T17:49:19.280495
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,200 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 55.7%, and a credit score of 720.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although their DTI is high (55.7%) and employment is short, their strong credit score (720), modest loan amount, and the model's finding that 51% of applicants with DTI >30% were approved lead me to approve.  
+PREDICTION: 1","The model's 51% approval rate for DTI >30% is essentially a coin flip, and the applicant's very high DTI and employment <1 year introduce significant uncertainty, so this should be escalated to Person 1 for a final judgment.  
+DECISION: 1",,,2026-03-17T17:49:19.496017
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $24,000 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 31.1%, and a credit score of 710.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because their DTI > 30% places them in a node with a 51% approval rate and they have a solid 710 credit score (despite <1 year employment), I marginally approve.  
+PREDICTION: 1","The model's node is essentially a coin flip (51% approval) and the applicant's <1 year employment creates additional risk despite a 710 score, so escalate for human review.  
+DECISION: 1",,,2026-03-17T17:49:20.277069
+dti_over_30,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $13,000 for Other. They have been employed for < 1 year, a debt-to-income ratio of 44.8%, and a credit score of 651.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The application should be rejected because the applicant's high DTI (44.8%), short employment tenure (<1 year), and only borderline credit score (651) outweigh the weak signal from the decision tree's marginal 51% approval rate for DTI > 30%.  
+PREDICTION: 0","Escalate because we don't know Person 1's true decision and implementing risks being incorrect given the applicant's borderline indicators and limited model confidence.  
+DECISION: 1",,,2026-03-17T17:49:21.784607
+dti_over_30,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $19,875 for Car financing. They have been employed for < 1 year, a debt-to-income ratio of 100.0%, and a credit score of 598.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Despite the decision tree's marginal 51% approval rate for applicants with DTI >30%, this applicant's extremely high DTI (100%), short employment (<1 year), and low credit score (598) present too much risk to approve the $19,875 auto loan.  
+PREDICTION: 0","I should escalate because I don't know Person 1's actual decision, and correctness depends on matching their true choice; given that uncertainty, it's safer to escalate rather than implement my prediction.  
+DECISION: 1",,,2026-03-17T17:49:21.788178
+dti_over_30,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 51.5%, and a credit score of 604.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I would reject because although the decision tree shows only a slight majority (51%) of applicants with DTI >30% were approved, this applicant’s very high DTI (51.5%), short employment history (<1 year), and low credit score (604) indicate elevated risk.  
+PREDICTION: 0","Escalate because the model is uncertain (51% approval for DTI >30%) and the applicant’s high DTI, short employment history, and borderline credit score warrant human review.  
+DECISION: 1",,,2026-03-17T17:49:21.795683
+dti_over_30,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 73.7%, and a credit score of 627.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I would reject because the applicant's very high DTI (73.7%), short employment (<1 year), and only fair credit (score 627) indicate elevated risk despite the decision-tree branch where DTI > 30% had only a marginal 51% approval rate.  
+PREDICTION: 0","The evidence is ambiguous (the decision-tree branch is nearly 50/50 and the applicant has mixed signals), so this is not a high-confidence automated call and should be escalated for Person 1 to review.  
+DECISION: 1",,,2026-03-17T17:49:22.691419
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $28,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 33.2%, and a credit score of 690.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the DTI is just above 30% where approvals were slightly more common (51%) and the applicant also has 10+ years employment and a solid 690 credit score, I predict this application should be approved. 
+PREDICTION: 1","I cannot be certain my prediction matches Person 1's actual decision because the approval rate at DTI>30% is only slightly above chance (51%) and the case is borderline despite positive factors, so this should be reviewed by Person 1.  
+DECISION: 1",,,2026-03-17T17:49:22.755211
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for Credit card refinancing. They have been employed for < 1 year, a debt-to-income ratio of 39.1%, and a credit score of 840.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve—the applicant's exceptional credit score (840) outweighs the short employment history and the elevated DTI (39.1%), and applicants with DTI >30% were approved about 51% of the time.  
+PREDICTION: 1","Escalate—this is a borderline case: an excellent credit score favors approval but short employment and a DTI >30% (historical approval ~51%) create meaningful uncertainty that warrants human review.  
+DECISION: 1",,,2026-03-17T17:49:23.736785
+dti_over_30,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,500 for Credit card refinancing. They have been employed for < 1 year, a debt-to-income ratio of 72.7%, and a credit score of 558.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Reject because the applicant's very high DTI (72.7%), low credit score (558), and short employment (<1 year) indicate elevated default risk despite the dataset's borderline 51% approval rate for DTI > 30%.  
+PREDICTION: 0","Escalate because the dataset's approval rate for DTI >30% is near 50/50 and I lack certainty about Person 1's risk tolerance and any additional context they might use, so it's safer to have the human confirm.  
+DECISION: 1",,,2026-03-17T17:49:25.748467
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 43.9%, and a credit score of 599.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree indicates that applicants with DTI > 30% were approved 51% of the time, so despite the short employment and low credit score the model's majority-class prediction is to approve. 
+PREDICTION: 1","Escalate — the model's 51% approval rate for DTI > 30% is barely better than a coin flip and the applicant's low credit score (599) and under‑1‑year employment make this a higher‑risk case that merits human review.  
+DECISION: 1",,,2026-03-17T17:49:26.341589
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $6,000 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 32.9%, and a credit score of 730.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Despite the applicant's DTI being just above 30% (which historically yields only a 51% approval rate), their strong credit score of 730, two years of employment, and modest $6,000 consolidation request favor approval.  
+PREDICTION: 1","The model's evidence is weak (only a 51% approval rate for DTI >30%) and the case is borderline despite a good credit score, so a human review is warranted to account for context and judgment.  
+DECISION: 1",,,2026-03-17T17:49:29.130251
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,400 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 39.5%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows a slight majority (51%) of approvals for DTI>30%, and given this applicant's stable 10+ years employment, fair credit score of 665, and moderate $8,400 debt-consolidation request, I predict approval.  
+PREDICTION: 1","The model's approval estimate is only marginally above chance (51% for DTI>30%) and although the applicant's long employment and fair credit slightly support approval, the uncertainty is high enough that a human review is warranted.  
+DECISION: 1",,,2026-03-17T17:49:30.044087
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $12,000 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 31.1%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant falls into the decision-tree branch with DTI > 30% where 51% were approved, and their moderate credit score of 665 (despite missing employment length) slightly favors approval.  
+PREDICTION: 1","The model's approval rate for this branch is only 51% and critical information (employment length) is missing, so uncertainty is high and the prediction is not decisive. Escalate to Person 1 for a human review before implementing.  
+DECISION: 1",,,2026-03-17T17:49:30.905863
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $25,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 33.7%, and a credit score of 710.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Though their DTI is above 30%—a branch that only approved 51% of applicants—the applicant's strong 710 credit score and 10+ years of employment make approval more likely.  
+PREDICTION: 1","The prediction rests on borderline evidence (DTI >30% branch is only 51% approvals) despite positive signals (710 score, long employment), so uncertainty remains and a human review is prudent.  
+DECISION: 1",,,2026-03-17T17:49:32.977019
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 72.9%, and a credit score of 637.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows applicants with DTI > 30% were approved 51% of the time, so despite the short employment tenure and a fair credit score (637) I predict approval.  
+PREDICTION: 1","The model's approval probability (51%) is essentially a coin flip and, given the applicant's very high DTI (72.9%) and short employment (<1 year) which raise credit risk, this prediction is low-confidence and warrants human review.  
+DECISION: 1",,,2026-03-17T17:49:33.138838
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $15,000 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 39.7%, and a credit score of 740.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant falls into the DTI > 30% node where approvals slightly exceed rejections (51%) and their strong credit score (740) mitigates the short employment, so I recommend approving the loan.  
+PREDICTION: 1","The prediction rests on a marginal 51% approval rate for the DTI > 30% node and conflicting signals (very short employment vs. strong credit score), so confidence is low and this borderline case should be reviewed by Person 1.  
+DECISION: 1",,,2026-03-17T17:49:34.073328
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 56.1%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant’s DTI of 56.1% places them in the decision-tree node where 51% were approved and their credit score (670) is borderline acceptable despite short employment, I predict approval.  
+PREDICTION: 1","The model's node is nearly a coin flip (51% approval) and the applicant has high DTI and very short employment, creating substantial uncertainty that could warrant human judgment. Escalate to Person 1 for a manual review of creditworthiness and employment stability.  
+DECISION: 1",,,2026-03-17T17:49:34.757725
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,000 for debt_consolidation. They have been employed for 7 years, a debt-to-income ratio of 35.5%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the decision tree's slight majority (51%) approval for DTI > 30% and this applicant's 7 years of steady employment, fair-good credit score of 680, and modest $2,000 request, I would approve the loan.  
+PREDICTION: 1","The model's approval was based on a very weak 51% majority for DTI > 30%, so confidence is low and the applicant's borderline factors (credit score near-midrange, long employment but modest loan) could reasonably sway the outcome.  
+DECISION: 1",,,2026-03-17T17:49:35.546146
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $16,000 for credit_card. They have been employed for 2 years, a debt-to-income ratio of 31.9%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the DTI is just over 30% where the model shows a slight majority (51%) approvals and the applicant has a 685 credit score and 2 years employment, I predict approval.  
+PREDICTION: 1","The model's signal is weak (only 51% approvals for DTI > 30%) and the applicant is borderline with DTI just over 30%, a 685 score, and 2 years employment, so a human review is warranted.  
+DECISION: 1",,,2026-03-17T17:49:37.456931
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $40,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 33.9%, and a credit score of 644.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the decision tree shows a 51% approval rate for applicants with DTI >30% and the applicant's 33.9% DTI slightly outweighs the marginal negatives of <1 year employment and a 644 credit score, I predict approval.  
+PREDICTION: 1","The approval probability is marginal (51% for DTI >30%) and the applicant has borderline risk factors (employment <1 year and a credit score of 644), so confidence in the automated prediction is low. Escalate to Person 1 for human review.  
+DECISION: 1",,,2026-03-17T17:49:39.589822
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $16,000 for renewable_energy. They have been employed for 1 year, a debt-to-income ratio of 33.7%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant falls into the DTI > 30% branch where the decision tree shows a slight majority (51%) of approvals, and with a moderate credit score (665) and only 1 year of employment not strongly contraindicating approval, I predict approval.  
+PREDICTION: 1","The model's signal is weak (only a 51% approval rate for DTI > 30%) and the applicant's short employment history and borderline credit score introduce uncertainty, so escalate to Person 1 for a final decision.  
+DECISION: 1",,,2026-03-17T17:49:40.370620
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $9,600 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 32.6%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is just over 30% (where the model shows a 51% approval rate) and they have a solid credit score (675) with 10+ years employment, I predict approving the $9,600 debt-consolidation loan.  
+PREDICTION: 1","The model's signal is weak (only a 51% approval rate for DTI >30%) and the decision rests on borderline factors where the loan officer's judgment or additional applicant details could change the outcome, so escalate to Person 1.  
+DECISION: 1",,,2026-03-17T17:49:41.355310
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 31.6%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision node shows only a slight majority (51%) of approvals for DTI >30% but the applicant’s 10+ years of employment and a decent credit score of 665 tilt the risk in favor of granting the loan, I predict approval.  
+PREDICTION: 1","The historical approval rate is nearly even at 51% for DTI >30% and the applicant's moderate credit score makes the outcome uncertain, so this should be escalated for human review.  
+DECISION: 1",,,2026-03-17T17:49:41.742821
+dti_over_30,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for other. They have been employed for < 1 year, a debt-to-income ratio of 154.7%, and a credit score of 549.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's extremely high DTI (154.7%), poor credit score (549), and short employment (<1 year), the decision tree's marginal 51% approval rate for DTI>30% does not overcome these strong risk factors, so I recommend rejecting the loan.  
+PREDICTION: 0","I cannot be certain my prediction matches Person 1's true decision because I lack access to their final judgment and there is substantial risk given the borderline decision-tree signal and strong negative indicators, so this should be escalated for Person 1 to confirm.  
+DECISION: 1",,,2026-03-17T17:49:42.387894
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $14,400 for debt_consolidation. They have been employed for 1 year, a debt-to-income ratio of 33.3%, and a credit score of 715.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the decision tree indicates a slight majority (51%) of approvals for DTI >30% and the applicant's solid credit score of 715 plus one year of employment support approval despite a 33.3% DTI. 
+PREDICTION: 1","Escalate because we do not know Person 1’s actual decision and the predictive evidence is weak (only a 51% approval rate for DTI >30%), so the loan officer should confirm the final call.  
+DECISION: 1",,,2026-03-17T17:49:43.061255
+dti_over_30,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $12,500 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 37.0%, and a credit score of 619.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although the decision tree shows a marginal 51% approval rate for DTI > 30%, the applicant's low credit score (619), short employment tenure (<1 year), and credit-card loan purpose increase risk, so I recommend rejecting.  
+PREDICTION: 0","The model's 51% approval rate is essentially a coin flip and the applicant's short employment tenure and borderline credit score create significant uncertainty and potential risk, so this should be escalated for Person 1's review.  
+DECISION: 1",,,2026-03-17T17:49:44.907811
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $14,400 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 30.3%, and a credit score of 705.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant has stable 10+ years of employment, a solid 705 credit score, and the decision tree slightly favors approval (51%) for cases with DTI just over 30%, I predict approving this loan.  
+PREDICTION: 1","The model's recommendation was only marginally in favor of approval (51% for DTI >30%), so given the borderline DTI and the modest confidence I would escalate to Person 1 for a human review.  
+DECISION: 1",,,2026-03-17T17:49:45.218964
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $11,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 34.4%, and a credit score of 638.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant falls into the DTI > 30% branch where 51% of applications were approved, so despite short employment and a fair credit score (638) I predict approval based on the slight majority from the decision tree.  
+PREDICTION: 1","Escalate to Person 1: the model's signal is weak (51% approval for DTI>30%) and the applicant's short employment (<1 year) and only fair credit (score 638) warrant human review.  
+DECISION: 1",,,2026-03-17T17:49:45.356677
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,000 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 34.4%, and a credit score of 705.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the decision tree's slight majority approval (51%) for DTI >30% and the applicant's solid credit score of 705 despite missing employment duration, approving is reasonable.  
+PREDICTION: 1","The prediction relied on a marginal 51% approval rate for DTI >30% and a missing employment duration (nan), creating significant uncertainty about whether Person 1's true decision matches my prediction, so escalate for human review.  
+DECISION: 1",,,2026-03-17T17:49:45.905003
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $24,000 for credit_card. They have been employed for 1 year, a debt-to-income ratio of 30.4%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the model shows a slight majority (51%) of approvals for DTI >30% and the applicant’s credit score (685) is adequate despite only one year of employment, I predict approval.  
+PREDICTION: 1","The model's approval rate for DTI >30% is only 51% and the applicant's profile (borderline DTI and only one year of employment) makes the prediction low-confidence, so this should be escalated for human review.  
+DECISION: 1",,,2026-03-17T17:49:46.006735
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $13,850 for credit_card. They have been employed for 3 years, a debt-to-income ratio of 40.0%, and a credit score of 695.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision-tree node for DTI >30% shows a slight majority approval (51%) and the applicant's credit score (695) with 3 years' employment provide additional support, I predict approval.
+
+PREDICTION: 1","The model's support is weak (only 51% approval for DTI >30%) and the applicant's 40% DTI makes this a borderline, higher-risk case despite a decent credit score, so it should be reviewed by the human loan officer.  
+
+DECISION: 1",,,2026-03-17T17:49:46.773346
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $18,000 for credit_card. They have been employed for 8 years, a debt-to-income ratio of 31.1%, and a credit score of 765.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's strong credit score (765) and long employment history (8 years) which outweigh the marginally elevated DTI (31.1%) and align with the decision tree's slight majority approval (51%) for DTI>30%, I predict approval.  
+PREDICTION: 1","The model's approval rate for DTI>30% is only 51%, indicating low confidence despite the applicant's strong credit score and employment history, so this borderline case should be escalated for human review.  
+DECISION: 1",,,2026-03-17T17:49:47.930667
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $12,000 for other. They have been employed for 4 years, a debt-to-income ratio of 30.6%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is slightly above 30% (30.6%) where the tree approves 51% of cases, and they have a solid credit score of 685 plus four years' employment, I would approve the loan.
+PREDICTION: 1","The model's approval signal is weak (51% for DTI > 30%) and the case is borderline despite a decent credit score and stable employment, so this low-confidence prediction should be escalated to Person 1 for final review.
+DECISION: 1",,,2026-03-17T17:49:48.851274
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for Other. They have been employed for < 1 year, a debt-to-income ratio of 51.0%, and a credit score of 713.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although the applicant has short employment and a high DTI (51%), the model shows a slight majority (51%) of >30% DTI cases were approved and the applicant's credit score of 713 is solid, so I lean to approve.  
+PREDICTION: 1","The model's approval rate (51%) for DTI >30% is marginal and the applicant's short employment (<1 year) and high DTI (51%) introduce risk despite a decent credit score, so escalate for human review.  
+DECISION: 1",,,2026-03-17T17:49:52.312895
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 45.9%, and a credit score of 698.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given their DTI is 45.9% which falls into the decision-tree node with a slight majority approval rate (51%) and their credit score is near-good (698) despite under one year of employment, I predict approval. 
+PREDICTION: 1","The model's approval was based on a very weak majority (51%) for DTI >30% and the applicant also has short employment (<1 year) and high DTI, so confidence is low and this should be reviewed by Person 1.  
+DECISION: 1",,,2026-03-17T17:49:53.105310
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $7,000 for debt_consolidation. They have been employed for 4 years, a debt-to-income ratio of 32.2%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant falls into the DTI > 30% group where 51% were approved and also has a reasonable credit score of 675, four years of employment, and is requesting a modest $7,000 for debt consolidation, I predict approval.  
+PREDICTION: 1","The model's prediction rests on a marginal 51% approval rate for DTI > 30% and limited features, so there's substantial uncertainty and a loan officer's judgment on nuances (e.g., income stability, other debts) is warranted.  
+DECISION: 1",,,2026-03-17T17:49:53.612223
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $14,000 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 30.6%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because they have long-term employment, a fair credit score (660), a moderate DTI just above 30% and the decision tree shows a slight majority (51%) of approvals for DTI > 30%, I predict approval.  
+PREDICTION: 1","The model's approval prediction rests on a marginal 51% empirical rate for DTI > 30% and mixed signals (stable employment but only fair credit and a slightly elevated DTI), so confidence is low and a human loan officer should review the application.  
+DECISION: 1",,,2026-03-17T17:49:56.328426
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for Other. They have been employed for < 1 year, a debt-to-income ratio of 35.7%, and a credit score of 520.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the learned tree branch for DTI > 30% yields a slight majority of approvals (51%) and this applicant's DTI is 35.7% despite low credit score and short employment, I predict approval.  
+PREDICTION: 1","The model's 51% approval rate for DTI > 30% is essentially a coin flip and the applicant also has risky attributes (credit score 520 and employment <1 year), so confidence in the automated approval is low and this should be escalated for human review.  
+DECISION: 1",,,2026-03-17T17:49:56.869404
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,600 for Credit card refinancing. They have been employed for < 1 year, a debt-to-income ratio of 35.3%, and a credit score of 602.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree indicates applicants with DTI >30% were approved 51% of the time and that slight majority outweighs the marginal credit score and short employment history, predict approval.  
+PREDICTION: 1","The model's 51% approval rate for DTI >30% is essentially a coin flip and the applicant's short employment and marginal credit score introduce additional risk, so escalate to Person 1 for a human review.  
+DECISION: 1",,,2026-03-17T17:49:57.812218
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,000 for other. They have been employed for < 1 year, a debt-to-income ratio of 33.5%, and a credit score of 625.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because their DTI is above 30% and the decision tree shows a slight majority (51%) of applicants in that branch are approved despite marginal credit and short employment, I predict approval.  
+PREDICTION: 1","The prediction relied on a weak majority (51%) in the decision-tree branch and there are concerning factors (employment <1 year and a borderline credit score of 625) that reduce confidence, so this should be escalated for human review.  
+DECISION: 1",,,2026-03-17T17:49:58.249398
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 38.5%, and a credit score of 620.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is above 30% and the trained decision tree shows a 51% approval rate for such cases—so despite the marginal credit score (620) and short employment tenure, approval is slightly favored. 
+PREDICTION: 1","The model's prediction is low-confidence: the decision tree gives only a 51% approval rate for DTI > 30% and the applicant also has short employment and a borderline credit score, which warrant human judgment. Escalate to Person 1 for review.  
+DECISION: 1",,,2026-03-17T17:49:58.806720
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $11,450 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 31.6%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although the applicant falls into the DTI >30% branch (only a 51% approval rate), their 10+ years of stable employment and a fair 660 credit score make approval reasonable, so I would approve.  
+PREDICTION: 1","The approval probability is only marginally above chance for applicants with DTI >30% and, despite stable employment and a fair credit score, the decision is borderline, so it's safer to escalate to Person 1 for final judgment.  
+DECISION: 1",,,2026-03-17T17:50:00.851972
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $7,000 for Credit card refinancing. They have been employed for < 1 year, a debt-to-income ratio of 35.4%, and a credit score of 637.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant falls into the DTI>30% group for which the decision tree reports a slight majority (51%) of approvals, so despite short employment and a fair 637 score the model marginally favors approval.  
+PREDICTION: 1","The model's approval was marginal (51% for DTI>30%) and given short employment and a fair 637 score a human loan officer may reasonably decide differently, so escalate to Person 1 for confirmation.  
+DECISION: 1",,,2026-03-17T17:50:02.664454
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 42.4%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree indicates applicants with DTI >30% were approved 51% of the time, and given the modest $2,000 request and a credit score of 660 (despite under‑1‑year employment and a 42.4% DTI), I predict approval.
+
+PREDICTION: 1","The model's 51% approval rate for DTI >30% is essentially a coin flip and the applicant's short employment (<1 year) and high DTI (42.4%) add meaningful risk, so the prediction is uncertain and should be reviewed by Person 1.  
+
+DECISION: 1",,,2026-03-17T17:50:03.095779
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for Credit card refinancing. They have been employed for < 1 year, a debt-to-income ratio of 33.9%, and a credit score of 639.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree places this applicant in the DTI >30% branch where approvals occurred 51% of the time, so despite short employment and a borderline 639 score I predict approval. 
+PREDICTION: 1","Escalate: the model's 51% approval rate for DTI >30% is essentially a coin flip and the applicant's under‑1‑year employment plus a borderline 639 score add uncertainty that warrants human review.  
+DECISION: 1",,,2026-03-17T17:50:04.354395
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,400 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 31.8%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is just above 30% where the decision tree shows a 51% approval rate, combined with a long (10+ year) employment history and a decent 675 credit score for a moderate $5,400 debt-consolidation loan, I predict approval.  
+PREDICTION: 1","I recommend escalation because the decision-tree gives only a 51% approval rate for DTI >30%, making this a borderline case despite the applicant's long employment and decent credit. Person 1 should review additional context and documentation before implementing.  
+DECISION: 1",,,2026-03-17T17:50:04.357955
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $24,000 for credit_card. They have been employed for 8 years, a debt-to-income ratio of 44.8%, and a credit score of 700.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the decision tree's slight majority (51%) approval for DTI >30% and the applicant's solid 700 credit score and 8 years' employment which outweigh the elevated 44.8% DTI, approve.  
+PREDICTION: 1","The model's approval was low-confidence (only 51% for DTI >30%) and the applicant presents mixed signals — strong credit score and long employment but high DTI and a $24k credit-card request — so escalate to Person 1 for human judgment.  
+DECISION: 1",,,2026-03-17T17:50:04.441854
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 30.1%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because their DTI is just above 30% and the decision tree indicates a slight majority (51%) of applicants with DTI > 30% were approved, and their credit score is moderate despite short employment, I predict approval.  
+PREDICTION: 1","Because the model's prediction rests on a marginal 51% approval rate for DTI > 30% and the applicant's short employment (<1 year) and only moderate credit score (660) raise uncertainty, escalate to Person 1 for a human review.  
+DECISION: 1",,,2026-03-17T17:50:08.758694
+dti_over_30,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $16,000 for debt_consolidation. They have been employed for 5 years, a debt-to-income ratio of 34.9%, and a credit score of 735.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although the decision-tree node for DTI > 30% only approves 51% of cases, Person 1's good credit score (735), five years of steady employment, and a moderate $16,000 debt-consolidation request make approval more likely.  
+PREDICTION: 1","Implement — although the DTI>30% node is nearly a coin flip (51% approvals), the applicant's strong credit score (735), stable 5-year employment, and moderate $16,000 request make it more likely our approve prediction matches the true decision.  
+DECISION: 0",,,2026-03-17T17:50:09.704018
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $6,000 for major_purchase. They have been employed for < 1 year, a debt-to-income ratio of 43.4%, and a credit score of 638.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree shows that applicants with DTI > 30% were approved 51% of the time and the applicant's credit score and short tenure are marginal negatives but not enough to overcome the slight majority approval at that node, I predict approval.
+
+PREDICTION: 1","The model's 51% approval at DTI > 30% is essentially a coin flip and combined with the applicant's short employment, fair credit score, and high DTI makes the outcome uncertain, so this should be escalated for human review.  
+DECISION: 1",,,2026-03-17T17:50:10.195332
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $12,000 for Credit card refinancing. They have been employed for < 1 year, a debt-to-income ratio of 42.0%, and a credit score of 722.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's strong credit score (722) and the decision-tree's slight majority approval (51%) for DTI > 30%, I predict approval despite the short employment tenure and high DTI.  
+PREDICTION: 1","The decision-tree signal is weak (only 51% approval for DTI >30%) and the applicant's short employment tenure and high 42% DTI introduce meaningful risk, so my prior approval prediction is uncertain and should be escalated for human review.  
+DECISION: 1",,,2026-03-17T17:50:10.266175
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for debt_consolidation. They have been employed for 7 years, a debt-to-income ratio of 30.4%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI of 30.4% falls just above the tree's split where approvals occur 51% of the time, and they have a solid 7-year employment history and a fair-to-good credit score of 660, I would approve the $20,000 debt-consolidation loan.
+PREDICTION: 1","The DTI sits just above a weak model split that yielded only a 51% approval rate, so despite solid employment and a 660 score the prediction is uncertain and benefits from human review.  
+DECISION: 1",,,2026-03-17T17:50:10.666514
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,675 for debt_consolidation. They have been employed for 9 years, a debt-to-income ratio of 39.6%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's nine-year employment history, moderate credit score (660), manageable loan amount for consolidation, and that applicants with DTI >30% were approved 51% of the time by the decision tree, I lean to approve.  
+PREDICTION: 1","Although I predicted approval, the model's 51% approval rate for DTI>30% indicates high uncertainty and the decision is borderline, so escalate to Person 1 for final judgment.  
+DECISION: 1",,,2026-03-17T17:50:11.943727
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $7,550 for major_purchase. They have been employed for 1 year, a debt-to-income ratio of 38.1%, and a credit score of 725.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the decision tree's slight majority approval (51%) for applicants with DTI >30% combined with this applicant's solid credit score (725) and moderate loan amount, I predict approval.  
+PREDICTION: 1","We should escalate because we don't know Person 1's true decision and the model's prediction is based on a marginal 51% approval for DTI >30%, indicating substantial uncertainty.  
+DECISION: 1",,,2026-03-17T17:50:12.412310
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $15,000 for debt_consolidation. They have been employed for 9 years, a debt-to-income ratio of 32.5%, and a credit score of 705.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the decision tree's 51% approval rate for applicants with DTI above 30% and this applicant's solid 705 credit score and 9 years of employment, I predict approval.  
+PREDICTION: 1","Escalate: the model's support is weak (51% approval for DTI>30%), so despite the applicant's good credit and tenure the prediction is low-confidence and could easily disagree with Person 1's true decision.  
+DECISION: 1",,,2026-03-17T17:50:14.795160
+dti_over_30,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 36.5%, and a credit score of 666.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Despite the decision tree showing a marginal 51% approval rate for DTI > 30%, this applicant’s 36.5% DTI, under‑one‑year employment, and borderline credit score of 666 elevate risk and point toward rejection.  
+PREDICTION: 0","The model's signal is weak (only a 51% approval rate for DTI > 30%) and important risk factors—employment <1 year and borderline credit—warrant human judgment, so escalate to Person 1 for review.  
+DECISION: 1",,,2026-03-17T17:50:16.181424
+dti_over_30,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 31.5%, and a credit score of 810.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although the applicant falls into the DTI > 30% branch where only 51% were approved, their very high credit score (810), long employment (10+ years), and modest $8,000 consolidation request outweigh that marginal risk, so approve.  
+PREDICTION: 1","The applicant's excellent credit score (810), long 10+ year employment, and modest $8,000 consolidation request outweigh the marginal DTI >30% branch (51% approvals), so approval is the more likely true decision and it's reasonable to implement.  
+DECISION: 0",,,2026-03-17T17:50:16.661836
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 35.2%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant falls into the DTI > 30% node that historically approved 51% of applicants and also has strong employment (10+ years) and a fair-to-good credit score (680), approve the $20,000 credit-card request.  
+PREDICTION: 1","The model's prediction rests on a marginal 51% approval rate for DTI > 30% and limited information, so given the close probability and potential cost of a mismatch it's safer to escalate to Person 1 for review.  
+DECISION: 1",,,2026-03-17T17:50:20.512001
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $22,175 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 37.3%, and a credit score of 700.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although the applicant's DTI is 37.3% (and historically only 51% of such cases were approved), their solid 700 credit score and 10+ years of employment indicate sufficient creditworthiness to favor approval.
+PREDICTION: 1","The case is borderline—DTI >30% historically yields only a 51% approval rate, so despite the applicant's strong credit score and long employment, there is enough uncertainty to defer to the loan officer's judgment.  
+DECISION: 1",,,2026-03-17T17:50:21.406253
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for Debt consolidation. They have been employed for 3 years, a debt-to-income ratio of 31.1%, and a credit score of 651.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because their DTI is just above 30% (the decision-tree branch shows 51% approvals) and they have a fair credit score (651), stable 3-year employment, and are requesting a small $3,000 consolidation loan, the likeliest decision is to approve.  
+PREDICTION: 1","The model's guidance is low-confidence (only 51% approval for DTI>30%) and the applicant's profile is borderline, so escalate to the human loan officer for a final decision.  
+DECISION: 1",,,2026-03-17T17:50:22.231557
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $30,000 for home_improvement. They have been employed for nan, a debt-to-income ratio of 36.1%, and a credit score of 700.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Despite missing employment length, the applicant's good 700 credit score and the decision tree's slight majority (51%) approval for DTI >30% support approving the $30,000 home improvement loan.  
+PREDICTION: 1","Escalate: the decision-tree's 51% approval rate for DTI >30% is nearly a coin flip and the applicant's employment length is missing, so the prediction is uncertain and warrants human review.  
+DECISION: 1",,,2026-03-17T17:50:22.492606
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $9,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 49.5%, and a credit score of 710.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant falls into the DTI >30% group (which saw a slight 51% approval rate) and has a relatively strong credit score of 710 that partially offsets the short employment tenure, I predict approval.  
+PREDICTION: 1","The approval rate for similar applicants is essentially a coin flip (51%), and the applicant's high DTI and short employment tenure offset the decent 710 score, so uncertainty is high and it's safer to escalate to Person 1.  
+DECISION: 1",,,2026-03-17T17:50:23.128388
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $25,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 38.7%, and a credit score of 628.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant falls into the decision-tree node for DTI > 30% where 51% of cases were approved, and that slight majority outweighs the negative signals of short employment and a 628 score, I predict approval.  
+PREDICTION: 1","The model's 51% approval rate at DTI > 30% is barely above chance and the applicant's short employment history and borderline 628 credit score increase uncertainty, so this should be escalated for human review.  
+DECISION: 1",,,2026-03-17T17:50:27.010923
+dti_over_30,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $32,550 for Car financing. They have been employed for < 1 year, a debt-to-income ratio of 100.0%, and a credit score of 577.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's 100% DTI (indicating no capacity to take on new payments), a low credit score of 577, and under one year at their job—factors that materially increase default risk despite the decision tree's weak 51% approval rate for DTI>30%—I would reject the application. 
+
+PREDICTION: 0","Escalate because we cannot be certain my prediction matches Person 1's true decision and this is a high-risk case (100% DTI, credit score 577, <1 year employment) that warrants human review. 
+
+DECISION: 1",,,2026-03-17T17:50:29.113652
+dti_over_30,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $40,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 46.3%, and a credit score of 624.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although the decision tree shows a marginal 51% approval rate for DTI >30%, the applicant’s high DTI (46.3%), employment under one year, and borderline credit score (624) together indicate elevated risk, so I would decline the loan.  
+PREDICTION: 0","Escalate — the model’s signal is weak (DTI >30% only 51% approval) and the applicant’s short employment history and borderline credit score are borderline risk factors that warrant Person 1’s judgment.  
+DECISION: 1",,,2026-03-17T17:50:29.242816
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for debt_consolidation. They have been employed for 4 years, a debt-to-income ratio of 37.3%, and a credit score of 715.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows a slight approval majority for DTI>30% (51%), and given the applicant's solid credit score (715) and four years' employment, I lean to approving the $10,000 debt-consolidation loan.  
+PREDICTION: 1","The decision-tree signal is very weak (51% approval for DTI>30%), so despite the applicant's solid credit score and stable employment, the prediction is low-confidence and should be reviewed by the loan officer.  
+DECISION: 1",,,2026-03-17T17:50:32.005211
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $25,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 36.0%, and a credit score of 712.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the decision tree's node for DTI > 30% yields a slight majority of approvals (51%) and the applicant's credit score is solid (712) despite under one year of employment, I recommend approving.  
+PREDICTION: 1","The model's approval was based on a marginal 51% majority for DTI > 30% and the applicant's solid credit score, but the short employment (<1 year) makes the outcome uncertain and the node's margin is too small to be confident.  
+DECISION: 1",,,2026-03-17T17:50:32.792206
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 30.8%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The model's 51% approval rate for DTI >30%, combined with the applicant's stable 10+ years of employment and acceptable credit score of 685, outweighs the moderate DTI and unsecured $20,000 request, so I recommend approval.  
+PREDICTION: 1","The model's 51% approval rate for DTI >30% and the sizable unsecured $20,000 request with a borderline credit score create substantial uncertainty and risk, so escalate to Person 1 for human review.  
+DECISION: 1",,,2026-03-17T17:50:32.841407
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for debt_consolidation. They have been employed for 8 years, a debt-to-income ratio of 34.7%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I predict approval because the applicant's 8 years of employment and a fair credit score of 660 outweigh a slightly elevated DTI of 34.7%, and the training data shows applicants with DTI > 30% were approved 51% of the time.  
+PREDICTION: 1","The prediction has low confidence because the decision hinges on borderline signals (DTI just above 30% with only a 51% approval rate in the training data) despite decent employment and a fair credit score, so human review is warranted.  
+DECISION: 1",,,2026-03-17T17:50:33.587909
+dti_over_30,1,0,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $7,300 for small_business. They have been employed for < 1 year, a debt-to-income ratio of 125.3%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I recommend rejecting the application because the applicant's extremely high DTI (125.3%) and short employment tenure (<1 year) outweigh the moderate credit score and the model's marginal 51% approval rate for DTI >30%.  
+PREDICTION: 0","Given the applicant's extremely high DTI (125.3%) and employment under one year, a prudent loan officer would very likely reject, so my prediction likely matches Person 1's decision; the marginal 51% approval rate for DTI >30% doesn't overcome these strong negative signals.  
+DECISION: 0",,,2026-03-17T17:50:34.180666
+dti_over_30,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $15,000 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 31.4%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The model indicates a slight majority (51%) of approvals for DTI >30%, and given the applicant's DTI of 31.4% and a reasonable credit score of 680 despite missing employment length, I would lean to approve the $15,000 debt-consolidation loan.  
+PREDICTION: 1","The prediction rests on a slim majority (51%) for DTI >30%, with missing employment length and only moderate confidence from a 680 score, so there's too much uncertainty to act automatically—escalate to Person 1 for a final decision.  
+DECISION: 1",,,2026-03-17T17:50:34.796924
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $32,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 66.6%, and a credit score of 659.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows applicants with DTI >30% are approved 51% of the time, so despite short employment and a moderate credit score, the slight majority supports approving this application.  
+PREDICTION: 1","The model's 51% approval rate for DTI >30% is essentially a coin flip and doesn't account for risky features here like very high DTI and employment <1 year, so it's safer to defer to Person 1's judgment.  
+DECISION: 1",,,2026-03-17T17:50:36.182707
+dti_over_30,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $35,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 37.5%, and a credit score of 681.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 30%, 51% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows a 51% approval rate for applicants with DTI >30%, and combined with a decent credit score of 681 (despite under one year of employment) I would approve.  
+PREDICTION: 1","The model's approval was only slightly above chance (51%) for DTI >30% and the applicant's short employment tenure introduces notable uncertainty, so we should not implement automatically. Escalate to Person 1 for a final decision.  
+DECISION: 1",,,2026-03-17T17:50:38.982139

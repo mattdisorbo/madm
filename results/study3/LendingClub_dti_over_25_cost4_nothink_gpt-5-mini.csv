@@ -1,0 +1,1116 @@
+condition,ground_truth,prediction,correct,escalate,prompt,esc_prompt,thought,esc_reasoning,thinking_predict,thinking_escalate,timestamp
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $35,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 29.6%, and a credit score of 659.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant falls into the decision-tree branch with DTI >25% where 64% of similar applications were approved, and despite short employment tenure and a borderline 659 score, the majority outcome suggests approval.  
+PREDICTION: 1","We should escalate because implementing is optimal only if confidence exceeds 75% (since a wrong answer costs 4x escalation), and our prediction’s success probability is ~64% from the decision-tree branch, which is below that threshold.  
+DECISION: 1",,,2026-03-17T18:10:51.887623
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $6,000 for major_purchase. They have been employed for 10+ years, a debt-to-income ratio of 29.8%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant’s DTI is above 25% (the tree node with a 64% approval rate) and they have long-term employment (10+ years) with a fair credit score (665), approval is more likely.  
+PREDICTION: 1","Given the tree's 64% approval probability, implementing (risking a wrong answer) has expected cost 0.36*4 = 1.44 which exceeds the escalation cost of 1, so escalate.  
+DECISION: 1",,,2026-03-17T18:10:52.807481
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $40,000 for debt_consolidation. They have been employed for 1 year, a debt-to-income ratio of 30.1%, and a credit score of 740.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree's 64% approval rate for DTI >25%, combined with the applicant's strong credit score (740) and moderate DTI of 30.1% despite one year employment, favors approving the loan.  
+PREDICTION: 1","With a 64% chance my approval prediction is correct, the expected cost of implementing is (1-0.64)*4 = 1.44, which exceeds the escalate cost of 1, so escalate.  
+DECISION: 1",,,2026-03-17T18:10:53.757952
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,000 for other. They have been employed for 9 years, a debt-to-income ratio of 32.0%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is above 25% and the decision tree shows a 64% approval rate for such cases, plus a stable 9-year employment history and a fair credit score of 665, I predict approval.  
+PREDICTION: 1","Because a wrong implementation costs 4× an escalation, we should implement only if our confidence exceeds 75% (since (1-p)*4 < 1 implies p > 0.75); the decision-tree-backed approval probability is about 64% (and even with employment and credit factors that’s still below 75%), so we should escalate.  
+DECISION: 1",,,2026-03-17T18:10:53.945971
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $12,000 for debt_consolidation. They have been employed for 4 years, a debt-to-income ratio of 31.4%, and a credit score of 765.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows a 64% approval rate for DTI >25%, and given this applicant’s DTI of 31.4% combined with a strong credit score (765) and 4 years’ employment, approval is the more likely outcome.  
+PREDICTION: 1","Using the tree's statistic (64% approval for DTI >25%), the probability my prediction is wrong is 36%, so the expected cost of implementing is 4 * 0.36 = 1.44, which exceeds the escalation cost of 1. Therefore I should escalate.  
+DECISION: 1",,,2026-03-17T18:10:54.368002
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $16,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 25.7%, and a credit score of 603.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's DTI is 25.7%, which falls into the decision-tree branch with a 64% historical approval rate, the model would lean to approve despite the short employment and a 603 credit score.  
+PREDICTION: 1","Given a 64% chance my prediction matches the true decision, the expected cost of implementing is 0.36 * 4 = 1.44 (greater than the escalation cost of 1), so escalate to avoid the higher expected loss.  
+DECISION: 1",,,2026-03-17T18:10:55.402454
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $15,000 for debt_consolidation. They have been employed for 5 years, a debt-to-income ratio of 30.3%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant falls into the decision-tree branch with DTI >25% (which historically results in 64% approvals) and also has a reasonable credit score (665) and stable 5-year employment, approval is more likely. 
+PREDICTION: 1","The decision-tree gives a 64% chance my approval prediction is correct, so the expected cost of implementing is 0.36*4 = 1.44 units versus 1 unit to escalate, meaning escalating has lower expected cost.  
+DECISION: 1",,,2026-03-17T18:10:55.795584
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,000 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 35.2%, and a credit score of 700.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI >25% falls into a decision-tree node with a 64% approval rate and they also have a solid 700 credit score and 10+ years employment, approve.  
+PREDICTION: 1","Implementing risks a wrong decision with probability 36%, giving expected cost = 0.36 * 4 = 1.44 units (where escalate = 1 unit), which exceeds the escalate cost. Therefore escalate.  
+DECISION: 1",,,2026-03-17T18:10:56.189700
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,500 for major_purchase. They have been employed for 8 years, a debt-to-income ratio of 32.0%, and a credit score of 725.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI of 32% falls in the >25% decision-tree branch where 64% were approved and their solid 725 credit score plus 8 years of employment indicate creditworthiness, I would approve the loan.  
+PREDICTION: 1","Implementing is preferable only if I'm >75% confident (since a wrong implementation costs 4x escalation), but the decision-tree gives a 64% base approval rate for DTI>25% and although the good credit score and employment increase confidence, they likely do not raise it above 75%, so escalate.  
+DECISION: 1",,,2026-03-17T18:10:56.214555
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 29.3%, and a credit score of 672.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is 29.3% which places them in the decision-tree branch where 64% of applicants were approved (and their credit score is moderate at 672 despite <1 year employment), the model would lean to approve.  
+PREDICTION: 1","With a 64% chance my approval prediction is correct, implementing would yield an expected cost of 0.36*4 = 1.44 times the escalate cost, so escalation minimizes expected loss.  
+DECISION: 1",,,2026-03-17T18:10:58.043948
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $13,000 for debt_consolidation. They have been employed for 1 year, a debt-to-income ratio of 30.3%, and a credit score of 690.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant falls into the decision-tree branch with DTI >25% (which had a 64% approval rate) and also has a reasonable credit score of 690 and one year of employment, approve.  
+PREDICTION: 1","The decision-tree branch gives a 64% chance my approve prediction matches Person 1, so implementing has a 36% chance of a wrong (4x) costly outcome — expected cost = 0.36*4 = 1.44 versus escalate cost = 1.00, so escalate.  
+DECISION: 1",,,2026-03-17T18:11:01.785899
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $21,500 for credit_card. They have been employed for 7 years, a debt-to-income ratio of 26.2%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is just above 25%—a segment with a 64% approval rate—combined with a stable 7-year employment history and a fair 660 credit score, the balance of evidence favors approving the loan.  
+PREDICTION: 1","Given a 64% chance my approval prediction is correct (36% chance of being wrong), the expected cost of implementing = 0.36*4 = 1.44 which exceeds the escalation cost of 1, so escalate.  
+DECISION: 1",,,2026-03-17T18:11:07.142639
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,275 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 25.0%, and a credit score of 700.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I recommend approval because the applicant's solid credit score of 700 and a borderline but acceptable DTI of 25% support granting the $10,275 debt-consolidation loan even though employment tenure is missing and the model statistic for DTI>25% does not apply.  
+PREDICTION: 1","Because implementing a wrong decision costs four times more than escalating, we should only implement if we're >75% confident; given the DTI sits on the 25% boundary, employment is missing, and the available tree statistic (64% for DTI>25%) does not apply, my confidence is below 75%, so escalate.  
+DECISION: 1",,,2026-03-17T18:11:08.274285
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 70.0%, and a credit score of 684.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree rule shows applicants with DTI above 25% were approved 64% of the time, and with a decent credit score (684) despite short employment I predict approval.  
+PREDICTION: 1","The tree indicates a 64% chance my approve prediction is correct, so implementing has expected cost = 0.36 * 4 = 1.44 which is greater than the escalation cost of 1; therefore we should escalate.  
+DECISION: 1",,,2026-03-17T18:11:08.276901
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $26,000 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 30.8%, and a credit score of 634.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although employment under one year and a fair credit score (634) are concerns, the applicant's DTI of 30.8% falls into the decision-tree bin where 64% were approved, so I would approve the loan.  
+PREDICTION: 1","Given the 64% approval rate for DTI >25%, there's a 36% chance my approve prediction is wrong, so implementing has expected cost 0.36*4 = 1.44 which exceeds the escalation cost 1; therefore escalate.  
+DECISION: 1",,,2026-03-17T18:11:08.699905
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for home_improvement. They have been employed for < 1 year, a debt-to-income ratio of 34.5%, and a credit score of 567.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree indicates applicants with DTI >25% were approved 64% of the time, so despite short employment and a low credit score I predict approval.  
+PREDICTION: 1","Implementing has expected cost (1 - 0.64) * 4 = 1.44 while escalation costs 1, so because the expected cost of a wrong implementation exceeds escalation, escalate.  
+DECISION: 1",,,2026-03-17T18:11:16.878226
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 114.8%, and a credit score of 507.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree predicts approval because the applicant's DTI (114.8%) exceeds 25%, and in that branch 64% of applications were approved.  
+PREDICTION: 1","The decision-tree branch gives a 64% chance my approval prediction is correct, so the expected cost of implementing is (1-0.64)*4 = 1.44 units versus escalation cost 1 unit, making escalation the lower expected-cost action.  
+DECISION: 1",,,2026-03-17T18:11:22.994026
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $6,000 for small_business. They have been employed for 5 years, a debt-to-income ratio of 28.7%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's DTI is 28.7% (above 25%) where the tree approved 64% of cases, and they have a reasonable 665 credit score with 5 years employment indicating acceptable creditworthiness, I predict approval.  
+PREDICTION: 1","The decision-tree condition gives ~64% chance my approval prediction is correct, so implementing has expected cost 0.36*4 = 1.44 which exceeds the escalation cost of 1; therefore escalate.  
+DECISION: 1",,,2026-03-17T18:11:24.812076
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,000 for Other. They have been employed for < 1 year, a debt-to-income ratio of 37.7%, and a credit score of 667.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree shows applicants with DTI > 25% were approved 64% of the time and this applicant's 37.7% DTI and moderate credit score outweigh the short employment history within that branch, I predict approval.  
+PREDICTION: 1","The decision-tree branch gives a 64% chance my approval prediction is correct, so expected cost of implementing = 0.36 * 4 = 1.44 units which exceeds the escalation cost of 1 unit; therefore escalate.  
+DECISION: 1",,,2026-03-17T18:11:26.297758
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $15,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 39.4%, and a credit score of 705.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the decision-tree node showing a 64% approval rate for applicants with DTI >25% and the applicant's solid credit score (705) plus 10+ years of employment, I predict approval.
+PREDICTION: 1","The decision-tree gives a 64% chance my approval prediction is correct, so the expected cost of implementing ( (1−0.64)×4 = 1.44 ) exceeds the sure cost of escalating (1), therefore escalate.  
+DECISION: 1",,,2026-03-17T18:11:26.743877
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,000 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 48.0%, and a credit score of 700.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's DTI is 48%, placing them in the decision-tree branch with a 64% historical approval rate and their credit score of 700 further supports approval.  
+PREDICTION: 1","Implementing has a 36% chance of being wrong (1 − 0.64), and a wrong implementation costs 4× the escalate cost, so expected cost = 0.36×4 = 1.44 versus escalate cost = 1. Therefore escalate is the lower expected-cost action.  
+DECISION: 1",,,2026-03-17T18:11:27.129505
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $9,600 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 29.1%, and a credit score of 695.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is 29.1% (above 25%) and the decision tree shows a 64% approval rate for such cases, combined with a solid credit score of 695, I predict approval.  
+PREDICTION: 1","The decision-tree probability of being correct if we implement is 64%, so the expected cost of implementing = 0.36 * 4 = 1.44 (relative units) which exceeds the escalation cost of 1; therefore we should escalate.  
+DECISION: 1",,,2026-03-17T18:11:29.184364
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $35,000 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 51.1%, and a credit score of 603.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although the applicant has a high DTI (51.1%), short employment (<1 year), and a marginal credit score (603), the decision tree indicates that applicants with DTI >25% were approved 64% of the time, so the model predicts approval.  
+PREDICTION: 1","The model's historical approval rate for DTI >25% gives a 64% chance our approval prediction is correct (36% chance it's wrong); implementing an incorrect decision costs 4x the escalate cost, so expected cost of implementing = 4 * 0.36 = 1.44, which is higher than the escalate cost of 1.  
+DECISION: 1",,,2026-03-17T18:11:32.766166
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 29.4%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because their DTI >25% falls in the decision-tree node with a 64% approval rate and they also have 10+ years of employment and a fair/good 665 credit score indicating acceptable risk.  
+PREDICTION: 1","The decision-tree gives a 64% chance my approve prediction is correct, so expected cost if we implement = 0.36*4 = 1.44 (relative units) versus cost of escalating = 1, therefore escalate.  
+DECISION: 1",,,2026-03-17T18:11:34.029577
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for major_purchase. They have been employed for nan, a debt-to-income ratio of 25.5%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree shows applicants with DTI > 25% were approved 64% of the time and this applicant has a 25.5% DTI with a 685 credit score, the model suggests approving the loan.  
+PREDICTION: 1","The model gives a 64% chance my approval prediction is correct, so the expected cost of implementing (0.36 * 4 = 1.44) exceeds the escalation cost (1); therefore we should escalate.  
+DECISION: 1",,,2026-03-17T18:11:42.288303
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $15,000 for home_improvement. They have been employed for 10+ years, a debt-to-income ratio of 28.7%, and a credit score of 710.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because applicants with DTI >25% were approved 64% of the time and this borrower also has 10+ years of employment and a solid 710 credit score, I recommend approval.  
+PREDICTION: 1","The decision-tree rate implies a 64% chance my approval prediction is correct (36% chance wrong), so expected cost of implementing = 0.36 * 4 = 1.44 units versus 1 unit to escalate, meaning escalate has lower expected cost.  
+DECISION: 1",,,2026-03-17T18:11:45.866687
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $18,450 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 28.9%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI of 28.9% places them in the tree node with a 64% approval rate and their credit score of 675 is acceptable despite under one year of employment, I predict approval.
+
+PREDICTION: 1","The node indicates a 64% chance the true decision is approve, so implementing my approve prediction yields expected wrong-cost 0.36*4 = 1.44 units versus escalation cost 1 unit. Since escalation has the lower expected cost, escalate.
+
+DECISION: 1",,,2026-03-17T18:11:48.755027
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,000 for Credit card refinancing. They have been employed for < 1 year, a debt-to-income ratio of 38.4%, and a credit score of 667.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant falls into the decision-tree branch with DTI >25% where 64% were approved and their credit score (667) is reasonable despite <1 year employment, I predict approval.  
+PREDICTION: 1","The decision-tree branch gives a 64% chance our ""approve"" prediction is correct, so implementing has expected cost = 0.36 * 4 = 1.44 versus escalation cost = 1; since 1.44 > 1 we should escalate.  
+DECISION: 1",,,2026-03-17T18:11:49.984083
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $35,200 for debt_consolidation. They have been employed for 7 years, a debt-to-income ratio of 48.9%, and a credit score of 760.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the decision tree shows a 64% approval rate for DTI >25% and this applicant also has a strong credit score (760) and 7 years of employment, I predict approval.  
+PREDICTION: 1","Implementing is optimal only if the approval probability exceeds 0.75 because a wrong implementation costs 4× an escalation; the decision-tree probability is 0.64, below that threshold, so escalate.  
+DECISION: 1",,,2026-03-17T18:11:52.076383
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $12,000 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 29.8%, and a credit score of 700.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows that applicants with DTI >25% were approved 64% of the time, and given this applicant’s 29.8% DTI and solid credit score of 700 (despite <1 year employment) I predict approval.  
+PREDICTION: 1","Implementing is only preferable if I'm >75% confident the applicant will be approved, but the decision-tree statistic (64% approval for DTI>25%) and the applicant’s short employment history make my confidence well below that threshold, so I should escalate.  
+DECISION: 1",,,2026-03-17T18:12:00.322956
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $29,250 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 26.0%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is just above 25% (a group with a 64% approval rate), plus 10+ years employment and a credit score of 685, I would approve the loan.  
+PREDICTION: 1","The decision-tree rate gives a 64% chance the true decision is approve, so the expected cost of implementing (0.36 * 4 = 1.44 units) exceeds the escalate cost (1 unit). Therefore we should escalate.  
+DECISION: 1",,,2026-03-17T18:12:03.696575
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $16,000 for debt_consolidation. They have been employed for 5 years, a debt-to-income ratio of 27.2%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant falls into the decision-tree branch with DTI >25% (27.2%) where 64% of applications were approved, and given their 670 credit score and 5 years' employment indicating acceptable creditworthiness, I would approve the loan.  
+PREDICTION: 1","The decision-tree indicates a 64% chance my approval prediction is correct, but because a wrong implementation costs 4× as much, the expected cost of implementing is 0.36*4 = 1.44 versus 1 for escalation, so escalate to minimize expected loss.  
+DECISION: 1",,,2026-03-17T18:12:03.778826
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,000 for Moving and relocation. They have been employed for < 1 year, a debt-to-income ratio of 26.6%, and a credit score of 507.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree shows applicants with DTI > 25% were approved 64% of the time, I predict approval for Person 1 despite their short employment and low credit score.  
+PREDICTION: 1","The model gives a 64% chance the true decision was approve, so implementing has expected cost (1−0.64)*4 = 1.44 which is greater than the escalation cost of 1; therefore escalate.  
+DECISION: 1",,,2026-03-17T18:12:04.787773
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 27.8%, and a credit score of 695.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant falls into the decision-tree node with DTI >25% where 64% of applications were approved and their credit score (695) is near-prime despite short employment tenure, approval is more likely.  
+PREDICTION: 1","The approval probability for this applicant is about 64%, but implementing a mistaken decision costs 4× more than escalating, so expected cost of implementing is (1−0.64)×4 = 1.44 which exceeds the escalate cost of 1; therefore escalate.  
+DECISION: 1",,,2026-03-17T18:12:11.984031
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $7,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 39.0%, and a credit score of 607.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because their DTI is 39% (>25%) and the decision tree indicates a 64% approval rate for applicants with DTI >25%, I predict approval despite the subpar credit score and short employment tenure. 
+PREDICTION: 1","Given a 64% chance my approval prediction is correct, the expected cost of implementing is 0.36*4 = 1.44 times the escalation cost, so escalating has lower expected cost.  
+DECISION: 1",,,2026-03-17T18:12:16.171979
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 29.1%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's DTI is above 25%, and since the decision tree shows a 64% approval rate for that group (above 50%), the model would predict approval despite the short employment history and a 660 score.  
+PREDICTION: 1","The decision-tree estimate gives a 64% chance my approve prediction is correct, so the expected cost of implementing is (1−0.64)*4 = 1.44, which exceeds the escalation cost of 1; therefore escalate.  
+DECISION: 1",,,2026-03-17T18:12:18.537128
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for Home improvement. They have been employed for < 1 year, a debt-to-income ratio of 44.1%, and a credit score of 621.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's DTI is above 25% and the trained decision tree indicates 64% approval in that branch, so I predict approval despite short employment and a fair credit score.  
+PREDICTION: 1","Because a wrong implementation costs 4× more than escalating, you should only implement if your confidence exceeds 75%; the decision-tree branch gives a 64% approval probability, which is below that threshold, so escalate.  
+DECISION: 1",,,2026-03-17T18:12:22.824698
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $11,000 for debt_consolidation. They have been employed for 1 year, a debt-to-income ratio of 30.8%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because their DTI is above 25% and the decision tree shows a 64% approval rate for such applicants, coupled with a fair 670 credit score and one year of employment, I predict approval. 
+PREDICTION: 1","The decision-tree implies a 64% chance my approval prediction is correct, so the expected cost of implementing (0.36*4 = 1.44 units) exceeds the escalation cost (1 unit); therefore escalate.  
+DECISION: 1",,,2026-03-17T18:12:25.831212
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $7,500 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 49.7%, and a credit score of 646.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Despite the short employment and fair credit score, the applicant's DTI of 49.7% falls into a decision-tree leaf where 64% of similar applications were approved, so I predict approval.  
+PREDICTION: 1","The leaf probability of being correct is 0.64, so the expected cost of implementing is (1−0.64)*4 = 1.44 which exceeds the escalation cost of 1, therefore escalate.  
+DECISION: 1",,,2026-03-17T18:12:31.629655
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $40,000 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 39.6%, and a credit score of 715.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's DTI is 39.6% (>25%) and the decision tree indicates a 64% approval rate for that branch, I predict approval despite the short employment tenure.  
+PREDICTION: 1","Because a wrong implementation costs 4× an escalation, we should only implement when our prediction is >75% likely to be correct; the decision-tree branch gives ~64% approval probability, below that threshold.  
+DECISION: 1",,,2026-03-17T18:12:33.168095
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $7,000 for debt_consolidation. They have been employed for 3 years, a debt-to-income ratio of 27.7%, and a credit score of 710.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's DTI is 27.7%, which falls into the decision-tree node with a 64% approval rate and, combined with a solid 710 credit score and 3 years of employment, indicates sufficient creditworthiness to approve the loan, I predict approval.  
+PREDICTION: 1","The decision-tree node gives a 64% chance my approval prediction is correct, so expected cost of implementing = 4*(1-0.64) = 1.44 which exceeds the escalate cost of 1; therefore escalate.  
+DECISION: 1",,,2026-03-17T18:12:35.212181
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,000 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 31.2%, and a credit score of 775.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I approve because the applicant's strong credit score (775) and the decision tree's 64% approval rate for DTI >25% outweigh the short employment duration.  
+PREDICTION: 1","Because a wrong implementation costs 4× more than escalating, we should only implement if our prediction is >75% likely to match Person 1's true decision; the DTI>25% historical approval rate is 64% and the short employment history offsets the strong credit score, so our confidence is below 75%.  
+DECISION: 1",,,2026-03-17T18:12:35.620064
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for credit_card. They have been employed for 9 years, a debt-to-income ratio of 38.0%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is above 25% and the decision tree shows a 64% approval rate for such cases—along with a fair credit score (665) and stable 9-year employment—the model would approve the loan. 
+PREDICTION: 1","Because implementing a wrong decision costs 4x more, we should only implement if our confidence exceeds 75%; the decision-tree base rate is 64% for DTI>25% and although the applicant's credit (665) and long employment mildly increase approval odds, they likely do not raise confidence above 75%, so escalate.  
+DECISION: 1",,,2026-03-17T18:12:36.098561
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $15,000 for debt_consolidation. They have been employed for 4 years, a debt-to-income ratio of 32.2%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant falls into the DTI > 25% node where 64% were approved, and their 675 credit score plus 4 years employment further support approving the loan.  
+PREDICTION: 1","Because implementing a wrong prediction costs 4× more, you should only implement if your confidence >75%; the DTI>25% node gives only a 64% approval rate and the applicant's profile doesn't raise that above 75%, so escalate.  
+DECISION: 1",,,2026-03-17T18:12:36.731735
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $16,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 30.4%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI of 30.4% places them in a decision-tree node with a 64% approval rate and their credit score of 685 is reasonable despite under one year of employment, I predict approval.
+
+PREDICTION: 1","The decision-tree node gives a 64% chance my approval prediction is correct, but implementing carries 4× the cost of escalation, so we need >75% confidence to justify implementation; 64% < 75%, so escalate.  
+
+DECISION: 1",,,2026-03-17T18:12:38.179755
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $24,000 for credit_card. They have been employed for 5 years, a debt-to-income ratio of 32.8%, and a credit score of 710.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows a 64% approval rate for DTI >25%, and with a 710 credit score and 5 years' employment the balance of evidence supports approving the $24,000 credit card request.  
+PREDICTION: 1","The model's approval probability (~64%) is below the >75% confidence threshold required because a wrong implementation costs 4× an escalation, so the expected loss from implementing exceeds that of escalating.  
+DECISION: 1",,,2026-03-17T18:12:39.824084
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $15,000 for other. They have been employed for < 1 year, a debt-to-income ratio of 45.5%, and a credit score of 693.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree shows applicants with DTI >25% were approved 64% of the time and this applicant’s credit score is reasonably strong (693) despite short employment, I predict approval.
+
+PREDICTION: 1","The decision-tree branch gives a 64% chance the true decision is approve, so the expected cost of implementing is (1−0.64)*4 = 1.44, which exceeds the cost of escalating (1). Therefore escalate.
+
+DECISION: 1",,,2026-03-17T18:12:41.778887
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 58.7%, and a credit score of 564.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's DTI is well above 25% and the decision tree shows a 64% approval rate for such cases, the model recommends approval despite short employment and a low credit score.
+PREDICTION: 1","Because implementing a wrong decision costs 4× more than escalating, we should only implement if our confidence >75%, but the decision-tree approval rate for this applicant's branch is 64% (and short employment and low credit score likely reduce confidence further), so escalate.  
+DECISION: 1",,,2026-03-17T18:12:45.268526
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $35,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 35.4%, and a credit score of 659.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant’s DTI is 35.4% (above 25%) and the decision tree shows a 64% approval rate for such cases, despite a short employment history and a fair credit score of 659 I lean to approve.  
+PREDICTION: 1","The decision-tree implies a 64% chance my approve prediction is correct, so the expected cost of implementing is 0.36 * 4 = 1.44 (relative units) versus the escalation cost of 1. Therefore escalate.  
+DECISION: 1",,,2026-03-17T18:12:45.833441
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 31.1%, and a credit score of 557.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's DTI is above 25% and the trained decision tree shows a 64% approval rate for that branch, the model predicts the loan will be approved despite the short employment and low credit score.  
+PREDICTION: 1","The branch probability is 64% approval, so implementing my approve prediction has expected cost 0.36*4 = 1.44 units of the wrong-implementation penalty versus a fixed escalation cost of 1 unit. Because escalation has the lower expected cost, escalate.  
+DECISION: 1",,,2026-03-17T18:12:48.342557
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $23,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 26.4%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant falls into the decision-tree branch with DTI > 25% that historically had a 64% approval rate and also has 10+ years of employment and a fair credit score of 660 supporting reasonable repayment ability, approve.  
+PREDICTION: 1","The decision-tree branch gives a 64% chance my approval prediction is correct, and the expected cost of implementing is (1−0.64)*4 = 1.44 which exceeds the escalation cost of 1. Therefore, escalate.  
+DECISION: 1",,,2026-03-17T18:12:50.074204
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 34.8%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI of 34.8% falls in the >25% group that was approved 64% of the time, and combined with a 680 credit score and 10+ years employment indicates acceptable risk, approve the loan. 
+PREDICTION: 1","The decision-tree node gives a 64% chance my approve prediction is correct (36% chance wrong), and implementing a wrong answer costs 4x more than escalating so expected cost if we implement = 0.36*4 = 1.44 which exceeds the escalate cost of 1. Therefore escalate. 
+DECISION: 1",,,2026-03-17T18:12:50.879725
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $15,000 for Home buying. They have been employed for < 1 year, a debt-to-income ratio of 36.2%, and a credit score of 653.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given Person 1's DTI is 36.2% (above the 25% threshold) and the decision tree shows a 64% approval rate for such applicants, I predict the loan will be approved despite the short employment and fair credit score.  
+PREDICTION: 1","Given a 64% chance my approve prediction is correct, the expected cost of implementing (0.36 * 4 = 1.44 units) exceeds the escalate cost (1 unit), so escalate.  
+DECISION: 1",,,2026-03-17T18:12:53.880332
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $16,000 for debt_consolidation. They have been employed for 3 years, a debt-to-income ratio of 27.5%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is 27.5% (above 25%) and the decision tree shows a 64% approval rate for such cases—together with a 675 credit score and 3 years employment—I predict approval.  
+PREDICTION: 1","The applicant’s approval probability is 64%, so the chance my approval prediction is wrong is 36%, giving an expected cost of implementing = 0.36*4 = 1.44 which exceeds the escalation cost of 1; therefore escalate.  
+DECISION: 1",,,2026-03-17T18:12:58.130610
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,000 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 64.7%, and a credit score of 679.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although the applicant's DTI is high at 64.7% and employment length is missing, the decision tree shows DTI >25% cases are approved 64% of the time and the applicant's credit score (679) is reasonably strong, so I predict approval.
+
+PREDICTION: 1","The decision-tree implies a ~64% chance my approval prediction is correct, so expected cost of implementing = (1−0.64)*4 = 1.44, which is greater than the escalation cost (1), so I should escalate.  
+DECISION: 1",,,2026-03-17T18:13:01.974239
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for other. They have been employed for 10+ years, a debt-to-income ratio of 31.2%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the decision tree's finding that applicants with DTI >25% were approved 64% of the time—and this applicant also has 10+ years of employment and a fair credit score of 670—I predict approval.  
+PREDICTION: 1","Implementing is optimal only if my prediction is >75% likely to be correct (since a wrong implementation costs 4× an escalation), but the decision tree gives only a 64% approval rate for DTI>25% (and we lack stronger evidence to raise confidence), so escalate.  
+DECISION: 1",,,2026-03-17T18:13:02.126376
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $15,000 for debt_consolidation. They have been employed for 8 years, a debt-to-income ratio of 25.4%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree shows a 64% approval rate for DTI >25% and this applicant has DTI 25.4% plus stable 8-year employment and a fair 660 credit score, the model favors approving the $15,000 debt-consolidation loan.
+PREDICTION: 1","Implementing has expected cost = (1 - 0.64) * 4 = 1.44 while escalating has cost 1, so escalate because its expected cost is lower.  
+DECISION: 1",,,2026-03-17T18:13:03.640630
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 33.0%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's 10+ years of employment, acceptable credit score of 680, and that the decision tree shows a 64% approval rate for applicants with DTI above 25%, I would approve the loan.  
+PREDICTION: 1","Given the tree's 64% approval rate for DTI>25%, my approve prediction has a 0.64 chance of being correct, so expected cost of implementing = 0.36 * 4 = 1.44 units versus escalating at cost 1 unit; because 1.44 > 1, escalate.  
+DECISION: 1",,,2026-03-17T18:13:03.975750
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 29.7%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant falls into the decision-tree group with DTI >25% where 64% were approved, and given their fair 660 credit score (despite <1 year employment) the model would lean toward approval.  
+PREDICTION: 1","Implementing has expected cost = (1 - 0.64) * 4 = 1.44, while escalating has cost = 1, so escalating minimizes expected cost given the 64% approval probability and 4x penalty for a wrong implementation.  
+DECISION: 1",,,2026-03-17T18:13:05.810550
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $9,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 32.6%, and a credit score of 656.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI of 32.6% (above the 25% split where 64% of similar applications were approved) and a moderate credit score of 656 despite under one year of employment, the model-leaning decision favors approval.  
+PREDICTION: 1","With a 64% chance my approval prediction is correct, the expected cost of implementing is 0.36*4 = 1.44 which exceeds the escalation cost of 1, so we should escalate.  
+DECISION: 1",,,2026-03-17T18:13:08.815778
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,500 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 30.3%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI of 30.3% falls into the >25% branch where 64% were approved and their credit score of 660 is acceptable despite under one year of employment, I predict approval. 
+PREDICTION: 1","Given the model's branch gives a 64% chance my approval prediction is correct, the expected cost of implementing (0.36 * 4 = 1.44) exceeds the escalation cost (1), so escalate.  
+DECISION: 1",,,2026-03-17T18:13:08.820334
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for Credit card refinancing. They have been employed for < 1 year, a debt-to-income ratio of 34.2%, and a credit score of 561.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree rule for DTI >25% yields a majority (64%) approvals, so despite the low credit score and short employment the model predicts approval.  
+PREDICTION: 1","The decision rule gives a 64% chance my approval prediction is correct (36% wrong); with a wrong-implement cost 4× escalate, expected cost of implementing = 0.36×4 = 1.44, which exceeds the escalate cost (1), so we should escalate.  
+DECISION: 1",,,2026-03-17T18:13:09.595415
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,800 for debt_consolidation. They have been employed for 6 years, a debt-to-income ratio of 37.8%, and a credit score of 695.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is above 25% but historical approvals in that branch are 64% and they have a solid credit score (695), steady 6-year employment, and a moderate loan request, I would approve the loan.  
+PREDICTION: 1","Implementing is only optimal if I'm >75% confident (since a wrong implementation costs 4× an escalation), but the DTI-branch baseline is 64% and the applicant's additional positives (credit 695, 6 years employment) don't clearly raise confidence above 75%, so escalate.  
+DECISION: 1",,,2026-03-17T18:13:10.330634
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,450 for debt_consolidation. They have been employed for 4 years, a debt-to-income ratio of 31.2%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's DTI is 31.2% (in the >25% branch where 64% were approved) and they have a moderate credit score (670) with 4 years employment, I would approve the loan.  
+PREDICTION: 1","The branch data gives a 64% chance my approval prediction is correct, so implementing risks being wrong with probability 0.36 at 4× the cost of escalation (expected cost = 0.36×4 = 1.44 > 1), therefore escalate.  
+DECISION: 1",,,2026-03-17T18:13:14.430105
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for debt_consolidation. They have been employed for 3 years, a debt-to-income ratio of 27.8%, and a credit score of 695.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is above 25% where 64% of similar applications were approved, and they also have a solid credit score of 695 and three years of employment, I would approve the loan.  
+PREDICTION: 1","Because the wrong outcome costs 4× an escalation, we should only implement if we’re >75% confident; the dataset gives ~64% approval for DTI>25% and the applicant’s credit and employment likely don’t raise confidence above 75%, so escalate.  
+DECISION: 1",,,2026-03-17T18:13:15.659559
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,000 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 29.0%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's DTI is above 25% but the decision-tree node shows a 64% approval rate and combined with 10+ years employment and a decent 660 credit score, approval is more likely.  
+PREDICTION: 1","The decision-tree node gives a 64% chance my approve prediction is correct, so the expected cost of implementing (0.36 * 4 = 1.44) exceeds the escalate cost (1), meaning escalation minimizes expected loss.  
+DECISION: 1",,,2026-03-17T18:13:20.195891
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $30,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 42.5%, and a credit score of 627.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree indicates applicants with DTI >25% were approved 64% of the time and this applicant's DTI is 42.5%, so I predict approval despite shorter employment and a fair 627 score.  
+PREDICTION: 1","Because a wrong implementation costs 4× escalating, we should implement only if our prediction is >75% likely to be correct; the decision tree shows 64% approve for DTI>25%, so confidence is below that threshold.  
+DECISION: 1",,,2026-03-17T18:13:21.494360
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $30,000 for home_improvement. They have been employed for nan, a debt-to-income ratio of 36.1%, and a credit score of 700.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's DTI of 36.1% places them in the decision-tree node where 64% were approved and, combined with a solid credit score of 700 (despite missing employment length), the model-supporting evidence favors approval.  
+PREDICTION: 1","Because implementing a wrong decision costs 4× more than escalating, we should only implement if our confidence >75%; the node predicts approval with ~64% probability, which is below that threshold.  
+DECISION: 1",,,2026-03-17T18:13:22.835724
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,500 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 36.3%, and a credit score of 575.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Although the applicant has a low credit score (575) and under one year of employment, their DTI of 36.3% falls into the decision-tree branch where 64% of applicants were approved, so I predict approval.
+PREDICTION: 1","My prediction (approve) has a 64% chance of matching the true decision and a 36% chance of being wrong; implementing carries expected cost 0.36*4 = 1.44 (in escalation-cost units) versus the certain escalation cost of 1, so escalate.  
+DECISION: 1",,,2026-03-17T18:13:25.799559
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for other. They have been employed for < 1 year, a debt-to-income ratio of 26.1%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve — the decision tree shows a 64% approval rate for applicants with DTI >25%, and the applicant's 26.1% DTI and 680 credit score outweigh the short employment duration.  
+PREDICTION: 1","The decision-tree gives a 64% chance my approval prediction is correct, so the expected cost of implementing (0.36 * 4 = 1.44 units) exceeds the cost of escalation (1 unit), therefore escalate to Person 1.  
+DECISION: 1",,,2026-03-17T18:13:26.814778
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 69.3%, and a credit score of 620.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Despite short employment and a borderline 620 score raising risk, the decision tree rule that applicants with DTI >25% were approved 64% of the time leads me to predict approval.  
+PREDICTION: 1","We need >75% confidence to justify implementing because a wrong implementation costs 4x more than escalating, but the decision tree only gives a 64% approval rate for DTI>25% and short employment and a borderline 620 score further lower my confidence below 75%, so escalate.  
+DECISION: 1",,,2026-03-17T18:13:31.021631
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $35,000 for credit_card. They have been employed for 8 years, a debt-to-income ratio of 30.1%, and a credit score of 705.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI of 30.1% falls in the decision-tree branch with a 64% approval rate and their 705 credit score plus 8 years of employment indicate reasonable creditworthiness, approve the loan.  
+PREDICTION: 1","Given a 64% approval probability, implementing carries expected cost 0.36*4 = 1.44 (units) versus escalating cost 1, so escalate to minimize expected loss.  
+DECISION: 1",,,2026-03-17T18:13:31.934889
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,000 for major_purchase. They have been employed for 10+ years, a debt-to-income ratio of 28.1%, and a credit score of 705.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is 28.1% (above the 25% threshold) where 64% of similar applications were approved, and they have a solid 705 credit score plus 10+ years of employment, I would approve the loan.
+PREDICTION: 1","With a 64% chance my approval prediction is correct, implementing risks a wrong-decision cost of 4×, yielding expected cost 0.36*4 = 1.44 versus escalation cost 1, so escalate.  
+DECISION: 1",,,2026-03-17T18:13:34.323203
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $12,000 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 26.9%, and a credit score of 730.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given their DTI is above 25% but the model shows a 64% approval rate for such applicants and they have a solid credit score (730) and two years of employment supporting creditworthiness, approve.  
+PREDICTION: 1","The model indicates a 64% chance my approve prediction is correct (36% chance it's wrong); with a wrong-implement cost 4× the escalate cost, expected cost of implementing = 0.36*4 = 1.44, which is greater than the escalate cost (1), so escalate.  
+DECISION: 1",,,2026-03-17T18:13:34.526463
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 34.8%, and a credit score of 604.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree indicates applicants with DTI >25% were approved 64% of the time and this applicant's DTI is 34.8%, I recommend approval despite the short employment history and marginal credit score.  
+PREDICTION: 1","The decision-tree branch gives a 64% chance my approval prediction is correct, so expected cost of implementing = (1 - 0.64)*4 = 1.44 units which is higher than the escalate cost of 1 unit; therefore escalate.  
+DECISION: 1",,,2026-03-17T18:13:34.903582
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $12,825 for moving. They have been employed for 1 year, a debt-to-income ratio of 29.7%, and a credit score of 690.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant falls into the decision-tree branch with DTI > 25%, where 64% of similar applications were approved, and their fair-to-good credit score (690) and one year of employment support approval.  
+PREDICTION: 1","My approve prediction has a 64% chance of being correct, so implementing would incur expected cost 0.36*4 = 1.44 units versus escalation cost 1 unit, therefore escalate.  
+DECISION: 1",,,2026-03-17T18:13:35.526890
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $30,000 for debt_consolidation. They have been employed for 1 year, a debt-to-income ratio of 35.8%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's DTI is above 25%—placing them in the decision-tree branch with a 64% approval rate—and their credit score (680) and one year of employment are not strong negatives, I would approve the loan.
+
+PREDICTION: 1","Because a wrong implementation costs 4× an escalation, you should only implement if your confidence >75%; the decision-tree gives a 64% approval probability for DTI>25%, which is below that threshold, so escalate. 
+
+DECISION: 1",,,2026-03-17T18:13:36.030624
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $25,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 32.7%, and a credit score of 700.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because applicants with DTI >25% were approved 64% of the time and this applicant also has a strong 700 credit score and 10+ years of employment, I would approve the $25,000 debt-consolidation loan.
+
+PREDICTION: 1","We should escalate: because a wrong implementation costs 4× an escalation, we only implement if our confidence >75% (since (1-p)*4 < 1 → p > 0.75), but the decision-tree base rate for DTI>25% is 64% (and while credit=700 and long employment are positive, they don't guarantee raising confidence above 75%). 
+
+DECISION: 1",,,2026-03-17T18:13:36.444675
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $22,700 for debt_consolidation. They have been employed for 4 years, a debt-to-income ratio of 32.0%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI of 32% places them in the decision-tree group with a 64% approval rate and their 665 credit score plus 4 years' employment do not strongly contraindicate lending, approve.  
+PREDICTION: 1","The model's approval probability for this applicant is 64%, so implementing my approve prediction would yield an expected wrong-decision cost of 0.36 * 4 = 1.44 units versus an escalation cost of 1 unit; since 1.44 > 1, escalate.  
+DECISION: 1",,,2026-03-17T18:13:37.953924
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 30.9%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's DTI of 30.9% falls into the model branch where 64% of similar cases were approved and they also have a reasonable credit score (675) and two years of employment, I would approve the loan. 
+PREDICTION: 1","The model branch gives a 64% chance my approval prediction is correct, so implementing risks an expected wrong-answer cost of 0.36*4 = 1.44 (greater than the fixed escalation cost of 1), therefore escalate.  
+DECISION: 1",,,2026-03-17T18:13:39.180677
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,800 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 30.1%, and a credit score of 705.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because their DTI is above 25% and the model shows a 64% approval rate for that group, and their credit score of 705 is solid for a modest $4,800 consolidation loan, I predict approval.  
+PREDICTION: 1","We predicted approval with a 64% chance of being correct (36% chance wrong); because a wrong implementation costs 4x escalation the expected cost of implementing is 0.36*4 = 1.44 versus 1 for escalating, so escalate.  
+DECISION: 1",,,2026-03-17T18:13:45.016598
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $9,600 for debt_consolidation. They have been employed for 7 years, a debt-to-income ratio of 28.1%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is above 25% and the model shows a 64% approval rate for that group, along with a moderate credit score of 675 and 7 years of stable employment, I would approve the loan.
+PREDICTION: 1","Because the decision-tree group has a 64% approval rate, the probability my ""approve"" prediction is wrong is 36%, giving an expected cost of implementing = 0.36 * 4 = 1.44 which exceeds the escalation cost of 1, so escalate.  
+DECISION: 1",,,2026-03-17T18:13:49.564428
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 46.8%, and a credit score of 606.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows applicants with DTI > 25% were approved 64% of the time, so despite the short employment and a 606 score, the model would favor approving this application.  
+PREDICTION: 1","The model indicates a 64% chance the true decision is approve, so implementing risks a 36% chance of being wrong which would cost 4 units versus 1 unit to escalate, giving an expected implementation cost of 0.36*4 = 1.44 which exceeds the escalate cost of 1. Therefore escalate.  
+DECISION: 1",,,2026-03-17T18:13:50.699295
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,000 for debt_consolidation. They have been employed for 9 years, a debt-to-income ratio of 28.6%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant falls into the decision-tree branch with DTI >25% where 64% were approved, and given their steady 9-year employment and a fair 660 credit score for a small $5,000 consolidation loan, approval is the likely outcome.  
+PREDICTION: 1","The cost ratio means we should only implement when our predicted outcome has >75% probability (since a wrong implementation costs 4x escalation), but the decision-tree branch shows only ~64% approval and even with steady employment and a 660 score my confidence doesn't exceed 75%, so escalate.  
+DECISION: 1",,,2026-03-17T18:13:52.202831
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $35,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 29.6%, and a credit score of 704.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is above 25% (a segment with a 64% historical approval rate) and their credit score is a solid 704 which mitigates the short employment tenure, approve.  
+PREDICTION: 1","The node's approval rate is 64%, so the probability my approve prediction is wrong is 36%; with a wrong-implementation cost 4× escalation, expected implement cost = 0.36*4 = 1.44 (in units of escalation) which exceeds the cost of escalating (1), so escalate.  
+DECISION: 1",,,2026-03-17T18:13:52.331328
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $28,400 for debt_consolidation. They have been employed for 4 years, a debt-to-income ratio of 29.4%, and a credit score of 710.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because their DTI is above 25% and the decision tree shows a 64% approval rate for such cases, and they also have a solid 710 credit score and 4 years' employment supporting creditworthiness, I predict approval.  
+PREDICTION: 1","Using the tree's 64% approval probability, implementing my ""approve"" prediction has expected cost 0.36*4 = 1.44 (in escalation-cost units) while escalating costs 1, so escalation has lower expected cost.  
+DECISION: 1",,,2026-03-17T18:13:52.850571
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,500 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 44.0%, and a credit score of 690.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the decision tree shows a 64% approval rate for DTI >25% and this applicant has 10+ years employment and a solid 690 credit score, I predict approval.  
+PREDICTION: 1","The dataset shows a 64% approval rate for DTI >25%, so my approval prediction has a 0.64 probability of being correct; the expected cost of implementing is 0.36*4 = 1.44 which exceeds the escalation cost of 1, so escalate.  
+DECISION: 1",,,2026-03-17T18:13:54.053999
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $35,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 33.8%, and a credit score of 646.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's DTI is 33.8%, and since the decision tree indicates a 64% approval rate for applicants with DTI >25%—outweighing the short employment tenure and mid-range credit score—I predict approval.  
+PREDICTION: 1","The decision-tree rate for DTI >25% gives ~64% chance my approval prediction is correct, so implementing has expected cost = 0.36*4 = 1.44 (wrong cost 4x) which is higher than the escalate cost of 1; therefore escalate.  
+DECISION: 1",,,2026-03-17T18:13:54.570622
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $38,275 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 25.6%, and a credit score of 765.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant falls into the >25% DTI branch where 64% were approved and has a strong credit score (765) that outweighs the short employment tenure, I predict approval.  
+PREDICTION: 1","With a 64% chance my approval prediction is correct, the expected cost of implementing is 0.36*4 = 1.44 units versus 1 unit for escalating, so escalate to minimize expected cost.  
+DECISION: 1",,,2026-03-17T18:13:58.040509
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 35.2%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI of 35.2% falls into the decision-tree node where 64% of applicants were approved, combined with 10+ years of employment and a 680 credit score indicating moderate creditworthiness, I predict approval.  
+PREDICTION: 1","Implementing has expected cost = (1 - 0.64) * 4 = 1.44 units while escalating costs 1 unit, so escalation is cheaper given the 64% approval probability and 4x penalty for a wrong implementation.  
+DECISION: 1",,,2026-03-17T18:13:59.505016
+dti_over_25,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for other. They have been employed for 5 years, a debt-to-income ratio of 25.2%, and a credit score of 640.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's DTI is 25.2%, which places them in the decision-tree branch where 64% of applicants were approved, and considering their five years of employment and a fair 640 credit score, I predict approval.  
+PREDICTION: 1","The branch probability of approval is 64%, so the chance I'm wrong is 36% and the expected cost of implementing is 0.36*4 = 1.44 times the escalation cost, which is higher than simply escalating; therefore escalate.  
+DECISION: 1",,,2026-03-17T18:14:01.245018
+dti_over_25,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $24,000 for home_improvement. They have been employed for 10+ years, a debt-to-income ratio of 27.0%, and a credit score of 730.
+
+A decision tree trained on this dataset finds that when the applicant has a DTI ratio above 25%, 64% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant falls into the DTI>25% node with a 64% historical approval rate and also has a solid credit score (730) and 10+ years of employment indicating low risk, I would approve the loan.  
+PREDICTION: 1","Because a wrong implementation costs 4× an escalation, you should only implement if you’re >75% confident; the DTI>25% node gives a 64% approval rate and the applicant’s features don't clearly raise confidence above 75%, so escalate.  
+DECISION: 1",,,2026-03-17T18:14:12.192889

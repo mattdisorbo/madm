@@ -1,0 +1,1579 @@
+condition,ground_truth,prediction,correct,escalate,prompt,esc_prompt,thought,esc_reasoning,thinking_predict,thinking_escalate,timestamp
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,200 for home_improvement. They have been employed for 6 years, a debt-to-income ratio of 14.9%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 660 (within 650–700) and DTI of 14.9% (<20%), matching the decision-tree segment with a 90% approval rate, I predict approval.
+PREDICTION: 1","The decision-tree segment gives a 90% chance my approval prediction is correct, so expected loss from implementing (0.1 * 4 = 0.4 units) is less than the cost of escalating (1 unit). Therefore implement the prediction.
+DECISION: 0",,,2026-03-17T20:32:14.416027
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 19.6%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (680) and DTI (19.6%) place them in the decision-tree node where 90% of similar applications were approved, so I recommend approving the loan.  
+PREDICTION: 1","The decision-tree node gives a 90% chance my approve prediction is correct, so the expected cost of implementing is 0.1*4 = 0.4, which is lower than the escalation cost (1).  
+DECISION: 0",,,2026-03-17T20:32:15.497122
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for debt_consolidation. They have been employed for 7 years, a debt-to-income ratio of 14.2%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (670) and DTI (14.2%) fall into the decision-tree segment (650–700 and DTI < 20%) that had a 90% approval rate, so I would approve the loan.  
+PREDICTION: 1","With a 90% chance my approval prediction is correct, the expected cost of implementing is 0.1*(4×escalation) = 0.4×escalation versus 1×escalation to escalate, so implementing has the lower expected cost.  
+DECISION: 0",,,2026-03-17T20:32:15.627897
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,000 for debt_consolidation. They have been employed for 4 years, a debt-to-income ratio of 10.3%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score of 660 is within the 650–700 range and their DTI is 10.3% (below 20%), and since 90% of similar cases were approved by the decision tree, approval is recommended.  
+PREDICTION: 1","Implementing has expected cost 0.1*4 = 0.4 (0 if correct, 4 if wrong) while escalating costs 1, so implementing is lower expected cost given the 90% approval likelihood.  
+DECISION: 0",,,2026-03-17T20:32:15.990538
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $15,000 for debt_consolidation. They have been employed for 1 year, a debt-to-income ratio of 18.9%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score is 665 (within 650–700) and their DTI is 18.9% (below 20%), a group with a 90% approval rate, I recommend approving the loan.  
+PREDICTION: 1","The model's 90% chance of being correct implies implementing has expected cost 0.1*4 = 0.4, which is lower than the escalate cost of 1. Therefore implement the prediction.  
+DECISION: 0",,,2026-03-17T20:32:16.074005
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $9,000 for home_improvement. They have been employed for 9 years, a debt-to-income ratio of 1.1%, and a credit score of 695.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 695 (within 650–700), very low DTI of 1.1% (<20%), and stable 9-year employment — plus the decision tree showing a 90% approval rate for that segment — approve the loan.  
+PREDICTION: 1","Given a 90% chance the true decision is approve, implementing has an expected cost of 0.1*4 = 0.4 versus escalation cost 1, so implementing is the lower expected-cost choice.  
+DECISION: 0",,,2026-03-17T20:32:16.583121
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,800 for credit_card. They have been employed for 2 years, a debt-to-income ratio of 4.7%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the applicant's FICO of 685 and DTI of 4.7% place them in the decision-tree node (650–700 FICO and DTI <20%) where 90% of applications were approved.  
+PREDICTION: 1","Escalation costs 1 unit while a wrong implementation costs 4 units; with a 90% chance my prediction (approve) is correct, expected cost of implementing = 0.1*4 = 0.4, which is less than the escalation cost, so implement.  
+DECISION: 0",,,2026-03-17T20:32:17.919300
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $29,475 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 19.5%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 685 (within 650–700) and DTI of 19.5% (<20%), and the decision tree showing a 90% approval rate for that segment, I predict approval.
+
+PREDICTION: 1","The decision-tree segment implies a 90% chance my approval prediction is correct, so the expected cost of implementing is 0.1*4 = 0.4 which is lower than the escalation cost of 1. Therefore we should implement the prediction.
+
+DECISION: 0",,,2026-03-17T20:32:18.252234
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 16.9%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO of 685 and DTI of 16.9% fall into the decision-tree node with a 90% historical approval rate, so despite employment under one year I recommend approving the $2,000 debt-consolidation loan.  
+PREDICTION: 1","The decision-tree node implies a 90% chance my approval prediction matches Person 1's true decision, so expected cost of implementing is 0.1*4 = 0.4 versus escalation cost 1, making implementation the lower expected-cost choice.  
+DECISION: 0",,,2026-03-17T20:32:18.865578
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $21,350 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 8.0%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Applicant's FICO of 680 falls in the 650–700 bin and with a low DTI of 8% plus 10+ years employment the decision tree's 90% approval rate supports approving the loan. 
+PREDICTION: 1","The model gives a 90% chance my approve prediction is correct; with a wrong implementation costing 4× an escalation, the expected cost of implementing is 0.1*4 = 0.4 units versus 1 unit to escalate, so implementing is cheaper.  
+DECISION: 0",,,2026-03-17T20:32:19.207608
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $17,550 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 15.9%, and a credit score of 690.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (690) and DTI (15.9%) fall into the decision-tree node where 90% of similar applicants were approved, so the model-backed decision is to approve the loan.  
+PREDICTION: 1","The decision-tree gives a 90% chance the approval prediction is correct, and with a wrong-implementation costing 4× an escalation, expected cost of implementing = (1−0.9)×4 = 0.4 which is less than the escalation cost of 1, so implement.  
+DECISION: 0",,,2026-03-17T20:32:21.918807
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for debt_consolidation. They have been employed for 3 years, a debt-to-income ratio of 11.1%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score (665) is between 650 and 700 and their DTI (11.1%) is below 20%, satisfying the decision-tree rule where 90% of similar applications were approved, I predict approval.  
+PREDICTION: 1","The decision-tree rule gives about a 90% chance my approval prediction is correct, and implementing has expected cost (1 - 0.9)*4 = 0.4 which is less than the escalation cost (1), so it's cheaper to implement.  
+DECISION: 0",,,2026-03-17T20:32:23.490687
+fico_650_700_dti_under_20,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $35,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 17.4%, and a credit score of 695.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (695) and low DTI (17.4%) place them in the decision-tree node where 90% of similar applications were approved, so despite under one year of employment I recommend approval.  
+PREDICTION: 1","Given the node's 90% approval rate, the probability my ""approve"" prediction is correct is 0.9, so the expected cost of implementing (0.1 * 4 = 0.4) is lower than the escalation cost of 1; therefore implement.  
+DECISION: 0",,,2026-03-17T20:32:24.983089
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $25,000 for debt_consolidation. They have been employed for 4 years, a debt-to-income ratio of 16.7%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant falls into the decision-tree node (FICO 680 and DTI 16.7%) where 90% of similar applications were approved and has stable 4-year employment, so approve.  
+PREDICTION: 1","Because a wrong implementation costs 4× an escalation, you should only implement when your prediction is ≥75% likely to be correct; the decision-tree node gives a 90% approval rate for this profile, so implement.  
+DECISION: 0",,,2026-03-17T20:32:27.525292
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $17,600 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 12.2%, and a credit score of 690.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO of 690 (within 650–700), low DTI of 12.2% (<20%), long employment history, and the decision tree's 90% approval rate for such profiles, I predict approval.  
+PREDICTION: 1","The decision-tree history gives a 90% chance the true decision is approve, so implementing (risk of being wrong 10% × 4 = 0.4 expected cost) is cheaper than escalating (cost = 1).  
+DECISION: 0",,,2026-03-17T20:32:28.616347
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for debt_consolidation. They have been employed for 3 years, a debt-to-income ratio of 10.7%, and a credit score of 700.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (700) and DTI (10.7%) fall into the decision-tree group (650–700 and DTI <20%) where 90% of similar applications were approved, so approve.  
+PREDICTION: 1","The decision tree indicates a 90% chance my approval prediction is correct, and with a wrong-implementation cost 4× escalation, implementing is optimal if accuracy >75% (since (1-p)*4 < 1), so implement.  
+DECISION: 0",,,2026-03-17T20:32:30.400656
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,500 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 19.9%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant has a 670 FICO and a 19.9% DTI, placing them in the decision-tree branch with a 90% historical approval rate, so approve.  
+PREDICTION: 1","The branch probability is 90% that approval matches the true decision, so expected cost of implementing = 0.1 * 4 = 0.4, which is less than the escalation cost of 1; therefore implement.  
+DECISION: 0",,,2026-03-17T20:32:31.223328
+fico_650_700_dti_under_20,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 12.3%, and a credit score of 653.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO of 653 and DTI of 12.3% fall into the tree rule (650–700 and DTI < 20%) that had a 90% approval rate, so despite employment under one year I would approve.  
+PREDICTION: 1","The decision-tree rule gives about a 90% chance my approve prediction is correct, so the expected cost of implementing (0.1 * 4 = 0.4) is lower than the escalate cost (1).  
+DECISION: 0",,,2026-03-17T20:32:33.120609
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 15.3%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score (685) falls in the 650–700 range and their DTI (15.3%) is below 20%—a decision-tree node with a 90% approval rate—combined with 10+ years employment, approve the loan.  
+PREDICTION: 1","The decision tree gives about a 90% chance my approval prediction matches Person 1’s true decision, so the expected cost of implementing (0.1 * 4 = 0.4) is much lower than the cost of escalating (1).  
+DECISION: 0",,,2026-03-17T20:32:33.401436
+fico_650_700_dti_under_20,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,500 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 9.5%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO of 660 and DTI of 9.5% match the decision-tree rule with a 90% approval rate, so I would approve the application despite under one year of employment.  
+PREDICTION: 1","The decision-tree gives a 90% chance my approval prediction is correct, so the expected cost of implementing (0.1 * 4 = 0.4 units) is less than the cost of escalating (1 unit), therefore implement.  
+DECISION: 0",,,2026-03-17T20:32:33.527352
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,400 for small_business. They have been employed for 3 years, a debt-to-income ratio of 19.4%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1's FICO score (675) is within 650–700 and their DTI is below 20%, matching the decision-tree condition that led to 90% approvals, I predict approval.
+
+PREDICTION: 1","The decision-tree condition yields a 90% chance my approval prediction is correct, so implementing has expected cost 0.1*4 = 0.4 (taking wrong-answer cost as 4 and zero cost if correct), which is lower than the sure escalate cost of 1. Therefore we should implement the prediction.
+
+DECISION: 0",,,2026-03-17T20:32:36.023233
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $12,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 10.0%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score of 665 and low DTI of 10% match the decision-tree rule (650–700 FICO and DTI <20%) that had a 90% approval rate, so approve.  
+PREDICTION: 1","Implementing has a 90% chance of being correct and a 10% chance of being wrong, so expected cost = 0.1 * 4 = 0.4 units, while escalating costs 1 unit; since 0.4 < 1, implement.  
+DECISION: 0",,,2026-03-17T20:32:36.156305
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 15.4%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO of 660 (within 650–700), DTI 15.4% (<20%), and long-term employment—conditions under which the decision tree shows a 90% approval rate—I recommend approving the loan.  
+PREDICTION: 1","The decision-tree-based approval probability is about 90% for applicants with this FICO and DTI, so the estimated error rate of my approve prediction is ~10%, which is below the 25% threshold where implementing becomes more costly given a wrong answer costs 4× an escalation. DECISION: 0",,,2026-03-17T20:32:37.465141
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $18,800 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 19.2%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO of 670 (within 650–700), DTI of 19.2% (<20%), long employment history, and the decision tree leaf showing a 90% approval rate for such profiles, approve the loan.  
+PREDICTION: 1","The model gives a 90% chance the true decision is approve, so implementing carries expected cost 0.1*4 = 0.4 (in units where escalate = 1), which is lower than the escalate cost of 1, so implement.  
+DECISION: 0",,,2026-03-17T20:32:38.627455
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $7,200 for debt_consolidation. They have been employed for 5 years, a debt-to-income ratio of 13.9%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 685 (within 650–700), low DTI of 13.9%, five years' employment, and the decision tree's 90% approval rate for such profiles, approve the loan.
+PREDICTION: 1","The model indicates a 90% chance my approval prediction is correct, so implementing yields expected cost 0.1*4 = 0.4 (less than the escalation cost of 1). Therefore implement the prediction.
+DECISION: 0",,,2026-03-17T20:32:38.904655
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $13,200 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 12.3%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 680 (within 650–700) and low DTI of 12.3%, the decision-tree rule indicates a 90% approval rate for such profiles, so approve.  
+PREDICTION: 1","The model indicates a 90% chance my approve prediction is correct, so expected cost of implementing = 0.1*4 = 0.4 units versus 1 unit to escalate, therefore implement.  
+DECISION: 0",,,2026-03-17T20:32:41.066584
+fico_650_700_dti_under_20,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,500 for Other. They have been employed for < 1 year, a debt-to-income ratio of 2.1%, and a credit score of 664.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score (664) falls in the 650–700 range and their DTI is only 2.1%—a cohort with a 90% approval rate—I would approve despite the employment tenure being under one year and the modest $2,500 request.
+PREDICTION: 1","Escalation costs 1 while a wrong implementation costs 4, so implementation is justified only if our prediction is correct with probability ≥75%; the decision-tree cohort gives ~90% approval (p≈0.9), yielding expected wrong-cost 4·0.1=0.4 < 1. Therefore implement.
+DECISION: 0",,,2026-03-17T20:32:41.303188
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $16,000 for debt_consolidation. They have been employed for 1 year, a debt-to-income ratio of 13.1%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score (685) and DTI (13.1%) place them in the decision-tree node where 90% of similar applications were approved, I recommend approval.  
+PREDICTION: 1","The decision-tree indicates a 90% chance my approval prediction is correct, so the expected cost of implementing = (1−0.9)*4 = 0.4, which is lower than the escalation cost of 1; therefore implement.  
+DECISION: 0",,,2026-03-17T20:32:43.919378
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 13.7%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because their FICO score (680) falls in the 650–700 range and their DTI (13.7%) is below 20%—a segment with a 90% approval rate, and their 10+ years of employment further supports approval.
+
+PREDICTION: 1","Given the segment's 90% approval rate, the chance my approval prediction is correct is 0.9, so the expected cost of implementing (0.1 * 4 = 0.4 units) is lower than the escalate cost (1 unit); therefore implement. 
+
+DECISION: 0",,,2026-03-17T20:32:44.336333
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $18,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 14.5%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score is 660 (within 650–700) and their DTI is 14.5% (<20%), the decision tree's 90% approval rate for that group supports approving the loan.  
+PREDICTION: 1","Given a 90% chance my approval prediction is correct, the expected cost of implementing is 0.1*4 = 0.4 which is less than the escalation cost of 1, so implement.  
+DECISION: 0",,,2026-03-17T20:32:45.005706
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 18.6%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve: the trained decision tree shows 90% approval for applicants with FICO 650–700 and DTI <20%, and this applicant meets those criteria (FICO 670, DTI 18.6%) with 10+ years employment.  
+PREDICTION: 1","The model indicates a 90% chance the true decision is approve, so the expected cost of implementing is (1−0.9)*4 = 0.4, which is lower than the escalation cost of 1. Therefore we should implement the prediction.  
+DECISION: 0",,,2026-03-17T20:32:45.544280
+fico_650_700_dti_under_20,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $25,000 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 15.9%, and a credit score of 657.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score of 657 falls in the 650–700 range and their DTI is 15.9% (<20%), and because the decision tree shows a 90% approval rate for applicants in this segment, I would approve despite the employment being <1 year.  
+PREDICTION: 1","Given the decision-tree segment has a 90% approval rate, the expected cost of implementing is 0.1*4 = 0.4 (less than the escalation cost of 1), so implement the prediction.  
+DECISION: 0",,,2026-03-17T20:32:46.141788
+fico_650_700_dti_under_20,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $35,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 16.3%, and a credit score of 673.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 673 (within 650–700) and DTI of 16.3% (<20%), which the decision tree indicates had a 90% approval rate, approve despite the short employment tenure.  
+PREDICTION: 1","The decision tree gives a 90% chance my approval prediction is correct, so expected cost of implementing = 0.1*4 = 0.4 (less than the escalate cost of 1), therefore implement.  
+DECISION: 0",,,2026-03-17T20:32:46.193990
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,000 for debt_consolidation. They have been employed for 9 years, a debt-to-income ratio of 19.0%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I recommend approval because the decision tree shows a 90% approval rate for applicants with FICO between 650 and 700 and DTI below 20%, and this applicant meets those criteria (FICO 670, DTI 19%, 9 years employed).  
+PREDICTION: 1","The decision tree indicates a 90% chance my approval prediction is correct, so the expected loss of implementing is 0.1*4 = 0.4, which is less than the escalation cost of 1; therefore implementing minimizes expected cost.  
+DECISION: 0",,,2026-03-17T20:32:47.545664
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $40,000 for debt_consolidation. They have been employed for 6 years, a debt-to-income ratio of 11.3%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 685 (within 650–700) and a DTI of 11.3% (below 20%), the decision-tree rule that such profiles are approved 90% of the time supports approving the loan.  
+PREDICTION: 1","The decision-tree indicates a 90% chance the true decision is approve, so the expected cost of implementing (0.1 * 4 = 0.4) is lower than the escalation cost (1); therefore implement.  
+DECISION: 0",,,2026-03-17T20:32:48.346397
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,500 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 16.8%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score (675) falls in the 650–700 range and their DTI is 16.8% (<20%)—a segment with a 90% approval rate—combined with long employment tenure, I predict approval.
+
+PREDICTION: 1","The model segment gives a 90% chance Person 1 will approve (10% chance of being wrong), so with a wrong implementation costing 4× an escalation the expected cost of implementing is 0.1*4 = 0.4 versus 1 for escalation, making implementation the lower-risk option. 
+
+DECISION: 0",,,2026-03-17T20:32:49.810032
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $24,000 for debt_consolidation. They have been employed for 9 years, a debt-to-income ratio of 13.7%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (685) falls in the 650–700 range and their DTI is 13.7% (<20%), and since the decision tree shows a 90% approval rate for such profiles, I recommend approval.  
+PREDICTION: 1","Given a 90% chance my approval prediction is correct, the expected cost of implementing is 0.1*4 = 0.4 (less than the escalate cost of 1), so implementing is the lower-risk choice.  
+DECISION: 0",,,2026-03-17T20:32:50.160399
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $12,000 for moving. They have been employed for 10+ years, a debt-to-income ratio of 5.8%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO of 660 and DTI of 5.8%, which places them in the decision-tree node where 90% of similar applicants were approved, I predict approval.
+PREDICTION: 1","Given a 90% approval rate for applicants in this node, the probability my approve prediction is wrong is 10%, so expected cost of implementing is 0.1*4 = 0.4 which is less than the escalation cost of 1; therefore implement.  
+DECISION: 0",,,2026-03-17T20:32:51.590739
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $28,000 for credit_card. They have been employed for 2 years, a debt-to-income ratio of 12.4%, and a credit score of 695.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score of 695 and DTI of 12.4% fall into the decision-tree rule where 90% of such applicants were approved, so approve the loan.  
+PREDICTION: 1","Given the decision-tree rate (90% approve), the chance I'm wrong is 0.1, so expected cost of implementing = 0.1 * 4 = 0.4 units versus the escalate cost of 1 unit.  
+Since 0.4 < 1, implement the prediction.  
+DECISION: 0",,,2026-03-17T20:32:51.941687
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,600 for vacation. They have been employed for 10+ years, a debt-to-income ratio of 17.7%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 685 and DTI of 17.7% (both in the decision-tree bin where 90% were approved) plus 10+ years of employment and a modest $3,600 request, I would approve the loan.  
+PREDICTION: 1","The decision-tree bin gives a 90% chance the true decision is approve, so implementing risks a wrong-answer cost with expected loss 0.1*4 = 0.4 versus the sure escalation cost of 1, making implementation the lower-expected-cost choice.  
+DECISION: 0",,,2026-03-17T20:32:52.572039
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,000 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 18.6%, and a credit score of 690.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score of 690 and DTI of 18.6% meet the decision-tree rule (650–700 and DTI <20%) associated with a 90% approval rate, and long employment further supports approval.
+PREDICTION: 1","Given the decision-tree rule implies a 90% chance our approve prediction matches Person 1's true decision, the expected cost of implementing is 0.1*4 = 0.4 (less than the escalation cost of 1), so implementing is preferred.
+DECISION: 0",,,2026-03-17T20:32:53.734787
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $40,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 12.4%, and a credit score of 695.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score (695) falls in the 650–700 range and their DTI (12.4%) is below 20%—conditions under which 90% of applications were approved, plus long employment supports creditworthiness, I predict approval.  
+PREDICTION: 1","The model indicates a 90% chance my approval prediction is correct (10% wrong), and since a wrong implementation costs 4x more, the expected cost of implementing = 0.1*4 = 0.4 which is less than the cost of escalating (1), so implement.  
+DECISION: 0",,,2026-03-17T20:32:55.369277
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,000 for medical. They have been employed for 3 years, a debt-to-income ratio of 18.9%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (670) and DTI (18.9%) match the decision-tree node where 90% of similar applicants were approved, so the model-backed choice is to approve.  
+PREDICTION: 1","The model indicates a 90% chance my approval prediction is correct, so expected cost of implementing = 0.1 * 4 = 0.4 which is less than the escalation cost of 1, therefore implement.  
+DECISION: 0",,,2026-03-17T20:32:56.198491
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $6,000 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 17.4%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (665) is between 650 and 700 and their DTI (17.4%) is below 20%, matching the decision-tree rule with a 90% approval rate, so approve.  
+PREDICTION: 1","With a 90% chance the prediction is correct, the expected cost of implementing is 0.1*4 = 0.4 (normalized) which is less than the escalate cost of 1, so implementing is preferred.  
+DECISION: 0",,,2026-03-17T20:32:59.192344
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $24,000 for medical. They have been employed for 3 years, a debt-to-income ratio of 10.2%, and a credit score of 690.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score of 690 and DTI of 10.2% place them in the decision-tree node with a 90% historical approval rate, so approve the loan.  
+PREDICTION: 1","The model indicates a 90% chance your approve prediction matches Person 1's true decision, so the expected cost of implementing (0.10 * 4 = 0.4 units) is less than the cost of escalating (1 unit).  
+DECISION: 0",,,2026-03-17T20:33:01.180894
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for debt_consolidation. They have been employed for 4 years, a debt-to-income ratio of 15.2%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score is 685 (within 650–700) and DTI is 15.2% (<20%), fitting the decision-tree node with a 90% approval rate, I recommend approving the loan.  
+PREDICTION: 1","The model node gives a 90% chance the true decision is approve, so expected cost of implementing = 0.1 * 4 = 0.4 (units) versus the certain escalation cost = 1 (unit), making implementing lower risk.  
+DECISION: 0",,,2026-03-17T20:33:01.412909
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,200 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 17.8%, and a credit score of 690.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (690) and DTI (17.8%) match the decision-tree rule (650–700 and DTI <20%) under which 90% were approved, so I would approve despite employment <1 year.  
+PREDICTION: 1","The decision-tree rule gives a 90% chance my approval prediction is correct, so p = 0.9. Because p > 0.75, the expected loss of implementing (0.1*4 = 0.4) is less than the escalation cost (1), so implement.  
+DECISION: 0",,,2026-03-17T20:33:01.892356
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $18,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 15.6%, and a credit score of 695.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score is 695 (between 650–700) and their DTI is 15.6% (<20%), placing them in the decision-tree node with a 90% historical approval rate, I recommend approving the loan.  
+PREDICTION: 1","The node's 90% approval probability implies a 0.1 chance of being wrong, so expected cost if we implement = 0.1 * 4x = 0.4x, which is less than the 1x cost of escalating; therefore implement.  
+DECISION: 0",,,2026-03-17T20:33:02.044950
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $27,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 16.1%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree rule shows a 90% approval rate for applicants with FICO 650–700 and DTI <20%, and since Person 1 has a 680 FICO and 16.1% DTI (the short employment history is a negative but likely outweighed), approve.  
+PREDICTION: 1","The decision-tree bin gives a 90% chance my approval prediction is correct, so the expected cost of implementing (0.1 * 4 = 0.4) is lower than the cost of escalating (1).  
+DECISION: 0",,,2026-03-17T20:33:03.383427
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 18.6%, and a credit score of 695.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 695 (within 650–700), DTI of 18.6% (<20%), and 10+ years employment—matching the decision-tree rule that yields 90% approvals—I predict approval.  
+PREDICTION: 1","The decision-tree rule gives a 90% chance the true decision is approval, so implementing my prediction has expected cost 0.1*4 = 0.4 (wrong-case cost) versus escalation cost 1, making implementation the lower expected-cost choice.  
+DECISION: 0",,,2026-03-17T20:33:04.779368
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for credit_card. They have been employed for 1 year, a debt-to-income ratio of 16.1%, and a credit score of 690.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO of 690 and DTI of 16.1% fall into the decision-tree branch (650–700 FICO and DTI < 20%) where 90% of applications were approved, so I would approve.  
+PREDICTION: 1","Given a 90% approval rate (10% chance of being wrong) and a wrong implementation costing 4× an escalation, the expected cost of implementing is 0.1*4 = 0.4 which is less than the escalate cost of 1, so implement.  
+DECISION: 0",,,2026-03-17T20:33:06.351606
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for home_improvement. They have been employed for < 1 year, a debt-to-income ratio of 6.4%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score is 685 (within 650–700) and their DTI is 6.4% (<20%), which matches the decision-tree node where 90% of similar applications were approved, I recommend approving despite employment under one year.
+
+PREDICTION: 1","The decision-tree node gives a 90% chance the true decision is approve, so expected cost of implementing = 0.1*4 = 0.4 which is less than the escalation cost of 1. 
+
+DECISION: 0",,,2026-03-17T20:33:07.051876
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 11.8%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant falls squarely into the decision-tree branch (FICO 685 and DTI 11.8%) with a 90% historical approval rate and long-term employment, so approve.  
+PREDICTION: 1","The decision-tree gives a ~90% chance my approval prediction is correct, and since implementing is optimal whenever p(correct) > 0.75 (because a wrong implementation costs 4× escalation), the expected-cost comparison favors implementing.  
+DECISION: 0",,,2026-03-17T20:33:07.980402
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $15,000 for home_improvement. They have been employed for 4 years, a debt-to-income ratio of 9.4%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 670 (within 650–700) and low DTI of 9.4%, the decision-tree rule indicates a high (~90%) approval likelihood, so approve.  
+PREDICTION: 1","The decision-tree gives a 90% chance the true decision is approve, so implementing would have expected cost 0.1*4 = 0.4 versus escalating cost 1; since 0.4 < 1, implement.  
+DECISION: 0",,,2026-03-17T20:33:08.184763
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,500 for wedding. They have been employed for < 1 year, a debt-to-income ratio of 12.8%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because their FICO score (675) is between 650–700 and DTI is 12.8% (<20%), the decision-tree rule indicates a 90% approval rate so I predict approval despite under-one-year employment. 
+PREDICTION: 1","The decision-tree indicates a 90% chance my approval prediction is correct, so the probability of being wrong (0.10) is below the threshold 0.25 where implementing becomes riskier than escalating given a 4× higher cost for a wrong implementation; therefore implement.  
+DECISION: 0",,,2026-03-17T20:33:08.817469
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for home_improvement. They have been employed for 1 year, a debt-to-income ratio of 5.3%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO of 665 and DTI of 5.3% place them in the decision-tree node (650–700 FICO and DTI < 20%) with a 90% approval rate, so I predict approval.
+PREDICTION: 1","The model's node gives a 90% chance my approval prediction is correct, so expected cost if we implement = 0.1 * 4 = 0.4, which is less than the escalate cost (1); therefore we should implement.  
+DECISION: 0",,,2026-03-17T20:33:09.298646
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $15,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 12.3%, and a credit score of 700.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Their FICO of 700 and low DTI (12.3%) place them in the decision-tree segment (650–700 and DTI<20%) with a 90% approval rate, and long employment further supports approving the consolidation loan.  
+PREDICTION: 1","The decision-tree indicates a 90% chance the applicant will be approved, so implementing the approve prediction has expected cost 0.1*4 = 0.4 (normalized) versus escalating cost 1.0, making implementation the lower-risk choice.  
+DECISION: 0",,,2026-03-17T20:33:09.386163
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $6,250 for debt_consolidation. They have been employed for 5 years, a debt-to-income ratio of 12.9%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score (685) falls in the 650–700 band and their DTI is 12.9% (below 20%), and the decision tree shows a 90% approval rate for such profiles, approve the loan.  
+PREDICTION: 1","The tree gives a 90% chance my approve prediction is correct, so the expected cost of implementing (0.1 * 4 = 0.4 units) is less than the escalation cost (1 unit), therefore implement.  
+DECISION: 0",,,2026-03-17T20:33:10.734336
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $6,500 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 9.1%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score of 675 and DTI of 9.1% match the decision-tree node (650–700 FICO and DTI <20%) that had a 90% approval rate, and long employment further supports approval.  
+PREDICTION: 1","With a 90% chance the prediction is correct, the expected cost of implementing is 0.1*4 = 0.4, which is less than the escalation cost of 1, so implement the prediction.  
+DECISION: 0",,,2026-03-17T20:33:10.739792
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 14.3%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (665) and DTI (14.3%) fall into the decision-tree rule where 90% of such applications were approved, and their 10+ years of employment further supports approval.  
+PREDICTION: 1","The decision-tree indicates a 90% chance my approval prediction is correct, and since a wrong implementation costs 4× an escalation, implementing is optimal whenever the correctness probability exceeds 0.75 (because (1 - p)*4 < 1), which 0.90 does.  
+DECISION: 0",,,2026-03-17T20:33:11.397734
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $11,000 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 3.0%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO of 665 (within 650–700) and a very low DTI of 3.0%, the decision tree rule showing a 90% approval rate for such profiles supports approving the loan.  
+PREDICTION: 1","The decision-tree rule gives a 90% chance the true decision is approve, so the expected cost of implementing is 0.1*4 = 0.4 (lower than the escalate cost of 1).  
+DECISION: 0",,,2026-03-17T20:33:11.527228
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $9,600 for credit_card. They have been employed for 3 years, a debt-to-income ratio of 6.9%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 660 and DTI of 6.9%, which falls into the decision-tree rule where 90% of such applicants were approved, approve the loan.  
+PREDICTION: 1","The model indicates a 90% chance my approve prediction matches Person 1's true decision, so the expected cost of implementing (0.1 * 4 = 0.4 units) is lower than the cost of escalating (1 unit). Therefore implement the prediction.  
+DECISION: 0",,,2026-03-17T20:33:12.487746
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $25,000 for debt_consolidation. They have been employed for 3 years, a debt-to-income ratio of 16.2%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1's FICO score is 680 (between 650 and 700) and their DTI is 16.2% (below 20%), matching the decision-tree leaf that had a 90% approval rate, approve the loan. 
+PREDICTION: 1","The decision-tree indicates a 90% chance the true decision is approve, so expected loss if we implement is 0.1*4 = 0.4 versus escalation cost 1; since 0.4 < 1, implement the prediction.  
+DECISION: 0",,,2026-03-17T20:33:12.638710
+fico_650_700_dti_under_20,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 12.2%, and a credit score of 657.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (657) and DTI (12.2%) match the decision-tree node with a 90% approval rate, which outweighs the short employment duration, so approve. 
+PREDICTION: 1","Given the node probability of 90% approval, implementing (expected wrong probability 0.1) yields expected cost 0.1*4 = 0.4 units versus escalating cost 1 unit, so implementing has lower expected cost.  
+DECISION: 0",,,2026-03-17T20:33:16.265483
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,200 for major_purchase. They have been employed for 2 years, a debt-to-income ratio of 13.4%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (670) and low DTI (13.4%) match the decision-tree node where 90% of similar applicants were approved, so the recommendation is to approve.  
+PREDICTION: 1","The decision-tree node gives a 90% chance my approval prediction is correct, so the expected cost of implementing (0.1 * 4 = 0.4) is lower than the escalation cost (1).  
+DECISION: 0",,,2026-03-17T20:33:16.665052
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $9,600 for home_improvement. They have been employed for 2 years, a debt-to-income ratio of 7.9%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 685 (within 650–700) and a low DTI of 7.9%, the decision tree segment with a 90% approval rate indicates approval.  
+PREDICTION: 1","Given the model's 90% approval probability, implementing my approve prediction has a 10% chance of being wrong and thus an expected cost of 0.1*4 = 0.4 (in escalation-cost units), which is less than the certain escalation cost of 1, so implement.  
+DECISION: 0",,,2026-03-17T20:33:16.844011
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $9,275 for debt_consolidation. They have been employed for 8 years, a debt-to-income ratio of 9.9%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because their FICO score is 665 (within 650–700) and DTI is 9.9% (<20%), matching the decision-tree rule that had a 90% approval rate for such profiles, approve the loan.  
+PREDICTION: 1","The decision-tree indicates a 90% chance my approval prediction is correct, so the expected cost of implementing (0.1 * 4 = 0.4) is less than the escalation cost (1), therefore implement.  
+DECISION: 0",,,2026-03-17T20:33:18.111867
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $15,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 18.0%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because their FICO of 680 and DTI of 18% place them in the decision-tree node with a 90% approval rate, reinforced by stable 10+ years employment and a reasonable debt-consolidation purpose.
+
+PREDICTION: 1","The decision-tree node gives a 90% approval probability and since implementing is optimal when confidence >75% given the 4x cost of being wrong, we should implement the predicted approval. 
+
+DECISION: 0",,,2026-03-17T20:33:18.214080
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $7,000 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 11.9%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score (660) falls between 650 and 700 and their DTI (11.9%) is below 20%, matching the decision-tree node where 90% of similar applications were approved, I predict approval.
+PREDICTION: 1","The decision-tree node gives a 90% chance my approval prediction is correct, so expected cost of implementing = 0.1*4 = 0.4 (wrong-cost weighted) which is less than the escalation cost of 1; therefore implement.  
+DECISION: 0",,,2026-03-17T20:33:19.096915
+fico_650_700_dti_under_20,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $15,000 for Moving and relocation. They have been employed for 5 years, a debt-to-income ratio of 4.3%, and a credit score of 656.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score (656) falls in the 650–700 range and their DTI (4.3%) is well below 20%, a segment with a 90% approval rate and supported by five years' employment, approve.  
+PREDICTION: 1","The decision-tree branch gives a 90% chance my approve prediction is correct (p = 0.9), and because implementing is optimal when p > 0.75 (since expected cost of implementing = 4*(1-p) < 1), implementing has lower expected cost than escalating.  
+DECISION: 0",,,2026-03-17T20:33:19.719313
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $9,000 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 8.7%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score is 665 (within 650–700) and their DTI is 8.7% (<20%), matching the decision-tree rule that yielded 90% approvals, I predict approval.
+
+PREDICTION: 1","The decision-tree rule implies a 90% chance the true decision is approval; with implementing wrong costing 4× escalation, the expected cost of implementing = 0.1×4 = 0.4 which is less than the escalation cost of 1, so implement.  
+DECISION: 0",,,2026-03-17T20:33:20.091070
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $16,000 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 11.3%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score of 685 and DTI of 11.3% place them in the decision-tree node with a 90% approval rate, and their 10+ years of employment further supports approving the $16,000 credit-card request.
+PREDICTION: 1","Using the model's 90% approval probability, the expected cost of implementing is 0.1*4 = 0.4 (relative units) versus the sure escalate cost of 1, so implementing has the lower expected loss.  
+DECISION: 0",,,2026-03-17T20:33:22.268637
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for home_improvement. They have been employed for 10+ years, a debt-to-income ratio of 19.8%, and a credit score of 695.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because they meet the decision-tree rule (FICO 695 within 650–700 and DTI 19.8% < 20%) where 90% were approved, and their long employment and small loan amount further support approval.  
+PREDICTION: 1","Expected cost of implementing = probability wrong (10%) * wrong cost (4) = 0.4, which is less than the escalation cost (1), so it's optimal to implement the prediction to approve.  
+DECISION: 0",,,2026-03-17T20:33:22.807272
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 18.5%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (670) and DTI (18.5%) fall into the decision-tree node with a 90% approval rate for similar cases, so I predict approval.  
+PREDICTION: 1","The model's node gives a 90% chance my approval prediction is correct, so the expected cost of implementing (0.1 * 4 = 0.4 units) is less than the escalation cost (1 unit). Therefore we should implement the prediction.  
+DECISION: 0",,,2026-03-17T20:33:23.168011
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,000 for credit_card. They have been employed for 3 years, a debt-to-income ratio of 10.2%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (685) and DTI (10.2%) fall into the decision-tree node where 90% of similar applications were approved, so approve the loan.  
+PREDICTION: 1","The decision-tree node indicates a 90% chance the true decision is approve, so implementing (which risks a 10% wrong outcome costing 4x) has expected cost 0.1*4 = 0.4, which is less than the escalation cost of 1.  
+DECISION: 0",,,2026-03-17T20:33:25.690129
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,800 for home_improvement. They have been employed for 9 years, a debt-to-income ratio of 14.8%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 685 (within 650–700), low DTI of 14.8%, long employment tenure (9 years), and the decision-tree finding that 90% of similar cases were approved, the loan should be approved.  
+PREDICTION: 1","The decision-tree indicates a 90% chance the applicant will be approved, so implementing my approve prediction yields an expected relative cost of 0.1*4 = 0.4 (less than the escalate cost of 1), so implement.  
+DECISION: 0",,,2026-03-17T20:33:26.834217
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $12,000 for other. They have been employed for 10+ years, a debt-to-income ratio of 9.3%, and a credit score of 700.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO of 700, low DTI (9.3%), long employment (10+ years), and the decision-tree rule showing 90% approval for applicants with FICO ~650–700 and DTI <20%, I predict approval.  
+PREDICTION: 1","Given the model's rule that similar applicants (FICO 650–700, DTI <20%) were approved 90% of the time, the probability my approval prediction is correct (0.9) exceeds the threshold (0.75) where the expected cost of implementing is lower than escalating, so implement.  
+DECISION: 0",,,2026-03-17T20:33:28.250340
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $6,000 for debt_consolidation. They have been employed for 8 years, a debt-to-income ratio of 13.1%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (680) and DTI (13.1%) place them in the decision-tree node with a 90% approval rate, and combined with 8 years' employment and a modest $6,000 consolidation request, this supports approving the loan.  
+PREDICTION: 1","Given a 90% chance my approval prediction is correct, the expected cost of implementing (0.1 * 4 = 0.4) is less than the cost of escalating (1), so implementing is the lower-risk choice.  
+DECISION: 0",,,2026-03-17T20:33:29.356034
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $12,000 for vacation. They have been employed for 4 years, a debt-to-income ratio of 8.1%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Based on the decision-tree rule that applicants with FICO 650–700 and DTI <20% were approved 90% of the time and this applicant has a 670 score and 8.1% DTI with four years' employment, approve.  
+PREDICTION: 1","The model gives a 90% chance the true decision is approve, so the expected cost of implementing (0.1 * 4× escalation = 0.4× escalation) is lower than escalating; therefore implement.  
+DECISION: 0",,,2026-03-17T20:33:29.682586
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $7,200 for debt_consolidation. They have been employed for 4 years, a debt-to-income ratio of 2.3%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO of 675 and DTI of 2.3% place them in the decision-tree node (650–700 FICO and DTI <20%) where 90% of applications were approved, so approve.  
+PREDICTION: 1","The model indicates a 90% chance the true decision is approve, so implementing carries expected cost 0.1*4 = 0.4, which is less than the escalate cost of 1, therefore implement.  
+DECISION: 0",,,2026-03-17T20:33:31.394482
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for other. They have been employed for 10+ years, a debt-to-income ratio of 19.4%, and a credit score of 690.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score is 690 (within 650–700) and their DTI is 19.4% (<20%), the decision-tree rule with a 90% approval rate supports approving the loan.  
+PREDICTION: 1","The decision-tree gives a 90% chance the true decision is approve, so implementing risks a wrong decision with probability 0.1; with a wrong-implementation cost 4x escalation, expected cost of implementing = 0.1*4 = 0.4 (units) versus escalation = 1, so implementing has lower expected cost.  
+DECISION: 0",,,2026-03-17T20:33:31.939167
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $35,000 for debt_consolidation. They have been employed for 8 years, a debt-to-income ratio of 7.6%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO is 680 (within 650–700) and DTI is 7.6% (<20%), the decision-tree leaf with a 90% historical approval rate indicates approval. 
+PREDICTION: 1","Given the 90% approval probability for similar applicants and wrong implementation costing 4× an escalation, the expected cost of implementing is 0.1*4 = 0.4 which is less than the escalation cost of 1, so implement.  
+DECISION: 0",,,2026-03-17T20:33:32.638119
+fico_650_700_dti_under_20,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $35,000 for Debt consolidation. They have been employed for 10+ years, a debt-to-income ratio of 16.5%, and a credit score of 652.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (652) falls in the 650–700 band and their DTI is 16.5% (<20%), and since the decision tree shows a 90% approval rate for such profiles, approve.  
+PREDICTION: 1","Given the 90% chance our approval prediction is correct, the expected cost of implementing is 0.1 * 4 = 0.4 units versus 1 unit to escalate, so implementing has lower expected cost.  
+DECISION: 0",,,2026-03-17T20:33:33.879229
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 18.3%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because their FICO score of 660 falls in the 650–700 range and their DTI is below 20% (18.3%), matching the decision-tree region where 90% of applications were approved.  
+PREDICTION: 1","The model's region gives a 90% chance the true decision is approve, so the expected cost of implementing (0.1 * 4 = 0.4) is lower than the escalation cost (1).  
+DECISION: 0",,,2026-03-17T20:33:35.201153
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $9,000 for debt_consolidation. They have been employed for 8 years, a debt-to-income ratio of 14.8%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO of 670 and DTI of 14.8% place them in the decision-tree node where 90% of similar applications were approved, so I recommend approving the $9,000 debt-consolidation loan.  
+PREDICTION: 1","Given a 90% chance my approve prediction is correct, the expected cost of implementing is 0.1*4 = 0.4, which is less than the escalation cost of 1, so we should implement.  
+DECISION: 0",,,2026-03-17T20:33:36.334795
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for credit_card. They have been employed for 2 years, a debt-to-income ratio of 13.1%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (670) and DTI (13.1%) place them in the decision-tree node with a 90% approval rate and, combined with two years' employment, supports approval.  
+PREDICTION: 1","Given the node's 90% approval rate, implementing (approve) has a 10% chance of being wrong, yielding an expected wrong-implementation cost of 0.1 * 4 = 0.4 units, which is less than the fixed escalation cost of 1 unit; therefore implement.  
+DECISION: 0",,,2026-03-17T20:33:37.258365
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $9,000 for credit_card. They have been employed for 2 years, a debt-to-income ratio of 19.4%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 685 (within 650–700), DTI of 19.4% (<20%), and the decision-tree rule that 90% of such applicants were approved, I predict approval.  
+PREDICTION: 1","The data rule gives a 90% chance my approve prediction is correct (10% chance of being wrong), so the expected cost of implementing is 0.1*4 = 0.4 versus escalation cost 1. Because 0.4 < 1, implement the prediction.  
+DECISION: 0",,,2026-03-17T20:33:37.331471
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for other. They have been employed for nan, a debt-to-income ratio of 14.9%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO (680) and DTI (14.9%) place them in the decision-tree branch with a 90% historical approval rate, so approve despite missing employment-length data.  
+PREDICTION: 1","The decision-tree indicates a 90% chance Person 1 will approve, so the expected cost of implementing (0.1 * 4 = 0.4) is less than the escalation cost (1), so we should implement.  
+DECISION: 0",,,2026-03-17T20:33:37.976776
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $7,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 14.0%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score (670) and DTI (14%) place them in the decision-tree node with a 90% approval rate, approve the loan.  
+PREDICTION: 1","With a 90% chance my approval prediction is correct, expected cost of implementing = 0.1 * 4 = 0.4 (less than the escalate cost of 1), so implementing is cheaper in expectation. Therefore implement the prediction.  
+DECISION: 0",,,2026-03-17T20:33:37.998221
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $16,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 7.0%, and a credit score of 695.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO of 695 and DTI of 7% fall squarely into the decision-tree rule (650–700 FICO and DTI <20%) that produced a 90% approval rate, and long employment further supports approval.  
+PREDICTION: 1","The model's 90% chance of being correct makes the expected cost of implementing (0.10 * 4 = 0.4 units) lower than the fixed escalation cost (1 unit), so implementing minimizes expected cost.  
+DECISION: 0",,,2026-03-17T20:33:38.997238
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for home_improvement. They have been employed for 10+ years, a debt-to-income ratio of 3.7%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's 670 FICO score and very low DTI of 3.7%, which place them in the decision-tree node where 90% of similar applications were approved, approving the loan is supported.  
+PREDICTION: 1","The model indicates a 90% chance my ""approve"" prediction is correct, and because implementing a wrong decision costs 4× an escalation, implementing is optimal if p ≥ 0.75 (since (1−p)*4 ≤ 1), which 0.90 exceeds.  
+DECISION: 0",,,2026-03-17T20:33:40.895513
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $24,200 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 10.2%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 660 (within the 650–700 node), low DTI of 10.2% (<20%), long employment history, and the decision tree's 90% approval rate for that group, I predict approval.  
+PREDICTION: 1","The model's node gives a 90% chance my approval prediction is correct, so the expected cost of implementing is 0.1*4 = 0.4 (less than the normalized escalation cost of 1), therefore implementing minimizes expected loss.  
+DECISION: 0",,,2026-03-17T20:33:42.794267
+fico_650_700_dti_under_20,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 16.4%, and a credit score of 696.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because their FICO score (696) is between 650–700 and their DTI (16.4%) is below 20% — the decision-tree condition that produced a 90% approval rate — I predict approval despite short employment tenure.
+
+PREDICTION: 1","Given the decision-tree's 90% approval rate for applicants with this FICO and DTI, the expected cost of implementing (0.1 * 4 = 0.4) is lower than the escalation cost (1), so implement. 
+
+DECISION: 0",,,2026-03-17T20:33:42.901182
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $6,000 for debt_consolidation. They have been employed for 7 years, a debt-to-income ratio of 11.6%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (670) and DTI (11.6%) match the decision-tree rule (650–700 FICO and DTI <20%) where 90% of cases were approved, so approve.  
+PREDICTION: 1","Given the decision-tree rule gives a 90% chance the true decision is approve, implementing my approve prediction yields expected cost 0.1 * (4x escalation cost) = 0.4x escalation cost, which is lower than escalating; therefore implement.  
+DECISION: 0",,,2026-03-17T20:33:43.828804
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,500 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 18.0%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score of 670 and DTI of 18% match the decision-tree rule (650–700 and DTI < 20%) that produced a 90% approval rate, so I predict approval.
+PREDICTION: 1","The segment's 90% approval probability means implementing my approval prediction yields expected cost 0.1*4 = 0.4, which is less than the escalation cost of 1, so we should implement.  
+DECISION: 0",,,2026-03-17T20:33:47.702560
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,000 for other. They have been employed for 3 years, a debt-to-income ratio of 19.0%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score is 685 (between 650 and 700) and their DTI is 19% (below 20%), they fall into the decision-tree rule where 90% of similar applications were approved, so I predict approval.  
+PREDICTION: 1","The model's leaf gives a 90% chance our approval prediction is correct, so implementing has expected cost 0.1 * 4 = 0.4 (less than the escalate cost of 1).  
+DECISION: 0",,,2026-03-17T20:33:49.497768
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $7,500 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 9.6%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree shows a 90% approval rate for applicants with FICO 650–700 and DTI <20% and this applicant has a 680 FICO and 9.6% DTI (with long-term employment), approve.  
+PREDICTION: 1","The model indicates a 90% chance my approval prediction is correct, so the expected cost of implementing is 0.1*4 = 0.4 which is less than the escalation cost of 1; therefore implement.  
+DECISION: 0",,,2026-03-17T20:33:49.692525
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $7,700 for debt_consolidation. They have been employed for 6 years, a debt-to-income ratio of 11.0%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (665) and low DTI (11%) match the decision-tree rule (650–700 and DTI <20%) that yielded a 90% approval rate, so approve.  
+PREDICTION: 1","The decision-tree rule gives a 90% chance the true decision is approve, so implementing carries an expected cost of 0.1*4 = 0.4 (less than the escalation cost of 1), making implementation optimal.  
+DECISION: 0",,,2026-03-17T20:33:49.907759
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for debt_consolidation. They have been employed for 3 years, a debt-to-income ratio of 15.3%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score of 670 and DTI of 15.3% place them in the decision-tree region (650–700 FICO and DTI <20%) where 90% of applications were approved, so approve the $10,000 debt-consolidation loan.  
+PREDICTION: 1","With a 90% chance our approve prediction is correct, the probability of being wrong is 10%, so the expected cost of implementing is 0.1 * 4 = 0.4, which is lower than the escalation cost of 1; therefore we should implement.  
+DECISION: 0",,,2026-03-17T20:33:49.940957
+fico_650_700_dti_under_20,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for Car financing. They have been employed for < 1 year, a debt-to-income ratio of 3.6%, and a credit score of 664.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score (664) falls in the 650–700 range and their DTI is 3.6% (<20%), matching the decision-tree rule that yielded 90% approvals, I predict approval despite the short employment tenure.
+
+PREDICTION: 1","The decision-tree rule gives a 90% chance the true decision is approve, so the expected cost of implementing is 0.1*4 = 0.4, which is less than the escalate cost of 1; therefore implement.  
+DECISION: 0",,,2026-03-17T20:33:50.842966
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for credit_card. They have been employed for 8 years, a debt-to-income ratio of 8.7%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score is 665 (between 650–700) and DTI is 8.7% (<20%), the decision-tree rule gives a 90% approval rate, so I recommend approving the loan.  
+PREDICTION: 1","The decision-tree rule implies a 90% chance my approval prediction is correct (10% chance wrong), so the expected cost of implementing is 0.10 * 4 = 0.4, which is less than the escalation cost of 1. Therefore we should implement the prediction.  
+DECISION: 0",,,2026-03-17T20:33:50.984832
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $30,000 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 10.5%, and a credit score of 690.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 690 (within 650–700) and a DTI of 10.5% (below 20%), and the decision tree showing a 90% approval rate for that subgroup, I predict approval.  
+PREDICTION: 1","Given the subgroup's 90% approval probability and that a wrong implementation costs 4× an escalation, the expected cost of implementing is 0.1*4 = 0.4 units versus 1 unit to escalate, so implementing is preferred.  
+DECISION: 0",,,2026-03-17T20:33:51.045836
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $24,000 for debt_consolidation. They have been employed for 9 years, a debt-to-income ratio of 10.8%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO of 680 and DTI of 10.8% place them in the decision-tree node with a 90% historical approval rate (and they have stable employment), so approve the loan.  
+PREDICTION: 1","Implementing is preferable because with a 90% historical approval accuracy the expected cost of implementing is (1-0.9)*4 = 0.4, which is less than the escalate cost of 1, so we should implement.  
+DECISION: 0",,,2026-03-17T20:33:51.156681
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $5,600 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 18.6%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because their FICO score of 675 and DTI of 18.6% place them in the decision-tree bin where 90% were approved, and their long employment and modest $5,600 debt-consolidation request further support approval.  
+PREDICTION: 1","The decision tree gives a 90% chance our approve prediction is correct, so the expected cost of implementing is 0.1*4 = 0.4 which is less than the escalate cost of 1; therefore implement.  
+DECISION: 0",,,2026-03-17T20:33:51.997218
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,600 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 16.1%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO of 680 falls in the 650–700 range and their DTI is 16.1% (<20%), so according to the decision tree node where 90% were approved this applicant should be approved.  
+PREDICTION: 1","The decision-tree node gives a 90% chance the true decision is approve, so implementing risks being wrong with probability 10%; since implementing a wrong answer costs 4× escalation, the expected cost of implementing is 0.1*4 = 0.4 versus escalation cost 1, so implementing is cheaper.  
+DECISION: 0",,,2026-03-17T20:33:54.128921
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $16,000 for debt_consolidation. They have been employed for 4 years, a debt-to-income ratio of 11.7%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (665) falls in the 650–700 range and their DTI is below 20%, matching a decision-tree rule with a 90% approval rate, so I predict approval.  
+PREDICTION: 1","The decision-tree rule gives a 90% chance the true decision is approve (10% chance it's wrong), and a wrong implementation costs 4x an escalation, so expected cost of implementing = 0.1 * 4 = 0.4 (less than the escalation cost of 1). Therefore implement the prediction.  
+DECISION: 0",,,2026-03-17T20:33:54.202758
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $10,000 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 13.3%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 685 (within 650–700), DTI of 13.3% (<20%), and long employment history, the decision-tree rule indicating a 90% approval rate supports approving the loan.  
+PREDICTION: 1","Given the decision-tree rule gives a 90% chance my approve prediction is correct, the expected cost of implementing (0.1 * 4 = 0.4) is less than the escalation cost (1), so implementing is preferred.  
+DECISION: 0",,,2026-03-17T20:33:57.862622
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $12,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 18.3%, and a credit score of 690.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score (690) falls in the 650–700 range and their DTI (18.3%) is below 20%, matching a decision-tree node with a 90% historic approval rate, I predict approval.
+PREDICTION: 1","The model node gives a 90% chance my approval prediction is correct and a wrong implementation costs 4× an escalation, so expected cost of implementing = 0.1*4 = 0.4 (normalized) which is less than the escalation cost (1). Therefore implement the prediction.
+DECISION: 0",,,2026-03-17T20:33:57.912019
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $15,000 for other. They have been employed for 4 years, a debt-to-income ratio of 14.2%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO of 660 is in the 650–700 range and their DTI is 14.2% (<20%), which the decision tree shows led to 90% approvals, so I recommend approving the loan.  
+PREDICTION: 1","The decision tree gives a 90% chance our approve prediction is correct, so expected cost of implementing = 0.1 * 4 = 0.4 (units) versus escalate cost = 1, making implementation the lower expected-cost choice.  
+DECISION: 0",,,2026-03-17T20:33:58.792723
+fico_650_700_dti_under_20,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $7,000 for moving. They have been employed for < 1 year, a debt-to-income ratio of 5.4%, and a credit score of 666.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant’s FICO of 666 (within 650–700) and low DTI of 5.4% place them in the decision-tree leaf where 90% of similar applications were approved, so I would approve the $7,000 moving loan despite employment under one year.
+
+PREDICTION: 1","The decision-tree leaf gives a 90% chance my approval prediction is correct, and since implementing is optimal only if confidence >75% (because a wrong implementation costs 4× escalation), we should implement the prediction. 
+
+DECISION: 0",,,2026-03-17T20:33:59.990136
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $12,000 for debt_consolidation. They have been employed for 1 year, a debt-to-income ratio of 14.1%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score of 680 and DTI of 14.1% place them in the decision-tree node where 90% of similar applications were approved, so approve the loan.  
+PREDICTION: 1","The model indicates a 90% chance my approval prediction is correct, so the expected cost of implementing (0.1 * 4 = 0.4 units) is less than the certain cost of escalating (1 unit), therefore implement.  
+DECISION: 0",,,2026-03-17T20:34:02.519696
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for home_improvement. They have been employed for 1 year, a debt-to-income ratio of 11.8%, and a credit score of 665.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 665 (within 650–700) and DTI of 11.8% — the scenario in which the decision tree approved 90% of cases — approve the loan.  
+PREDICTION: 1","The model indicates a 90% chance the true decision is approve, so expected cost of implementing (0.1 × 4 = 0.4 units) is less than the escalation cost (1 unit), therefore implement.  
+DECISION: 0",,,2026-03-17T20:34:02.636161
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 10.4%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO (685) and low DTI (10.4%) place them in the decision-tree node with a 90% approval rate, and their 10+ years of employment supports approving the $20,000 credit card request.  
+PREDICTION: 1","The decision-tree node gives a 90% chance the true decision is approve, so implementing has expected loss 0.1*4 = 0.4 (relative units) versus escalation cost 1, making implementation the lower expected-cost choice.  
+DECISION: 0",,,2026-03-17T20:34:03.009857
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 7.1%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score of 660 and low DTI of 7.1% place them in the decision-tree node with a 90% approval rate, and their long employment and modest $4,000 consolidation request further support approving the loan. 
+PREDICTION: 1","The model gives a 90% chance our approval prediction is correct, so the expected cost of implementing is 0.1 * 4 = 0.4 (versus the normalized escalate cost of 1), making implementation the lower-expected-cost action.  
+DECISION: 0",,,2026-03-17T20:34:03.925719
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $26,000 for credit_card. They have been employed for 9 years, a debt-to-income ratio of 8.1%, and a credit score of 695.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO of 695 and DTI of 8.1% fall into the decision-tree rule (650–700 and DTI < 20%) under which 90% of applications were approved, so I predict approval.  
+PREDICTION: 1","The decision-tree rule gives a 90% chance my approval prediction is correct, so the expected cost of implementing is 0.1*4 = 0.4, which is less than the cost 1 of escalating; therefore implement.  
+DECISION: 0",,,2026-03-17T20:34:06.204024
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $11,725 for debt_consolidation. They have been employed for 5 years, a debt-to-income ratio of 8.1%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because their FICO score (670) falls in the 650–700 range and their DTI (8.1%) is below 20%, matching the decision-tree rule with a 90% approval rate.
+PREDICTION: 1","The model indicates a 90% chance the true decision is approve, so the expected cost of implementing is 4*(1-0.9)=0.4 which is less than the escalation cost of 1, so we should implement.  
+DECISION: 0",,,2026-03-17T20:34:06.838259
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $9,000 for debt_consolidation. They have been employed for 8 years, a debt-to-income ratio of 19.3%, and a credit score of 675.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 675 (within 650–700) and DTI of 19.3% (<20%), and that 90% of similar cases were approved by the decision tree, I recommend approving the loan.  
+PREDICTION: 1","Given the 90% approval rate for similar applicants, the chance our approval prediction is wrong is 10%, so expected cost of implementing (0.1 * 4 = 0.4) is lower than the escalation cost (1); therefore implement.  
+DECISION: 0",,,2026-03-17T20:34:06.993642
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $16,000 for debt_consolidation. They have been employed for 8 years, a debt-to-income ratio of 19.5%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO of 685 and DTI of 19.5% place them in the decision-tree node with a 90% approval rate, so approve the loan.  
+PREDICTION: 1","Because the node gives a 90% approval probability, the expected cost of implementing is 0.1*4 = 0.4, which is less than the escalation cost of 1, so implement.  
+DECISION: 0",,,2026-03-17T20:34:07.453611
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 16.2%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant's FICO score (685) falls within 650–700 and their DTI (16.2%) is below 20%, matching the decision-tree rule where 90% of such applications were approved, I recommend approval.  
+PREDICTION: 1","Given the decision-tree's 90% approval rate for applicants in this band, the probability my prediction is correct is 0.9, so the expected cost of implementing is 0.1*4 = 0.4 (less than the escalate cost of 1). Therefore implement the prediction.  
+DECISION: 0",,,2026-03-17T20:34:07.606647
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $14,000 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 6.7%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO of 685 (within 650–700), low DTI of 6.7% (<20%), and long employment history, the decision tree's 90% approval rate for this profile supports approving the $14,000 credit_card loan.
+PREDICTION: 1","The decision-tree gives a 90% chance my approval prediction matches Person 1, so the expected cost of implementing is 0.1*4 = 0.4 (wrong outcome) versus 1 for escalation; because 0.4 < 1 we should implement.  
+DECISION: 0",,,2026-03-17T20:34:08.381284
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $35,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 15.9%, and a credit score of 690.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO of 690 (within 650–700), DTI of 15.9% (<20%), and long employment, the decision-tree rule that approved 90% of similar cases supports approving the loan.  
+PREDICTION: 1","Using the model's 90% approval rate for similar applicants, the expected cost of implementing (0.1 * 4 = 0.4 units) is lower than the escalate cost (1 unit), so implementing is preferable.  
+DECISION: 0",,,2026-03-17T20:34:09.385279
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $9,000 for debt_consolidation. They have been employed for 5 years, a debt-to-income ratio of 13.0%, and a credit score of 680.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score of 680 falls between 650 and 700 and their DTI is 13% (below 20%), matching the decision-tree rule that led to 90% approvals, so approve.  
+PREDICTION: 1","The decision-tree node gives a 90% chance my approval prediction is correct, so the probability of being wrong is 10%; since a wrong implementation costs 4x an escalation, the expected cost of implementing is 0.10*4 = 0.4 units which is less than the 1 unit cost of escalating.  
+DECISION: 0",,,2026-03-17T20:34:10.281579
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,400 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 0.5%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 670 and very low DTI (0.5%), which place them in the decision-tree node where 90% of similar applications were approved, I predict approval.
+PREDICTION: 1","Given a 90% chance the true decision is approve, the expected cost of implementing equals 0.1 * 4 = 0.4 (using escalation cost = 1), which is less than the escalation cost of 1, so implement.  
+DECISION: 0",,,2026-03-17T20:34:10.728604
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $18,000 for credit_card. They have been employed for 2 years, a debt-to-income ratio of 19.2%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score of 660 and DTI of 19.2% match the decision-tree rule (650–700 FICO and DTI <20%) that yielded a 90% approval rate, so approve.  
+PREDICTION: 1","The decision-tree rule indicates a 90% chance my approval prediction is correct, so the expected cost of implementing (0.1 * 4 = 0.4 units) is lower than the unit cost of escalation; therefore implement.  
+DECISION: 0",,,2026-03-17T20:34:11.315660
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $30,000 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 16.9%, and a credit score of 700.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant fits the decision-tree segment (FICO 650–700 and DTI < 20%) that produced a 90% approval rate, so approve the $30,000 debt-consolidation loan.  
+PREDICTION: 1","The decision-tree segment gives a 90% chance the true decision is approve (10% chance of being wrong), so the expected cost of implementing is 0.1 * 4 = 0.4 units versus 1 unit to escalate, making implementation lower expected cost.  
+DECISION: 0",,,2026-03-17T20:34:11.558406
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $20,000 for debt_consolidation. They have been employed for 3 years, a debt-to-income ratio of 19.4%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the applicant's FICO score of 685 and DTI of 19.4% place them in the decision-tree segment (650–700 FICO and DTI <20%) that had a 90% historical approval rate, with 3 years' employment further supporting creditworthiness.
+PREDICTION: 1","Implement, because the model segment implies a 90% chance the true decision is approval so the expected cost of implementing is 0.1 * 4 = 0.4 (less than the escalation cost of 1).  
+DECISION: 0",,,2026-03-17T20:34:13.145408
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,500 for home_improvement. They have been employed for nan, a debt-to-income ratio of 18.8%, and a credit score of 685.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO score (685) and DTI (18.8%) match the decision-tree branch (650–700 and DTI <20%) with a 90% approval rate, so approve.  
+PREDICTION: 1","With a 90% chance my approval prediction is correct, the expected cost of implementing is 0.1*4 = 0.4 (versus escalation cost normalized to 1), so implementing is lower expected cost.  
+DECISION: 0",,,2026-03-17T20:34:13.621891
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 7.3%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO of 660 and DTI of 7.3% place them in the model node where 90% of similar applications were approved, so approve the $3,000 debt-consolidation loan.  
+PREDICTION: 1","The model indicates a 90% approval probability, so the chance my approve prediction is wrong is 10%; expected cost if we implement = 0.1 * 4 = 0.4 (less than the escalate cost of 1), so implement.  
+DECISION: 0",,,2026-03-17T20:34:15.745936
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,800 for small_business. They have been employed for < 1 year, a debt-to-income ratio of 7.3%, and a credit score of 660.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's FICO score of 660 (within 650–700) and low DTI of 7.3% (below 20%), and the decision tree showing a 90% approval rate for that segment, I predict approval despite the short employment duration.  
+PREDICTION: 1","The decision-tree segment matching this applicant (FICO 660, DTI 7.3%) yields a 90% approval rate, and since implementing is preferable when confidence >75% (because wrong implementation costs 4× escalation), the expected risk of implementing is acceptable.  
+DECISION: 0",,,2026-03-17T20:34:16.171432
+fico_650_700_dti_under_20,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $8,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 19.8%, and a credit score of 670.
+
+A decision tree trained on this dataset finds that when the applicant has a FICO score between 650 and 700 and a DTI below 20%, 90% of applications were approved.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's FICO of 670 and DTI of 19.8% place them in the decision-tree node with a 90% approval rate, and combined with 10+ years' employment and a reasonable $8,000 request for debt consolidation, I recommend approval.  
+PREDICTION: 1","Given the decision-tree node has a 90% approval rate, the probability our ""approve"" prediction is correct is 0.9, so the expected cost of implementing is 0.1*4 = 0.4 which is less than the escalation cost of 1. Therefore we should implement the prediction.  
+DECISION: 0",,,2026-03-17T20:34:17.273514

@@ -1,0 +1,1382 @@
+condition,ground_truth,prediction,correct,escalate,prompt,esc_prompt,thought,esc_reasoning,thinking_predict,thinking_escalate,timestamp
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on January 23, 2017 (week 4), with 1 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1's booking falls in the 30–90 days-in-advance bin where 62% of bookings are kept, they are more likely to keep this reservation.  
+PREDICTION: 1","The model estimates a 62% chance the booking is kept, so implementing risks a 38% chance of a wrong answer; with wrong answers costing 4x an escalation, expected cost of implementing = 0.38*4 = 1.52, which exceeds the escalation cost of 1.  
+DECISION: 1",,,2026-03-17T17:43:04.517355
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on November 21, 2016 (week 48), with 1 weekend night(s) and 4 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree rule for bookings made 30–90 days in advance shows a 62% chance of being kept and Person 1 falls into that lead-time group, predict the booking was kept.  
+PREDICTION: 1","The decision-tree rule gives a 62% chance my prediction is correct, so implementing has expected cost 0.38*4 = 1.52 while escalating has cost 1, so escalate to minimize expected loss.  
+DECISION: 1",,,2026-03-17T17:43:04.736172
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on July 15, 2017 (week 28), with 2 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree rule for bookings made 30–90 days in advance shows a 62% probability of being kept, so I predict Person 1 kept the booking.  
+PREDICTION: 1","The decision-tree probability of my prediction being correct is 62%, so the expected cost of implementing (0.38 * 4 = 1.52 relative units) exceeds the cost of escalating (1 unit); therefore escalate to avoid higher expected loss.  
+DECISION: 1",,,2026-03-17T17:43:05.399432
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on June 19, 2016 (week 26), with 2 weekend night(s) and 3 weekday night(s). The party consists of 3 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows bookings made 30–90 days in advance are kept 62% of the time, so Person 1 is more likely to keep this booking.  
+PREDICTION: 1","The model's predicted keep probability is 0.62, so the chance of being wrong is 0.38 and the expected cost of implementing is 0.38*4 = 1.52, which exceeds the unit cost of escalating. Therefore we should escalate.  
+DECISION: 1",,,2026-03-17T17:43:05.461789
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on February 22, 2017 (week 8), with 2 weekend night(s) and 5 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 1 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows bookings made 30–90 days in advance are kept 62% of the time, so this reservation is more likely to have been kept.  
+PREDICTION: 1","The model's 62% chance of being correct implies implementing carries expected cost 0.38*4 = 1.52 (normalized) versus escalating which costs 1, so escalating is lower expected cost.  
+DECISION: 1",,,2026-03-17T17:43:05.561556
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on November 20, 2016 (week 48), with 2 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows bookings made 30–90 days in advance are kept 62% of the time, and given Person 1's profile (2 adults, no prior cancellations, one special request) the most likely outcome is that they kept the booking.
+PREDICTION: 1","Implementing has expected cost 0.38*4 = 1.52 (since the prediction is correct with probability 0.62), which exceeds the escalation cost of 1, so escalate.  
+DECISION: 1",,,2026-03-17T17:43:05.846249
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on June 18, 2016 (week 25), with 1 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Based on the decision tree rule that bookings made 30–90 days in advance were kept 62% of the time and Person 1 has no prior cancellations, the most likely outcome is that they kept the booking.  
+PREDICTION: 1","The model predicts a 62% chance the booking was kept, so implementing has expected cost 0.38*4 = 1.52 (units) while escalating has cost 1, making escalation the lower expected-cost action.  
+DECISION: 1",,,2026-03-17T17:43:06.228416
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on July 24, 2017 (week 30), with 1 weekend night(s) and 3 weekday night(s). The party consists of 3 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows a 62% chance of being kept for bookings made 30–90 days ahead and Person 1 has no strong cancellation indicators, so I predict the booking will be kept.  
+PREDICTION: 1","The model predicts a 62% chance the booking will be kept but a wrong implementation costs 4× as much, so the expected cost of implementing is 0.38*4 = 1.52 which exceeds the escalate cost of 1. Therefore we should escalate.  
+DECISION: 1",,,2026-03-17T17:43:06.589616
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on September 25, 2015 (week 39), with 2 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The booking falls into the 30–90 days-in-advance leaf where 62% of bookings were kept, so the most likely outcome is that Person 1 kept the booking.  
+PREDICTION: 1","Because a wrong implementation costs 4× an escalation, you should only implement if your correctness probability ≥ 0.75 (since (1 − p)·4 ≤ 1), and the model's leaf gives p = 0.62 which is below that threshold.  
+DECISION: 1",,,2026-03-17T17:43:07.312331
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on July 06, 2017 (week 27), with 0 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The booking falls in the 30–90 day lead-time group where 62% of bookings were kept, so the most likely outcome is that Person 1 kept the booking.  
+PREDICTION: 1","Implementing would incur an expected cost of 0.38*4 = 1.52 units (using the 38% cancellation rate vs 62% keep) versus escalating which costs 1 unit, so escalating is cheaper.  
+DECISION: 1",,,2026-03-17T17:43:07.616030
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on August 07, 2017 (week 32), with 1 weekend night(s) and 4 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the decision tree rule that bookings made 30–90 days in advance are kept 62% of the time (a >50% chance), predict that Person 1 kept the booking.  
+PREDICTION: 1","The model's 62% chance of being correct gives an expected implementation cost of (1−0.62)×4 = 1.52, which is higher than the fixed escalation cost of 1, so escalate.  
+DECISION: 1",,,2026-03-17T17:43:09.814729
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on August 17, 2015 (week 34), with 1 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 1 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The reservation falls into the 30–90 days advance group where 62% of bookings were kept, so the model predicts this booking will be kept.  
+PREDICTION: 1","Implementing is only better if the probability we're correct exceeds 75% because a wrong implementation costs 4× as much as escalating; here the model’s probability of correctness is 62%, which is below that threshold.  
+DECISION: 1",,,2026-03-17T17:43:11.672410
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on May 13, 2017 (week 19), with 2 weekend night(s) and 5 weekday night(s). The party consists of 2 adult(s), 2 child(ren). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree shows bookings made 30–90 days in advance are kept 62% of the time and Person 1 has no strong cancellation risk factors, the booking is predicted to be kept.  
+PREDICTION: 1","With a 62% chance the booking is kept, the expected cost of implementing (wrong outcome cost = 4) is (1−0.62)*4 = 1.52 units, which exceeds the relative escalate cost (1 unit), so escalate to Person 1.  
+DECISION: 1",,,2026-03-17T17:43:17.034337
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on April 09, 2016 (week 15), with 2 weekend night(s) and 5 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The booking falls into the 30–90 day advance-booking group in which 62% of reservations were kept, so the model predicts the reservation will be kept.  
+PREDICTION: 1","Implementing has expected cost 4*(1 - 0.62) = 1.52, which is greater than the escalate cost of 1, so we should escalate.  
+DECISION: 1",,,2026-03-17T17:43:17.563601
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on October 29, 2015 (week 44), with 0 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 1 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because this booking falls into the 30–90 days lead-time branch where 62% of bookings were kept, the most likely outcome is that Person 1 kept the booking.  
+PREDICTION: 1","The model predicts a 62% chance the booking was kept (38% canceled); implementing risks a wrong-answer cost of 4, so expected cost = 0.38 * 4 = 1.52 which is higher than the escalate cost of 1.00, therefore escalate.  
+DECISION: 1",,,2026-03-17T17:43:18.427720
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on February 12, 2017 (week 7), with 2 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree rule shows bookings made 30–90 days in advance are kept 62% of the time, so I predict Person 1 kept the booking.  
+PREDICTION: 1","The decision rule gives a 62% chance my prediction is correct, so the expected cost of implementing is (1-0.62)*4 = 1.52 which exceeds the escalation cost of 1; therefore escalate.  
+DECISION: 1",,,2026-03-17T17:43:18.539870
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on October 09, 2015 (week 41), with 0 weekend night(s) and 2 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Since this booking falls in the 30–90 days-in-advance group where 62% of bookings were kept and there are no risk-increasing features (no prior cancellations, no special requests, single adult), the model predicts the booking will be kept.  
+PREDICTION: 1","The probability the booking is kept is 62%, but implementing an action yields expected cost (1−0.62)×4 = 1.52 which exceeds the escalation cost of 1, and since you would need >75% confidence to prefer implementation, you should escalate.  
+DECISION: 1",,,2026-03-17T17:43:18.791465
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on July 24, 2017 (week 30), with 1 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The booking falls in the 30–90 days-in-advance group where 62% of bookings were kept and Person 1 has no previous cancellations, so the model predicts the booking will be kept.  
+PREDICTION: 1","The model's 62% chance of being correct gives an expected implementation cost of (1−0.62)*4 = 1.52, which is greater than the escalation cost of 1, so we should escalate.  
+DECISION: 1",,,2026-03-17T17:43:19.514085
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on January 14, 2017 (week 2), with 0 weekend night(s) and 1 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The booking falls in the 30–90 days-in-advance branch where 62% of bookings were kept, so the most likely outcome is that Person 1 kept the booking.  
+PREDICTION: 1","The model gives a 62% chance the booking was kept, so implementing has a 38% chance of being wrong; with a wrong implementation costing 4× an escalation, expected cost = 0.38*4 = 1.52, which exceeds the cost of escalating.  
+DECISION: 1",,,2026-03-17T17:43:21.271746
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on February 05, 2017 (week 6), with 2 weekend night(s) and 0 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 falls into the 30–90 days-in-advance branch where 62% of bookings were kept, and with no previous cancellations and an active special request the model favors a kept booking.  
+PREDICTION: 1","The branch probability is 62% kept (38% wrong), so expected cost of implementing = 0.38 * 4 = 1.52 which exceeds the escalate cost of 1; therefore escalate.  
+DECISION: 1",,,2026-03-17T17:43:22.644560
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on October 27, 2016 (week 44), with 0 weekend night(s) and 0 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree rule shows a 62% retention rate for bookings made 30–90 days ahead, so Person 1 is more likely to have kept the booking.  
+PREDICTION: 1","Implementing has a 62% chance of being correct and a 38% chance of being wrong; with wrong implementations costing 4x more, the expected cost of implementing is 0.38*4 = 1.52 units versus 1 unit for escalating, so escalate.  
+DECISION: 1",,,2026-03-17T17:43:23.602178
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on April 05, 2017 (week 14), with 0 weekend night(s) and 2 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision-tree node for bookings made 30–90 days in advance shows a 62% kept rate, so I predict Person 1 kept the booking.  
+PREDICTION: 1","Because a wrong implementation costs 4× more than escalating, implementing is only optimal if the prediction is >75% likely to be correct; here the model’s confidence is 62%, which is below that threshold.  
+DECISION: 1",,,2026-03-17T17:43:25.389654
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on February 03, 2016 (week 6), with 2 weekend night(s) and 5 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree rule for bookings made 30–90 days in advance shows a 62% chance of being kept, so I predict this booking was kept.  
+PREDICTION: 1","The chance my prediction is wrong is 38%, so the expected cost of implementing is 0.38×4 = 1.52 (in relative units) versus escalating which costs 1, so escalating has lower expected cost.  
+DECISION: 1",,,2026-03-17T17:43:27.021759
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on August 14, 2015 (week 33), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows a 62% chance of being kept for bookings made 30–90 days ahead and Person 1 is in that group, so predict the booking will be kept.  
+PREDICTION: 1","Because implementing a wrong prediction costs 4× an escalation, you should only implement when your confidence exceeds 1/(1+4) = 75%; the model's confidence is 62%, below that threshold.  
+DECISION: 1",,,2026-03-17T17:43:27.322148
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on August 13, 2016 (week 33), with 2 weekend night(s) and 5 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree node for bookings made 30–90 days in advance shows a 62% retention rate, so Person 1 is more likely to keep the reservation.  
+PREDICTION: 1","Implementing my prediction risks a wrong outcome 38% of the time, giving an expected cost of 0.38*4 = 1.52 (in escalation-cost units), which is higher than the fixed escalation cost of 1; therefore escalate.  
+DECISION: 1",,,2026-03-17T17:43:27.553760
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on July 01, 2016 (week 27), with 1 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 1 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision-tree rule indicates bookings made 30–90 days in advance are kept 62% of the time, so given Person 1 falls into that branch the most likely outcome is that the booking is kept.  
+PREDICTION: 1","Given a 62% predicted chance the booking is kept, implementing has a 0.38 chance of being wrong and a wrong implementation costs 4× escalation; expected cost to implement = 0.38 * 4 = 1.52, which is greater than the escalation cost of 1.  
+DECISION: 1",,,2026-03-17T17:43:27.908605
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on July 12, 2016 (week 29), with 0 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 1 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision-tree rule shows a 62% keep rate for bookings made 30–90 days in advance, so this reservation is more likely to be kept.  
+PREDICTION: 1","The model's 62% confidence means there's a 38% chance the prediction is wrong; implementing would have expected cost 0.38*4 = 1.52 units versus 1 unit for escalation, so escalation is less costly.  
+DECISION: 1",,,2026-03-17T17:43:28.573602
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on November 02, 2015 (week 45), with 3 weekend night(s) and 7 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree shows bookings made 30–90 days in advance are kept 62% of the time and Person 1 has no cancelling risk factors (no previous cancellations, no special requests, non-repeated guest), the most likely outcome is that the booking was kept.  
+PREDICTION: 1","The booking has a 62% chance of being kept, so implementing the prediction would incur an expected cost of 0.38*4 = 1.52 (from being wrong) which is higher than the escalation cost of 1; therefore escalate.  
+DECISION: 1",,,2026-03-17T17:43:28.643510
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on December 05, 2016 (week 50), with 1 weekend night(s) and 4 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 3 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because this booking falls into the 30–90 days lead-time group for which 62% of bookings were kept, I predict the booking was kept.
+
+PREDICTION: 1","My prediction has a 62% chance of being correct, so implementing has an expected wrong-decision cost of 0.38*4 = 1.52 units versus the escalate cost of 1 unit, therefore escalation is cheaper in expectation.  
+
+DECISION: 1",,,2026-03-17T17:43:29.613164
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on July 20, 2015 (week 30), with 3 weekend night(s) and 7 weekday night(s). The party consists of 2 adult(s), 1 child(ren). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree shows bookings made 30–90 days in advance are kept 62% of the time and this reservation has favorable signals (no prior cancellations and a special request), it is more likely to be kept.  
+PREDICTION: 1","Predicted keep probability is 62%, so the chance my prediction is wrong (cancellation) is 38%, and a wrong implementation costs 4× the cost of escalating.  
+Expected cost of implementing = 0.38×4 = 1.52 which exceeds the escalation cost of 1, so escalate.  
+DECISION: 1",,,2026-03-17T17:43:30.103938
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on March 22, 2016 (week 13), with 0 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s), 1 child(ren). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the decision tree rule that bookings made 30–90 days in advance are kept 62% of the time and Person 1 has no strong cancellation indicators, they are more likely to keep the booking.  
+PREDICTION: 1","With a 62% chance the booking is kept, the expected cost of implementing is (1−0.62)*4 = 1.52 which exceeds the normalized escalation cost of 1, so escalate.  
+DECISION: 1",,,2026-03-17T17:43:32.971645
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on January 30, 2017 (week 5), with 1 weekend night(s) and 0 weekday night(s). The party consists of 3 adult(s), 1 child(ren). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 1 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 booked 30–90 days in advance and the decision-tree branch for that booking window shows a 62% keep rate, they are predicted to keep the booking.  
+PREDICTION: 1","The decision-tree branch gives a 62% chance the booking is kept, so the expected cost of implementing (0.38 * 4 = 1.52) exceeds the cost of escalating (1), therefore escalate.  
+DECISION: 1",,,2026-03-17T17:43:33.047883
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on May 10, 2016 (week 20), with 0 weekend night(s) and 5 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 1 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The booking falls into the decision-tree node for 30–90 days lead time where 62% of bookings were kept, so the most likely outcome is that this booking was kept.  
+PREDICTION: 1","With a 62% chance my prediction is correct, implementing risks an expected wrong-answer cost of 0.38*4 = 1.52 units versus an escalation cost of 1 unit, so escalation has lower expected cost.  
+DECISION: 1",,,2026-03-17T17:43:34.642143
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on May 12, 2016 (week 20), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The booking falls into the 30–90 day advance window where 62% of bookings are kept, so it is more likely this reservation was kept.  
+PREDICTION: 1","The probability my prediction (kept) is correct is 0.62, so the expected cost of implementing = 0.38 * 4 = 1.52 units, which exceeds the escalation cost of 1 unit; therefore escalate.  
+DECISION: 1",,,2026-03-17T17:43:37.502186
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on January 14, 2017 (week 2), with 0 weekend night(s) and 1 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree places this booking in the 30–90 day advance group where 62% of bookings were kept, so it is more likely Person 1 kept the booking.  
+PREDICTION: 1","The model's 62% keep rate implies a 38% chance my prediction is wrong, so implementing would have expected cost 0.38*4 = 1.52 which exceeds the escalate cost of 1; therefore escalate.  
+DECISION: 1",,,2026-03-17T17:43:37.826330
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on June 12, 2016 (week 25), with 2 weekend night(s) and 0 weekday night(s). The party consists of 3 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows that bookings made 30–90 days in advance are kept 62% of the time, so Person 1's booking is more likely to be kept.  
+PREDICTION: 1","The model gives a 62% chance the booking is kept (38% canceled); implementing risks an expected wrong-implementation cost of 0.38*4 = 1.52 versus the unit cost 1 for escalation, so escalation has lower expected cost.  
+DECISION: 1",,,2026-03-17T17:43:38.073475
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on March 13, 2016 (week 12), with 2 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","According to the decision tree rule that bookings made 30–90 days in advance are kept 62% of the time, this reservation is more likely to be kept.  
+PREDICTION: 1","With a 62% chance my prediction is correct (38% chance wrong) and a wrong implementation costs 4× escalation, the expected cost of implementing is 0.38×4 = 1.52 which exceeds the escalation cost (1), so escalate.  
+DECISION: 1",,,2026-03-17T17:43:38.788198
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on April 16, 2017 (week 16), with 2 weekend night(s) and 0 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because this booking falls into the decision-tree node for reservations made 30–90 days in advance where 62% were kept, the most likely outcome is that Person 1 kept the booking. 
+PREDICTION: 1","The model estimates a 62% chance the booking was kept, so implementing (being wrong 38% of the time) has expected cost 0.38*4 = 1.52 which is higher than the fixed escalate cost of 1.0, so escalate.  
+DECISION: 1",,,2026-03-17T17:43:40.469112
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on March 29, 2016 (week 14), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree indicates bookings made 30–90 days in advance are kept 62% of the time, so Person 1 is predicted to have kept the booking.  
+PREDICTION: 1","Implementing has expected cost 0.38*4 = 1.52 (since 62% chance correct, 38% wrong) which exceeds the escalation cost of 1, so escalate.  
+DECISION: 1",,,2026-03-17T17:43:42.785368
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on October 04, 2016 (week 41), with 0 weekend night(s) and 5 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision-tree rule indicates bookings made 30–90 days in advance are kept 62% of the time and Person 1 shows no strong cancellation indicators (no previous cancellations), so I predict the booking was kept.  
+PREDICTION: 1","The model's 62% chance that the booking is kept implies a 38% chance my prediction is wrong; with a wrong implementation costing 4x, expected cost of implementing = 0.38*4 = 1.52, which is greater than the escalation cost (1), so escalate.  
+DECISION: 1",,,2026-03-17T17:43:42.876342
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on April 29, 2017 (week 17), with 2 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows bookings made 30–90 days in advance are kept 62% of the time, so Person 1's reservation is more likely to be kept.  
+PREDICTION: 1","The model estimates a 62% chance my prediction is correct, so expected cost of implementing = 0.38*4 = 1.52 which is higher than the escalate cost (1); therefore escalate to Person 1.  
+DECISION: 1",,,2026-03-17T17:43:44.901062
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on November 10, 2016 (week 46), with 0 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because this booking falls into the 30–90 day lead-time group where 62% of bookings were kept and the other features (weekday stay, 2 adults, no prior cancellations, 2 special requests) do not strongly indicate cancellation, I predict the booking was kept.
+PREDICTION: 1","Implementing has a 62% chance of being correct, so its expected cost = 0.38 * 4 = 1.52 (in units where escalating = 1), which is higher than the cost of escalating; therefore escalate.  
+DECISION: 1",,,2026-03-17T17:43:46.280843
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on March 15, 2017 (week 11), with 0 weekend night(s) and 2 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1's booking falls into the 30–90 days-in-advance node where 62% of bookings were kept, predict the booking was kept.  
+PREDICTION: 1","Implementing has expected cost 0.38*4 = 1.52 (since there's a 38% chance my prediction is wrong), which exceeds the escalation cost (1), so escalate.  
+DECISION: 1",,,2026-03-17T17:43:48.326864
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on September 26, 2015 (week 39), with 2 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree leaf for bookings made 30–90 days in advance shows a 62% keep rate, so Person 1 is predicted to keep the booking.  
+PREDICTION: 1","With a 62% chance my prediction is correct, the expected cost of implementing (0.38 * 4 = 1.52) exceeds the escalation cost (1), so escalate to minimize expected loss.  
+DECISION: 1",,,2026-03-17T17:43:48.942092
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on March 13, 2017 (week 11), with 1 weekend night(s) and 1 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because this booking falls in the 30–90 days-in-advance group where 62% of bookings were kept, I predict the booking will be kept.  
+PREDICTION: 1","Implement only if the probability our prediction is correct exceeds 0.75 because a wrong implementation costs 4× an escalation; here p=0.62 so expected implementation cost = (1−0.62)×4 = 1.52 > 1, so escalate.  
+DECISION: 1",,,2026-03-17T17:43:51.298223
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on April 01, 2016 (week 14), with 2 weekend night(s) and 3 weekday night(s). The party consists of 3 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 falls into the 30–90 days-in-advance group for which 62% of bookings were kept, so the most likely outcome is that this booking was kept.  
+PREDICTION: 1","Implementing has expected cost 0.38*4 = 1.52 (since 62% chance correct), which is higher than the escalation cost of 1, so we should escalate.  
+DECISION: 1",,,2026-03-17T17:43:55.162832
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on October 07, 2015 (week 41), with 0 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the booking was made 30–90 days in advance and historical data show a 62% chance of being kept in that interval, the most likely outcome is that the booking was kept.  
+PREDICTION: 1","With a 62% chance my prediction is correct, the expected cost of implementing is 4 * 0.38 = 1.52 units, which exceeds the unit cost of escalating. Therefore escalate.  
+DECISION: 1",,,2026-03-17T17:43:57.074334
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on June 27, 2017 (week 26), with 0 weekend night(s) and 3 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The booking falls into the 30–90 day lead-time group where 62% of bookings were kept, so it is more likely this booking was kept.  
+PREDICTION: 1","Implementing has expected cost 0.38*4 = 1.52 (since there's a 62% chance I'm correct and 38% wrong), which is higher than the escalate cost of 1, so we should escalate.  
+DECISION: 1",,,2026-03-17T17:43:57.733286
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on September 23, 2015 (week 39), with 0 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree rule for bookings made 30–90 days in advance predicts a 62% chance of being kept, so I predict the booking is kept.  
+PREDICTION: 1","The model's 62% probability of being correct means implementing has an expected cost of 0.38 * 4 = 1.52 (higher than the escalation cost of 1), so escalation is cheaper given the 4x penalty for a wrong implementation.  
+DECISION: 1",,,2026-03-17T17:43:57.960522
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on March 16, 2016 (week 12), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree rule indicates bookings made 30–90 days in advance are kept 62% of the time and Person 1 has no indicators of higher cancellation risk, so I predict the booking is kept.  
+PREDICTION: 1","Implementing has expected cost 0.38*4 = 1.52 (since the model is 62% accurate here), while escalating has cost 1, and implementation is only preferable if accuracy > 75% (so that wrong-probability < 25%); because 62% < 75%, escalate.  
+DECISION: 1",,,2026-03-17T17:43:59.288888
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on June 30, 2016 (week 27), with 1 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because this booking falls into the 30–90 days lead-time category where 62% of bookings were kept, Person 1 is more likely to keep the reservation.  
+PREDICTION: 1","With a 62% chance my prediction is correct, the expected cost of implementing (0.38 chance of being wrong × 4 = 1.52 units) exceeds the unit cost of escalating, so escalation minimizes expected loss.  
+DECISION: 1",,,2026-03-17T17:43:59.397459
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on July 19, 2015 (week 30), with 2 weekend night(s) and 5 weekday night(s). The party consists of 2 adult(s), 2 child(ren). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree shows bookings made 30–90 days in advance are kept 62% of the time and Person 1 falls into that lead-time group, I predict they kept the booking.
+
+PREDICTION: 1","Implementing has a 38% chance of being wrong, and with a wrong implementation costing 4× an escalation the expected cost of implementing = 0.38×4 = 1.52 versus escalation cost = 1, so escalate. 
+
+DECISION: 1",,,2026-03-17T17:43:59.862282
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on October 30, 2016 (week 45), with 2 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because this booking falls in the 30–90 days-in-advance group where 62% of bookings were kept and the guest has no prior cancellations, it is more likely the reservation was kept.  
+PREDICTION: 1","Given a 62% chance my prediction (kept) is correct, the expected cost of implementing is 0.38 * 4 = 1.52 units versus a guaranteed escalation cost of 1 unit, so escalation has lower expected cost.  
+DECISION: 1",,,2026-03-17T17:44:00.573017
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on July 14, 2016 (week 29), with 2 weekend night(s) and 5 weekday night(s). The party consists of 2 adult(s), 1 child(ren). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree shows bookings made 30–90 days in advance are kept 62% of the time and this guest has no strong cancellation indicators, the booking is predicted to be kept.
+PREDICTION: 1","The model estimates a 62% chance the booking is kept but implementing a wrong prediction costs 4× more than escalating, so the break-even probability is 75% (1 - p < 1/4); since 62% < 75%, escalate.  
+DECISION: 1",,,2026-03-17T17:44:01.495416
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on March 31, 2016 (week 14), with 2 weekend night(s) and 4 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree node for bookings made 30–90 days in advance shows a 62% chance of being kept, so I predict Person 1 kept the booking.  
+PREDICTION: 1","My prediction was correct with probability 0.62, so implementing has expected cost 0.38*4 = 1.52 (wrong implementation cost = 4), while escalating has cost 1; since 1 < 1.52, escalate.  
+DECISION: 1",,,2026-03-17T17:44:04.778092
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on August 14, 2015 (week 33), with 0 weekend night(s) and 2 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 falls into the decision-tree node for bookings made 30–90 days in advance, where 62% of bookings were kept, so I predict this booking will be kept.  
+PREDICTION: 1","The node gives a 62% chance my prediction is correct, so the expected cost of implementing is 4*(1-0.62)=1.52 which is greater than the escalation cost of 1. Therefore escalate.  
+DECISION: 1",,,2026-03-17T17:44:08.848613
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on August 16, 2016 (week 34), with 2 weekend night(s) and 5 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the decision tree result that bookings made 30–90 days in advance are kept 62% of the time and Person 1 shows no obvious risk factors, they are predicted to keep the booking.  
+PREDICTION: 1","The model's 62% chance of being correct yields an expected cost of implementing of 0.38*4 = 1.52 (units) versus a sure cost of 1 for escalating, so escalating minimizes expected loss.  
+DECISION: 1",,,2026-03-17T17:44:09.818622
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on March 04, 2016 (week 10), with 1 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s), 1 child(ren). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 falls into the 30–90 days-in-advance group where 62% of bookings were kept, so the model predicts the booking was kept.  
+PREDICTION: 1","The prediction had only a 62% chance of being correct, and with a wrong implementation costing 4× more than escalation, the expected cost of implementing (0.38×4 = 1.52 units) exceeds the cost of escalation (1 unit), so escalate.  
+DECISION: 1",,,2026-03-17T17:44:10.442250
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on February 19, 2016 (week 8), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree indicates that bookings made 30–90 days in advance are kept 62% of the time, so Person 1 is more likely to keep this reservation.  
+PREDICTION: 1","The booking has a 62% chance of being kept and 38% chance of being wrong; implementing would have expected cost 0.38×4 = 1.52 which exceeds the escalation cost of 1, so escalate.  
+DECISION: 1",,,2026-03-17T17:44:11.640479
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on March 09, 2016 (week 11), with 2 weekend night(s) and 4 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the booking falls in the 30–90 days-in-advance node where 62% of bookings were kept and the guest has no prior cancellations, predict the booking was kept.
+PREDICTION: 1","The model's confidence in the prediction is 62%, so the expected cost of implementing (0.38 * 4 = 1.52 units) exceeds the cost of escalation (1 unit). Therefore escalate to Person 1.
+DECISION: 1",,,2026-03-17T17:44:11.745664
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on December 18, 2016 (week 52), with 2 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree shows bookings made 30–90 days in advance are kept 62% of the time, Person 1 is more likely to keep this reservation.
+
+PREDICTION: 1","The model's 62% confidence means expected cost of implementing = 0.38*4 = 1.52 (higher than the escalation cost of 1), so it's cheaper to escalate given the 4x penalty for a wrong action. 
+
+DECISION: 1",,,2026-03-17T17:44:11.831427
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on August 16, 2015 (week 34), with 4 weekend night(s) and 10 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree indicates bookings made 30–90 days in advance were kept 62% of the time and Person 1 fits that condition, they are more likely to keep the booking.  
+PREDICTION: 1","The model's 62% confidence means implementing has expected cost = 0.38 * 4 = 1.52 (relative units) while escalation costs 1, so escalation is lower expected cost.  
+DECISION: 1",,,2026-03-17T17:44:13.023791
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on September 16, 2016 (week 38), with 1 weekend night(s) and 2 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the decision-tree rule that bookings made 30–90 days in advance are kept 62% of the time and Person 1 fits that timeframe, they are more likely to keep the reservation.  
+PREDICTION: 1","Implementing has expected cost 0.38 * 4 = 1.52 (38% chance our prediction is wrong × 4× penalty), while escalating costs 1, so escalation has lower expected cost.  
+DECISION: 1",,,2026-03-17T17:44:15.766243
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on April 03, 2017 (week 14), with 1 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows bookings made 30–90 days in advance are kept 62% of the time, and since Person 1 falls in that group with no prior cancellations or risk factors, they are most likely to keep the booking.  
+PREDICTION: 1","The model's predicted keep probability is 0.62, so the chance of being wrong is 0.38 and the expected cost of implementing is 0.38*4 = 1.52 units, which exceeds the assumed unit cost 1 of escalating. Therefore we should escalate to Person 1.  
+DECISION: 1",,,2026-03-17T17:44:15.999515
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on August 21, 2017 (week 34), with 2 weekend night(s) and 5 weekday night(s). The party consists of 3 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree rule for bookings made 30–90 days in advance shows a 62% chance of being kept, so I predict this booking was kept.  
+PREDICTION: 1","The model's accuracy for this case is 62% (so a 38% chance my prediction is wrong), and since a wrong implementation costs 4× more, the expected cost of implementing is 0.38×4 = 1.52 which exceeds the cost of escalating (1), so escalate.  
+DECISION: 1",,,2026-03-17T17:44:16.821035
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on February 02, 2016 (week 6), with 0 weekend night(s) and 5 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 1 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree indicates bookings made 30–90 days in advance are kept 62% of the time, so this booking is more likely to have been kept.  
+PREDICTION: 1","With a 62% chance the booking was kept, implementing my prediction would incur an expected cost of 0.38 * 4 = 1.52 (greater than the escalation cost of 1), so we should escalate.  
+DECISION: 1",,,2026-03-17T17:44:17.191158
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on December 04, 2016 (week 50), with 2 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree indicates bookings made 30–90 days in advance are kept 62% of the time, so Person 1 is more likely to keep this booking.  
+PREDICTION: 1","Implementing risks an expected cost of 0.38*4 = 1.52 (probability of being wrong × 4× cost), which exceeds the escalation cost of 1, so escalation is the cheaper option.  
+DECISION: 1",,,2026-03-17T17:44:20.455371
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on June 19, 2016 (week 26), with 2 weekend night(s) and 3 weekday night(s). The party consists of 3 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision-tree rule indicates a 62% chance of keeping bookings made 30–90 days in advance and Person 1 has no prior cancellations, so it is more likely they kept the booking.  
+PREDICTION: 1","The model gives a 62% chance the booking was kept, so implementing has expected cost 0.38*4 = 1.52 (units) while escalating costs 1; because 1.52 > 1, escalate to Person 1.  
+DECISION: 1",,,2026-03-17T17:44:21.749926
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on January 19, 2016 (week 4), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s), 1 child(ren). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree shows a 62% chance of being kept for bookings made 30–90 days in advance and this guest has no prior cancellations and made special requests indicating commitment, I predict the booking will be kept.
+
+PREDICTION: 1","Given the model's 62% probability the booking is kept, the expected cost of implementing (0.38 * 4 = 1.52 units) exceeds the fixed escalation cost (1 unit), so escalation is the lower expected-cost action. 
+
+DECISION: 1",,,2026-03-17T17:44:22.316480
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on December 09, 2016 (week 50), with 2 weekend night(s) and 5 weekday night(s). The party consists of 3 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree indicates a 62% kept rate for bookings made 30–90 days in advance, which is above 50%, so I predict this booking was kept.  
+PREDICTION: 1","With a 62% chance the prediction is correct, expected cost of implementing = 0.38 * 4 = 1.52 which is greater than the escalate cost (1), so escalate to Person 1.  
+DECISION: 1",,,2026-03-17T17:44:26.539223
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on September 09, 2015 (week 37), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree shows bookings made 30–90 days in advance are kept 62% of the time, Person 1 is predicted to keep the booking.
+PREDICTION: 1","With a 62% chance the booking is kept, the probability my prediction is wrong is 38%, so the expected cost of implementing is 0.38*4 = 1.52 units versus 1 unit to escalate, making escalation cheaper. Therefore we should escalate.
+DECISION: 1",,,2026-03-17T17:44:26.777634
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on July 05, 2017 (week 27), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because this booking falls into the 30–90 days-in-advance group where 62% of bookings were kept (and there are no strong cancellation risk factors here), I predict the booking will be kept.  
+PREDICTION: 1","With a 62% chance my prediction is correct, the expected cost of implementing is 0.38*4 = 1.52, which is higher than the escalation cost (1), so we should escalate.  
+DECISION: 1",,,2026-03-17T17:44:26.988243
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on November 02, 2016 (week 45), with 1 weekend night(s) and 4 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The booking falls in the 30–90 days-in-advance range where 62% of bookings were kept and, with no previous cancellations and one special request, the evidence favors the booking being kept.  
+PREDICTION: 1","The model gives a 62% chance my prediction (kept) is correct, so implementing has expected cost 0.38*(4×escalation cost)=1.52×escalation cost, which is higher than simply escalating; therefore escalate.  
+DECISION: 1",,,2026-03-17T17:44:30.966181
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on October 19, 2015 (week 43), with 1 weekend night(s) and 4 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because this booking falls into the 30–90 days-in-advance group where the decision tree shows a 62% stay rate, I predict the reservation will be kept.  
+PREDICTION: 1","I predicted the booking would be kept (62% chance); implementing risks a wrong answer with expected cost 0.38*4 = 1.52, which exceeds the escalation cost of 1, so escalate.  
+DECISION: 1",,,2026-03-17T17:44:32.049865
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on March 04, 2016 (week 10), with 1 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows bookings made 30–90 days in advance are kept 62% of the time, so Person 1's reservation is more likely to be kept.  
+PREDICTION: 1","The model's probability that the prediction is correct is 62%, so the expected cost of implementing is (1 - 0.62) * 4 = 1.52, which exceeds the escalation cost of 1. Therefore we should escalate.  
+DECISION: 1",,,2026-03-17T17:44:32.057131
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on April 25, 2016 (week 18), with 3 weekend night(s) and 5 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree indicates bookings made 30–90 days in advance are kept 62% of the time and, combined with Person 1's lack of prior cancellations, this suggests they are more likely to keep the booking.  
+PREDICTION: 1","The model-estimated probability the booking is kept is 62%, so the probability my prediction (kept) is wrong is 38%, and because a wrong implementation costs 4 times an escalation, implementing has expected cost 4*0.38 = 1.52 which exceeds the escalation cost (1); therefore escalate.  
+DECISION: 1",,,2026-03-17T17:44:33.475902
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on November 14, 2016 (week 47), with 1 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The booking falls into the 30–90 days-in-advance category where 62% of bookings are kept, so I predict the booking was kept.  
+PREDICTION: 1","The model's 62% probability of being correct implies a 38% chance of a costly error, giving an expected implement cost of 0.38*4 = 1.52 which exceeds the escalate cost of 1, so escalate.  
+DECISION: 1",,,2026-03-17T17:44:34.532529
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on September 23, 2015 (week 39), with 0 weekend night(s) and 3 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows bookings made 30–90 days in advance are kept 62% of the time, so Person 1 is more likely to have kept the booking.  
+PREDICTION: 1","Implementing has expected cost = (1 − 0.62) * 4 = 1.52 escalation-units, which is higher than the escalation cost of 1, so escalate to minimize expected cost.  
+DECISION: 1",,,2026-03-17T17:44:39.002608
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on September 12, 2016 (week 38), with 1 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s), 2 child(ren). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision-tree node covering bookings made 30–90 days in advance shows a 62% chance of being kept, so the most likely outcome for Person 1 is that they kept the booking.  
+PREDICTION: 1","Implementing has expected cost = (1 − 0.62) * 4 = 1.52 (since there's a 62% chance I'm correct and a 38% chance of a 4x penalty if wrong), while escalating has cost 1, so escalating has the lower expected cost.  
+DECISION: 1",,,2026-03-17T17:44:39.415581
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on January 16, 2017 (week 3), with 1 weekend night(s) and 2 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree indicates bookings made 30–90 days in advance are kept 62% of the time and Person 1 has no prior cancellations or other risk factors, so I predict the booking will be kept.  
+PREDICTION: 1","The model gives a 62% chance my prediction is correct, so the expected cost of implementing is (1−0.62)*4 = 1.52 units versus the escalation cost of 1 unit; because 1.52 > 1, escalate.  
+DECISION: 1",,,2026-03-17T17:44:39.773146
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on December 05, 2015 (week 49), with 2 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The booking falls into the 30–90 day lead-time segment where 62% of bookings were kept, so I predict this reservation will be kept.  
+PREDICTION: 1","The booking has a 62% chance of being correct, but with a wrong implementation costing 4× an escalation, the expected cost of implementing is (1−0.62)×4 = 1.52 units versus 1 unit for escalation, so escalate.  
+DECISION: 1",,,2026-03-17T17:44:39.903398
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on December 09, 2015 (week 50), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 1 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision-tree rule for bookings made 30–90 days in advance shows a 62% probability of being kept and nothing else here strongly suggests cancellation, I predict the booking was kept.
+
+PREDICTION: 1","The decision-tree gives a 62% chance the booking was kept, so implementing my prediction (kept) has expected cost 0.38*4 = 1.52 (wrong-case cost) versus escalation cost 1, therefore escalation has lower expected cost. 
+
+DECISION: 1",,,2026-03-17T17:44:40.634290
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on July 17, 2015 (week 29), with 2 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree rule shows bookings made 30–90 days in advance are kept 62% of the time, so this booking is more likely to be kept.  
+PREDICTION: 1","The tree gives a 62% chance my prediction (kept) is correct, so expected cost of implementing = 0.38 * 4 = 1.52 units vs. escalate cost = 1 unit, therefore escalate.  
+DECISION: 1",,,2026-03-17T17:44:41.568497
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on February 16, 2017 (week 7), with 0 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s), 1 child(ren). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree indicates bookings made 30–90 days in advance were kept 62% of the time (a majority), so I predict this booking was kept.  
+PREDICTION: 1","The decision tree gave a 62% probability the booking was kept, so implementing risks being wrong with 38% probability; with wrong implementations costing 4× an escalation, the expected cost of implementing is 0.38×4 = 1.52 versus 1 for escalation. Therefore we should escalate.  
+DECISION: 1",,,2026-03-17T17:44:43.946851
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on November 03, 2016 (week 45), with 1 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s), 2 child(ren). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 1 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision-tree rule for bookings made 30–90 days in advance indicates a 62% chance of being kept, so I predict this booking will be kept.  
+PREDICTION: 1","The model gave only a 62% chance the booking is kept, and because a wrong implementation costs 4× an escalation, you should only implement if confidence >75%; 62% < 75%, so escalate.  
+DECISION: 1",,,2026-03-17T17:44:44.256212
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on July 22, 2015 (week 30), with 0 weekend night(s) and 4 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree indicates bookings made 30–90 days in advance are kept 62% of the time (a clear majority), I predict Person 1 will keep the booking.  
+PREDICTION: 1","Given a 62% chance my prediction (kept) is correct, the expected cost of implementing is 0.38 * 4 = 1.52 (in escalation-cost units), which is higher than the escalation cost of 1, so we should escalate.  
+DECISION: 1",,,2026-03-17T17:44:44.636937
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on October 02, 2016 (week 41), with 2 weekend night(s) and 0 weekday night(s). The party consists of 3 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Since the decision tree shows bookings made 30–90 days in advance are kept 62% of the time, Person 1 is more likely to keep this booking.  
+PREDICTION: 1","The model gives a 62% chance my prediction is correct, so the probability of being wrong is 38%; implementing would have expected cost 0.38 * 4 = 1.52 units versus escalation cost of 1 unit. Because escalation has lower expected cost, escalate.  
+DECISION: 1",,,2026-03-17T17:44:45.185069
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on April 07, 2017 (week 14), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows bookings made 30–90 days in advance are kept 62% of the time, so Person 1 is more likely to keep the reservation.  
+PREDICTION: 1","The model's 62% chance of being correct yields an expected implementation cost of 4*(1-0.62)=1.52 times the escalation cost, which is higher than simply escalating.  
+DECISION: 1",,,2026-03-17T17:44:46.030285
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on August 30, 2016 (week 36), with 0 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","This booking falls in the 30–90 days-in-advance bin where 62% of bookings were kept and there are no strong cancellation signals (no prior cancellations, only 2 adults, 2 special requests), so it is more likely to have been kept.  
+PREDICTION: 1","Given a 62% chance the booking was kept (38% cancelled), the expected cost of implementing (0.38 * 4 = 1.52 units) exceeds the cost of escalating (1 unit), so escalate to avoid the higher expected loss.  
+DECISION: 1",,,2026-03-17T17:44:46.449609
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on February 18, 2017 (week 7), with 2 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Since this booking falls in the 30–90 days lead-time group where 62% of bookings were kept and there are no risk-increasing factors (no previous cancellations, no special requests), it is more likely the booking was kept.  
+PREDICTION: 1","The probability my prediction is correct is 0.62, so the expected cost of implementing is 0.38*4 = 1.52 (using escalate = 1 as baseline), which is higher than the escalate cost of 1; therefore escalate.  
+DECISION: 1",,,2026-03-17T17:44:47.287433
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on August 28, 2017 (week 35), with 1 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree rule shows bookings made 30–90 days in advance are kept 62% of the time, so I predict Person 1's booking will be kept.  
+PREDICTION: 1","The model's accuracy for this case is 62%, so implementing risks a wrong answer with probability 0.38 and that wrong outcome costs 4× more than escalating; expected cost if we implement = 0.38×4 = 1.52, which is higher than the escalate cost (1), so we should escalate.  
+DECISION: 1",,,2026-03-17T17:44:49.934049
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on August 29, 2017 (week 35), with 0 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows bookings made 30–90 days in advance are kept 62% of the time, so I predict this booking will be kept.  
+PREDICTION: 1","The model indicates a 62% chance the booking is kept (38% chance it's canceled), so the expected cost of implementing is 0.38 * 4 = 1.52 which exceeds the escalation cost of 1; therefore escalate.  
+DECISION: 1",,,2026-03-17T17:44:50.241341
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on October 30, 2016 (week 45), with 2 weekend night(s) and 0 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision-tree rule for bookings made 30–90 days in advance indicates a 62% chance of being kept and there are no strong cancellation risk factors for this guest, so I predict the booking will be kept. 
+PREDICTION: 1","The model's 62% accuracy gives an expected implementation cost of 0.38*4 = 1.52 units versus an escalation cost of 1 unit, so escalation minimizes expected cost.  
+DECISION: 1",,,2026-03-17T17:44:51.103718
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on August 16, 2017 (week 33), with 0 weekend night(s) and 4 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the decision tree rule that bookings made 30–90 days in advance are kept 62% of the time, the most likely outcome is that this booking will be kept.  
+PREDICTION: 1","The model estimates a 62% chance the booking is kept, so the probability of being wrong if we implement is 38% and the expected cost = 0.38 * 4 = 1.52, which is greater than the escalation cost of 1; therefore we should escalate.  
+DECISION: 1",,,2026-03-17T17:44:51.378239
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on February 24, 2017 (week 8), with 2 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The booking falls in the decision-tree node for 30–90 days lead time where 62% of bookings were kept and Person 1 has no prior cancellations, so I predict the booking will be kept.
+PREDICTION: 1","The model's node gives a 62% chance my prediction (kept) is correct, so expected cost of implementing = 0.62*0 + 0.38*4 = 1.52, which is higher than the fixed cost of escalating (1); therefore escalate.  
+DECISION: 1",,,2026-03-17T17:44:52.141558
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on August 06, 2016 (week 32), with 0 weekend night(s) and 1 weekday night(s). The party consists of 3 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision-tree rule shows bookings made 30–90 days in advance are kept 62% of the time and the given guest/profile has no strong cancellation signals, so predict the booking was kept.  
+PREDICTION: 1","The model estimates a 62% chance the booking is kept, so implementing risks a wrong-answer cost with probability 38%; the expected cost of implementing is 0.38*4 = 1.52, which exceeds the escalate cost (1). Therefore escalate.  
+DECISION: 1",,,2026-03-17T17:44:54.819129
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on June 27, 2016 (week 27), with 1 weekend night(s) and 5 weekday night(s). The party consists of 3 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The booking falls into the 30–90 day lead-time group, in which 62% of bookings were kept, so I predict this booking will be kept.  
+PREDICTION: 1","The model estimates a 62% chance my prediction is correct; because a wrong implementation costs 4× an escalation, the expected cost of implementing is 4*(1−0.62)=1.52 times the escalation cost, so escalation is cheaper.  
+DECISION: 1",,,2026-03-17T17:44:55.612212
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on February 12, 2017 (week 7), with 2 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree rule shows bookings made 30–90 days in advance are kept 62% of the time, so Person 1 is more likely to keep the booking.  
+PREDICTION: 1","The rule gives a 62% chance my prediction (kept) is correct, so the probability of a costly wrong implementation is 38%; expected cost of implementing = 0.38 * 4 = 1.52, which exceeds the escalate cost (1), so escalate.  
+DECISION: 1",,,2026-03-17T17:44:55.938264
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on March 30, 2016 (week 14), with 0 weekend night(s) and 4 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The booking falls into the decision-tree node for reservations made 30–90 days in advance, which had a 62% kept rate, so I predict the reservation will be kept.  
+PREDICTION: 1","With a 62% chance my prediction is correct, the expected cost of implementing is 0.38*4 = 1.52 units, which exceeds the escalation cost (1 unit), so we should escalate.  
+DECISION: 1",,,2026-03-17T17:44:57.008521
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on May 11, 2017 (week 19), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because this booking falls into the 30–90 days-in-advance category where 62% of bookings were kept, I predict the booking was kept.  
+PREDICTION: 1","The decision-tree gives a 62% chance the booking was kept, so implementing has expected cost 0.38*4 = 1.52 while escalating costs 1, making escalation the lower-risk choice.  
+DECISION: 1",,,2026-03-17T17:44:57.594039
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on August 19, 2016 (week 34), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision-tree rule for bookings made 30–90 days in advance shows a 62% keep rate, so Person 1 is more likely to have kept the reservation.  
+PREDICTION: 1","The model gives a 62% chance the booking was kept, so implementing risks a wrong outcome with probability 0.38; since a wrong implementation costs 4× an escalation, the expected cost of implementing is 0.38×4 = 1.52 units versus 1 unit for escalating. Therefore escalate.  
+DECISION: 1",,,2026-03-17T17:45:00.608892
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on November 21, 2016 (week 48), with 1 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree indicates bookings made 30–90 days in advance are kept 62% of the time, so Person 1 is more likely to have kept the booking.  
+PREDICTION: 1","Implementing has a 62% chance of being correct, so the expected cost of implementing is 0.38*4 = 1.52 (higher than the escalation cost of 1), therefore escalation is preferable.  
+DECISION: 1",,,2026-03-17T17:45:02.021617
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on January 10, 2017 (week 2), with 0 weekend night(s) and 4 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because this booking falls into the 30–90 days-in-advance group where 62% of bookings were kept, the model predicts the reservation will be kept.  
+PREDICTION: 1","The model's confidence is 62% for the predicted outcome but because a wrong implementation costs 4× more than escalating, you should only implement if confidence > 0.75; since 0.62 < 0.75, escalate.  
+DECISION: 1",,,2026-03-17T17:45:02.738840
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on November 10, 2016 (week 46), with 1 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because this booking falls into the 30–90 days-in-advance category where 62% of bookings were kept and there are no additional risk factors (no previous cancellations, repeat stays, or special requests), I predict the booking was kept.
+PREDICTION: 1","Because a wrong implementation costs 4× an escalation, implementing is optimal only if the chance we're correct exceeds 0.75 (since 0.25·4 = 1), but the booking-retention rate for this case is only 0.62, below that threshold. Therefore we should escalate.
+DECISION: 1",,,2026-03-17T17:45:02.918697
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on April 27, 2016 (week 18), with 0 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree rule for bookings made 30–90 days in advance shows a 62% keep rate and no strong cancellation indicators are present for this guest, the booking is predicted to be kept.
+PREDICTION: 1","With a 62% chance the booking is kept, the expected cost of implementing (0.38 * 4 = 1.52) exceeds the unit cost of escalating (1), so escalate to minimize expected loss.  
+DECISION: 1",,,2026-03-17T17:45:07.401724
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on November 10, 2016 (week 46), with 1 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because this booking falls in the 30–90 days advance group where 62% of bookings were kept, and the guest has no prior cancellations or risk-increasing requests, the model predicts the booking will be kept.  
+PREDICTION: 1","The model's 62% chance of being correct implies a 38% chance of being wrong; with a wrong implementation costing 4× more than escalation, the expected cost of implementing is 4 * 0.38 = 1.52 which exceeds the escalation cost of 1, so escalate.  
+DECISION: 1",,,2026-03-17T17:45:07.650426
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on June 10, 2017 (week 23), with 2 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree rule shows bookings made 30–90 days in advance are kept 62% of the time, so I predict Person 1's booking will be kept.  
+PREDICTION: 1","My prediction of ""kept"" had a 62% chance of being correct, so implementing would incur an expected cost of 0.38 * 4 = 1.52 (relative units) while escalating costs 1, so escalate to Person 1 to minimize expected cost.  
+DECISION: 1",,,2026-03-17T17:45:08.598265
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on August 20, 2015 (week 34), with 0 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 3 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the booking falls into the 30–90 days lead-time group where 62% of bookings were kept and Person 1's profile (weekday stay, 2 adults, no prior cancellations) does not strongly indicate cancellation, the model predicts the booking was kept.
+
+PREDICTION: 1","The model's chance of being correct is 62%, so the expected cost of implementing (0.38 error × 4 = 1.52) exceeds the cost of escalating (1), therefore escalate. 
+
+DECISION: 1",,,2026-03-17T17:45:10.182180
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on February 08, 2016 (week 7), with 1 weekend night(s) and 2 weekday night(s). The party consists of 3 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision-tree leaf for bookings made 30–90 days in advance shows a 62% chance of being kept and Person 1 has no prior cancellations and no strong risk factors, predict the booking will be kept.  
+PREDICTION: 1","The decision-tree gives a 62% chance the booking was kept, but because a wrong implementation costs 4× an escalation, we should implement only if confidence > 75% (since (1 - p)*4 < 1), and 62% < 75%, so escalate.  
+DECISION: 1",,,2026-03-17T17:45:11.692147
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on March 19, 2017 (week 12), with 2 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The booking falls into the 30–90 days-in-advance branch where 62% of bookings were kept, so I predict this booking will be kept.  
+PREDICTION: 1","With a 62% chance my prediction is correct, the expected cost of implementing is (1−0.62)*4 = 1.52 which exceeds the escalate cost of 1, so escalate.  
+DECISION: 1",,,2026-03-17T17:45:12.109431
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on November 27, 2016 (week 49), with 4 weekend night(s) and 9 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree shows that bookings made 30–90 days in advance are kept 62% of the time (a majority), so I predict Person 1 kept the booking.  
+PREDICTION: 1","The booking is predicted kept with 62% probability, so implementing would incur expected cost = 0.38 * 4 = 1.52 (units) for potential wrong implementation, while escalation costs 1 unit; since 1.52 > 1, escalate.  
+DECISION: 1",,,2026-03-17T17:45:12.185023
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on February 03, 2017 (week 5), with 0 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 3 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree shows a 62% probability of bookings being kept when made 30–90 days in advance and this guest has no previous cancellations plus several special requests indicating commitment, this booking is more likely to be kept.  
+PREDICTION: 1","Implementing has expected cost 0.38 * 4 = 1.52 (since the prediction is correct with probability 0.62), which is greater than the escalate cost (normalized to 1), so escalate to avoid the higher expected loss.  
+DECISION: 1",,,2026-03-17T17:45:16.201183
+lead_30_90,0,1,0,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on January 18, 2017 (week 3), with 0 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision-tree rule indicates bookings made 30–90 days in advance are kept 62% of the time, so I predict this booking will be kept.  
+PREDICTION: 1","Implementing has a 62% chance of being correct, so expected cost = 0.38 * 4 = 1.52 (normalized units), which is higher than the escalate cost of 1. Therefore we should escalate.  
+DECISION: 1",,,2026-03-17T17:45:17.438587
+lead_30_90,1,1,1,1,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on June 11, 2017 (week 24), with 2 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 0 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made 30 to 90 days in advance, 62% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","Implementing a wrong answer costs 4x more than escalating.
+
+You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision-tree leaf for bookings made 30–90 days in advance shows a 62% keep rate, so I predict Person 1's booking will be kept.  
+PREDICTION: 1","With a 62% keep probability (38% cancel), the expected cost of implementing (0.38*4 = 1.52 units) exceeds the cost of escalating (1 unit), so escalate.  
+DECISION: 1",,,2026-03-17T17:45:18.477800

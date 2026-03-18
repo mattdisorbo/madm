@@ -60,7 +60,10 @@ def llm(messages, max_tokens=256):
             text = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
         return text, thinking
 
-    kwargs = dict(model=MODEL, messages=messages, max_tokens=max_tokens)
+    if PROVIDER == "openai":
+        kwargs = dict(model=MODEL, messages=messages, max_completion_tokens=max_tokens)
+    else:
+        kwargs = dict(model=MODEL, messages=messages, max_tokens=max_tokens)
     # Disable thinking for Qwen3.5 models on Together when THINKING is off
     if not THINKING and PROVIDER == "together" and "Qwen3.5" in MODEL:
         kwargs["extra_body"] = {"chat_template_kwargs": {"enable_thinking": False}}
@@ -72,8 +75,8 @@ def llm(messages, max_tokens=256):
             thinking = getattr(msg, 'reasoning', None) or ""
             text = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
             if not text and thinking:
-                # Together may put everything in reasoning; check if answer is at the end
-                text = re.sub(r'<think>.*?</think>', '', thinking, flags=re.DOTALL).strip()
+                # Together sometimes returns empty content; extract answer from end of reasoning
+                text = thinking[-500:]
             if THINKING and not text:
                 finish = r.choices[0].finish_reason
                 print(f"  [DEBUG] empty content. finish={finish} raw_len={len(raw)} reasoning_len={len(thinking)}", flush=True)
@@ -85,14 +88,24 @@ def llm(messages, max_tokens=256):
             _time.sleep(wait)
 
 def parse_prediction(text):
+    # Search last 500 chars first to avoid matching instruction quotes in thinking
+    tail = text[-500:]
+    preds = re.findall(r'PREDICTION:\s*([01])', tail)
+    if preds: return int(preds[-1])
+    # Fall back to full text
     preds = re.findall(r'PREDICTION:\s*([01])', text)
     if preds: return int(preds[-1])
     return None
 
 def parse_escalation_cot(text):
+    # Search last 500 chars first to avoid matching instruction quotes in thinking
+    tail = text[-500:]
+    decisions = re.findall(r'DECISION:\s*([01])', tail)
+    if decisions: return int(decisions[-1])
+    # Fall back to full text
     decisions = re.findall(r'DECISION:\s*([01])', text)
     if decisions: return int(decisions[-1])
-    m = re.search(r'[01]', text.strip())
+    m = re.search(r'[01]', text.strip()[-20:])
     return int(m.group()) if m else None
 
 # ============================================================
@@ -671,7 +684,7 @@ def process_sample(scenario, gt, hint, predict_prompt, escalate_prompt, conditio
             prompt = f"{scenario}\n\n{predict_prompt}"
         else:
             prompt = f"{scenario}\n\n{hint}\n\n{predict_prompt}"
-        max_tok = 2048 if THINKING else 512
+        max_tok = 16384 if THINKING else 512
         thought, think_predict = llm(prompt, max_tokens=max_tok)
         pred = parse_prediction(thought)
         if pred is None:
@@ -831,5 +844,8 @@ if __name__ == "__main__":
     print(f"\n\n{'='*60}")
     print("SUMMARY")
     print(f"{'='*60}")
-    print(summary[["condition", "base_rate", "pred_acc", "esc_acc", "esc_rate", "esc_w", "esc_r", "gap"]].to_string(index=False))
+    if len(summary) > 0:
+        print(summary[["condition", "base_rate", "pred_acc", "esc_acc", "esc_rate", "esc_w", "esc_r", "gap"]].to_string(index=False))
+    else:
+        print("(all conditions skipped)")
     print(f"\nSaved to {OUTPUT_DIR}/")

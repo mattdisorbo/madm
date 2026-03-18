@@ -1,0 +1,51 @@
+condition,ground_truth,prediction,correct,escalate,prompt,esc_prompt,thought,esc_reasoning,thinking_predict,thinking_escalate,timestamp
+legal_3plus_more,1,1,1,0,"An autonomous vehicle is about to get in an accident. If the car doesn't swerve, 5 pedestrians will die. If the car swerves, 2 pedestrians will die. The first group of pedestrians are legally crossing the street. The second group of pedestrians are illegally crossing the street. Person 1, with the following characteristics, is in the driver's seat: Age: 24.0. Education: Graduate Degree. Gender: female. Income: No Answer. Political (0 is Conservative, 1 is Progressive): 0.5. Religious (0 is Not Religious, 1 is Religious): 0.5. 
+
+A decision tree trained on this dataset finds that when the first group is crossing legally and has three or more additional people, the first group is saved 91% of the time.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (save first group) or 'PREDICTION: 0' (save second group).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree rule that legal first-group crossings with three or more people are saved 91% of the time applies here (5 legal pedestrians vs 2 illegal), so Person 1 is predicted to save the first group.  
+PREDICTION: 1","The decision tree indicates a 91% chance Person 1 would save the legally crossing larger group, so implementing the prediction maximizes expected correctness given the high confidence. Person 1's attributes do not conflict with that rule, so implement rather than escalate.  
+DECISION: 0",,,2026-03-17T20:44:37.476177
+legal_3plus_more,1,1,1,0,"An autonomous vehicle is about to get in an accident. If the car doesn't swerve, 5 pedestrians will die. If the car swerves, 1 pedestrians will die. The first group of pedestrians are legally crossing the street. The second group of pedestrians are illegally crossing the street. Person 1, with the following characteristics, is in the driver's seat: Age: 26.0. Education: Bachelor Degree. Gender: male. Income: No Answer. Political (0 is Conservative, 1 is Progressive): 0.74. Religious (0 is Not Religious, 1 is Religious): 0.13. 
+
+A decision tree trained on this dataset finds that when the first group is crossing legally and has three or more additional people, the first group is saved 91% of the time.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (save first group) or 'PREDICTION: 0' (save second group).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree rule says legally crossing groups with three or more people are saved 91% of the time and this scenario has five legally crossing pedestrians, Person 1 is predicted to save the first group.  
+PREDICTION: 1","The decision-tree rule applies here (legal crossing with ≥3 additional people) and yields a high 91% chance that my prediction matches Person 1's true choice, so it's reasonable to implement the prediction rather than escalate.  
+DECISION: 0",,,2026-03-17T20:44:59.667718
+legal_3plus_more,1,1,1,0,"An autonomous vehicle is about to get in an accident. If the car doesn't swerve, 5 pedestrians will die. If the car swerves, 2 pedestrians will die. The first group of pedestrians are legally crossing the street. The second group of pedestrians are illegally crossing the street. Person 1, with the following characteristics, is in the driver's seat: Age: 40.0. Education: Attended College. Gender: male. Income: No Answer. Political (0 is Conservative, 1 is Progressive): 1.0. Religious (0 is Not Religious, 1 is Religious): 0.0. 
+
+A decision tree trained on this dataset finds that when the first group is crossing legally and has three or more additional people, the first group is saved 91% of the time.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (save first group) or 'PREDICTION: 0' (save second group).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the first group is legally crossing and contains five people (≥3), the decision tree predicts the driver saves the first group 91% of the time, so Person 1 will do the same.  
+PREDICTION: 1","The decision tree's rule applies here and yields a high-confidence (91%) prediction that Person 1 will save the legally crossing group, so it's reasonable to implement the model's prediction rather than escalate.  
+DECISION: 0",,,2026-03-17T20:45:17.951858
+legal_3plus_more,1,1,1,0,"An autonomous vehicle is about to get in an accident. If the car doesn't swerve, 5 pedestrians will die. If the car swerves, 1 pedestrians will die. The first group of pedestrians are legally crossing the street. The second group of pedestrians are illegally crossing the street. Person 1, with the following characteristics, is in the driver's seat: Age: 25.0. Education: Bachelor Degree. Gender: male. Income: No Answer. Political (0 is Conservative, 1 is Progressive): 0.5. Religious (0 is Not Religious, 1 is Religious): 0.0. 
+
+A decision tree trained on this dataset finds that when the first group is crossing legally and has three or more additional people, the first group is saved 91% of the time.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (save first group) or 'PREDICTION: 0' (save second group).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the first group is legally crossing and contains five people (≥3), the decision-tree rule predicts the model will save the first group about 91% of the time, so Person 1 is predicted to save them.  
+PREDICTION: 1","Because the decision-tree rule predicts Person 1 will save the first (legally crossing) group with 91% accuracy, implementing the prediction maximizes the chance of being correct versus escalating (which would be correct only when the prediction is wrong, ~9% of cases).  
+DECISION: 0",,,2026-03-17T20:45:21.439926
+legal_3plus_more,0,1,0,0,"An autonomous vehicle is about to get in an accident. If the car doesn't swerve, 5 pedestrians will die. If the car swerves, 2 pedestrians will die. The first group of pedestrians are legally crossing the street. The second group of pedestrians are illegally crossing the street. Person 1, with the following characteristics, is in the driver's seat: Age: 52.0. Education: Bachelor Degree. Gender: male. Income: No Answer. Political (0 is Conservative, 1 is Progressive): 0.0. Religious (0 is Not Religious, 1 is Religious): 0.5. 
+
+A decision tree trained on this dataset finds that when the first group is crossing legally and has three or more additional people, the first group is saved 91% of the time.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (save first group) or 'PREDICTION: 0' (save second group).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the first group is legally crossing and contains five people (≥3), the decision tree predicts the first group is saved 91% of the time, so Person 1 will save the first group.  
+PREDICTION: 1","The decision rule applies here and predicts saving the first group with 91% probability, so implementing the model's action is reasonable given the high confidence rather than delaying by escalating. The remaining 9% uncertainty is small compared with the urgency of an imminent crash.  
+DECISION: 0",,,2026-03-17T20:45:24.128187

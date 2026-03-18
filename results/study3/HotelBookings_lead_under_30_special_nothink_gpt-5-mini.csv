@@ -1,0 +1,471 @@
+condition,ground_truth,prediction,correct,escalate,prompt,esc_prompt,thought,esc_reasoning,thinking_predict,thinking_escalate,timestamp
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on September 14, 2015 (week 38), with 1 weekend night(s) and 0 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 3 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 made special requests and matches the decision-tree condition (booking made <30 days in advance) under which 87% of bookings were kept, they are predicted to keep the booking.  
+PREDICTION: 1","The decision-tree branch gives an 87% probability the booking will be kept, which is a high enough confidence to act on the prediction rather than escalate.  
+DECISION: 0",,,2026-03-17T17:42:58.653002
+lead_under_30_special,0,1,0,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on January 15, 2016 (week 3), with 8 weekend night(s) and 22 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 made a special request and falls under the decision-tree condition (booking made <30 days in advance) for which 87% of bookings were kept, the most likely outcome is that the booking was kept.  
+PREDICTION: 1","The model indicates an 87% probability the booking will be kept and there are no conflicting risk signals, so this confidence is sufficient to implement the prediction rather than escalate.  
+DECISION: 0",,,2026-03-17T17:43:01.115490
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on April 07, 2017 (week 14), with 0 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 booked less than 30 days in advance and made special requests, the decision-tree rule indicates an 87% chance the booking was kept, so I predict it was kept.
+PREDICTION: 1","The decision-tree rule gives an 87% chance the booking was kept for bookings made <30 days in advance with special requests, so implementing the prediction (kept) maximizes the probability of being correct versus escalating. Therefore implement the prediction.
+DECISION: 0",,,2026-03-17T17:43:04.578573
+lead_under_30_special,0,1,0,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on July 31, 2015 (week 31), with 1 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The guest made a special request and matches the decision-tree condition (booking <30 days in advance) under which 87% of bookings were kept, so I predict this booking was kept.  
+PREDICTION: 1","The decision tree indicates an 87% chance the booking will be kept for guests who booked <30 days in advance and made special requests, so the prediction is sufficiently confident to act on it rather than escalate.  
+DECISION: 0",,,2026-03-17T17:43:04.926736
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on February 24, 2016 (week 9), with 0 weekend night(s) and 4 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 made a special request and, according to the decision-tree rule for bookings made <30 days in advance with special requests (87% kept), is therefore predicted to keep the booking.  
+PREDICTION: 1","The decision-tree rule gives an 87% probability that a booking made <30 days in advance with special requests is kept, so implementing the prediction is reasonable rather than escalating given the high confidence.  
+DECISION: 0",,,2026-03-17T17:43:05.177821
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on August 29, 2016 (week 36), with 1 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 1 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 made a special request and falls into the decision-tree node for bookings made less than 30 days in advance where 87% of bookings were kept, I predict they kept the booking.  
+PREDICTION: 1","The decision-tree node for bookings made <30 days in advance with special requests shows a high kept rate (87%), so the prediction is high-confidence and implementing it is reasonable.  
+DECISION: 0",,,2026-03-17T17:43:05.571463
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on November 29, 2016 (week 49), with 0 weekend night(s) and 1 weekday night(s). The party consists of 1 adult(s). Person 1 is a repeated guest and has 0 previous cancellation(s). They have requested 1 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given Person 1 made a special request and falls under the decision-tree rule for bookings made <30 days in advance where 87% were kept, predict the booking was kept.
+
+PREDICTION: 1","The decision-tree rule gives an 87% chance the booking was kept and there are no additional risk factors suggesting lower confidence, so it's reasonable to implement the prediction.  
+DECISION: 0",,,2026-03-17T17:43:05.620441
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on October 10, 2015 (week 41), with 0 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision-tree rule for bookings made less than 30 days in advance with special requests indicates an 87% chance the booking is kept, I predict this booking will be kept.  
+PREDICTION: 1","The decision rule gives an 87% probability the booking is kept, which is sufficiently high confidence to act on the prediction rather than escalate.  
+DECISION: 0",,,2026-03-17T17:43:05.915138
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on August 11, 2015 (week 33), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 made a special request and matches the decision-tree condition (booked <30 days in advance) under which 87% of bookings were kept, the booking is predicted to be kept.  
+PREDICTION: 1","The decision tree indicates an 87% chance the booking will be kept, so the prediction is sufficiently confident to implement rather than escalate. Escalation is unnecessary given the high likelihood of being correct.  
+DECISION: 0",,,2026-03-17T17:43:07.331648
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on June 21, 2016 (week 26), with 0 weekend night(s) and 2 weekday night(s). The party consists of 3 adult(s), 1 child(ren). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 1 car parking space(s) and made 3 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 made special requests and matches the decision-tree condition for bookings made less than 30 days in advance (an 87% keep rate), they are predicted to have kept the booking.  
+PREDICTION: 1","The decision-tree gives an 87% probability the booking is kept under these conditions, which is sufficiently high confidence to act on the prediction without contacting the guest.  
+DECISION: 0",,,2026-03-17T17:43:13.207580
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on May 22, 2016 (week 22), with 2 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 made special requests and meets the decision-tree condition (booking made <30 days in advance) under which 87% of bookings are kept, so I predict this booking will be kept.  
+PREDICTION: 1","The decision-tree rule yields an 87% probability the booking will be kept, and Person 1 has no prior cancellations, so the predicted outcome is sufficiently likely to act on.  
+DECISION: 0",,,2026-03-17T17:43:13.723391
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on February 09, 2017 (week 6), with 0 weekend night(s) and 1 weekday night(s). The party consists of 1 adult(s). Person 1 is a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 made a special request and matches the decision-tree rule for bookings made <30 days in advance (87% of such bookings were kept), I predict they kept the booking.  
+PREDICTION: 1","The decision-tree rule assigns an 87% probability that this booking was kept, which is a strong enough confidence to act on the prediction rather than escalate. The expected error rate (13%) is low, so implement the prediction.  
+DECISION: 0",,,2026-03-17T17:43:15.264385
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on May 23, 2016 (week 22), with 1 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 made special requests and fits the decision-tree branch (booked <30 days in advance with special requests) where 87% of bookings were kept, so they are predicted to keep the booking.  
+PREDICTION: 1","The decision-tree branch indicates an 87% chance the booking was kept for cases booked <30 days in advance with special requests, so it is reasonable to implement the prediction rather than escalate given the high probability of correctness. The remaining 13% risk is moderate but does not justify escalation.  
+DECISION: 0",,,2026-03-17T17:43:16.719941
+lead_under_30_special,0,1,0,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on April 29, 2016 (week 18), with 1 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 made special requests and meets the decision-tree condition (booked <30 days in advance) under which 87% of bookings were kept, so the model predicts this booking was kept.  
+PREDICTION: 1","The decision tree indicates an 87% chance the booking was kept given the observed conditions (special requests and <30-day lead time) and there is no contrary information, so it's reasonable to implement the prediction.  
+DECISION: 0",,,2026-03-17T17:43:16.857412
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on December 04, 2016 (week 50), with 2 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 made a special request and matches the decision-tree rule for bookings made less than 30 days in advance where 87% of such bookings were kept, I predict the booking was kept.  
+PREDICTION: 1","The decision-tree rule assigns an 87% chance that bookings with special requests made less than 30 days in advance are kept, and there are no strong contrary signals (no previous cancellations), so it's reasonable to implement the prediction.  
+DECISION: 0",,,2026-03-17T17:43:21.613368
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on January 21, 2016 (week 4), with 0 weekend night(s) and 3 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree rule applies—this booking was made less than 30 days in advance and included a special request, and 87% of such bookings are kept—so I predict it was kept.  
+PREDICTION: 1","The decision tree indicates an 87% chance the booking is kept when made <30 days in advance with a special request, so implementing the prediction is the higher-probability action. Escalation isn't warranted given the strong predictive confidence.  
+DECISION: 0",,,2026-03-17T17:43:22.206381
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on May 31, 2016 (week 23), with 0 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 made a special request and matches the decision-tree condition (booked <30 days in advance) for which 87% of bookings were kept, the model predicts they kept the booking.  
+PREDICTION: 1","The model gives an 87% probability the booking was kept for bookings made <30 days with special requests, which is sufficiently high confidence to implement the prediction rather than escalate.  
+DECISION: 0",,,2026-03-17T17:43:23.043244
+lead_under_30_special,0,1,0,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on September 28, 2016 (week 40), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 made special requests and fits the decision-tree condition (booking <30 days in advance with special requests) where 87% of bookings were kept, so they are predicted to have kept the booking.  
+PREDICTION: 1","The decision-tree rule gives an 87% probability that this booking is kept for bookings made <30 days in advance with special requests, which is a strong enough likelihood to act on without escalating.  
+DECISION: 0",,,2026-03-17T17:43:23.405187
+lead_under_30_special,0,1,0,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on November 12, 2016 (week 46), with 0 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s), 2 child(ren). Person 1 is a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The guest made a special request and matches the decision-tree profile (booked <30 days in advance with a special request), under which 87% of bookings were kept, so I predict the booking will be kept.  
+PREDICTION: 1","The decision-tree rule gives an 87% probability that this booking will be kept, so the prediction is high-confidence and it is reasonable to implement it rather than escalate.  
+DECISION: 0",,,2026-03-17T17:43:31.348329
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on July 11, 2016 (week 29), with 2 weekend night(s) and 5 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 made a special request and fits the decision-tree condition (booking <30 days in advance with special requests) under which 87% of bookings were kept, so they are predicted to keep this booking.  
+PREDICTION: 1","The decision rule for bookings made <30 days in advance with special requests has an 87% keep rate, so the prediction is high-confidence and the residual 13% risk is likely acceptable without escalation.  
+DECISION: 0",,,2026-03-17T17:43:31.380529
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on October 03, 2016 (week 41), with 1 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 3 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the guest made special requests and, under the decision-tree rule for bookings made <30 days in advance (which retain 87% of such bookings), this case is most likely to be kept.  
+PREDICTION: 1","The decision-tree rule gives an 87% chance the booking is kept for cases like this (booked <30 days in advance with special requests), so implementing the prediction is reasonable given the relatively high confidence. The remaining 13% risk of error does not strongly justify escalation.  
+DECISION: 0",,,2026-03-17T17:43:35.163351
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on February 11, 2017 (week 6), with 0 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 made a special request and fits the decision-tree condition (bookings made <30 days in advance with special requests are kept 87% of the time), so the booking is predicted to be kept.  
+PREDICTION: 1","The decision-tree condition gives a strong (87%) probability that the booking was kept, so it's reasonable to implement the prediction rather than escalate.  
+DECISION: 0",,,2026-03-17T17:43:36.743407
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on September 20, 2015 (week 39), with 2 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 made special requests and falls into the decision-tree node for bookings made <30 days in advance (which had an 87% kept rate), the model predicts they kept the booking.
+PREDICTION: 1","The model's node gives an 87% probability that this booking is kept for guests who made special requests and booked <30 days in advance, so implementing the prediction is reasonable given the high confidence and relatively low risk of error.  
+DECISION: 0",,,2026-03-17T17:43:39.485264
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on June 17, 2016 (week 25), with 0 weekend night(s) and 1 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 made two special requests and matches the decision-tree condition (booked <30 days in advance) under which 87% of bookings were kept, so the booking is predicted to be kept.  
+PREDICTION: 1","The decision-tree rule had an 87% keep rate for bookings made <30 days in advance with special requests, giving high confidence that the prediction (kept) is correct, so we should implement it rather than escalate.  
+DECISION: 0",,,2026-03-17T17:43:40.351286
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on September 28, 2015 (week 40), with 3 weekend night(s) and 8 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the guest made special requests and the decision-tree rule says bookings made less than 30 days in advance with special requests are kept 87% of the time, this booking is predicted to be kept.  
+PREDICTION: 1","The decision-tree rule applicable here gives an 87% chance the booking is kept, which is high confidence, so we should implement the prediction rather than escalate.  
+DECISION: 0",,,2026-03-17T17:43:47.310937
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on February 13, 2017 (week 7), with 1 weekend night(s) and 0 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 made a special request and falls under the decision-tree rule for bookings made <30 days in advance (where 87% were kept), so the booking is predicted to be kept.  
+PREDICTION: 1","The decision-tree rule gives an 87% probability that bookings with a special request made <30 days in advance are kept, so the prediction (kept) is sufficiently reliable to implement rather than escalate.  
+DECISION: 0",,,2026-03-17T17:43:48.931071
+lead_under_30_special,0,1,0,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on January 12, 2017 (week 2), with 0 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 made special requests and falls under the decision-tree rule that bookings made <30 days in advance with special requests are kept 87% of the time, so they are predicted to have kept the booking.  
+PREDICTION: 1","The decision-tree rule gives a strong (87%) probability that bookings made <30 days in advance with special requests are kept, and there are no conflicting signals here, so it's reasonable to act on the prediction.  
+DECISION: 0",,,2026-03-17T17:43:50.374846
+lead_under_30_special,0,1,0,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on September 17, 2015 (week 38), with 0 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 made a special request and matches the decision-tree rule for bookings made <30 days in advance (where 87% are kept), so the booking is predicted to be kept.  
+PREDICTION: 1","The decision-tree rule shows an 87% chance that bookings made <30 days in advance with special requests are kept, so the predicted ""kept"" outcome is likely correct and low-risk. Therefore implement the prediction.  
+DECISION: 0",,,2026-03-17T17:43:51.935798
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on April 02, 2017 (week 14), with 2 weekend night(s) and 4 weekday night(s). The party consists of 1 adult(s). Person 1 is a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","They made a special request and match the decision-tree condition (booking <30 days in advance with special requests) where 87% of bookings were kept, so the model predicts they kept the booking.
+PREDICTION: 1","The decision-tree rule yields a strong likelihood (87%) that this booking will be kept, so implementing the prediction is reasonable rather than escalating. DECISION: 0",,,2026-03-17T17:43:52.405952
+lead_under_30_special,0,1,0,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on October 21, 2015 (week 43), with 0 weekend night(s) and 2 weekday night(s). The party consists of 1 adult(s). Person 1 is a repeated guest and has 1 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 made a special request and the decision tree rule states bookings made less than 30 days in advance with special requests are kept 87% of the time, predict the booking was kept.  
+PREDICTION: 1","The decision-tree rule applying to Person 1 (booking made <30 days with a special request) yields an 87% keep rate, so implementing the prediction is the most likely correct action. The single prior cancellation is insufficient to overcome that strong signal, so proceed to implement.  
+DECISION: 0",,,2026-03-17T17:43:52.841541
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on April 23, 2016 (week 17), with 1 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The guest made a special request and (per the decision tree condition) the booking was made less than 30 days in advance, a scenario where 87% of bookings were kept, so I predict this booking was kept.  
+PREDICTION: 1","The decision-tree rule gives an 87% chance the booking was kept for cases with <30 days lead time and a special request, so implementing the prediction is the better choice given the high likelihood of correctness.  
+DECISION: 0",,,2026-03-17T17:43:52.973696
+lead_under_30_special,0,1,0,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on March 07, 2016 (week 11), with 1 weekend night(s) and 4 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 made a special request and the booking was made less than 30 days in advance—a group for which 87% of bookings were kept—I predict they kept the booking.
+PREDICTION: 1","The decision tree indicates an 87% chance the booking was kept given the features, so implementing the prediction is reasonable since the risk of being wrong (13%) is low.  
+DECISION: 0",,,2026-03-17T17:43:54.391634
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on October 02, 2016 (week 41), with 2 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 made special requests and thus falls under the decision-tree rule for bookings made less than 30 days in advance where 87% of such bookings were kept, so I predict they kept the booking.  
+PREDICTION: 1","The decision-tree rule directly applies (booking made <30 days in advance with special requests) and indicates an 87% chance the booking was kept, so the prediction is high-confidence. Therefore we should implement the prediction rather than escalate.  
+DECISION: 0",,,2026-03-17T17:43:56.526680
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on July 13, 2017 (week 28), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision-tree rule applies: bookings made <30 days in advance with special requests were kept 87% of the time and Person 1 made a special request, so predict they kept the booking.  
+PREDICTION: 1","The decision-tree rule gives an 87% probability that this booking was kept for guests with special requests booked <30 days in advance, so the prediction is high-confidence and it's reasonable to implement rather than escalate.  
+DECISION: 0",,,2026-03-17T17:43:57.690562
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on May 01, 2017 (week 18), with 1 weekend night(s) and 2 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 booked less than 30 days in advance and made a special request, and the decision tree rule says 87% of such bookings were kept, so predict the booking was kept.  
+PREDICTION: 1","The decision tree gives an 87% chance the booking was kept based on the matching rule (booked <30 days in advance and made a special request), so implementing the prediction is the higher-confidence action. Therefore we should implement rather than escalate.  
+DECISION: 0",,,2026-03-17T17:44:00.326541
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on September 22, 2016 (week 39), with 0 weekend night(s) and 1 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 1 car parking space(s) and made 3 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 made special requests and falls into the decision-tree node (bookings made <30 days in advance with special requests) where 87% of bookings were kept, they are most likely to have kept this reservation.
+PREDICTION: 1","The decision-tree node indicates an 87% chance the booking was kept given a last-minute booking with special requests, so implementing the prediction is justified by the high likelihood of correctness. The remaining 13% risk of error is relatively low and doesn't warrant escalation absent additional conflicting information.
+DECISION: 0",,,2026-03-17T17:44:06.367196
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on October 28, 2016 (week 44), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree rule matches Person 1 (booking <30 days in advance and made special requests), which indicates an 87% chance the reservation is kept, so predict kept.  
+PREDICTION: 1","The decision tree rule gives an 87% chance the booking is kept for this profile, which is sufficiently high confidence to implement the prediction rather than escalate.  
+DECISION: 0",,,2026-03-17T17:44:08.715114
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on November 26, 2016 (week 48), with 1 weekend night(s) and 1 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the booking was made less than 30 days in advance and the guest made special requests—conditions under which the decision tree reports an 87% kept rate—I predict the booking will be kept.
+PREDICTION: 1","The decision tree gives an 87% probability that bookings with <30 days lead time and special requests are kept, so the prediction has high confidence and should be implemented. Escalation is unnecessary given the strong likelihood the prediction is correct.
+DECISION: 0",,,2026-03-17T17:44:10.064508
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on February 19, 2016 (week 8), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision tree rule shows bookings made <30 days in advance with special requests are kept 87% of the time and Person 1 made a special request (so falls into that branch), so I predict the booking was kept.  
+PREDICTION: 1","The decision tree gives an 87% chance that bookings made <30 days with special requests are kept and Person 1 matches that high-confidence branch, so implementing is justified rather than escalating.  
+DECISION: 0",,,2026-03-17T17:44:12.832458
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on December 30, 2016 (week 53), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 3 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 made special requests and matches the decision-tree node (bookings <30 days with special requests) where 87% of bookings were kept, so the model predicts the booking will be kept.  
+PREDICTION: 1","The decision-tree node gives an 87% probability the booking will be kept and Person 1’s lack of prior cancellations plus multiple special requests further support following the model prediction, so the risk of error is low.  
+DECISION: 0",,,2026-03-17T17:44:15.807986
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on August 14, 2015 (week 33), with 2 weekend night(s) and 5 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 fits the decision-tree rule (booking made <30 days in advance and with a special request), under which 87% of bookings were kept, so I predict they kept the booking.
+PREDICTION: 1","The decision-tree rule applies (booking <30 days and a special request) and yields an 87% chance the booking was kept, which is strong enough to implement the prediction rather than escalate.  
+DECISION: 0",,,2026-03-17T17:44:16.949568
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on November 06, 2015 (week 45), with 0 weekend night(s) and 2 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the decision tree rule applies—this guest made a special request and (as specified) the booking was made less than 30 days in advance, and 87% of such bookings were kept—I predict the booking was kept. 
+PREDICTION: 1","The decision-tree rule gives an 87% probability the booking was kept under these conditions (booking <30 days in advance with a special request), so the prediction is sufficiently confident to act on.  
+DECISION: 0",,,2026-03-17T17:44:18.831892
+lead_under_30_special,0,1,0,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on July 25, 2015 (week 30), with 1 weekend night(s) and 1 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The decision-tree rule applies because the guest made a special request and, for bookings made less than 30 days in advance, 87% were kept, so I predict Person 1 kept the booking.  
+PREDICTION: 1","The decision-tree rule indicates an 87% chance the booking was kept given the guest made a special request and (assumed) booked <30 days in advance, so the prediction is high-confidence and should be implemented.  
+DECISION: 0",,,2026-03-17T17:44:20.040400
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on March 20, 2016 (week 13), with 1 weekend night(s) and 0 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 made a special request and matches the decision-tree condition (bookings made <30 days in advance with special requests) under which 87% of bookings were kept, the model predicts this booking will be kept.  
+PREDICTION: 1","Because the decision-tree condition (booked <30 days in advance with special requests) historically leads to a kept booking 87% of the time, it's more likely my prediction is correct than not, so we should implement it rather than escalate.  
+DECISION: 0",,,2026-03-17T17:44:27.454719
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on November 03, 2016 (week 45), with 0 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 made a special request and matches the decision-tree node for bookings made less than 30 days in advance where 87% of bookings were kept, the booking is predicted to be kept.  
+PREDICTION: 1","The decision-tree node indicates an 87% probability the booking is kept for profiles with bookings made <30 days in advance and with special requests, so the predicted kept outcome is sufficiently likely to implement rather than escalate. No other available features strongly suggest a higher risk of cancellation.  
+DECISION: 0",,,2026-03-17T17:44:29.885011
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on February 07, 2016 (week 7), with 2 weekend night(s) and 0 weekday night(s). The party consists of 3 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 2 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 made special requests and matches the decision-tree condition for bookings made less than 30 days in advance (87% of such bookings were kept), they are predicted to have kept the booking.  
+PREDICTION: 1","The decision-tree rule gives an 87% chance that a booking like Person 1's (made <30 days in advance with special requests) is kept, so implementing the prediction is appropriate given the high probability of correctness.  
+DECISION: 0",,,2026-03-17T17:44:30.527938
+lead_under_30_special,1,1,1,0,"You are helping predict Person 1's hotel booking decision. Person 1 has booked a hotel stay arriving on May 05, 2017 (week 18), with 0 weekend night(s) and 1 weekday night(s). The party consists of 1 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 0 car parking space(s) and made 1 special request(s).
+
+A decision tree trained on this dataset finds that when the booking was made less than 30 days in advance and the guest made special requests, 87% of bookings were kept.
+
+TASK: Predict Person 1's booking decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (kept booking) or 'PREDICTION: 0' (cancelled).","You predicted Person 1's booking decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 made a special request and matches the decision-tree condition (booked <30 days in advance) under which 87% of bookings were kept, I predict the booking will be kept.  
+PREDICTION: 1","The decision-tree rule gives an 87% chance the booking will be kept for this profile, so implementing the prediction is reasonable rather than escalating. There is no additional evidence indicating a high cancellation risk.  
+DECISION: 0",,,2026-03-17T17:44:31.076223
