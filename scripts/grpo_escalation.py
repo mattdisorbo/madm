@@ -235,6 +235,7 @@ def main():
         num_train_epochs=epochs,
         max_steps=max_steps,
         learning_rate=2e-5,
+        beta=0.1,  # KL penalty to prevent entropy collapse
         logging_steps=1,
         save_steps=500,
         bf16=True,
