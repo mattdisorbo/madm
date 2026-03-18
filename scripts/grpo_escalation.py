@@ -125,6 +125,9 @@ def build_dataset(n_per_condition=50, seed=42):
     correct = sum(r["pred_correct"] for r in rows) / len(rows)
     print(f"Prediction accuracy: {correct:.1%}")
 
+    import random as _rng
+    _rng.seed(seed + 1)
+    _rng.shuffle(rows)
     return Dataset.from_list(rows)
 
 
@@ -302,7 +305,7 @@ def main():
     trainer = GRPOTrainer(
         model=model,
         args=config,
-        reward_funcs=[format_reward_fn, cost_reward_fn],
+        reward_funcs=cost_reward_fn,
         train_dataset=dataset,
         peft_config=peft_config,
     )
