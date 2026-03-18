@@ -163,8 +163,8 @@ def format_reward_fn(completions, **kwargs):
     return rewards
 
 
-_step_count = 0
-_decision_log = []  # collect (decision, R, pred_correct) for periodic reporting
+_call_count = 0
+_decision_log = []
 
 
 def cost_reward_fn(completions, pred_correct=None, cost_ratio=None, **kwargs):
@@ -175,57 +175,55 @@ def cost_reward_fn(completions, pred_correct=None, cost_ratio=None, **kwargs):
     - Implement + prediction wrong: -R (wrong-answer cost)
     - Unparseable: -1
     """
-    global _reward_log_count, _step_count, _decision_log
-    _step_count += 1
+    global _call_count, _decision_log
+    _call_count += 1
     rewards = []
+    sample_texts = []
+
     for i, completion in enumerate(completions):
         text = completion[0]["content"] if isinstance(completion, list) else completion
-
-        if _reward_log_count < 10:
-            decision = parse_decision(text)
-            print(f"  [DEBUG] text=[{text[:60]}] decision={decision}", flush=True)
-            _reward_log_count += 1
-
         decision = parse_decision(text)
-        if decision is None:
-            rewards.append(-1.0)
-            _decision_log.append((None, None, None))
-            continue
 
         correct = pred_correct[i] if isinstance(pred_correct, list) else pred_correct
         R = cost_ratio[i] if isinstance(cost_ratio, list) else cost_ratio
         R = float(R)
 
-        _decision_log.append((decision, R, correct))
-
-        if decision == 1:  # escalate
+        if decision is None:
             rewards.append(-1.0)
-        elif correct:  # implement correct prediction
-            rewards.append(0.0)
-        else:  # implement wrong prediction
-            rewards.append(-R)
+            _decision_log.append((None, R, correct, text[:40]))
+        else:
+            _decision_log.append((decision, R, correct, text[:40]))
+            if decision == 1:  # escalate
+                rewards.append(-1.0)
+            elif correct:  # implement correct prediction
+                rewards.append(0.0)
+            else:  # implement wrong prediction
+                rewards.append(-R)
 
-    # Periodic report every 50 steps
-    if _step_count % 50 == 0 and _decision_log:
-        recent = _decision_log[-500:]  # last ~500 decisions
-        parseable = [(d, r, c) for d, r, c in recent if d is not None]
-        unparseable = len(recent) - len(parseable)
-        print(f"\n  === Step {_step_count} Report ===", flush=True)
-        print(f"  Parseable: {len(parseable)}/{len(recent)} ({len(parseable)/len(recent):.0%})", flush=True)
+    # Report every 20 calls with full details
+    if _call_count % 20 == 0:
+        recent = _decision_log[-200:]
+        parseable = [x for x in recent if x[0] is not None]
+        n_esc = sum(1 for d, _, _, _ in parseable if d == 1)
+        n_impl = sum(1 for d, _, _, _ in parseable if d == 0)
+        n_none = len(recent) - len(parseable)
+
+        print(f"\n  === Call {_call_count} | {len(parseable)}/{len(recent)} parseable ({n_none} unparseable) ===", flush=True)
+        print(f"  Implement: {n_impl}  Escalate: {n_esc}", flush=True)
+
         if parseable:
-            esc_total = sum(1 for d, _, _ in parseable if d == 1)
-            print(f"  Overall esc rate: {esc_total/len(parseable):.0%}", flush=True)
-            print(f"  {'R':>3}  {'Esc%':>6}  {'N':>4}", flush=True)
-            for R in [2, 4, 8, 10, 20, 50]:
-                at_r = [(d, c) for d, r, c in parseable if r == R]
+            print(f"  {'R':>3}  {'Esc%':>6}  {'Impl%':>6}  {'N':>4}", flush=True)
+            for R_val in [2, 4, 8, 10, 20, 50]:
+                at_r = [x for x in parseable if x[1] == R_val]
                 if at_r:
-                    esc = sum(1 for d, _ in at_r if d == 1)
-                    print(f"  {R:>3}  {esc/len(at_r):>6.0%}  {len(at_r):>4}", flush=True)
-            # Sample outputs
-            sample_texts = []
-            for d, r, c in parseable[-5:]:
-                sample_texts.append(f"d={d} R={r} correct={c}")
-            print(f"  Recent: {sample_texts}", flush=True)
+                    esc = sum(1 for d, _, _, _ in at_r if d == 1)
+                    impl = sum(1 for d, _, _, _ in at_r if d == 0)
+                    print(f"  {R_val:>3}  {esc/len(at_r):>6.0%}  {impl/len(at_r):>6.0%}  {len(at_r):>4}", flush=True)
+
+        # Show 5 sample outputs
+        print(f"  Sample outputs:", flush=True)
+        for d, r, c, txt in recent[-5:]:
+            print(f"    d={d} R={r} correct={c} text=[{txt}]", flush=True)
         print(flush=True)
 
     return rewards
