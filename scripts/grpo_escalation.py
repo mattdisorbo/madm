@@ -168,11 +168,9 @@ _decision_log = []
 
 
 def cost_reward_fn(completions, base_rate=None, cost_ratio=None, **kwargs):
-    """Expected cost reward using base rate from hint.
+    """Oracle reward: +0 for matching optimal, -1 for wrong or unparseable.
 
-    - Escalate: -1 (labor cost)
-    - Implement: -R * (1 - base_rate) (expected wrong-answer cost)
-    - Unparseable: -1
+    Optimal: escalate if R*(1-base_rate) > 1, else implement.
     """
     global _call_count, _decision_log
     _call_count += 1
@@ -187,15 +185,17 @@ def cost_reward_fn(completions, base_rate=None, cost_ratio=None, **kwargs):
         R = float(R)
         br = float(br)
 
+        optimal = 1 if R * (1 - br) > 1 else 0
+
         if decision is None:
             rewards.append(-1.0)
             _decision_log.append((None, R, br, text[:40]))
         else:
             _decision_log.append((decision, R, br, text[:40]))
-            if decision == 1:  # escalate
+            if decision == optimal:
+                rewards.append(0.0)
+            else:
                 rewards.append(-1.0)
-            else:  # implement
-                rewards.append(-R * (1 - br))
 
     # Report every 20 calls with full details
     if _call_count % 20 == 0:
@@ -274,7 +274,7 @@ def main():
         num_train_epochs=epochs,
         max_steps=max_steps,
         learning_rate=2e-5,
-        beta=0.1,  # KL penalty to prevent entropy collapse
+        beta=0.0,  # no KL penalty — let model deviate from always-escalate baseline
         logging_steps=1,
         save_steps=100,
         bf16=True,
@@ -282,7 +282,7 @@ def main():
         report_to="none",
         generation_batch_size=16,
         chat_template_kwargs={"enable_thinking": False},
-        generation_kwargs={"do_sample": True, "temperature": 0.8},
+        generation_kwargs={"do_sample": True, "temperature": 1.0},
     )
 
     # Load model manually so we can patch for ROCm and fix multimodal issues
