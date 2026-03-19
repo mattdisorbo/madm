@@ -167,38 +167,35 @@ _call_count = 0
 _decision_log = []
 
 
-def cost_reward_fn(completions, pred_correct=None, cost_ratio=None, **kwargs):
-    """Cost-based reward using actual prediction correctness.
+def cost_reward_fn(completions, base_rate=None, cost_ratio=None, **kwargs):
+    """Expected cost reward using base rate from hint.
 
     - Escalate: -1 (labor cost)
-    - Implement + prediction correct: 0 (no cost)
-    - Implement + prediction wrong: -R (wrong-answer cost)
+    - Implement: -R * (1 - base_rate) (expected wrong-answer cost)
     - Unparseable: -1
     """
     global _call_count, _decision_log
     _call_count += 1
     rewards = []
-    sample_texts = []
 
     for i, completion in enumerate(completions):
         text = completion[0]["content"] if isinstance(completion, list) else completion
         decision = parse_decision(text)
 
-        correct = pred_correct[i] if isinstance(pred_correct, list) else pred_correct
+        br = base_rate[i] if isinstance(base_rate, list) else base_rate
         R = cost_ratio[i] if isinstance(cost_ratio, list) else cost_ratio
         R = float(R)
+        br = float(br)
 
         if decision is None:
             rewards.append(-1.0)
-            _decision_log.append((None, R, correct, text[:40]))
+            _decision_log.append((None, R, br, text[:40]))
         else:
-            _decision_log.append((decision, R, correct, text[:40]))
+            _decision_log.append((decision, R, br, text[:40]))
             if decision == 1:  # escalate
                 rewards.append(-1.0)
-            elif correct:  # implement correct prediction
-                rewards.append(0.0)
-            else:  # implement wrong prediction
-                rewards.append(-R)
+            else:  # implement
+                rewards.append(-R * (1 - br))
 
     # Report every 20 calls with full details
     if _call_count % 20 == 0:
@@ -212,18 +209,20 @@ def cost_reward_fn(completions, pred_correct=None, cost_ratio=None, **kwargs):
         print(f"  Implement: {n_impl}  Escalate: {n_esc}", flush=True)
 
         if parseable:
-            print(f"  {'R':>3}  {'Esc%':>6}  {'Impl%':>6}  {'N':>4}", flush=True)
+            print(f"  {'R':>3}  {'Esc%':>6}  {'Impl%':>6}  {'N':>4}  {'Optimal':>7}", flush=True)
             for R_val in [2, 4, 8, 10, 20, 50]:
                 at_r = [x for x in parseable if x[1] == R_val]
                 if at_r:
                     esc = sum(1 for d, _, _, _ in at_r if d == 1)
-                    impl = sum(1 for d, _, _, _ in at_r if d == 0)
-                    print(f"  {R_val:>3}  {esc/len(at_r):>6.0%}  {impl/len(at_r):>6.0%}  {len(at_r):>4}", flush=True)
+                    # Optimal esc rate for this R across base rates in batch
+                    opt_esc = sum(1 for _, r, br, _ in at_r if r * (1 - br) > 1) / len(at_r)
+                    print(f"  {R_val:>3}  {esc/len(at_r):>6.0%}  {(len(at_r)-esc)/len(at_r):>6.0%}  {len(at_r):>4}  {opt_esc:>7.0%}", flush=True)
 
         # Show 5 sample outputs
         print(f"  Sample outputs:", flush=True)
-        for d, r, c, txt in recent[-5:]:
-            print(f"    d={d} R={r} correct={c} text=[{txt}]", flush=True)
+        for d, r, br, txt in recent[-5:]:
+            opt = "esc" if r * (1 - br) > 1 else "impl"
+            print(f"    d={d} R={r} br={br} optimal={opt} text=[{txt}]", flush=True)
         print(flush=True)
 
     return rewards
