@@ -174,18 +174,14 @@ def main():
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
-    # Baseline
-    print("\n=== BASELINE ===", flush=True)
     model = AutoModelForCausalLM.from_pretrained(args.model, torch_dtype=torch.bfloat16).to(device)
-    model.eval()
-    eval_model(model, tokenizer, device, args.dataset, n_per_condition=args.n)
-
-    # DPO
     if args.adapter:
-        print("\n=== DPO-TRAINED ===", flush=True)
         model = PeftModel.from_pretrained(model, args.adapter)
-        model.eval()
-        eval_model(model, tokenizer, device, args.dataset, n_per_condition=args.n)
+        print("Adapter loaded.", flush=True)
+    model.eval()
+
+    print("\n=== DPO-TRAINED ===" if args.adapter else "\n=== BASELINE ===", flush=True)
+    eval_model(model, tokenizer, device, args.dataset, n_per_condition=args.n)
 
     print("\nDONE", flush=True)
 
