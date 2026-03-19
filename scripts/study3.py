@@ -77,9 +77,11 @@ def llm(messages, max_tokens=256):
             if not text and thinking:
                 # Together sometimes returns empty content; extract answer from end of reasoning
                 text = thinking[-500:]
-            if THINKING and not text:
-                finish = r.choices[0].finish_reason
-                print(f"  [DEBUG] empty content. finish={finish} raw_len={len(raw)} reasoning_len={len(thinking)}", flush=True)
+            if not text and PROVIDER == "together":
+                # Together sometimes returns empty content — retry once
+                if attempt < 1:
+                    _time.sleep(0.5)
+                    continue
             return text, thinking
         except Exception as e:
             if attempt == 4:

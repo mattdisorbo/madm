@@ -1,0 +1,1219 @@
+condition,ground_truth,prediction,correct,escalate,prompt,esc_prompt,thought,esc_reasoning,thinking_predict,thinking_escalate,timestamp
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,500 for Vacation. They have been employed for < 1 year, a debt-to-income ratio of 22.3%, and a credit score of 629.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The application should be rejected because the applicant's borderline credit score (629) and employment tenure under one year — especially for a discretionary vacation loan — outweigh the positive low DTI (22.3%) and indicate higher credit risk.  
+PREDICTION: 0","I recommend escalating because, while the applicant's short employment tenure and borderline credit score support rejection, we cannot be certain Person 1 agrees with that risk assessment—so confirm with them before implementing.  
+DECISION: 1",,,2026-03-19T09:26:48.207965
+loan_under_5000,0,0,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,500 for Credit card refinancing. They have been employed for < 1 year, a debt-to-income ratio of 72.7%, and a credit score of 558.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The application should be denied because the borrower’s extremely high debt-to-income ratio (72.7%), low credit score (558), and insufficient employment history (<1 year) indicate unacceptably high risk despite the small requested amount.  
+PREDICTION: 0","Implement — the denial prediction likely matches Person 1’s decision because the applicant’s very high DTI (72.7%), low credit score (558), and insufficient employment history (<1 year) present clear underwriting red flags.  
+DECISION: 0",,,2026-03-19T09:26:48.647627
+loan_under_5000,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,000 for moving. They have been employed for < 1 year, a debt-to-income ratio of 2.5%, and a credit score of 666.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve: the applicant's very low debt-to-income ratio (2.5%) and acceptable credit score (666) indicate they can comfortably repay a small $2,000 moving loan despite having been employed for under a year.  
+PREDICTION: 1","Implement — given the very low debt-to-income ratio and acceptable credit score, the small $2,000 loan is likely to be approved despite under one year of employment, so I am reasonably confident my prediction matches Person 1's decision.  
+DECISION: 0",,,2026-03-19T09:26:48.922624
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,000 for medical. They have been employed for 3 years, a debt-to-income ratio of 4.1%, and a credit score of 725.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve: stable 3-year employment, very low 4.1% DTI, a solid 725 credit score, and a small $2,000 medical loan request indicate low risk.  
+PREDICTION: 1","The applicant presents low risk (small $2,000 medical request, 3 years employment, 4.1% DTI, and a 725 credit score), so it's highly likely my approval prediction aligns with Person 1's decision. Implement rather than escalate.  
+DECISION: 0",,,2026-03-19T09:26:49.674359
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 18.6%, and a credit score of 665.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's fair but acceptable credit score (665), low DTI (18.6%), two years' employment, and modest $4,000 debt-consolidation request indicate manageable risk and would likely be approved.  
+PREDICTION: 1","Implement — the applicant's credit score (665), low DTI (18.6%), two years' employment, and modest $4,000 consolidation request indicate low credit risk and align with typical approval criteria, so I'm confident the prediction matches Person 1's likely decision.  
+DECISION: 0",,,2026-03-19T09:26:51.205398
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for Other. They have been employed for < 1 year, a debt-to-income ratio of 49.6%, and a credit score of 700.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the applicant has a very high debt-to-income ratio (49.6%) and has been employed for less than a year, the risk outweighs the decent 700 credit score and small $1,000 request, so I would reject the loan.  
+PREDICTION: 0","I recommend escalating because I cannot be certain my predicted rejection matches Person 1's actual choice—this is a borderline risk case (high DTI, short employment, fair credit) that warrants human confirmation.  
+DECISION: 1",,,2026-03-19T09:26:51.821411
+loan_under_5000,0,0,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,000 for house. They have been employed for < 1 year, a debt-to-income ratio of 13.3%, and a credit score of 501.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be rejected: although the requested amount is small and DTI is low, the very poor credit score (501) combined with employment under one year indicates high default risk.  
+PREDICTION: 0","The applicant's very poor credit score (501) and employment under one year make rejection highly likely despite low DTI and small loan amount, so I'm confident the predicted rejection matches Person 1's likely decision.  
+DECISION: 0",,,2026-03-19T09:26:55.859113
+loan_under_5000,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 14.5%, and a credit score of 680.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's low debt-to-income ratio (14.5%) and a fair-to-good credit score (680) support approval of a small $2,000 debt-consolidation loan despite employment under one year.  
+PREDICTION: 1","I recommended approval based on the applicant's low DTI and decent credit score, but the short employment history is a material uncertainty that could change Person 1's decision depending on their underwriting standards.  
+DECISION: 1",,,2026-03-19T09:26:58.478900
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for moving. They have been employed for < 1 year, a debt-to-income ratio of 1.4%, and a credit score of 603.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I would reject because the applicant's credit score of 603 and employment under one year fall below typical underwriting standards for an unsecured moving loan despite an excellent 1.4% DTI and small requested amount.
+
+PREDICTION: 0","Escalate because the applicant's 603 credit score and employment under one year make this a borderline case requiring underwriting discretion or additional verification despite the very low DTI and small loan amount. Human review will ensure policy considerations and any compensating factors are properly weighed.
+
+DECISION: 1",,,2026-03-19T09:26:58.605322
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for credit_card. They have been employed for 6 years, a debt-to-income ratio of 16.6%, and a credit score of 700.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because the $4,000 request is modest, they have stable 6-year employment, a low 16.6% DTI, and a solid 700 credit score indicating good creditworthiness.  
+PREDICTION: 1","I should escalate because I cannot observe Person 1's true decision and thus cannot be certain my prediction matches it, so confirmation is required to avoid a wrong implementation.  
+DECISION: 1",,,2026-03-19T09:26:59.050977
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for medical. They have been employed for 8 years, a debt-to-income ratio of 13.0%, and a credit score of 675.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the applicant's long employment (8 years), low debt-to-income ratio (13%), and adequate credit score (675) indicate low risk for repaying a small $1,000 medical loan.
+PREDICTION: 1","Implement — the applicant's stable 8-year employment, low 13% DTI, adequate 675 credit score, and the small $1,000 medical amount make approval a high-confidence decision.  
+DECISION: 0",,,2026-03-19T09:26:59.965906
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,200 for credit_card. They have been employed for 3 years, a debt-to-income ratio of 18.9%, and a credit score of 705.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the applicant's good credit score (705), low debt-to-income ratio (18.9%), and three years of stable employment indicate manageable risk for a $4,200 credit card loan.  
+PREDICTION: 1","Implement — my prediction likely matches Person 1's decision because the applicant's strong credit score (705), low DTI (18.9%), and three years of stable employment support approval for a $4,200 credit-card loan.  
+DECISION: 0",,,2026-03-19T09:27:00.084767
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,800 for home_improvement. They have been employed for nan, a debt-to-income ratio of 25.1%, and a credit score of 680.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Applicant is likely approvable: a 680 credit score and a low 25.1% DTI support repayment of a relatively small $2,800 home-improvement loan despite the missing employment-length data.  
+PREDICTION: 1","Escalate: although credit score (680) and a low DTI (25.1%) favor approving a small $2,800 home-improvement loan, the missing employment-length (nan) is a material data gap that the loan officer should verify before implementing the decision.  
+DECISION: 1",,,2026-03-19T09:27:00.526120
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for credit_card. They have been employed for 5 years, a debt-to-income ratio of 28.5%, and a credit score of 660.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Applicant's fair credit score (660), low DTI of 28.5%, and five years of stable employment make the $4,000 credit-card request a reasonable approval risk. 
+PREDICTION: 1","The applicant's stable 5-year employment, low DTI (28.5%), and acceptable credit score (660) indicate a low-to-moderate risk profile consistent with approval, so it's likely Person 1 would approve; implement the prediction.  
+DECISION: 0",,,2026-03-19T09:27:00.536562
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,500 for credit_card. They have been employed for 2 years, a debt-to-income ratio of 34.2%, and a credit score of 665.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve: the $1,500 request is small, the applicant has two years of employment, a fair credit score of 665, and a DTI of 34.2% which is within typical acceptable limits, so the risk appears manageable.  
+PREDICTION: 1","Implement — the small $1,500 request combined with two years' employment, a 34.2% DTI and a fair/good credit score of 665 align with common approval criteria, so I have moderate-to-high confidence in the earlier approve prediction.  
+DECISION: 0",,,2026-03-19T09:27:03.670465
+loan_under_5000,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 22.9%, and a credit score of 670.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve—the applicant's fair credit score (670), low debt-to-income ratio (22.9%), and small $4,000 consolidation request outweigh the concern of under one year of employment.  
+PREDICTION: 1","I recommend escalating because, while the credit score, low DTI, and small loan amount favor approval, the applicant's employment tenure of less than one year is a material underwriting risk that could change the decision.  
+DECISION: 1",,,2026-03-19T09:27:07.690644
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for Medical expenses. They have been employed for < 1 year, a debt-to-income ratio of 2.0%, and a credit score of 537.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I would reject the application because the applicant's very low credit score (537) and short employment history (<1 year) present excessive credit risk despite a low DTI and small requested amount.
+
+PREDICTION: 0","Escalate because the applicant presents conflicting signals—very low credit score and short employment history increase risk while the tiny, urgent medical loan and extremely low DTI argue for leniency—so a human review is warranted. Given these trade-offs and potential policy nuances, escalate to Person 1.
+
+DECISION: 1",,,2026-03-19T09:27:09.430368
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,600 for medical. They have been employed for 10+ years, a debt-to-income ratio of 22.8%, and a credit score of 720.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because their 10+ years of employment, low debt-to-income ratio (22.8%), good credit score (720), and relatively small $3,600 medical request indicate low credit risk and strong ability to repay.
+
+PREDICTION: 1","I recommend escalating to Person 1 because I cannot verify their true decision or any additional internal criteria beyond the applicant data provided. Escalation ensures the loan officer confirms approval before implementation.
+
+DECISION: 1",,,2026-03-19T09:27:11.006836
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 0.0%, and a credit score of 576.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be rejected because their low credit score (576) and short employment history (<1 year) present too much risk despite the small loan amount and 0% DTI. 
+PREDICTION: 0","Escalate — we don’t know Person 1’s true decision and the file has mixed signals (low credit score and short employment versus small loan and 0% DTI), so a human loan officer should confirm rather than automatically implement.  
+DECISION: 1",,,2026-03-19T09:27:11.461087
+loan_under_5000,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for Debt consolidation. They have been employed for nan, a debt-to-income ratio of 10.4%, and a credit score of 725.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Applicant shows a strong credit score (725), a very low debt-to-income ratio (10.4%), and is requesting a modest $3,000 for consolidation, so despite missing employment-duration data the financial profile supports approval.  
+PREDICTION: 1","Although the credit score (725) and low DTI (10.4%) favor approval, the missing employment-duration (""nan"") is a critical data gap that could change the assessment; therefore escalate to Person 1 for verification.  
+DECISION: 1",,,2026-03-19T09:27:11.914914
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,500 for moving. They have been employed for < 1 year, a debt-to-income ratio of 0.0%, and a credit score of 520.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I would reject the application because the applicant's very low credit score (520) and employment tenure under one year present significant default risk that outweighs the benefit of a 0% DTI and the relatively small $2,500 request.  
+PREDICTION: 0","I recommend escalating because, although the applicant's very low credit score and short employment make rejection likely, we cannot be certain Person 1 would arrive at the same conclusion without confirmation.  
+DECISION: 1",,,2026-03-19T09:27:11.937229
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 90.3%, and a credit score of 671.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Reject because the applicant's extremely high debt-to-income ratio (90.3%) and under-one-year employment create unacceptable repayment risk despite a moderate 671 credit score and small $3,000 request.
+PREDICTION: 0","Escalate because the applicant's extremely high DTI and short employment history strongly point to rejection but the moderate credit score and small loan amount create uncertainty best resolved by Person 1's judgment.  
+DECISION: 1",,,2026-03-19T09:27:13.109869
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for other. They have been employed for 10+ years, a debt-to-income ratio of 16.9%, and a credit score of 675.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the low debt-to-income ratio (16.9%), long employment history (10+ years), modest $4,000 request, and an acceptable credit score of 675, the applicant appears creditworthy and should be approved.  
+PREDICTION: 1","Given the low DTI (16.9%), long employment history (10+ years), modest $4,000 request, and acceptable credit score (675), I am confident the approval prediction is correct and does not require further review.  
+DECISION: 0",,,2026-03-19T09:27:13.332365
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 32.4%, and a credit score of 715.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve: the applicant's solid credit score (715) and moderate DTI (32.4%) make a small $3,000 credit-card loan reasonable despite having been employed for less than one year.  
+PREDICTION: 1","Because the applicant's strong credit score and acceptable DTI favor approval but the employment length (<1 year) could trigger a policy exception, I recommend escalation to Person 1 to confirm eligibility rather than implementing the prediction.  
+DECISION: 1",,,2026-03-19T09:27:13.523922
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,950 for house. They have been employed for 7 years, a debt-to-income ratio of 21.0%, and a credit score of 675.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because they show strong employment stability (7 years), a low debt-to-income ratio (21%), and a fair-to-good credit score (675) while requesting a relatively small loan amount.  
+PREDICTION: 1","The applicant's strong employment history, low debt-to-income ratio, reasonable credit score, and small requested loan make approval the likely choice, so my prediction probably matches Person 1's decision. Therefore we should implement the prediction.  
+DECISION: 0",,,2026-03-19T09:27:14.694303
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,500 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 25.2%, and a credit score of 665.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because a fair-to-good credit score (665), low DTI (25.2%), long employment stability (10+ years), and a small $2,500 consolidation request indicate low lending risk. 
+PREDICTION: 1","Implement — the applicant’s fair-to-good credit (665), low DTI (25.2%), long employment stability, and small consolidation amount make approval the highly likely and low-risk choice, so escalation isn’t necessary.  
+DECISION: 0",,,2026-03-19T09:27:19.197521
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for medical. They have been employed for 2 years, a debt-to-income ratio of 28.9%, and a credit score of 735.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the applicant’s strong credit score (735), low debt-to-income ratio (28.9%), two years of employment stability, and the modest $4,000 medical loan request suggest low default risk.  
+PREDICTION: 1","I cannot confirm Person 1’s actual decision from the information provided, so implementing my prediction risks being incorrect; escalate to Person 1 to verify their final choice.  
+DECISION: 1",,,2026-03-19T09:27:20.193998
+loan_under_5000,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,500 for Credit card refinancing. They have been employed for < 1 year, a debt-to-income ratio of 21.1%, and a credit score of 749.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Strong credit score (749), low DTI (21.1%), and a modest $3,500 refinance request outweigh the limited employment tenure (<1 year), so approve.  
+PREDICTION: 1","The applicant's strong credit score (749), low DTI (21.1%), and small refinance amount make approval the most justifiable outcome despite short employment, so it's likely Person 1 would agree; implement the prediction.  
+DECISION: 0",,,2026-03-19T09:27:23.686065
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,200 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 12.5%, and a credit score of 735.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the applicant's good credit score (735), low debt-to-income ratio (12.5%), two years of stable employment, and small consolidation amount ($1,200) indicate low risk and adequate repayment capacity.
+PREDICTION: 1","Implement — the applicant presents low risk (credit score 735, 12.5% DTI, two years employment, small $1,200 consolidation) so I'm reasonably confident my predicted approval matches Person 1's likely decision.  
+DECISION: 0",,,2026-03-19T09:27:24.181465
+loan_under_5000,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for Major purchase. They have been employed for < 1 year, a debt-to-income ratio of 0.9%, and a credit score of 623.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve: despite a marginal credit score (623) and under-one-year employment, the very low debt-to-income ratio (0.9%) and small $4,000 request indicate low repayment risk.
+PREDICTION: 1","Although the low debt-to-income ratio and small loan amount support approval, the applicant’s subprime-ish credit score (623) and under-one-year employment create meaningful uncertainty about the loan officer’s true decision, so escalate for confirmation.  
+DECISION: 1",,,2026-03-19T09:27:24.693948
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for debt_consolidation. They have been employed for 3 years, a debt-to-income ratio of 18.9%, and a credit score of 810.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve — excellent credit score (810), low debt-to-income ratio (18.9%), stable 3-year employment, and a small $3,000 consolidation request indicate low risk. 
+PREDICTION: 1","Implement — the applicant presents very low risk (excellent 810 credit score, low 18.9% DTI, 3 years employment, and a small $3,000 consolidation request), so it's highly likely Person 1 would approve.  
+DECISION: 0",,,2026-03-19T09:27:27.996102
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,200 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 9.6%, and a credit score of 685.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve — stable 10+ years employment, a low debt-to-income ratio of 9.6% indicating strong repayment capacity, and a fair-to-good credit score of 685 make the modest $4,200 credit-card request acceptable. 
+PREDICTION: 1","Implement — I am reasonably confident the approve prediction aligns with Person 1's decision because the applicant’s 10+ years of employment, very low 9.6% DTI, and a fair-to-good 685 score support approving a modest $4,200 credit-card request.  
+DECISION: 0",,,2026-03-19T09:27:28.534028
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for debt_consolidation. They have been employed for 8 years, a debt-to-income ratio of 7.1%, and a credit score of 680.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because their stable 8-year employment history, very low 7.1% DTI, acceptable 680 credit score, and small $3,000 request for debt consolidation indicate low risk.  
+PREDICTION: 1","Implement — the applicant's long employment history, very low 7.1% DTI, acceptable 680 credit score, and small $3,000 consolidation request make approval the likely decision by Person 1, so escalation is unnecessary.  
+DECISION: 0",,,2026-03-19T09:27:28.601360
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,200 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 10.4%, and a credit score of 750.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because their high credit score (750), very low debt-to-income ratio (10.4%), long-term employment (10+ years), and modest $4,200 consolidation request indicate low credit risk. 
+PREDICTION: 1","Given the applicant's strong credit score (750), very low debt-to-income ratio (10.4%), long-term employment, and small consolidation request, it's highly likely Person 1 would approve, so implementing the prediction is appropriate. Escalation isn't necessary because there are no apparent red flags requiring additional review. 
+DECISION: 0",,,2026-03-19T09:27:28.986270
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 22.2%, and a credit score of 506.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be rejected because the very low credit score (506) and employment under one year present high credit risk that outweighs the small loan amount and reasonable DTI.  
+PREDICTION: 0","Escalate — although I predicted rejection because of the very low credit score and short employment, there is meaningful uncertainty since the requested amount is small, DTI is reasonable, and the officer may have additional context or discretionary criteria.  
+DECISION: 1",,,2026-03-19T09:27:30.490365
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,800 for major_purchase. They have been employed for 10+ years, a debt-to-income ratio of 33.5%, and a credit score of 690.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the applicant's 10+ years of steady employment, moderate debt-to-income ratio (33.5%), and fair-to-good credit score (690) indicate acceptable risk for a relatively small $4,800 major purchase.  
+PREDICTION: 1","Implement — the applicant's long employment history, moderate 33.5% DTI, good 690 credit score, and small $4,800 loan request make approval likely and low risk, so escalation to Person 1 is unnecessary.  
+DECISION: 0",,,2026-03-19T09:27:30.681167
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for debt_consolidation. They have been employed for 3 years, a debt-to-income ratio of 23.5%, and a credit score of 685.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve: the borrower’s three-year employment history, low 23.5% DTI, and fair 685 credit score support approval for a modest $4,000 debt-consolidation loan.
+PREDICTION: 1","Implement — the approval prediction is well-supported by three years’ employment, a low 23.5% DTI, and a fair 685 score for a modest $4,000 debt-consolidation loan, so it is likely to match Person 1’s decision.
+DECISION: 0",,,2026-03-19T09:27:30.908349
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 12.9%, and a credit score of 725.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve — the applicant's solid credit score (725), very low DTI (12.9%), long employment history (10+ years), and modest $4,000 request indicate low default risk. 
+PREDICTION: 1","The applicant's strong credit score (725), very low DTI (12.9%), long employment history, and modest $4,000 request make approval highly likely, so escalation is unnecessary.  
+DECISION: 0",,,2026-03-19T09:27:32.635317
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 13.8%, and a credit score of 685.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's low debt-to-income ratio (13.8%), decent credit score (685), and small requested amount ($3,000) outweigh the short employment tenure (<1 year), indicating acceptable repayment risk, so I would approve.  
+PREDICTION: 1","Implement — the applicant's low DTI (13.8%), acceptable credit score (685), and small requested amount ($3,000) make approval likely despite <1 year employment, so this prediction is probably correct.  
+DECISION: 0",,,2026-03-19T09:27:32.894642
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,300 for major_purchase. They have been employed for 10+ years, a debt-to-income ratio of 9.8%, and a credit score of 785.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the applicant has a very strong credit score (785), a very low debt-to-income ratio (9.8%), stable long-term employment (10+ years), and is requesting a relatively small $2,300 loan for a major purchase, indicating low credit risk.
+PREDICTION: 1","Implement because the applicant's very strong credit score (785), low DTI (9.8%), long-term employment, and small $2,300 request make it highly likely Person 1 would approve, so the prediction is unlikely to be wrong.  
+DECISION: 0",,,2026-03-19T09:27:32.933499
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,400 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 21.3%, and a credit score of 680.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Stable long-term employment (10+ years), a low debt-to-income ratio of 21.3%, a fair-to-good credit score of 680, and a modest $4,400 request for debt consolidation indicate manageable risk and support approval.  
+PREDICTION: 1","The applicant's long-term employment, low DTI (21.3%), reasonable credit score (680), and modest $4,400 debt-consolidation request indicate low risk, so I'm confident the predicted approval can be implemented without escalation.  
+DECISION: 0",,,2026-03-19T09:27:33.029246
+loan_under_5000,1,0,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,000 for other. They have been employed for nan, a debt-to-income ratio of 93.9%, and a credit score of 680.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I would reject the application because the applicant's debt-to-income ratio is extremely high at 93.9% and employment length is missing, creating excessive repayment risk despite a 680 credit score.  
+PREDICTION: 0","Escalate because key information is missing (employment length = nan) and the extremely high 93.9% debt-to-income ratio creates significant uncertainty about the applicant's ability to repay, so Person 1 should confirm or override my rejection.  
+DECISION: 1",,,2026-03-19T09:27:33.789117
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 5.5%, and a credit score of 715.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Strong approval likelihood: a solid credit score (715) and very low DTI (5.5%) indicate repayment ability that outweighs the risk of under-one-year employment for a modest $4,000 debt-consolidation loan.
+
+PREDICTION: 1","Given the applicant's strong credit score (715), very low DTI (5.5%), and modest $4,000 request, the short employment tenure is unlikely to overturn approval, so I am reasonably confident my prediction matches Person 1's decision; implement.  
+
+DECISION: 0",,,2026-03-19T09:27:34.526248
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for other. They have been employed for < 1 year, a debt-to-income ratio of 42.5%, and a credit score of 552.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's poor credit score (552), short employment history (<1 year), and relatively high debt-to-income ratio (42.5%), I would reject the $1,000 ""other"" loan request as too risky.  
+PREDICTION: 0","I based the prediction on clear risk indicators (credit score 552, <1 year employment, 42.5% DTI), but I cannot be certain this matches Person 1's actual decision without their confirmation. Escalate so the human loan officer can confirm or override the automated assessment.  
+DECISION: 1",,,2026-03-19T09:27:34.570065
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,200 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 13.3%, and a credit score of 685.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve — the applicant's credit score of 685 is reasonably strong, a 2‑year employment history shows stability, the 13.3% DTI is low, and the $4,200 request is modest, indicating acceptable risk.  
+PREDICTION: 1","Implement — the applicant’s profile (credit score ~685, very low DTI 13.3%, two years employment, modest $4,200 consolidation request) strongly aligns with typical approval criteria, so I’m confident my prediction matches Person 1’s likely decision.  
+DECISION: 0",,,2026-03-19T09:27:37.040791
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,800 for credit_card. They have been employed for 2 years, a debt-to-income ratio of 17.2%, and a credit score of 720.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because their good credit score (720), low debt-to-income ratio (17.2%), two years of employment, and modest $2,800 request indicate low credit risk. 
+PREDICTION: 1","I can't know Person 1's actual decision from the information given, so to avoid implementing a potentially incorrect action I recommend escalating for their confirmation.  
+DECISION: 1",,,2026-03-19T09:27:38.706461
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for other. They have been employed for 10+ years, a debt-to-income ratio of 12.4%, and a credit score of 660.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's low DTI (12.4%), long employment history (10+ years), small requested amount ($3,000), and acceptable credit score (660), the loan appears low-risk and should be approved. 
+PREDICTION: 1","The applicant's low DTI (12.4%), long employment history, small requested amount, and acceptable credit score together indicate a low-risk, routine approval, so escalation is not necessary.  
+DECISION: 0",,,2026-03-19T09:27:38.756350
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 13.6%, and a credit score of 680.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved: with 10+ years of employment, a low DTI of 13.6%, and a solid credit score of 680, the $4,000 credit-card request appears affordable and low-risk.  
+PREDICTION: 1","Given the applicant's 10+ years of employment, low 13.6% DTI, and a solid 680 credit score making approval very likely, it's reasonable to implement the prediction rather than escalate.  
+DECISION: 0",,,2026-03-19T09:27:39.220499
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,500 for other. They have been employed for 10+ years, a debt-to-income ratio of 369.9%, and a credit score of 647.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Despite long-term employment and a borderline credit score (647), the applicant's extremely high debt-to-income ratio (369.9%) makes repayment untenable, so I would reject the loan.  
+PREDICTION: 0","I cannot verify Person 1's actual decision because it wasn't provided, and given the uncertainty (despite the high DTI suggesting rejection) this should be escalated for the loan officer to confirm.  
+DECISION: 1",,,2026-03-19T09:27:41.394461
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,025 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 12.6%, and a credit score of 675.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Despite missing employment duration, the applicant's low DTI (12.6%), acceptable credit score (675), and small requested amount ($3,025) for debt consolidation indicate manageable risk, so approve.  
+PREDICTION: 1","Because employment duration is missing (nan) and that could materially affect risk assessment despite favorable DTI and credit score, Person 1 should review the application before implementing the automated approval. Escalate to Person 1.  
+DECISION: 1",,,2026-03-19T09:27:42.280571
+loan_under_5000,0,0,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,500 for Credit card refinancing. They have been employed for < 1 year, a debt-to-income ratio of 69.3%, and a credit score of 585.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Reject — the applicant's very high DTI (69.3%), low credit score (585), and under-one-year employment indicate high default risk for a credit-card refinance.  
+PREDICTION: 0","Given the very high DTI (69.3%), low credit score (585), and under-one-year employment—which together make this a high-risk refinance request—a typical loan officer is likely to reject, so my prediction likely matches Person 1's decision.  
+DECISION: 0",,,2026-03-19T09:27:42.924071
+loan_under_5000,0,0,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 4.4%, and a credit score of 550.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Reject because the applicant's poor credit score (550) and short employment history (<1 year) present high credit risk despite a low DTI (4.4%) and a small requested amount ($4,000).  
+PREDICTION: 0","Implement because the applicant's poor credit score (550) and short employment history (<1 year) are strong risk factors that likely led Person 1 to reject despite the low DTI and small loan amount.  
+DECISION: 0",,,2026-03-19T09:27:42.927146
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for Other. They have been employed for < 1 year, a debt-to-income ratio of 0.2%, and a credit score of 569.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Despite the very low DTI and small $1,000 request, the applicant's poor credit score (569) and employment under one year present unacceptable risk, so the loan should be denied.
+PREDICTION: 0","Although rejection is likely due to the poor credit score and short employment history, the very small loan amount and extremely low DTI could reasonably sway the loan officer to approve, so defer to Person 1 for the final call. Escalate to ensure the human decision-maker reviews these conflicting signals.
+DECISION: 1",,,2026-03-19T09:27:43.861076
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,500 for home_improvement. They have been employed for 3 years, a debt-to-income ratio of 16.5%, and a credit score of 670.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Applicant shows stable employment (3 years), a low DTI of 16.5%, and a fair-to-good credit score of 670 for a relatively small $4,500 home-improvement loan, so approve.  
+PREDICTION: 1","Given the applicant's stable employment, low DTI, acceptable credit score, and the small loan amount, approval is a high-confidence call and likely matches Person 1's decision; therefore implement.  
+DECISION: 0",,,2026-03-19T09:27:45.033953
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for Moving and relocation. They have been employed for < 1 year, a debt-to-income ratio of 0.0%, and a credit score of 570.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I would reject because the applicant's poor credit score (570) and employment tenure under one year present too much risk for an unsecured relocation loan despite the low DTI and small amount.
+PREDICTION: 0","I recommend escalation because I cannot be certain my predicted rejection matches Person 1's actual decision and the applicant's borderline credit and short employment history could reasonably lead to a different outcome. Confirming with Person 1 ensures the final loan decision reflects their judgment.  
+DECISION: 1",,,2026-03-19T09:27:45.276578
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for credit_card. They have been employed for 3 years, a debt-to-income ratio of 11.6%, and a credit score of 725.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's strong credit score (725), low debt-to-income ratio (11.6%), stable 3-year employment, and relatively small $4,000 credit-card request make approval the prudent choice.  
+PREDICTION: 1","Given the applicant's strong credit score (725), low DTI (11.6%), stable 3-year employment, and modest $4,000 request, the approval prediction is high-confidence and aligns with standard underwriting criteria. Implementing avoids unnecessary delay and is appropriate here.  
+DECISION: 0",,,2026-03-19T09:27:49.180272
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for debt_consolidation. They have been employed for 8 years, a debt-to-income ratio of 23.0%, and a credit score of 680.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I would approve: the applicant's fair-to-good credit score (680), low debt-to-income ratio (23%), eight years of stable employment, and small $3,000 debt-consolidation request indicate low credit risk.  
+PREDICTION: 1","I recommend escalating to Person 1 because I cannot be certain my prediction matches their actual decision and a human loan officer should make the final approval decision.  
+DECISION: 1",,,2026-03-19T09:27:50.273940
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 35.5%, and a credit score of 611.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's short employment history (<1 year) and marginal credit score (611) present elevated risk that outweighs the acceptable DTI (35.5%) and small loan amount, so I would not approve the loan.  
+PREDICTION: 0","There is significant uncertainty because the applicant's marginal credit score and short employment history could lead Person 1 to either reject or request more information rather than automatically approve, so this should be confirmed with Person 1. Escalate for final review.  
+DECISION: 1",,,2026-03-19T09:27:50.909744
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for home_improvement. They have been employed for 10+ years, a debt-to-income ratio of 9.5%, and a credit score of 680.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The $3,000 home-improvement request paired with 10+ years of employment, a very low 9.5% DTI, and a fair-to-good 680 credit score indicates low risk, so approve.  
+PREDICTION: 1","I should escalate because I don't have access to Person 1's actual decision or final authority, so I cannot verify that my prediction matches theirs. Given possible additional factors Person 1 may consider, escalating for confirmation is appropriate.  
+DECISION: 1",,,2026-03-19T09:27:51.428564
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,900 for credit_card. They have been employed for 2 years, a debt-to-income ratio of 25.8%, and a credit score of 665.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve: with a fair credit score of 665, a low DTI of 25.8%, two years of employment, and a modest $3,900 credit-card request the applicant appears likely to repay.  
+PREDICTION: 1","The applicant's fair-to-good credit score (665), low DTI (25.8%), two years' employment stability, and modest $3,900 request make approval likely under typical underwriting standards, so I'm confident the earlier prediction is correct.  
+DECISION: 0",,,2026-03-19T09:27:51.788762
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for debt_consolidation. They have been employed for 3 years, a debt-to-income ratio of 25.5%, and a credit score of 755.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Applicant should be approved because they have a strong credit score (755), a low debt-to-income ratio (25.5%), stable employment (3 years), and are requesting a relatively small $4,000 for debt consolidation. 
+PREDICTION: 1","We should escalate because I don't have access to Person 1's actual decision and cannot be certain my prediction matches it; although the applicant's profile suggests approval, final authority may consider additional factors beyond the provided data.  
+DECISION: 1",,,2026-03-19T09:27:52.049213
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for debt_consolidation. They have been employed for 5 years, a debt-to-income ratio of 14.0%, and a credit score of 760.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the applicant's excellent credit score (760), low debt-to-income ratio (14%), five years of employment stability, and modest $4,000 request for debt consolidation indicate low credit risk.  
+PREDICTION: 1","Implement — the applicant’s strong credit score (760), low DTI (14%), five years of employment, and modest $4,000 request make approval the clear, low-risk choice, so it's likely to match Person 1’s decision.  
+DECISION: 0",,,2026-03-19T09:27:52.996695
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,800 for car. They have been employed for < 1 year, a debt-to-income ratio of 7.5%, and a credit score of 700.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because their solid credit score (700), very low debt-to-income ratio (7.5%), and modest $4,800 request outweigh the risk of under one year of employment.  
+PREDICTION: 1","Implement — the applicant's strong credit score (700), very low DTI (7.5%), and small $4,800 request make approval the most likely decision despite under one year of employment, so I'm reasonably confident my prediction matches Person 1's likely choice.  
+DECISION: 0",,,2026-03-19T09:27:53.691970
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 32.5%, and a credit score of 690.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the applicant's fair-to-good 690 credit score and a reasonable 32.5% DTI support repayment ability for a modest $4,000 debt-consolidation loan despite the unspecified employment length. 
+PREDICTION: 1","Because employment length is missing (nan) and could change the risk assessment despite decent credit score and DTI, escalate to Person 1 to confirm their final decision rather than automatically implementing the approval.  
+DECISION: 1",,,2026-03-19T09:27:54.861465
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 4.5%, and a credit score of 690.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because the $4,000 request is small, the debt-to-income ratio is very low (4.5%) and the credit score is solid (690), so despite missing employment-duration data they appear creditworthy.  
+PREDICTION: 1","Because employment duration is missing (""nan"") and that information could materially affect eligibility despite a low DTI and decent credit score, escalate to Person 1 for confirmation before implementing the approval.  
+DECISION: 1",,,2026-03-19T09:27:56.665482
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 32.7%, and a credit score of 586.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I would reject because the applicant's subprime credit score (586) and short employment history (<1 year) create elevated default risk that likely outweighs the acceptable DTI (32.7%) for a small debt-consolidation loan.  
+PREDICTION: 0","I recommend escalating because I cannot be certain my rejection prediction matches Person 1's true decision and the case is borderline (low credit score and short employment vs acceptable DTI), so Person 1 should confirm.  
+DECISION: 1",,,2026-03-19T09:28:01.213830
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,800 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 32.6%, and a credit score of 705.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because their 10+ years of employment, good credit score (705), moderate DTI (32.6%), and relatively small $4,800 debt-consolidation request indicate acceptable risk.  
+PREDICTION: 1","Implement — I am confident the prediction is correct because the applicant meets common underwriting criteria (good credit score 705, long employment history, moderate DTI 32.6%, and a small $4,800 debt-consolidation request), so Person 1 is likely to approve.  
+DECISION: 0",,,2026-03-19T09:28:01.828023
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 37.7%, and a credit score of 705.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Applicant should be approved: a $3,000 consolidation loan to a borrower with a good credit score (705), long-term employment (>10 years), and an acceptable DTI (37.7%) presents manageable risk.  
+PREDICTION: 1","Implement — the applicant’s strong employment history, good credit score (705), small loan amount, and a DTI (37.7%) that is within commonly accepted limits (well below 43%) make approval the likely decision by Person 1.  
+DECISION: 0",,,2026-03-19T09:28:02.063704
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for debt_consolidation. They have been employed for 1 year, a debt-to-income ratio of 20.9%, and a credit score of 715.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve: the applicant's solid credit score (715), low debt-to-income ratio (20.9%), and modest $4,000 consolidation request with one year of employment indicate acceptable credit risk.  
+PREDICTION: 1","Escalate: while the applicant's credit score and low DTI support approval, the short (1-year) employment history and the need for human verification and judgment warrant review by Person 1.  
+DECISION: 1",,,2026-03-19T09:28:02.068633
+loan_under_5000,0,0,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for Other. They have been employed for < 1 year, a debt-to-income ratio of 100.0%, and a credit score of 519.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Reject: the applicant's poor credit score (519), 100% debt-to-income ratio, and employment under one year indicate inadequate repayment capacity for the requested $1,000.  
+PREDICTION: 0","Implement: the applicant's very poor credit (519), 100% debt-to-income ratio, and under-one-year employment make approval highly unlikely and risky, so my rejection prediction should match Person 1's decision.  
+DECISION: 0",,,2026-03-19T09:28:02.987657
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for medical. They have been employed for 10+ years, a debt-to-income ratio of 11.1%, and a credit score of 730.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the small $4,000 medical request, strong credit score (730), very low DTI (11.1%), and stable 10+ years of employment, approval is likely.  
+PREDICTION: 1","Implement — high confidence the applicant will be approved given the small $4,000 medical request, strong credit score (730), very low DTI (11.1%), and stable 10+ years employment, so escalation is unnecessary.  
+DECISION: 0",,,2026-03-19T09:28:03.314065
+loan_under_5000,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,600 for Other. They have been employed for < 1 year, a debt-to-income ratio of 2.5%, and a credit score of 617.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the requested amount is small and the applicant's extremely low DTI (2.5%) indicates strong repayment capacity that outweighs a marginally subprime credit score (617) and short employment tenure (<1 year).  
+PREDICTION: 1","Escalate because although the low loan amount and very low DTI favor approval, the borderline credit score (617) and employment under one year create significant uncertainty about whether Person 1 would actually approve. A human review will ensure underwriting policies and employment stability concerns are properly weighed.  
+DECISION: 1",,,2026-03-19T09:28:03.459771
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for major_purchase. They have been employed for nan, a debt-to-income ratio of 9.3%, and a credit score of 705.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's low debt-to-income ratio (9.3%), solid credit score (705), and small $1,000 request for a major purchase outweigh the missing employment-duration data, so I would approve.  
+PREDICTION: 1","Employment duration is missing (nan), so despite the favorable DTI and credit score, there’s insufficient information to be confident the prediction matches Person 1’s true decision—escalate for confirmation.  
+DECISION: 1",,,2026-03-19T09:28:04.810779
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,900 for other. They have been employed for nan, a debt-to-income ratio of 16.2%, and a credit score of 685.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the requested amount is small and the applicant's credit score of 685 combined with a low DTI of 16.2% indicate manageable risk despite the missing employment duration.  
+PREDICTION: 1","Escalate because, while the small loan, low DTI, and 685 credit score support approval, the missing employment duration (nan) introduces material uncertainty that should be verified by Person 1 before implementing.  
+DECISION: 1",,,2026-03-19T09:28:06.000503
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,025 for other. They have been employed for 5 years, a debt-to-income ratio of 16.7%, and a credit score of 705.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because five years of stable employment, a low debt-to-income ratio (16.7%), and a solid credit score of 705 indicate they are a low-risk borrower for a small $3,025 loan.  
+PREDICTION: 1","The applicant's five years of stable employment, low 16.7% DTI, solid 705 credit score, and small $3,025 request make approval a low-risk and routine decision, so implementing the prediction is reasonable.  
+DECISION: 0",,,2026-03-19T09:28:08.082675
+loan_under_5000,0,0,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for Moving and relocation. They have been employed for < 1 year, a debt-to-income ratio of 2.0%, and a credit score of 507.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be rejected because the very low credit score (507) and short employment history (<1 year) present too high a credit risk despite a low DTI and small loan amount.  
+PREDICTION: 0","Implement the prediction because the applicant's very low credit score (507) and employment tenure under one year present clear credit risks that likely lead Person 1 to reject despite low DTI and small loan size.  
+DECISION: 0",,,2026-03-19T09:28:10.136217
+loan_under_5000,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,500 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 18.6%, and a credit score of 655.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve — the $3,500 request is relatively small, the applicant's debt-to-income ratio is low (18.6%) and a 655 score is in an acceptable range, so despite employment under one year the risk appears manageable. 
+PREDICTION: 1","Although the borrower's low DTI and acceptable 655 score favor approval, the employment under one year is a substantial risk factor that could lead Person 1 to decide differently, so this should be escalated for confirmation.  
+DECISION: 1",,,2026-03-19T09:28:10.797886
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,500 for Moving and relocation. They have been employed for < 1 year, a debt-to-income ratio of 0.0%, and a credit score of 560.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be rejected because the low credit score (560) and under‑1‑year employment history present unacceptable credit and employment risk despite a $1,500 request and 0% DTI.  
+PREDICTION: 0","I recommend escalating because I cannot be certain Person 1's actual decision or underwriting policy—given ambiguous/ borderline factors (employment <1 year, credit score 560) it's safer to confirm with the original decision-maker.  
+DECISION: 1",,,2026-03-19T09:28:10.941665
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 5.6%, and a credit score of 725.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved: they request a small $3,000 debt-consolidation loan, have a good credit score (725), a very low debt-to-income ratio (5.6%), and two years of employment indicating stability.  
+PREDICTION: 1","I cannot be sure my predicted approval matches Person 1’s actual decision, so to avoid implementing an incorrect action it’s safer to escalate for confirmation.  
+DECISION: 1",,,2026-03-19T09:28:11.038648
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,800 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 30.2%, and a credit score of 705.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve — the applicant's 10+ years of employment, solid credit score (705), moderate DTI (30.2%), and the relatively small $4,800 consolidation request indicate low risk.  
+PREDICTION: 1","Confidence is high because the applicant's 10+ years of steady employment, a solid credit score of 705, a moderate DTI of 30.2%, and the relatively small $4,800 consolidation request together indicate low credit risk, so implementing the approve prediction is appropriate.  
+DECISION: 0",,,2026-03-19T09:28:11.641962
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,500 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 7.3%, and a credit score of 720.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because the $2,500 request is small and supported by a solid 720 credit score, very low 7.3% DTI, and over 10 years of stable employment indicating low repayment risk.
+PREDICTION: 1","I cannot be certain that my prediction matches Person 1's actual decision, and because this is a financial approval that ultimately must reflect Person 1's judgment, escalate for confirmation.  
+DECISION: 1",,,2026-03-19T09:28:12.838605
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,500 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 14.4%, and a credit score of 700.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Recommend approval: the applicant's 10+ years of employment, low 14.4% debt-to-income ratio, solid 700 credit score, and modest $2,500 request for debt consolidation indicate low risk. 
+PREDICTION: 1","The applicant presents low risk — 10+ years employment, a 700 credit score, a 14.4% DTI, and a modest $2,500 debt-consolidation request — so automated approval is appropriate absent any undisclosed red flags or missing documentation.  
+DECISION: 0",,,2026-03-19T09:28:13.743452
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,500 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 11.1%, and a credit score of 685.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because a fair-to-good credit score (685) combined with a very low DTI (11.1%) indicates capacity to repay the modest $4,500 consolidation loan despite under one year of employment. 
+PREDICTION: 1","Implement — the borrower's fair-to-good credit (685), very low DTI (11.1%), and modest $4,500 request together give sufficient confidence to approve despite <1 year employment, so escalation is unnecessary.  
+DECISION: 0",,,2026-03-19T09:28:15.649355
+loan_under_5000,0,0,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for Other. They have been employed for < 1 year, a debt-to-income ratio of 28.3%, and a credit score of 520.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be rejected because the very low credit score (520) and short employment history (<1 year) present high default risk that outweighs the moderate DTI (28.3%) and relatively small loan amount ($4,000). 
+PREDICTION: 0","Implement my prediction because the applicant's very low credit score (520) and employment under one year create clear high-risk signals that justify rejection despite a moderate DTI and small loan amount, so I'm confident the predicted decision matches prudent underwriting. 
+DECISION: 0",,,2026-03-19T09:28:16.311323
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for other. They have been employed for < 1 year, a debt-to-income ratio of 4.2%, and a credit score of 670.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve — the applicant's very low 4.2% DTI and acceptable 670 credit score, along with a relatively small $4,000 request, outweigh the short employment tenure (<1 year). 
+PREDICTION: 1","Escalate — although the low DTI and 670 score support approval, the applicant's employment tenure under one year is a common manual-review trigger and I can't be certain this matches Person 1's policy or risk tolerance.  
+DECISION: 1",,,2026-03-19T09:28:20.030756
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 37.5%, and a credit score of 629.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's short employment history (<1 year), subprime credit score (629), and borderline-high DTI (37.5%), the combined risk is too great to approve a debt-consolidation loan despite the modest $4,000 amount.
+PREDICTION: 0","Escalate: although the short employment and subprime score suggest rejection, the modest loan amount and borderline DTI mean the loan officer’s actual policy or judgment could reasonably approve, so I’m not confident enough to implement.  
+DECISION: 1",,,2026-03-19T09:28:21.056845
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for credit_card. They have been employed for 1 year, a debt-to-income ratio of 10.2%, and a credit score of 670.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the applicant's fair-to-good credit score (670), very low debt-to-income ratio (10.2%), one year of employment, and relatively small $3,000 credit-card request indicate manageable risk.  
+PREDICTION: 1","I cannot verify Person 1's true decision from available information, and because loan approval policies and final discretion reside with the loan officer, this should be escalated for confirmation.  
+DECISION: 1",,,2026-03-19T09:28:22.474483
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,500 for other. They have been employed for < 1 year, a debt-to-income ratio of 0.0%, and a credit score of 580.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's low credit score (580) and short employment history (<1 year) create unacceptable credit risk for approving a $2,500 unsecured ""other"" loan despite a 0% DTI.  
+PREDICTION: 0","I recommend escalating because I cannot be certain my rejection prediction matches Person 1's judgment—given limited context about their risk tolerance and underwriting rules, it's safer to have them confirm.  
+DECISION: 1",,,2026-03-19T09:28:23.887883
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 33.3%, and a credit score of 715.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Despite the missing employment tenure, the applicant's solid credit score of 715, reasonable debt-to-income ratio of 33.3%, and modest $4,000 request for debt consolidation support approving the loan.  
+PREDICTION: 1","Escalate: employment tenure is missing (""nan""), which is material to underwriting and increases uncertainty despite the solid credit score and DTI, so verify employment and supporting documentation before implementing an approval.  
+DECISION: 1",,,2026-03-19T09:28:26.272257
+loan_under_5000,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for Other. They have been employed for < 1 year, a debt-to-income ratio of 0.7%, and a credit score of 728.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve — the applicant's strong credit score (728) and extremely low DTI (0.7%) indicate solid repayment capacity for a relatively small $4,000 loan, outweighing the risk of <1 year employment.  
+PREDICTION: 1","I recommend escalating because I cannot be certain my prediction matches Person 1's actual choice—short employment tenure might lead them to reject despite the strong credit score and low DTI, so confirming with Person 1 reduces risk.  
+DECISION: 1",,,2026-03-19T09:28:26.347196
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 16.4%, and a credit score of 730.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the small $3,000 request for debt consolidation combined with 10+ years employment, a low DTI of 16.4%, and a strong credit score of 730, approve the loan.  
+PREDICTION: 1","I recommend escalating because, although the applicant's profile (low DTI, long employment history, and a 730 credit score) strongly supports approval, we cannot be certain my prediction matches Person 1's actual decision without their confirmation. Escalation ensures the loan officer verifies and documents the final decision.  
+DECISION: 1",,,2026-03-19T09:28:27.782367
+loan_under_5000,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,500 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 1.3%, and a credit score of 678.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because the loan is small ($1,500), their credit score is acceptable (678), and the extremely low debt-to-income ratio (1.3%) outweighs the short employment duration (<1 year). 
+PREDICTION: 1","The applicant shows strong signals (low DTI, acceptable credit score, small requested amount) but the short employment tenure (<1 year) is a borderline risk factor that likely warrants the loan officer's discretionary review. Escalate to Person 1 for final judgment. 
+DECISION: 1",,,2026-03-19T09:28:28.385303
+loan_under_5000,0,0,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,500 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 76.2%, and a credit score of 589.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I would reject the application because the applicant's very high debt-to-income ratio (76.2%), low credit score (589), and employment under one year indicate an elevated risk of default despite the relatively small requested amount.  
+PREDICTION: 0","Implement — the applicant's very high debt-to-income ratio (76.2%), low credit score (589), and employment under one year make denial the most likely outcome, so my prediction of rejection probably matches Person 1's decision.  
+DECISION: 0",,,2026-03-19T09:28:30.537569
+loan_under_5000,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,500 for other. They have been employed for 5 years, a debt-to-income ratio of 1.8%, and a credit score of 624.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve—the applicant’s five years of employment, very low DTI (1.8%), and small $2,500 request outweigh a marginal 624 credit score. 
+PREDICTION: 1","Implement — the borrower’s five-year employment history, very low DTI (1.8%), and small $2,500 request make approval reasonable despite a borderline 624 credit score, so my prediction likely matches Person 1’s decision. Therefore no escalation is necessary.
+DECISION: 0",,,2026-03-19T09:28:31.901490
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,500 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 0.1%, and a credit score of 562.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I would reject because the applicant's low credit score (562) and employment under one year outweigh the favorable tiny DTI and small loan size, indicating high default risk.  
+PREDICTION: 0","Escalate — the applicant's very low credit score and short employment history are significant red flags, but the tiny loan amount and extremely low DTI create ambiguity that warrants human review to confirm Person 1's risk tolerance and lending criteria.  
+DECISION: 1",,,2026-03-19T09:28:32.560077
+loan_under_5000,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 17.6%, and a credit score of 683.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve: the applicant’s low 17.6% DTI and a fair-to-good 683 credit score for a relatively small $4,000 consolidation loan outweigh the risk of under one year of employment.  
+PREDICTION: 1","Escalate: although the applicant’s low DTI and 683 score support approval, employment under one year is a material underwriting flag that may require Person 1’s judgment or additional documentation.  
+DECISION: 1",,,2026-03-19T09:28:34.586348
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for Moving and relocation. They have been employed for < 1 year, a debt-to-income ratio of 7.7%, and a credit score of 501.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I would reject because the applicant's very low credit score (501) and short employment history (<1 year) create elevated risk that outweighs the favorable low DTI and modest $3,000 relocation request.  
+PREDICTION: 0","I recommend escalating because we cannot be certain Person 1's true decision matches my prediction, and the applicant's mixed signals (very low credit score and short employment vs low DTI and small loan) warrant confirmation.  
+DECISION: 1",,,2026-03-19T09:28:35.448741
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,800 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 15.5%, and a credit score of 685.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the borrower has a reasonably good credit score (685), a low debt-to-income ratio (15.5%), steady employment for 2 years, and is requesting a relatively small consolidation loan ($4,800), indicating manageable risk.
+PREDICTION: 1","I recommend escalating to Person 1 because, although the applicant's low DTI, fair credit score, and steady employment make approval likely, I cannot be certain my prediction matches Person 1's true decision without their confirmation. DECISION: 1",,,2026-03-19T09:28:36.080464
+loan_under_5000,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for home_improvement. They have been employed for 5 years, a debt-to-income ratio of 15.6%, and a credit score of 638.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I would approve the $1,000 home-improvement loan because the applicant's low debt-to-income ratio (15.6%) and stable five-year employment history outweigh a borderline credit score of 638 for such a small, lower-risk loan.  
+PREDICTION: 1","Escalate because, while approval seemed reasonable given the low DTI and stable employment, the applicant's borderline credit score (638) and any additional underwriting details should be confirmed by the loan officer. Therefore, do not implement the prediction automatically—have Person 1 review and decide.  
+DECISION: 1",,,2026-03-19T09:28:37.293372
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for debt_consolidation. They have been employed for 7 years, a debt-to-income ratio of 17.5%, and a credit score of 740.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve: the applicant's strong credit score (740), long employment history (7 years), low DTI (17.5%), and small $3,000 consolidation request indicate low risk.  
+PREDICTION: 1","The applicant's combination of a high credit score (740), long employment (7 years), low DTI (17.5%), and a small $3,000 consolidation request makes approval the low-risk and likely choice for Person 1, so implementing the prediction is appropriate.  
+DECISION: 0",,,2026-03-19T09:28:37.334963
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,800 for credit_card. They have been employed for 10+ years, a debt-to-income ratio of 23.6%, and a credit score of 670.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Applicant should be approved: long-term employment, a low DTI of 23.6%, a fair-to-good credit score (670), and a relatively small $1,800 credit-card request indicate manageable risk. 
+PREDICTION: 1","Given the applicant's long employment tenure, low DTI (23.6%), modest $1,800 request, and a fair-to-good 670 credit score, it is likely Person 1 would approve, so implement the prediction.  
+DECISION: 0",,,2026-03-19T09:28:37.504142
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for other. They have been employed for 5 years, a debt-to-income ratio of 19.5%, and a credit score of 670.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's 5 years of employment, low DTI of 19.5%, and a fair-to-good credit score of 670 for a relatively small $4,000 request, I would approve the loan.  
+PREDICTION: 1","The applicant's long employment history, low DTI, and acceptable credit score for a small $4,000 loan make approval the most likely outcome, so it's reasonable to implement the prediction rather than escalate.  
+DECISION: 0",,,2026-03-19T09:28:40.540386
+loan_under_5000,0,0,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 44.8%, and a credit score of 547.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Applicant should be rejected because the low credit score (547), high debt-to-income ratio (44.8%), and short employment tenure (<1 year) indicate elevated default risk despite the modest $3,000 request.
+
+PREDICTION: 0","Implement — the applicant's low credit score (547), high debt-to-income ratio (44.8%), and short employment tenure (<1 year) present clear underwriting risks that a loan officer would most likely reject, so my earlier prediction likely matches Person 1's decision. 
+
+DECISION: 0",,,2026-03-19T09:28:40.986059
+loan_under_5000,0,0,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,500 for credit_card. They have been employed for < 1 year, a debt-to-income ratio of 241.1%, and a credit score of 658.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Reject due to an extremely high debt-to-income ratio (241.1%), short employment tenure (<1 year) indicating low income stability, and only a borderline credit score (658) making the applicant too risky for a $2,500 credit-card loan.  
+PREDICTION: 0","Implement — I'm confident Person 1 would also reject because the applicant's extremely high DTI (241.1%), short employment tenure (<1 year), and borderline credit score (658) make approving a $2,500 credit-card loan highly risky.  
+DECISION: 0",,,2026-03-19T09:28:43.441166
+loan_under_5000,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 21.3%, and a credit score of 612.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's low debt-to-income ratio (21.3%) and relatively small $3,000 request likely offset the risk from a fair credit score (612) and short employment (<1 year), so I predict approval.  
+PREDICTION: 1","I have moderate confidence because the low DTI and small $3,000 request favor approval but the short employment duration and only fair credit score create real uncertainty about Person 1's final call. Given that conflict, escalate to Person 1 for their judgment.  
+DECISION: 1",,,2026-03-19T09:28:43.657696
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,000 for home_improvement. They have been employed for 10+ years, a debt-to-income ratio of 23.1%, and a credit score of 665.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The application should be approved because the small $2,000 home-improvement loan presents low risk given 10+ years of employment, a low DTI of 23.1%, and a fair credit score of 665. 
+PREDICTION: 1","Escalate: although employment length and low DTI support approval, the applicant’s credit score of 665 is borderline and lending policy or Person 1’s risk tolerance may differ, so I’m not confident my prediction matches their actual decision.  
+DECISION: 1",,,2026-03-19T09:28:43.746236
+loan_under_5000,0,0,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,000 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 4.5%, and a credit score of 525.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's very low credit score (525) and short employment history (<1 year) indicate elevated default risk that outweighs the favorable low DTI (4.5%) and small requested amount, so I would not approve the loan.  
+PREDICTION: 0","The applicant's very low credit score (525) and short employment history are dominant decline factors that most loan officers use to reject even a small consolidation request despite low DTI, so my prediction to reject likely matches Person 1's decision.  
+DECISION: 0",,,2026-03-19T09:28:45.225899
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,825 for debt_consolidation. They have been employed for < 1 year, a debt-to-income ratio of 32.3%, and a credit score of 720.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's strong 720 credit score and reasonable 32.3% DTI outweigh the short (<1 year) employment history for a relatively small $4,825 debt-consolidation loan, so I would approve.  
+PREDICTION: 1","Although a 720 credit score and 32.3% DTI favor approval, the very short (<1 year) employment history is a common hard stop for loan officers and creates enough uncertainty about Person 1’s true decision that this should be escalated for human review.  
+DECISION: 1",,,2026-03-19T09:28:45.586659
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,200 for home_improvement. They have been employed for 9 years, a debt-to-income ratio of 21.3%, and a credit score of 700.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve — the applicant's long employment history (9 years), good credit score (700), low debt-to-income ratio (21.3%), and small requested amount ($3,200) indicate low risk.  
+PREDICTION: 1","The applicant's strong credit score (700), low DTI (21.3%), long employment (9 years), and small loan amount ($3,200) make approval a low-risk decision, so I am confident our prediction matches Person 1's likely choice and can be implemented.  
+DECISION: 0",,,2026-03-19T09:28:46.763987
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,500 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 16.4%, and a credit score of 715.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's healthy credit score (715), low debt-to-income ratio (16.4%), and relatively small requested amount ($1,500), approval is likely despite the missing employment-length data.  
+PREDICTION: 1","Escalate: while credit score and DTI support approval, the missing employment-length (""nan"") is a material gap that requires Person 1's review before implementing the decision.  
+DECISION: 1",,,2026-03-19T09:28:47.538031
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for debt_consolidation. They have been employed for 5 years, a debt-to-income ratio of 21.6%, and a credit score of 690.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Recommend approval because the borrower requests a small $3,000 consolidation loan, has five years of employment, a low 21.6% debt-to-income ratio, and a solid 690 credit score indicating manageable risk. 
+PREDICTION: 1","I cannot know Person 1's actual decision from the information given, so we should escalate to confirm whether they agree with the approval recommendation. Escalate for verification to avoid implementing a possibly incorrect action.  
+DECISION: 1",,,2026-03-19T09:28:50.256785
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,600 for debt_consolidation. They have been employed for 3 years, a debt-to-income ratio of 23.6%, and a credit score of 665.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Loan likely approved because the applicant has stable employment (3 years), a low debt-to-income ratio (23.6%), and a reasonable credit score (665) for a relatively small $3,600 debt-consolidation request.  
+PREDICTION: 1","Given the applicant's 3 years of employment, low 23.6% DTI, and an acceptable 665 credit score for a small $3,600 debt-consolidation loan, I am reasonably confident the loan officer would approve, so implement the prediction.  
+DECISION: 0",,,2026-03-19T09:28:51.791796
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,000 for Other. They have been employed for 1 year, a debt-to-income ratio of 9.7%, and a credit score of 514.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be rejected because a credit score of 514 indicates high default risk that outweighs the small loan amount and low DTI despite only one year of employment.  
+PREDICTION: 0","There is uncertainty whether Person 1 will accept the reject recommendation because final approval depends on the lender's specific credit-score cutoffs and the loan officer's risk tolerance, so this should be escalated for human confirmation.  
+DECISION: 1",,,2026-03-19T09:28:52.246075
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 27.6%, and a credit score of 670.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's stable 10+ years of employment, low debt-to-income ratio of 27.6%, adequate credit score of 670, and modest $4,000 request for debt consolidation, I would approve the loan.  
+PREDICTION: 1","Implement — the applicant's long-term employment, low 27.6% DTI, acceptable 670 credit score, and modest $4,000 consolidation request present low risk and align with typical approval criteria, so I'm confident in the predicted approval.  
+DECISION: 0",,,2026-03-19T09:28:52.385257
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,725 for debt_consolidation. They have been employed for 2 years, a debt-to-income ratio of 13.0%, and a credit score of 660.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the applicant has a stable 2-year employment history, a low debt-to-income ratio (13%), a fair-to-good credit score of 660, and is requesting a modest consolidation loan of $3,725.  
+PREDICTION: 1","Implement — the applicant's 2-year employment, low 13% DTI, fair-to-good 660 credit score, and modest $3,725 consolidation request make approval likely, so I'm confident my prediction matches Person 1's likely decision.  
+DECISION: 0",,,2026-03-19T09:28:52.652959
+loan_under_5000,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,500 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 10.0%, and a credit score of 707.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve: the applicant's good credit score (707), very low DTI (10%), and small requested amount ($2,500) outweigh the elevated risk from under-one-year employment.  
+PREDICTION: 1","Implement — this prediction likely matches Person 1’s decision because the applicant’s strong credit (707), very low DTI (10%), and small requested amount ($2,500) outweigh the risk from under-one-year employment, so escalation is unnecessary.  
+DECISION: 0",,,2026-03-19T09:28:53.560138
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for Medical expenses. They have been employed for < 1 year, a debt-to-income ratio of 1.9%, and a credit score of 501.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be rejected because the very low credit score (501) and short employment history (<1 year) outweigh the favorable low DTI and small loan amount, indicating unacceptable credit risk.  
+PREDICTION: 0","I recommend escalating because I cannot verify Person 1's actual decision and the conflicting factors (very low credit score vs low DTI and small loan) merit human confirmation rather than automatic implementation.  
+DECISION: 1",,,2026-03-19T09:28:54.740395
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 18.3%, and a credit score of 660.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Low DTI (18.3%), a reasonable credit score (660), and the small $4,000 consolidation amount suggest manageable repayment risk despite missing employment duration, so approve.  
+PREDICTION: 1","Because employment duration is missing (""nan"") and lending policies may require verification beyond the visible variables, it's safer to escalate so Person 1 can confirm employment and any additional underwriting criteria.  
+DECISION: 1",,,2026-03-19T09:28:56.040333
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,300 for other. They have been employed for 2 years, a debt-to-income ratio of 22.2%, and a credit score of 690.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The application should be approved because the applicant's good credit score (690), low debt-to-income ratio (22.2%), stable two-year employment, and modest $3,300 request indicate low credit risk.  
+PREDICTION: 1","Implement — I am confident the approval is correct because the applicant’s 690 credit score, low 22.2% DTI, two years of employment, and modest $3,300 request indicate low risk and align with typical underwriting criteria. Therefore escalation is unnecessary.  
+DECISION: 0",,,2026-03-19T09:28:56.761173
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for other. They have been employed for 3 years, a debt-to-income ratio of 17.4%, and a credit score of 695.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The borrower should be approved because the $3,000 request is small, they have a stable 3-year employment history, a low DTI of 17.4%, and a credit score of 695 indicating acceptable credit risk.  
+PREDICTION: 1","Implement — I'm confident because the borrower's strong indicators (3-year employment, low 17.4% DTI, and a good 695 credit score) and the small $3,000 request make approval highly likely, so my prediction likely matches Person 1's decision.  
+DECISION: 0",,,2026-03-19T09:28:57.165448
+loan_under_5000,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for Other. They have been employed for 3 years, a debt-to-income ratio of 1.0%, and a credit score of 627.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the small $1,000 request, very low 1% debt-to-income ratio and three years' employment which outweigh the borderline 627 credit score, I predict approval.
+PREDICTION: 1","The $1,000 request, very low 1% DTI, and three years' employment make approval likely despite a borderline 627 score, so I'm reasonably confident my prediction matches Person 1's decision. Implement the prediction.
+DECISION: 0",,,2026-03-19T09:29:01.060469
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,925 for credit_card. They have been employed for 2 years, a debt-to-income ratio of 6.6%, and a credit score of 660.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the applicant's low 6.6% DTI and two years of employment indicate strong repayment capacity and the $4,925 request is modest relative to a fair 660 credit score. 
+PREDICTION: 1","Implement because the applicant's very low 6.6% DTI, two years of employment, and modest $4,925 request make approval consistent with typical lending standards despite a fair 660 score.  
+DECISION: 0",,,2026-03-19T09:29:01.607788
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,475 for other. They have been employed for 4 years, a debt-to-income ratio of 14.2%, and a credit score of 670.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because their 4-year employment history, low DTI of 14.2%, acceptable credit score of 670, and relatively small requested amount ($4,475) indicate manageable risk.  
+PREDICTION: 1","Implement — the applicant’s stable employment, low DTI, acceptable 670 credit score, and modest requested amount make approval likely, so my prediction is probably correct.  
+DECISION: 0",,,2026-03-19T09:29:02.143370
+loan_under_5000,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,000 for Other. They have been employed for < 1 year, a debt-to-income ratio of 0.0%, and a credit score of 625.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I recommend approving because despite a borderline credit score (625) and short employment tenure, the small $2,000 request and 0.0% DTI indicate low repayment risk.  
+PREDICTION: 1","Because employment under one year and a borderline 625 credit score introduce meaningful risk that the loan officer might reject despite the small amount and 0% DTI, escalate for human review.  
+DECISION: 1",,,2026-03-19T09:29:05.616748
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,100 for debt_consolidation. They have been employed for 1 year, a debt-to-income ratio of 24.8%, and a credit score of 680.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Applicant requests $3,100 for debt consolidation, has a fair-to-good credit score of 680, a low debt-to-income ratio (24.8%), and one year of employment; given the modest loan amount and favorable DTI/credit profile, I would approve.  
+PREDICTION: 1","Given the applicant's fair-to-good credit score (680), low DTI (24.8%), and modest loan amount for debt consolidation, I am reasonably confident the predicted approval is appropriate despite only one year of employment.  
+DECISION: 0",,,2026-03-19T09:29:05.830338
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,800 for credit_card. They have been employed for 6 years, a debt-to-income ratio of 29.2%, and a credit score of 695.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because they have a stable six-year employment history, a good credit score (695), a low debt-to-income ratio (29.2%), and the requested $4,800 is modest given these favorable factors.
+PREDICTION: 1","Implement — the applicant's six-year employment history, good credit score (695), low DTI (29.2%), and modest $4,800 request make approval likely to match Person 1's true decision, so proceed without escalation.
+DECISION: 0",,,2026-03-19T09:29:05.975838
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 18.5%, and a credit score of 670.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Despite missing employment length, the applicant's low debt-to-income ratio (18.5%), fair credit score (670), and modest $4,000 request support approving the loan.  
+PREDICTION: 1","Because employment length is missing (nan) and could materially affect creditworthiness despite the decent DTI and fair score, we should confirm that information with Person 1 before implementing the approval.  
+DECISION: 1",,,2026-03-19T09:29:11.961293
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for debt_consolidation. They have been employed for nan, a debt-to-income ratio of 28.7%, and a credit score of 715.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the applicant's strong credit score (715) and low debt-to-income ratio (28.7%) make them likely to repay a small $3,000 debt-consolidation loan despite the missing employment-length data.  
+PREDICTION: 1","Escalate because key information (employment length) is missing and I cannot be certain my prediction matches Person 1's actual decision or internal lending policies. Please have Person 1 review the application before implementation.  
+DECISION: 1",,,2026-03-19T09:29:12.283604
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for vacation. They have been employed for 2 years, a debt-to-income ratio of 24.2%, and a credit score of 665.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant is likely to be approved because the $3,000 request is small relative to their stable 2-year employment, low debt-to-income ratio of 24.2%, and a fair credit score of 665 indicating manageable credit risk.  
+PREDICTION: 1","I recommend escalating because I cannot be certain my prediction matches Person 1's actual decision—only Person 1 can confirm approval versus rejection, and lending decisions may consider additional factors beyond the provided data. Please verify with Person 1 before implementing.  
+DECISION: 1",,,2026-03-19T09:29:13.379509
+loan_under_5000,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for medical. They have been employed for 5 years, a debt-to-income ratio of 0.2%, and a credit score of 602.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the small $1,000 medical loan, five years of stable employment, and an extremely low debt-to-income ratio (0.2%) outweighing the borderline 602 credit score, Person 1 is likely to approve. 
+PREDICTION: 1","Implement — I'm reasonably confident the prediction to approve is correct because the requested amount is small, the applicant shows five years' employment and an extremely low debt-to-income ratio that outweighs a borderline 602 credit score, so the risk of misclassification is low.  
+DECISION: 0",,,2026-03-19T09:29:13.391333
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,000 for vacation. They have been employed for 10+ years, a debt-to-income ratio of 28.1%, and a credit score of 670.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because their 10+ years of employment, low DTI (28.1%), and decent credit score (670) indicate acceptable creditworthiness for a small $2,000 vacation loan.  
+PREDICTION: 1","Implement — the applicant's long employment history, low 28.1% DTI, and acceptable 670 credit score for a small $2,000 vacation loan make approval the likely and low-risk choice, so it's reasonable to proceed without escalation.  
+DECISION: 0",,,2026-03-19T09:29:15.152506
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 22.0%, and a credit score of 675.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because the small $2,000 consolidation loan poses low risk given stable 10+ years employment, a low 22% debt-to-income ratio, and a fair-to-good credit score of 675.  
+PREDICTION: 1","Implement — the applicant presents low risk (small $2,000 consolidation, 10+ years employment, 22% DTI, and a 675 credit score), so it's likely Person 1 would approve and no ambiguous red flags require escalation.  
+DECISION: 0",,,2026-03-19T09:29:16.660525
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,600 for Other. They have been employed for < 1 year, a debt-to-income ratio of 29.9%, and a credit score of 592.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be rejected because the low credit score (592) and under‑one‑year employment create high risk that outweighs the modest requested amount and acceptable DTI (29.9%). 
+PREDICTION: 0","The case is borderline — low credit score (592) and employment under one year raise risk, but the small loan amount and acceptable DTI could allow approval under specific policy or discretion, so escalate for Person 1's final decision.  
+DECISION: 1",,,2026-03-19T09:29:17.118372
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for debt_consolidation. They have been employed for 1 year, a debt-to-income ratio of 24.2%, and a credit score of 665.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because the $3,000 request is small, their debt-to-income ratio is low at 24.2%, and a 665 credit score with one year of employment presents acceptable risk for debt consolidation.  
+PREDICTION: 1","I recommend escalating because, while my model favored approval given the small loan amount, low DTI, and a 665 score, there is residual uncertainty due to only one year of employment and potential lender-specific criteria that only Person 1 can confirm.  
+DECISION: 1",,,2026-03-19T09:29:17.296685
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for other. They have been employed for 10+ years, a debt-to-income ratio of 31.2%, and a credit score of 670.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Recommend approval: long-term employment (10+ years), a moderate DTI of 31.2% within acceptable ranges, a fair-to-good credit score of 670, and a small $4,000 request indicate manageable risk.
+PREDICTION: 1","I cannot know Person 1's actual decision from the given information, so to avoid acting on a potentially incorrect prediction it's safer to escalate for confirmation.  
+DECISION: 1",,,2026-03-19T09:29:17.414299
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,675 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 14.9%, and a credit score of 670.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's long-term employment, low 14.9% debt-to-income ratio, modest $4,675 request for debt consolidation, and acceptable 670 credit score, approval is warranted.
+PREDICTION: 1","I am confident in the approval prediction because the applicant's long employment history, low 14.9% DTI, modest $4,675 request, and acceptable 670 credit score indicate low risk and strong eligibility, so implementing the decision is appropriate.  
+DECISION: 0",,,2026-03-19T09:29:20.495722
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,250 for other. They have been employed for < 1 year, a debt-to-income ratio of 3.6%, and a credit score of 558.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","I recommend rejecting the application because the applicant's poor credit score (558) and short employment history (<1 year) indicate elevated default risk that likely outweighs the favorable low DTI and small loan amount.  
+PREDICTION: 0","Escalate — we cannot be certain our predicted rejection matches Person 1's actual decision, and the mix of low DTI and small loan amount against a poor credit score and short employment creates enough ambiguity that Person 1 should confirm.  
+DECISION: 1",,,2026-03-19T09:29:22.052125
+loan_under_5000,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,500 for home_improvement. They have been employed for < 1 year, a debt-to-income ratio of 9.4%, and a credit score of 661.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The small $3,500 home-improvement request with a very low DTI (9.4%) and an acceptable credit score (661) likely outweighs the risk of employment under 1 year, so approve.  
+PREDICTION: 1","The low loan amount, very low DTI, and an acceptable credit score make approval more likely despite under-one-year employment, so it's reasonable to implement the predicted approval without escalation.  
+DECISION: 0",,,2026-03-19T09:29:22.656160
+loan_under_5000,0,0,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for Home buying. They have been employed for < 1 year, a debt-to-income ratio of 5.6%, and a credit score of 586.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Reject because a credit score of 586 combined with less than one year of employment creates unacceptable underwriting risk for a home purchase loan despite the low DTI and small requested amount.
+PREDICTION: 0","Implement because the applicant's poor credit score (586) and under-one-year employment are strong grounds for a loan officer to reject a home-purchase request despite the low DTI and small amount, so my prediction likely matches Person 1's decision.  
+DECISION: 0",,,2026-03-19T09:29:23.250577
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,500 for car. They have been employed for < 1 year, a debt-to-income ratio of 2.8%, and a credit score of 570.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the small loan and low DTI are positives, the applicant's credit score of 570 and employment under one year present elevated credit and stability risks, so I would decline; PREDICTION: 0","I cannot be certain of Person 1's true decision because the application has mixed signals (small loan and low DTI vs poor credit score and short employment), so this uncertainty warrants asking Person 1 to confirm rather than implementing my prediction.  
+DECISION: 1",,,2026-03-19T09:29:24.057678
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,000 for debt_consolidation. They have been employed for 10+ years, a debt-to-income ratio of 23.7%, and a credit score of 725.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Applicant should be approved because the small $1,000 debt-consolidation request presents low risk given 10+ years of employment, a solid 725 credit score, and a low 23.7% DTI.  
+PREDICTION: 1","The applicant's small $1,000 debt-consolidation request combined with 10+ years employment, a solid 725 credit score, and a low 23.7% DTI make approval very likely, so implement the prediction rather than escalate.  
+DECISION: 0",,,2026-03-19T09:29:25.850466
+loan_under_5000,0,0,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,000 for home_improvement. They have been employed for < 1 year, a debt-to-income ratio of 8.3%, and a credit score of 501.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Despite the low requested amount and very low DTI, the applicant's very poor credit score (501) and short employment history (<1 year) present elevated risk that leads me to reject the application.
+PREDICTION: 0","I recommend escalation because I cannot be certain Person 1 shares my risk assessment—although the very low credit score and short employment favor rejection, the very low DTI and small loan amount could reasonably lead Person 1 to approve.  
+DECISION: 1",,,2026-03-19T09:29:29.415330
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,500 for moving. They have been employed for 1 year, a debt-to-income ratio of 31.6%, and a credit score of 690.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The loan should be approved: the $1,500 request is small, the applicant's 690 credit score is near-prime, a 31.6% debt-to-income ratio is within typical acceptable limits, and one year of employment is sufficient for a small move-related loan.  
+PREDICTION: 1","The applicant's profile (small $1,500 request, 690 credit score, 31.6% DTI, and one year of employment) meets typical approval criteria, so I am reasonably confident Person 1 would approve. Implement the prediction.  
+DECISION: 0",,,2026-03-19T09:29:29.971967
+loan_under_5000,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,500 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 16.2%, and a credit score of 698.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's credit score of 698 and low DTI of 16.2% indicate adequate creditworthiness and repayment capacity for a modest $4,500 debt-consolidation loan, and while employment under one year is a risk it is outweighed by the other strong factors.  
+PREDICTION: 1","Because employment under one year could trigger a manual review or different underwriting rules despite the solid credit score and low DTI, there's enough uncertainty and policy risk that this should be escalated to Person 1 for a final decision.  
+DECISION: 1",,,2026-03-19T09:29:31.772880
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,000 for credit_card. They have been employed for 8 years, a debt-to-income ratio of 13.6%, and a credit score of 690.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's solid credit score (690), long employment history (8 years), low DTI (13.6%), and modest $3,000 request indicate low risk and support approval.
+PREDICTION: 1","Given the applicant's strong indicators (690 credit score, 8 years employment, 13.6% DTI, and a modest $3,000 request), it's very likely Person 1 would approve, so implement the prediction.  
+DECISION: 0",,,2026-03-19T09:29:32.418128
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,000 for major_purchase. They have been employed for 2 years, a debt-to-income ratio of 20.1%, and a credit score of 680.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant should be approved because their 2-year employment history, low 20.1% debt-to-income ratio, a fair-to-good 680 credit score, and modest $4,000 request indicate acceptable credit risk.  
+PREDICTION: 1","Implement — the applicant’s 2-year employment, low 20.1% DTI, 680 credit score, and small $4,000 request align with standard approval criteria, so it’s likely my approval prediction matches Person 1’s decision.  
+DECISION: 0",,,2026-03-19T09:29:32.600144
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $4,800 for credit_card. They have been employed for 4 years, a debt-to-income ratio of 13.9%, and a credit score of 665.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the applicant shows four years of stable employment, a low debt-to-income ratio (13.9%), and a fair credit score (665) that together support granting a modest $4,800 credit-card loan.
+PREDICTION: 1","I am reasonably confident my prediction matches Person 1's likely decision because the applicant's four years of employment, low 13.9% DTI, and fair 665 credit score support approving a modest $4,800 credit-card request, so escalation is unnecessary. Implement the prediction.
+DECISION: 0",,,2026-03-19T09:29:33.563219
+loan_under_5000,1,1,1,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $1,600 for debt_consolidation. They have been employed for 6 years, a debt-to-income ratio of 7.8%, and a credit score of 660.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Approve because the applicant has a stable 6-year employment history, a very low 7.8% debt-to-income ratio, and a moderate 660 credit score for a small $1,600 debt-consolidation loan.
+
+PREDICTION: 1","Implement — the applicant's very low 7.8% DTI, stable 6-year employment, and only moderate credit risk (660) for a small $1,600 consolidation loan make approval likely to match Person 1's decision.  
+
+DECISION: 0",,,2026-03-19T09:29:34.830136
+loan_under_5000,0,1,0,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,100 for Debt consolidation. They have been employed for < 1 year, a debt-to-income ratio of 12.9%, and a credit score of 650.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 will likely approve because the applicant's low DTI (12.9%), modest $3,100 consolidation request, and acceptable credit score of 650 outweigh concerns about under one year of employment.  
+PREDICTION: 1","I recommend escalating because while the low DTI, small loan amount, and a 650 score point toward approval, the applicant’s employment under one year is a significant underwriting flag that could cause Person 1 to decide differently. Given that uncertainty about how Person 1 weights employment history could change the outcome, escalate for final judgment.  
+DECISION: 1",,,2026-03-19T09:29:35.519031
+loan_under_5000,1,1,1,1,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $3,600 for moving. They have been employed for < 1 year, a debt-to-income ratio of 21.5%, and a credit score of 680.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The applicant's credit score of 680 and low debt-to-income ratio (21.5%) make them a reasonable risk for a relatively small $3,600 moving loan despite having under one year at their current job.  
+PREDICTION: 1","Because employment tenure under one year introduces meaningful uncertainty about how Person 1 weighs risk despite a decent credit score and low DTI, I am not confident my prediction matches their true decision. Escalate to Person 1 for confirmation.  
+DECISION: 1",,,2026-03-19T09:29:36.275594
+loan_under_5000,0,1,0,0,"You are helping Person 1, a loan officer, decide whether to approve a loan application. The applicant is requesting $2,500 for Educational Tuition. They have been employed for 10+ years, a debt-to-income ratio of 17.9%, and a credit score of 701.
+
+TASK: Predict Person 1's decision. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (approve) or 'PREDICTION: 0' (reject).","You predicted Person 1's decision above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches Person 1's true decision, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given the applicant's long-term employment, low debt-to-income ratio (17.9%), a solid credit score of 701, and the relatively small $2,500 tuition request, approve the loan as credit risk appears low.  
+PREDICTION: 1","The applicant's strong employment history, low debt-to-income ratio, solid credit score, and small $2,500 tuition request make me confident my prediction (approve) aligns with Person 1's likely decision, so it's safe to implement without escalation.  
+DECISION: 0",,,2026-03-19T09:29:43.634214

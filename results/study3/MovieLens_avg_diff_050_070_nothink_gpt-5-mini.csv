@@ -1,11 +1,11 @@
 condition,ground_truth,prediction,correct,escalate,prompt,esc_prompt,thought,esc_reasoning,thinking_predict,thinking_escalate,timestamp
 avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
 
+- Seven Year Itch, The (1955) (Comedy): Rated 5.0/5
+- How to Marry a Millionaire (1953) (Comedy|Drama|Romance): Rated 5.0/5
+- No Looking Back (1998) (Drama|Romance): Rated 3.0/5
 - Paris When It Sizzles (1964) (Comedy|Romance): Rated 4.0/5
-- There's No Business Like Show Business (1954) (Musical): Rated 5.0/5
 - Von Ryan's Express (1965) (Action|Adventure|Drama|War): Rated 4.0/5
-- Ice Castles (1978) (Drama): Rated 3.0/5
-- Gentlemen Prefer Blondes (1953) (Comedy|Musical|Romance): Rated 5.0/5
 
 Consider these two movies they have not seen:
 
@@ -17,16 +17,81 @@ A decision tree trained on this dataset finds that when the two movies' average 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 has shown strong preference for musicals and romantic comedies and the two films' averages differ by 0.65 (in the 0.50–0.70 band where users pick the higher-rated movie 73%), so they would likely rate Moulin Rouge higher.  
-PREDICTION: 1","The model's baseline rule gives a 73% chance the higher-rated film (Moulin Rouge) is preferred, and Person 1's strong history of liking musicals and romance increases confidence in that prediction, so implement it.  
-DECISION: 0",,,2026-03-17T21:14:53.871524
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Moulin Rouge is the higher-rated film by 0.65 (in the 0.50–0.70 band where users prefer the higher-rated movie 73% of the time) and better matches Person 1's strong preference for romance/classic films, so they would likely rate Movie A higher.  
+PREDICTION: 1","The higher average (difference 0.65) falls in the band where users pick the higher-rated movie 73% of the time, and Person 1's clear preference for romance/classic films makes Moulin Rouge the likelier favorite; thus implementing is more likely correct.  
+DECISION: 0",,,2026-03-18T17:10:04.194931
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Silence of the Lambs, The (1991) (Crime|Horror|Thriller): Rated 3.0/5
-- Seven (a.k.a. Se7en) (1995) (Mystery|Thriller): Rated 4.0/5
-- American President, The (1995) (Comedy|Drama|Romance): Rated 4.0/5
-- Braveheart (1995) (Action|Drama|War): Rated 5.0/5
+- To Die For (1995) (Comedy|Drama|Thriller): Rated 4.0/5
+- Mighty Aphrodite (1995) (Comedy|Drama|Romance): Rated 4.0/5
+- Leaving Las Vegas (1995) (Drama|Romance): Rated 5.0/5
+- Father of the Bride Part II (1995) (Comedy): Rated 1.0/5
+- Waiting to Exhale (1995) (Comedy|Drama|Romance): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Dead Man Walking (1995) (Crime|Drama), average rating 3.92/5 (681 ratings)
+- Movie B: GoldenEye (1995) (Action|Adventure|Thriller), average rating 3.41/5 (996 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 tends to prefer dramas (high ratings for drama/romance films) and Movie A is 0.51 points higher—inside the 0.50–0.70 range where users choose the higher-rated film 73% of the time—Person 1 would likely prefer Movie A.
+
+PREDICTION: 1","The 0.51 rating gap falls in the 0.50–0.70 range where the higher-rated film is chosen 73% of the time, and Person 1’s past strong preference for dramas over action films further supports Movie A; thus the prediction is likely correct. 
+
+DECISION: 0",,,2026-03-18T17:10:10.509355
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
+- Lord of the Rings: The Return of the King, The (2003) (Action|Adventure|Drama|Fantasy): Rated 4.5/5
+- Good, the Bad and the Ugly, The (Buono, il brutto, il cattivo, Il) (1966) (Action|Adventure|Western): Rated 3.5/5
+- Gladiator (1992) (Action|Drama): Rated 4.0/5
+- Rain Man (1988) (Drama): Rated 3.0/5
+- Andromeda Strain, The (1971) (Mystery|Sci-Fi): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Dead Poets Society (1989) (Drama), average rating 3.99/5 (992 ratings)
+- Movie B: Big Trouble in Little China (1986) (Action|Adventure|Comedy|Fantasy), average rating 3.44/5 (197 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The two movies' averages differ by 0.55 (in the 0.50–0.70 range where users choose the higher-rated movie 73% of the time), so Person 1 is likely to rate Dead Poets Society higher.  
+PREDICTION: 1","The decision tree indicates a 73% chance users prefer the higher-rated film when averages differ by 0.50–0.70, and here the difference is 0.55, so implementing the prediction is the higher-probability action.  
+DECISION: 0",,,2026-03-18T17:10:14.252852
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
+- Dead Man Walking (1995) (Crime|Drama): Rated 3.0/5
+- Broken Arrow (1996) (Action|Adventure|Thriller): Rated 3.0/5
+- Grumpier Old Men (1995) (Comedy|Romance): Rated 2.0/5
+- Dracula: Dead and Loving It (1995) (Comedy|Horror): Rated 1.0/5
+- Rock, The (1996) (Action|Adventure|Thriller): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Heat (1995) (Action|Crime|Thriller), average rating 3.91/5 (947 ratings)
+- Movie B: Eraser (1996) (Action|Drama|Thriller), average rating 3.23/5 (523 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the average ratings differ by 0.68 (within the 0.50–0.70 range) and the decision tree indicates users choose the higher-rated film 73% of the time, Person 1 is more likely to rate Movie A (Heat) higher.
+PREDICTION: 1","The decision-tree rule gives a 73% chance that users prefer the higher-rated movie when averages differ by 0.50–0.70, so implementing the prediction (Heat) maximizes the probability of being correct versus escalating (27% chance of being right). Therefore we should implement the prediction.
+DECISION: 0",,,2026-03-18T17:10:24.109695
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
+- Sense and Sensibility (1995) (Drama|Romance): Rated 4.0/5
 - Fugitive, The (1993) (Thriller): Rated 3.0/5
+- Nick of Time (1995) (Action|Thriller): Rated 3.0/5
+- Get Shorty (1995) (Comedy|Crime|Thriller): Rated 3.0/5
+- Babe (1995) (Children|Drama): Rated 4.0/5
 
 Consider these two movies they have not seen:
 
@@ -38,37 +103,79 @@ A decision tree trained on this dataset finds that when the two movies' average 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Apollo 13 is 0.55 points higher than Star Trek: Generations and, per the decision tree that predicts users pick the higher-rated film 73% of the time for a 0.50–0.70 difference (and matching Person 1's drama/adventure tastes), Person 1 would likely rate Apollo 13 higher.  
-PREDICTION: 1","The decision-tree gives a 73% chance the user prefers the higher-rated film for a 0.50–0.70 difference, and Person 1's history favors drama/adventure over sci‑fi (no strong sci‑fi preference), so it's reasonable to implement the prediction.  
-DECISION: 0",,,2026-03-17T21:15:01.250479
-avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Apollo 13's average rating is 0.55 higher than Star Trek: Generations (in the 0.50–0.70 range where users choose the higher-rated movie 73% of the time), and Person 1's stronger ratings for drama-heavy films (Sense and Sensibility, Babe) suggest they would favor Apollo 13.  
+PREDICTION: 1","The decision-tree baseline gives a 73% chance the higher-rated film (Apollo 13) is preferred in this rating-difference range, and Person 1's stronger ratings for drama-aligned films make Apollo 13 the more likely pick, so implement the prediction.  
+DECISION: 0",,,2026-03-18T17:10:26.095427
+avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
 
-- Net, The (1995) (Action|Crime|Thriller): Rated 3.0/5
-- Disclosure (1994) (Drama|Thriller): Rated 3.0/5
-- Speed (1994) (Action|Romance|Thriller): Rated 4.0/5
-- Ghost (1990) (Comedy|Drama|Fantasy|Romance|Thriller): Rated 3.0/5
-- Outbreak (1995) (Action|Drama|Sci-Fi|Thriller): Rated 4.0/5
+- Monsters, Inc. (2001) (Adventure|Animation|Children|Comedy|Fantasy): Rated 3.5/5
+- Green Hornet, The (2011) (Action|Comedy|Crime|Fantasy|Thriller|IMAX): Rated 3.0/5
+- Breakfast Club, The (1985) (Comedy|Drama): Rated 4.5/5
+- Wolf of Wall Street, The (2013) (Comedy|Crime|Drama): Rated 4.0/5
+- The Imitation Game (2014) (Drama|Thriller|War): Rated 5.0/5
 
 Consider these two movies they have not seen:
 
-- Movie A: Silence of the Lambs, The (1991) (Crime|Horror|Thriller), average rating 4.16/5 (2794 ratings)
-- Movie B: True Lies (1994) (Action|Adventure|Comedy|Romance|Thriller), average rating 3.49/5 (1458 ratings)
+- Movie A: WALL·E (2008) (Adventure|Animation|Children|Romance|Sci-Fi), average rating 4.01/5 (1235 ratings)
+- Movie B: Elf (2003) (Children|Comedy|Fantasy), average rating 3.41/5 (350 ratings)
 
 A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Silence of the Lambs is 0.67 points higher on average (in the 0.50–0.70 band where users pick the higher-rated film 73% of the time) and Person 1 has shown a preference for thrillers, so they would likely rate Movie A higher.  
-PREDICTION: 1","The decision tree gives a 73% probability users prefer the higher-rated film in this 0.50–0.70 gap and Person 1's history favors thrillers like Silence of the Lambs, so implementing the prediction is warranted.  
-DECISION: 0",,,2026-03-17T21:15:03.420022
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The two movies' average ratings differ by 0.60 (within the 0.50–0.70 range), and since the decision tree shows users pick the higher-rated film 73% of the time, Person 1 would likely rate WALL·E higher.  
+PREDICTION: 1","The decision tree gives a 73% chance the higher-average movie (WALL·E) is the one Person 1 would prefer, and their past liking of animation/children films (e.g., Monsters, Inc.) makes WALL·E a plausible fit, so implementing the prediction is justified.  
+DECISION: 0",,,2026-03-18T17:10:33.471427
+avg_diff_050_070,1,1,1,1,"Person 1 has reviewed the following movies:
+
+- Wallace & Gromit: The Best of Aardman Animation (1996) (Adventure|Animation|Comedy): Rated 3.0/5
+- Kill Bill: Vol. 1 (2003) (Action|Crime|Thriller): Rated 4.0/5
+- Pulp Fiction (1994) (Comedy|Crime|Drama|Thriller): Rated 5.0/5
+- You've Got Mail (1998) (Comedy|Romance): Rated 2.0/5
+- Intouchables (2011) (Comedy|Drama): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Eternal Sunshine of the Spotless Mind (2004) (Drama|Romance|Sci-Fi), average rating 4.06/5 (1381 ratings)
+- Movie B: Chicago (2002) (Comedy|Crime|Drama|Musical), average rating 3.50/5 (389 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Movie A's average (4.06) is 0.56 higher than Movie B's (3.50) and the decision tree shows users choose the higher-rated film 73% of the time when the difference is 0.50–0.70, Person 1 is predicted to rate Movie A higher.
+PREDICTION: 1","The model gives a 73% chance my prediction (Movie A) is correct for this rating gap, but a 27% error risk on personal preferences is high enough that we should confirm with Person 1 rather than auto-implement.  
+DECISION: 1",,,2026-03-18T17:10:37.903097
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Wedding Singer, The (1998) (Comedy|Romance): Rated 3.0/5
+- Where the Heart Is (2000) (Comedy|Drama): Rated 4.5/5
+- Minority Report (2002) (Action|Crime|Mystery|Sci-Fi|Thriller): Rated 4.0/5
+- City of Angels (1998) (Drama|Fantasy|Romance): Rated 4.5/5
+- White Oleander (2002) (Drama): Rated 4.0/5
+- Step Brothers (2008) (Comedy): Rated 1.5/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Roxanne (1987) (Comedy|Romance), average rating 3.49/5 (82 ratings)
+- Movie B: Along Came Polly (2004) (Comedy|Romance), average rating 2.99/5 (154 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Roxanne is 0.50 points higher and the decision tree says users choose the higher-rated film 73% of the time, and Person 1's strong liking for romantic films (City of Angels 4.5/5) suggests they'd prefer Roxanne.  
+PREDICTION: 1","The decision tree gives a 73% chance the user will prefer the higher-rated movie (Roxanne) for a 0.50 rating gap, and Person 1's strong preference for romance (City of Angels 4.5/5) supports choosing Roxanne, so implement the prediction.  
+DECISION: 0",,,2026-03-18T17:10:48.654628
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
 - Chasing Amy (1997) (Comedy|Drama|Romance): Rated 3.0/5
-- 8MM (1999) (Drama|Mystery|Thriller): Rated 2.0/5
-- My Best Friend's Wedding (1997) (Comedy|Romance): Rated 5.0/5
-- 2001: A Space Odyssey (1968) (Adventure|Drama|Sci-Fi): Rated 5.0/5
+- Ed Wood (1994) (Comedy|Drama): Rated 5.0/5
+- Rope (1948) (Crime|Drama|Thriller): Rated 4.0/5
+- Face/Off (1997) (Action|Crime|Drama|Thriller): Rated 5.0/5
+- Plunkett & MaCleane (1999) (Action|Adventure|Drama): Rated 1.0/5
 
 Consider these two movies they have not seen:
 
@@ -80,60 +187,58 @@ A decision tree trained on this dataset finds that when the two movies' average 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The average ratings differ by 0.62 (within 0.50–0.70), and the decision tree predicts users choose the higher-rated movie 73% of the time, so Person 1 is more likely to prefer Hunt for Red October.  
-PREDICTION: 1","The decision tree gives a 73% chance that users prefer the higher-rated film when the average ratings differ by 0.62, and Person 1's past ratings don't strongly contradict choosing the higher-rated mainstream thriller, so implementing is the more likely correct action.  
-DECISION: 0",,,2026-03-17T21:15:04.249776
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The films' average ratings differ by 0.62 (within the 0.50–0.70 band) and the decision tree predicts users pick the higher-rated film 73% of the time, so Person 1 is more likely to prefer Movie A.  
+PREDICTION: 1","The decision-tree gives a 73% probability that a user prefers the higher-rated film when the average ratings differ by 0.62, so it's more likely than not my prediction is correct and we should implement it.  
+DECISION: 0",,,2026-03-18T17:10:53.867453
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- P.S. I Love You (2007) (Comedy|Drama|Romance): Rated 3.5/5
-- Titanic (1997) (Drama|Romance): Rated 5.0/5
-- Red Cliff (Chi bi) (2008) (Action|Adventure|Drama|War): Rated 3.0/5
-- Doubt (2008) (Drama|Mystery): Rated 2.5/5
-- House Bunny, The (2008) (Comedy): Rated 3.0/5
+- Adventures of Priscilla, Queen of the Desert, The (1994) (Comedy|Drama): Rated 4.0/5
+- Long Walk Home, The (1990) (Drama): Rated 4.0/5
+- Fatal Attraction (1987) (Drama|Thriller): Rated 4.0/5
+- Boogie Nights (1997) (Drama): Rated 4.0/5
+- Bonnie and Clyde (1967) (Crime|Drama): Rated 4.0/5
 
 Consider these two movies they have not seen:
 
-- Movie A: Love Me If You Dare (Jeux d'enfants) (2003) (Drama|Romance), average rating 3.89/5 (33 ratings)
-- Movie B: Jumanji (1995) (Adventure|Children|Fantasy), average rating 3.26/5 (900 ratings)
+- Movie A: Wit (2001) (Drama), average rating 4.12/5 (20 ratings)
+- Movie B: Talented Mr. Ripley, The (1999) (Drama|Mystery|Thriller), average rating 3.56/5 (477 ratings)
 
 A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 favors romance/drama (Titanic 5.0, P.S. I Love You 3.5) and Movie A is higher-rated by 0.63—which falls in the 0.50–0.70 range where the tree predicts the higher-rated film is preferred 73% of the time—they would likely rate Movie A higher.
-
-PREDICTION: 1","Implement — the decision tree indicates a 73% chance the higher-rated movie (Movie A) will be preferred given the 0.63 rating gap, and Person 1's clear liking of romance/drama (Titanic 5.0, P.S. I Love You 3.5) aligns with Movie A's genre. The model confidence plus genre match justify implementing the prediction rather than escalating.
-
-DECISION: 0",,,2026-03-17T21:15:09.155123
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Movie A's average rating is 0.56 higher (within the 0.50–0.70 band), and the decision tree shows users pick the higher-rated film 73% of the time, so Person 1 would likely rate Movie A higher.  
+PREDICTION: 1","The decision tree shows a 73% chance users prefer the higher-rated film when the average difference is 0.50–0.70, and Movie A is 0.56 higher, so implementing the prediction is reasonable.  
+DECISION: 0",,,2026-03-18T17:11:03.052414
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Training Day (2001) (Crime|Drama|Thriller): Rated 3.5/5
-- 10 Cloverfield Lane (2016) (Thriller): Rated 4.5/5
-- Gravity (2013) (Action|Sci-Fi|IMAX): Rated 4.5/5
-- Speed (1994) (Action|Romance|Thriller): Rated 3.0/5
-- Full Metal Jacket (1987) (Drama|War): Rated 4.0/5
+- Sgt. Bilko (1996) (Comedy): Rated 3.0/5
+- Nutty Professor, The (1996) (Comedy|Fantasy|Romance|Sci-Fi): Rated 4.0/5
+- Homeward Bound II: Lost in San Francisco (1996) (Adventure|Children): Rated 2.0/5
+- Rumble in the Bronx (Hont faan kui) (1995) (Action|Adventure|Comedy|Crime): Rated 3.0/5
+- Spy Hard (1996) (Comedy): Rated 3.0/5
 
 Consider these two movies they have not seen:
 
-- Movie A: Captain America: The Winter Soldier (2014) (Action|Adventure|Sci-Fi|IMAX), average rating 3.71/5 (434 ratings)
-- Movie B: Beach, The (2000) (Adventure|Drama), average rating 3.06/5 (262 ratings)
+- Movie A: Heat (1995) (Action|Crime|Thriller), average rating 3.91/5 (947 ratings)
+- Movie B: Eraser (1996) (Action|Drama|Thriller), average rating 3.23/5 (523 ratings)
 
 A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the movies' average ratings differ by 0.65 (within the 0.50–0.70 range) and the decision tree indicates users choose the higher-rated film 73% of the time, Person 1 is likely to rate Movie A above Movie B.  
-PREDICTION: 1","The decision tree gives a 73% chance the user prefers the higher-rated film and Person 1's history shows stronger preference for Action/Sci‑Fi/Thriller titles (e.g., Gravity, 10 Cloverfield Lane) which align with Movie A. Therefore it's reasonable to implement the prediction.  
-DECISION: 0",,,2026-03-17T21:15:09.172483
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The average ratings differ by 0.68 (inside the 0.50–0.70 range where users choose the higher-rated film 73% of the time), so Person 1 is more likely to rate Movie A (Heat) higher. 
+PREDICTION: 1","The decision tree gives a 73% chance Person 1 prefers the higher-rated film (Heat) for the 0.68 rating gap, so implementing the prediction maximizes the likelihood of being correct.  
+DECISION: 0",,,2026-03-18T17:11:06.118807
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Courage Under Fire (1996) (Action|Crime|Drama|War): Rated 3.0/5
-- Dragonheart (1996) (Action|Adventure|Fantasy): Rated 3.0/5
-- Rock, The (1996) (Action|Adventure|Thriller): Rated 3.0/5
-- Fear (1996) (Thriller): Rated 3.0/5
-- Bloodsport 2 (a.k.a. Bloodsport II: The Next Kumite) (1996) (Action): Rated 3.0/5
+- Screamers (1995) (Action|Sci-Fi|Thriller): Rated 4.0/5
+- Kingpin (1996) (Comedy): Rated 3.0/5
+- Bio-Dome (1996) (Comedy): Rated 2.0/5
+- Sleepers (1996) (Thriller): Rated 3.0/5
+- Sense and Sensibility (1995) (Drama|Romance): Rated 4.0/5
 
 Consider these two movies they have not seen:
 
@@ -145,58 +250,146 @@ A decision tree trained on this dataset finds that when the two movies' average 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Movie A's average rating (3.92) is 0.59 higher than Movie B's (3.33) — in the 0.50–0.70 range where users choose the higher-rated film 73% of the time — I predict Person 1 would rate Dead Man Walking higher.
-PREDICTION: 1","The decision tree gives a 73% chance Person 1 prefers the higher-rated Movie A (the rating gap is 0.59), so implementing the prediction is the better option rather than escalating.  
-DECISION: 0",,,2026-03-17T21:15:17.778846
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Dead Man Walking is higher-rated by 0.59 (in the 0.50–0.70 range where users pick the higher-rated film 73% of the time) and aligns with Person 1’s positive response to drama, so they would likely rate Movie A higher.
+
+PREDICTION: 1","Implement the prediction because the decision tree gives a 73% chance the higher-rated film (Dead Man Walking) is preferred in this rating-difference range and the film's drama genre aligns with Person 1's tastes. Thus it's reasonable to act on the prediction rather than escalating.
+
+DECISION: 0",,,2026-03-18T17:11:12.845250
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Lawnmower Man 2: Beyond Cyberspace (1996) (Action|Sci-Fi|Thriller): Rated 2.0/5
-- Moonraker (1979) (Action|Adventure|Sci-Fi|Thriller): Rated 2.0/5
-- Forever Young (1992) (Drama|Romance|Sci-Fi): Rated 2.0/5
-- 2 Days in the Valley (1996) (Crime|Film-Noir): Rated 3.0/5
-- Hamlet (1996) (Crime|Drama|Romance): Rated 4.0/5
+- Pet Sematary (1989) (Horror): Rated 5.0/5
+- Bride of Frankenstein, The (Bride of Frankenstein) (1935) (Drama|Horror|Sci-Fi): Rated 5.0/5
+- Sleepy Hollow (1999) (Fantasy|Horror|Mystery|Romance): Rated 4.0/5
+- African Queen, The (1951) (Adventure|Comedy|Romance|War): Rated 5.0/5
+- Entrapment (1999) (Crime|Thriller): Rated 5.0/5
 
 Consider these two movies they have not seen:
 
-- Movie A: Star Wars: Episode IV - A New Hope (1977) (Action|Adventure|Sci-Fi), average rating 4.09/5 (2635 ratings)
-- Movie B: Omega Man, The (1971) (Action|Drama|Sci-Fi|Thriller), average rating 3.43/5 (47 ratings)
+- Movie A: Mummy, The (1932) (Horror|Romance), average rating 3.55/5 (65 ratings)
+- Movie B: Against All Odds (1984) (Romance), average rating 2.90/5 (26 ratings)
 
 A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The average ratings differ by 0.66 (within the 0.50–0.70 range) and the decision tree shows users pick the higher-rated movie 73% of the time, so Person 1 will likely rate Star Wars higher.  
-PREDICTION: 1","The decision tree gives a 73% probability that the user prefers the higher-rated movie when the averages differ by 0.50–0.70, so implementing the prediction is justified rather than escalating.  
-DECISION: 0",,,2026-03-17T21:15:24.619245
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 is likely to rate The Mummy (1932) higher because their history shows a strong preference for older horror/classic films and the decision tree says users pick the higher-rated movie 73% of the time when averages differ by 0.50–0.70.  
+PREDICTION: 1","Person 1's strong preference for older horror/classic films and the decision-tree rule (73% chance of choosing the higher-rated film when the average differs by 0.50–0.70, here 0.65) make it likely my prediction is correct.  
+DECISION: 0",,,2026-03-18T17:11:24.326180
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- American President, The (1995) (Comedy|Drama|Romance): Rated 5.0/5
-- Dances with Wolves (1990) (Adventure|Drama|Western): Rated 4.0/5
-- Pretty Woman (1990) (Comedy|Romance): Rated 5.0/5
-- While You Were Sleeping (1995) (Comedy|Romance): Rated 3.0/5
-- Client, The (1994) (Drama|Mystery|Thriller): Rated 3.0/5
+- Knocked Up (2007) (Comedy|Drama|Romance): Rated 5.0/5
+- Bohemian Rhapsody (2018) (Drama): Rated 5.0/5
+- Old School (2003) (Comedy): Rated 5.0/5
+- Pulp Fiction (1994) (Comedy|Crime|Drama|Thriller): Rated 5.0/5
+- Fahrenheit 9/11 (2004) (Documentary): Rated 5.0/5
 
 Consider these two movies they have not seen:
 
-- Movie A: Sleepless in Seattle (1993) (Comedy|Drama|Romance), average rating 3.51/5 (1004 ratings)
-- Movie B: Ace Ventura: Pet Detective (1994) (Comedy), average rating 2.97/5 (1310 ratings)
+- Movie A: American President, The (1995) (Comedy|Drama|Romance), average rating 3.69/5 (610 ratings)
+- Movie B: Star Wars: The Legacy Revealed (2007) (Documentary), average rating 3.00/5 (1 ratings)
 
 A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 is more likely to prefer Sleepless in Seattle because it matches their strong preference for comedy/romance/drama films and has the higher average rating (difference 0.54), and the decision tree shows users pick the higher-rated film 73% of the time.  
-PREDICTION: 1","The decision tree gives a strong prior (73%) for choosing the higher-rated film given the 0.54 rating gap, and Person 1's history shows a clear preference for comedy/romance/drama which matches Movie A. Therefore we should implement the prediction.  
-DECISION: 0",,,2026-03-17T21:15:26.503293
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The two films’ average ratings differ by 0.69 (in the 0.50–0.70 range where users pick the higher-rated film 73% of the time), and Movie A’s Comedy/Drama/Romance genres match Person 1’s past 5/5 favorites, so they would likely rate Movie A higher.  
+PREDICTION: 1","The decision tree gives a 73% chance the user prefers the higher-rated film and Movie A’s Comedy/Drama/Romance genres closely match Person 1’s 5-star history, increasing confidence in the prediction. Given the strong statistical signal plus genre alignment, implement the prediction rather than escalate.  
+DECISION: 0",,,2026-03-18T17:11:27.823393
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Beverly Hillbillies, The (1993) (Comedy): Rated 4.0/5
-- Dumb & Dumber (Dumb and Dumber) (1994) (Adventure|Comedy): Rated 4.0/5
-- Pretty Woman (1990) (Comedy|Romance): Rated 3.0/5
-- Ghost (1990) (Comedy|Drama|Fantasy|Romance|Thriller): Rated 3.0/5
-- Forrest Gump (1994) (Comedy|Drama|Romance|War): Rated 5.0/5
+- Blade Runner (1982) (Action|Sci-Fi|Thriller): Rated 4.0/5
+- Incredibles, The (2004) (Action|Adventure|Animation|Children|Comedy): Rated 1.5/5
+- Shining, The (1980) (Horror): Rated 5.0/5
+- Interstellar (2014) (Sci-Fi|IMAX): Rated 4.0/5
+- Kill Bill: Vol. 2 (2004) (Action|Drama|Thriller): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Inception (2010) (Action|Crime|Drama|Mystery|Sci-Fi|Thriller|IMAX), average rating 4.16/5 (1875 ratings)
+- Movie B: Glass Onion: A Knives Out Mystery (2022) (Comedy|Crime|Mystery), average rating 3.50/5 (55 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 is likely to prefer Inception because it aligns with their strong taste for sci‑fi/thriller/IMAX films (Blade Runner, Interstellar) and its average rating is 0.66 higher than Glass Onion—within the 0.50–0.70 gap where users pick the higher-rated movie 73% of the time.
+
+PREDICTION: 1","The decision-tree's 73% win-rate for the 0.50–0.70 rating gap combined with Person 1's clear preference for sci‑fi/thriller/IMAX films (Blade Runner, Interstellar) gives reasonable confidence to act on the prediction.  
+
+DECISION: 0",,,2026-03-18T17:11:41.408612
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
+- Godfather, The (1972) (Crime|Drama): Rated 5.0/5
+- Shawshank Redemption, The (1994) (Crime|Drama): Rated 3.5/5
+- The Revenant (2015) (Adventure|Drama): Rated 3.0/5
+- Big Short, The (2015) (Drama): Rated 2.5/5
+- Contact (1997) (Drama|Sci-Fi): Rated 4.5/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Room (2015) (Drama), average rating 3.92/5 (218 ratings)
+- Movie B: Happy Gilmore (1996) (Comedy), average rating 3.41/5 (718 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Room has the higher average (3.92 vs 3.41; difference 0.51 falls in the 0.50–0.70 range where users pick the higher-rated film 73% of the time) and Person 1's past ratings show a clear preference for dramas over comedies, so they would likely rate Room higher.
+PREDICTION: 1","Implement — the decision-tree rule gives a 73% chance the higher-rated movie (Room) is preferred in this rating-difference bin, and Person 1's past ratings show stronger favoring of dramas over comedies, so implementing is the better choice.
+DECISION: 0",,,2026-03-18T17:11:46.061959
+avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
+
+- Shawshank Redemption, The (1994) (Crime|Drama): Rated 5.0/5
+- Tango & Cash (1989) (Action|Comedy|Crime|Thriller): Rated 4.0/5
+- Bucket List, The (2007) (Comedy|Drama): Rated 4.5/5
+- Aliens (1986) (Action|Adventure|Horror|Sci-Fi): Rated 4.5/5
+- Lord of the Rings: The Return of the King, The (2003) (Action|Adventure|Drama|Fantasy): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Blow (2001) (Crime|Drama), average rating 3.79/5 (369 ratings)
+- Movie B: Day After Tomorrow, The (2004) (Action|Adventure|Drama|Sci-Fi|Thriller), average rating 3.12/5 (439 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The rating gap (3.79 vs 3.12 = 0.67) falls in the 0.50–0.70 band where users pick the higher-rated film 73% of the time, and Person 1's strong preference for Crime/Drama (Shawshank 5.0) makes them likely to favor Blow.  
+PREDICTION: 1","The decision tree gives a 73% chance the user prefers the higher-rated film for a 0.67 gap, and Person 1's strong preference for Crime/Drama (e.g., 5.0 for Shawshank, 4.0 for Tango & Cash) makes implementing the prediction to choose Blow reasonable.  
+DECISION: 0",,,2026-03-18T17:11:49.107770
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
+- Twelve Monkeys (a.k.a. 12 Monkeys) (1995) (Mystery|Sci-Fi|Thriller): Rated 5.0/5
+- Django Unchained (2012) (Action|Drama|Western): Rated 5.0/5
+- Shawshank Redemption, The (1994) (Crime|Drama): Rated 4.0/5
+- Matrix, The (1999) (Action|Sci-Fi|Thriller): Rated 5.0/5
+- Inception (2010) (Action|Crime|Drama|Mystery|Sci-Fi|Thriller|IMAX): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Big Short, The (2015) (Drama), average rating 4.05/5 (485 ratings)
+- Movie B: Jumanji: Welcome to the Jungle (2017) (Action|Adventure|Children), average rating 3.52/5 (148 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the average ratings differ by 0.53 (in the 0.50–0.70 range where users pick the higher-rated film 73% of the time) and Person 1 favors serious adult dramas/sci‑fi over children’s adventure fare, they would likely rate The Big Short higher.  
+PREDICTION: 1","The decision-tree rule gives a 73% chance the user prefers the higher-rated film in this rating-difference range, and Person 1’s history of favoring adult dramas/sci‑fi over children’s adventure further supports choosing The Big Short, so implementation is warranted.  
+DECISION: 0",,,2026-03-18T17:11:56.195777
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
+- Mask, The (1994) (Action|Comedy|Crime|Fantasy): Rated 3.0/5
+- Specialist, The (1994) (Action|Drama|Thriller): Rated 3.0/5
+- Die Hard: With a Vengeance (1995) (Action|Crime|Thriller): Rated 4.0/5
+- Aristocats, The (1970) (Animation|Children): Rated 3.0/5
+- Ace Ventura: Pet Detective (1994) (Comedy): Rated 4.0/5
 
 Consider these two movies they have not seen:
 
@@ -208,37 +401,59 @@ A decision tree trained on this dataset finds that when the two movies' average 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 is likely to prefer Three Colors: Blue because it has the higher average rating (3.95 vs 3.40), the difference (~0.55) falls in the 0.50–0.70 range where users pick the higher-rated movie 73% of the time, and their past ratings show a preference for dramas/romantic-dramas over action thrillers.  
-PREDICTION: 1","Implement, because the decision-tree gives a 73% chance the higher-rated film (Three Colors: Blue) will be preferred given the ~0.55 rating gap and Person 1's past ratings favor dramas/romantic-dramas consistent with Movie A.  
-DECISION: 0",,,2026-03-17T21:15:27.140075
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Three Colors: Blue's average rating is 0.55 higher than Batman's and the decision tree indicates users pick the higher-rated film 73% of the time when the gap is 0.50–0.70, Person 1 is predicted to rate Movie A higher.
+
+PREDICTION: 1","The decision tree indicates a 73% chance the user will prefer the higher-rated film when the average-rating gap is 0.50–0.70, so implementation is more likely to be correct than escalation; despite Person 1's action/thriller history favoring Batman, the model's strong prior supports implementing the prediction.  
+DECISION: 0",,,2026-03-18T17:11:57.502574
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Gone in 60 Seconds (2000) (Action|Crime): Rated 3.0/5
-- Stardust (2007) (Adventure|Comedy|Fantasy|Romance): Rated 2.5/5
-- Rush Hour (1998) (Action|Comedy|Crime|Thriller): Rated 3.0/5
-- Star Wars: Episode VII - The Force Awakens (2015) (Action|Adventure|Fantasy|Sci-Fi|IMAX): Rated 2.5/5
-- Three Billboards Outside Ebbing, Missouri (2017) (Crime|Drama): Rated 4.0/5
+- G.I. Jane (1997) (Action|Drama): Rated 2.5/5
+- Boys Don't Cry (1999) (Drama): Rated 3.5/5
+- Cell, The (2000) (Drama|Horror|Thriller): Rated 1.0/5
+- Down Periscope (1996) (Comedy): Rated 3.0/5
+- Wonder Boys (2000) (Comedy|Drama): Rated 4.5/5
 
 Consider these two movies they have not seen:
 
-- Movie A: Shining, The (1980) (Horror), average rating 4.07/5 (1243 ratings)
-- Movie B: Get Shorty (1995) (Comedy|Crime|Thriller), average rating 3.53/5 (749 ratings)
+- Movie A: Godfather, The (1972) (Crime|Drama), average rating 4.31/5 (2098 ratings)
+- Movie B: Patriot Games (1992) (Action|Crime|Drama|Thriller), average rating 3.67/5 (347 ratings)
 
 A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Movie A's average rating is 0.54 higher than Movie B's (within the 0.50–0.70 range), so per the decision tree Person 1 is predicted to prefer the higher-rated Movie A 73% of the time.  
-PREDICTION: 1","The decision-tree gives a 73% probability that Person 1 prefers the higher-rated Movie A given the 0.54 rating gap, which is a strong enough likelihood to act on the prediction rather than escalate. Implementing is reasonable unless the cost of a wrong recommendation is unusually high.  
-DECISION: 0",,,2026-03-17T21:15:32.190217
-avg_diff_050_070,0,1,0,1,"Person 1 has reviewed the following movies:
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because The Godfather's average rating is 0.64 higher than Patriot Games (within the 0.50–0.70 range) and the decision tree indicates users pick the higher-rated film 73% of the time, Person 1 is predicted to prefer Movie A.  
+PREDICTION: 1","Implement— the decision tree gives a 73% chance the higher-rated film (The Godfather) is preferred, and Person 1's past ratings show stronger liking for drama and weaker scores for action/thriller, which aligns with choosing Movie A.  
+DECISION: 0",,,2026-03-18T17:11:58.615256
+avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
 
-- Tron (1982) (Action|Adventure|Sci-Fi): Rated 0.5/5
-- Cinderella (1950) (Animation|Children|Fantasy|Musical|Romance): Rated 0.5/5
-- Star Trek: The Motion Picture (1979) (Adventure|Sci-Fi): Rated 0.5/5
-- Ronin (1998) (Action|Crime|Thriller): Rated 0.5/5
+- Parasite (2019) (Comedy|Drama): Rated 4.0/5
+- Jojo Rabbit (2019) (Comedy|War): Rated 3.5/5
+- Inside Out (2015) (Adventure|Animation|Children|Comedy|Drama|Fantasy): Rated 3.5/5
+- Princess Mononoke (Mononoke-hime) (1997) (Action|Adventure|Animation|Drama|Fantasy): Rated 4.0/5
+- Nightcrawler (2014) (Crime|Drama|Thriller): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: The Handmaiden (2016) (Drama|Romance|Thriller), average rating 3.96/5 (95 ratings)
+- Movie B: Side Effects (2013) (Crime|Drama|Mystery|Thriller), average rating 3.36/5 (76 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because The Handmaiden's average rating is 0.60 higher (in the 0.50–0.70 range where users prefer the higher-rated film 73% of the time) and Person 1 tends to favor drama/thriller films similar to those they've rated highly, they will likely rate Movie A higher.
+PREDICTION: 1","Implement — the decision tree gives a 73% chance the user prefers the higher-rated film for a 0.60 rating gap, and Person 1's history of favoring drama/thrillers aligns with Movie A (The Handmaiden), so the prediction is reasonably confident.
+DECISION: 0",,,2026-03-18T17:11:59.840308
+avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
+
+- Fried Green Tomatoes (1991) (Comedy|Crime|Drama): Rated 0.5/5
+- Miracle on 34th Street (1994) (Drama): Rated 0.5/5
 - Reality Bites (1994) (Comedy|Drama|Romance): Rated 0.5/5
+- Elizabeth (1998) (Drama): Rated 0.5/5
+- Madness of King George, The (1994) (Comedy|Drama): Rated 0.5/5
 
 Consider these two movies they have not seen:
 
@@ -250,37 +465,213 @@ A decision tree trained on this dataset finds that when the two movies' average 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Since Blazing Saddles' average rating is 0.64 points higher than Analyze This and the decision tree indicates users pick the higher-rated film 73% of the time for differences of 0.50–0.70, Person 1 is predicted to prefer Movie A.  
-PREDICTION: 1","The decision tree gives a 73% chance the higher-rated film (Movie A) would be preferred, but Person 1's uniformly extreme low ratings across diverse genres suggest they may be atypical and reduce our confidence, so we should ask them rather than implement.  
-DECISION: 1",,,2026-03-17T21:15:38.131744
-avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The average ratings differ by 0.64 (within the 0.50–0.70 range) and the decision tree indicates users choose the higher-rated film 73% of the time, so Person 1 is more likely to prefer Movie A.  
+PREDICTION: 1","The decision tree indicates a 73% chance Person 1 would prefer the higher-rated movie (Movie A), which is a strong enough probability to favor implementing the prediction rather than escalating; although there is some residual uncertainty, the model's confidence supports acting on it.  
+DECISION: 0",,,2026-03-18T17:12:03.252190
+avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
 
-- Infidel, The (2010) (Comedy): Rated 4.5/5
-- Zero de conduite (Zero for Conduct) (Zéro de conduite: Jeunes diables au collège) (1933) (Comedy|Drama): Rated 4.5/5
-- Forrest Gump (1994) (Comedy|Drama|Romance|War): Rated 4.5/5
-- Escape from New York (1981) (Action|Adventure|Sci-Fi|Thriller): Rated 2.0/5
-- Ghostbusters (a.k.a. Ghost Busters) (1984) (Action|Comedy|Sci-Fi): Rated 5.0/5
+- Aliens (1986) (Action|Adventure|Horror|Sci-Fi): Rated 3.0/5
+- Terminator, The (1984) (Action|Sci-Fi|Thriller): Rated 5.0/5
+- No Escape (1994) (Action|Drama|Sci-Fi): Rated 5.0/5
+- Young Guns (1988) (Action|Comedy|Western): Rated 5.0/5
+- Indiana Jones and the Last Crusade (1989) (Action|Adventure): Rated 3.0/5
 
 Consider these two movies they have not seen:
 
-- Movie A: Usual Suspects, The (1995) (Crime|Mystery|Thriller), average rating 4.24/5 (2132 ratings)
-- Movie B: Total Recall (1990) (Action|Adventure|Sci-Fi|Thriller), average rating 3.62/5 (836 ratings)
+- Movie A: Speed (1994) (Action|Romance|Thriller), average rating 3.47/5 (1464 ratings)
+- Movie B: Air America (1990) (Action|Comedy), average rating 2.81/5 (60 ratings)
 
 A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The average ratings differ by 0.62 (in the 0.50–0.70 range), and the decision tree shows users pick the higher-rated film about 73% of the time, so Person 1 would likely prefer Usual Suspects (Movie A).  
-PREDICTION: 1","The decision tree gives a 73% chance they'll pick the higher-rated film, and Person 1's past dislike of action/sci-fi/thriller (Escape from New York) combined with stronger preferences for drama/comedy makes Usual Suspects the more likely choice, so implement the prediction.  
-DECISION: 0",,,2026-03-17T21:15:38.493008
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given Person 1's clear liking for action films and that Speed's average rating is 0.66 higher (in the 0.50–0.70 range where users prefer the higher-rated movie 73% of the time), they are more likely to rate Movie A (Speed) higher.
+
+PREDICTION: 1","The decision tree gives a 73% chance the higher-rated film (Speed) is preferred when the rating gap is 0.66, and Person 1's strong preference for action movies supports that choice, so it's reasonable to implement the prediction. 
+
+DECISION: 0",,,2026-03-18T17:12:08.311835
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Inception (2010) (Action|Crime|Drama|Mystery|Sci-Fi|Thriller|IMAX): Rated 4.5/5
-- Cast Away (2000) (Drama): Rated 3.5/5
-- K-PAX (2001) (Drama|Fantasy|Mystery|Sci-Fi): Rated 3.5/5
-- Shawshank Redemption, The (1994) (Crime|Drama): Rated 3.5/5
-- Sin City (2005) (Action|Crime|Film-Noir|Mystery|Thriller): Rated 4.0/5
+- Airplane! (1980) (Comedy): Rated 5.0/5
+- Harry Potter and the Sorcerer's Stone (a.k.a. Harry Potter and the Philosopher's Stone) (2001) (Adventure|Children|Fantasy): Rated 4.0/5
+- Willy Wonka & the Chocolate Factory (1971) (Children|Comedy|Fantasy|Musical): Rated 5.0/5
+- Schindler's List (1993) (Drama|War): Rated 5.0/5
+- Casablanca (1942) (Drama|Romance): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: One Flew Over the Cuckoo's Nest (1975) (Drama), average rating 4.21/5 (1407 ratings)
+- Movie B: Planet of the Apes (1968) (Action|Drama|Sci-Fi), average rating 3.62/5 (455 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the average ratings differ by 0.59 (in the 0.50–0.70 range where users pick the higher-rated film 73% of the time) and Person 1 favors classic dramas similar to One Flew Over the Cuckoo's Nest, they would likely rate Movie A higher.
+
+PREDICTION: 1","The decision-tree rule gives a 73% probability the higher-rated film (One Flew Over the Cuckoo's Nest) would be preferred and Person 1's high ratings for classic dramas strengthen that likelihood, so implementing the prediction is justified. While there's a ~27% chance of being wrong, the statistical and preference signals favor implementation.
+
+DECISION: 0",,,2026-03-18T17:12:08.878892
+avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
+
+- Indiana Jones and the Last Crusade (1989) (Action|Adventure): Rated 4.0/5
+- Titanic (1997) (Drama|Romance): Rated 4.5/5
+- Chronicles of Narnia: The Lion, the Witch and the Wardrobe, The (2005) (Adventure|Children|Fantasy): Rated 4.0/5
+- Chronicles of Riddick, The (2004) (Action|Sci-Fi|Thriller): Rated 4.0/5
+- Italian Job, The (2003) (Action|Crime): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Movie A: American History X (1998) (Crime|Drama), average rating 4.14/5 (1245 ratings)
+- Movie B: Spider-Man (2002) (Action|Adventure|Sci-Fi|Thriller), average rating 3.48/5 (1243 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","American History X has a 0.66 higher average (inside the 0.50–0.70 range where users pick the higher-rated film 73% of the time) and Person 1 has shown strong preference for drama (rated Titanic 4.5), so they would likely rate Movie A higher.  
+PREDICTION: 1","The decision-tree gives a 73% chance the higher-rated film (American History X) will be preferred given the 0.66 rating gap, and Person 1's highest rating was for a drama (Titanic), so confidence is sufficient to implement.  
+DECISION: 0",,,2026-03-18T17:12:12.468860
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
+- Scream 2 (1997) (Comedy|Horror|Mystery|Thriller): Rated 4.0/5
+- Ice Age 2: The Meltdown (2006) (Adventure|Animation|Children|Comedy): Rated 4.0/5
+- River Wild, The (1994) (Action|Thriller): Rated 5.0/5
+- Negotiator, The (1998) (Action|Crime|Drama|Mystery|Thriller): Rated 4.5/5
+- Rio (2011) (Adventure|Animation|Children|Comedy): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Avengers, The (2012) (Action|Adventure|Sci-Fi|IMAX), average rating 3.69/5 (805 ratings)
+- Movie B: Miss Congeniality (2000) (Comedy|Crime), average rating 3.08/5 (443 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the average ratings differ by 0.61 (in the 0.50–0.70 range where users choose the higher-rated film 73% of the time) and Person 1 tends to prefer action/adventure titles that match Avengers more than lighter comedies, they would likely rate Avengers higher.
+PREDICTION: 1","The decision-tree shows a 73% chance of choosing the higher-rated film for a 0.50–0.70 rating gap (here 0.61), and Person 1's history favors action/adventure/thriller titles like Avengers over light comedies, so implementing the prediction is justified.  
+DECISION: 0",,,2026-03-18T17:12:14.936765
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
+- Fugitive, The (1993) (Thriller): Rated 5.0/5
+- Firm, The (1993) (Drama|Thriller): Rated 5.0/5
+- Nell (1994) (Drama): Rated 3.0/5
+- Toy Story (1995) (Adventure|Animation|Children|Comedy|Fantasy): Rated 4.0/5
+- Apollo 13 (1995) (Adventure|Drama|IMAX): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Braveheart (1995) (Action|Drama|War), average rating 4.00/5 (2161 ratings)
+- Movie B: Outbreak (1995) (Action|Drama|Sci-Fi|Thriller), average rating 3.42/5 (863 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Braveheart's average rating is 0.58 higher than Outbreak's and the decision tree shows users prefer the higher-rated film 73% of the time when the difference is 0.50–0.70, Person 1 is more likely to rate Movie A higher.
+
+PREDICTION: 1","The decision tree assigns a 73% probability that the higher-rated movie (Braveheart) will be preferred given the 0.58 rating gap, so the prediction is more likely correct than not. That level of confidence justifies implementing the recommendation rather than escalating.
+
+DECISION: 0",,,2026-03-18T17:12:17.823175
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
+- Johnny Mnemonic (1995) (Action|Sci-Fi|Thriller): Rated 2.0/5
+- Rambo III (1988) (Action|Adventure|Thriller|War): Rated 2.0/5
+- Fly, The (1986) (Drama|Horror|Sci-Fi|Thriller): Rated 3.0/5
+- Taxi Driver (1976) (Crime|Drama|Thriller): Rated 3.0/5
+- Rising Sun (1993) (Action|Drama|Mystery): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Dragonheart (1996) (Action|Adventure|Fantasy), average rating 3.24/5 (465 ratings)
+- Movie B: Santa Claus: The Movie (1985) (Adventure|Children|Fantasy), average rating 2.67/5 (52 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Dragonheart's average rating is 0.57 higher than Santa Claus and the decision tree rule says users choose the higher-rated movie 73% of the time in the 0.50–0.70 difference range, so Person 1 is predicted to prefer Movie A.  
+PREDICTION: 1","The decision-tree gives a 73% probability that Person 1 prefers the higher-rated movie (the ratings differ by 0.57), so implementing the prediction is more likely to be correct than escalating.  
+DECISION: 0",,,2026-03-18T17:12:18.271132
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
+- Dumbo (1941) (Animation|Children|Drama|Musical): Rated 3.5/5
+- Mission: Impossible (1996) (Action|Adventure|Mystery|Thriller): Rated 0.5/5
+- Gangs of New York (2002) (Crime|Drama): Rated 3.5/5
+- Anything Else (2003) (Comedy|Drama|Romance): Rated 3.5/5
+- Scary Movie 2 (2001) (Comedy): Rated 0.5/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Fantasia (1940) (Animation|Children|Fantasy|Musical), average rating 3.79/5 (409 ratings)
+- Movie B: Horse Whisperer, The (1998) (Drama|Romance), average rating 3.16/5 (72 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Fantasia closely matches Person 1's positively rated genres (animation/musical) and is 0.63 points higher on average—so under the decision tree users prefer the higher-rated film 73% of the time—I predict they would rate Movie A higher.
+
+PREDICTION: 1","The decision tree gives a 73% chance favoring the higher-rated film for a 0.63 difference, and Fantasia also matches Person 1's positively rated genres (animation/musical), so confidence is reasonably high. Therefore implement the prediction rather than escalate.
+
+DECISION: 0",,,2026-03-18T17:12:24.066007
+avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
+
+- Cable Guy, The (1996) (Comedy|Thriller): Rated 4.0/5
+- Grumpier Old Men (1995) (Comedy|Romance): Rated 4.0/5
+- Twelve Monkeys (a.k.a. 12 Monkeys) (1995) (Mystery|Sci-Fi|Thriller): Rated 4.0/5
+- Star Wars: Episode IV - A New Hope (1977) (Action|Adventure|Sci-Fi): Rated 5.0/5
+- Nutty Professor, The (1996) (Comedy|Fantasy|Romance|Sci-Fi): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Postman, The (Postino, Il) (1994) (Comedy|Drama|Romance), average rating 4.00/5 (369 ratings)
+- Movie B: Sabrina (1995) (Comedy|Romance), average rating 3.36/5 (387 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Movie A's average rating (4.00) is 0.64 higher than Movie B's (3.36), which falls in the 0.50–0.70 range where the decision tree predicts users prefer the higher-rated film 73% of the time, so Person 1 is predicted to prefer Movie A.
+PREDICTION: 1","The decision tree indicates a 73% chance that users prefer the higher-rated movie when the average ratings differ by 0.50–0.70, and Movie A also matches Person 1's shown tastes (comedy/romance), so it's reasonable to implement the prediction.  
+DECISION: 0",,,2026-03-18T17:12:33.936596
+avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
+
+- Three Kings (1999) (Action|Adventure|Comedy|Drama|War): Rated 3.0/5
+- Game, The (1997) (Drama|Mystery|Thriller): Rated 2.0/5
+- Drugstore Cowboy (1989) (Crime|Drama): Rated 3.0/5
+- Key Largo (1948) (Crime|Drama|Film-Noir|Thriller): Rated 3.0/5
+- Simple Plan, A (1998) (Crime|Drama|Thriller): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Higher Learning (1995) (Drama), average rating 3.16/5 (75 ratings)
+- Movie B: Three Ages (1923) (Comedy), average rating 2.50/5 (3 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the averages differ by 0.66 (in the 0.50–0.70 range where users pick the higher-rated film 73% of the time) and Person 1 has consistently rated dramas around 3/5, they are likely to prefer Higher Learning.  
+PREDICTION: 1","The decision tree gives a 73% chance the user prefers the higher-rated film for a 0.66 difference, and Person 1's history (favoring dramas ~3/5) plus Movie B's very sparse ratings make Higher Learning the more likely pick.  
+DECISION: 0",,,2026-03-18T17:12:42.624402
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
+- Catch Me If You Can (2002) (Crime|Drama): Rated 3.0/5
+- Parasite (2019) (Comedy|Drama): Rated 3.5/5
+- 28 Days Later (2002) (Action|Horror|Sci-Fi): Rated 5.0/5
+- Day After Tomorrow, The (2004) (Action|Adventure|Drama|Sci-Fi|Thriller): Rated 2.5/5
+- Untitled Spider-Man Reboot (2017) (Action|Adventure|Fantasy): Rated 2.0/5
 
 Consider these two movies they have not seen:
 
@@ -292,58 +683,16 @@ A decision tree trained on this dataset finds that when the two movies' average 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the average ratings differ by 0.65 (in the 0.50–0.70 range where users pick the higher-rated film 73% of the time) and Person 1 has shown a strong preference for crime/film-noir/thriller films like Sin City over children's animation, they would likely rate Drive higher.
-PREDICTION: 1","The decision tree gives a 73% chance of choosing the higher-rated film in this rating-difference range, and Person 1's past ratings strongly favor crime/film-noir/thriller over children's animation, so implementing the prediction is reasonable.  
-DECISION: 0",,,2026-03-17T21:15:46.469500
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the average ratings differ by 0.65 (in the 0.50–0.70 range where the decision tree predicts users pick the higher-rated film 73% of the time) and Person 1's past ratings show a stronger preference for crime/drama/thriller over children/animation, they are likely to rate Drive higher.  
+PREDICTION: 1","The decision tree gives a 73% chance the higher-rated film (Drive) will be preferred at a 0.65 rating gap, and Person 1's past ratings show a clear preference for crime/drama/thriller over children/animation, so implementing the prediction is reasonable.  
+DECISION: 0",,,2026-03-18T17:12:47.444295
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Rushmore (1998) (Comedy|Drama): Rated 5.0/5
-- Eyes Wide Shut (1999) (Drama|Mystery|Thriller): Rated 4.0/5
-- Right Stuff, The (1983) (Drama): Rated 4.0/5
-- How to Make an American Quilt (1995) (Drama|Romance): Rated 4.0/5
-- Lethal Weapon 3 (1992) (Action|Comedy|Crime|Drama): Rated 3.0/5
-
-Consider these two movies they have not seen:
-
-- Movie A: Modern Times (1936) (Comedy|Drama|Romance), average rating 4.11/5 (218 ratings)
-- Movie B: Twin Peaks: Fire Walk with Me (1992) (Crime|Drama|Mystery|Thriller), average rating 3.58/5 (128 ratings)
-
-A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
-
-TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
-TASK: Should we implement your prediction, or escalate to Person 1?
-A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Movie A's average rating is 0.53 higher (in the 0.50–0.70 range where users pick the higher-rated film 73% of the time) and Person 1 has given especially high scores to drama/comedy hybrids (e.g., Rushmore 5/5), they are more likely to rate Modern Times higher.  
-PREDICTION: 1","The decision tree gives a 73% chance the user will prefer the higher-rated film given the 0.53 rating gap, and Person 1's history (strong preference for comedy/drama like Rushmore) aligns with Modern Times.  
-DECISION: 0",,,2026-03-17T21:15:49.619674
-avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
-
-- Captain Marvel (2018) (Action|Adventure|Sci-Fi): Rated 4.0/5
-- Sin City (2005) (Action|Crime|Film-Noir|Mystery|Thriller): Rated 4.0/5
-- Children of Men (2006) (Action|Adventure|Drama|Sci-Fi|Thriller): Rated 3.5/5
-- Blood Diamond (2006) (Action|Adventure|Crime|Drama|Thriller|War): Rated 4.5/5
-- Django Unchained (2012) (Action|Drama|Western): Rated 4.5/5
-
-Consider these two movies they have not seen:
-
-- Movie A: Dark Knight, The (2008) (Action|Crime|Drama|IMAX), average rating 4.16/5 (1880 ratings)
-- Movie B: Ant-Man and the Wasp (2018) (Action|Adventure|Comedy|Fantasy|Sci-Fi), average rating 3.49/5 (149 ratings)
-
-A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
-
-TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
-TASK: Should we implement your prediction, or escalate to Person 1?
-A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 prefers serious action/crime/drama films (Sin City, Blood Diamond, Django) and the decision-tree rule (73% favor the higher-rated film when averages differ by 0.50–0.70, as here) therefore suggests they would rate The Dark Knight higher than Ant-Man and the Wasp.  
-PREDICTION: 1","Implement — Person 1's history favors gritty action/crime/drama (matching The Dark Knight) and the decision-tree rule gives a 73% probability that they prefer the higher-rated film when averages differ by 0.50–0.70, so proceeding with the prediction is warranted.  
-DECISION: 0",,,2026-03-17T21:15:57.995968
-avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
-
-- Cheech & Chong's Nice Dreams (1981) (Comedy): Rated 5.0/5
-- Once Upon a Time in Mexico (2003) (Action|Adventure|Crime|Thriller): Rated 3.5/5
-- Star Wars: Episode III - Revenge of the Sith (2005) (Action|Adventure|Sci-Fi): Rated 5.0/5
-- Mad Max (1979) (Action|Adventure|Sci-Fi): Rated 5.0/5
-- Die Hard 2 (1990) (Action|Adventure|Thriller): Rated 5.0/5
+- Pirates of the Caribbean: Dead Man's Chest (2006) (Action|Adventure|Fantasy): Rated 5.0/5
+- Dumb & Dumber (Dumb and Dumber) (1994) (Adventure|Comedy): Rated 4.0/5
+- Aladdin (1992) (Adventure|Animation|Children|Comedy|Musical): Rated 3.5/5
+- Cheech & Chong's Next Movie (1980) (Comedy): Rated 5.0/5
+- Pursuit of Happyness, The (2006) (Drama): Rated 5.0/5
 
 Consider these two movies they have not seen:
 
@@ -355,60 +704,165 @@ A decision tree trained on this dataset finds that when the two movies' average 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Back to the Future's average rating is 0.58 higher (in the 0.50–0.70 band) and its Adventure/Sci‑Fi genre aligns with Person 1's strong preferences, the decision tree predicts they would prefer Movie A.  
-PREDICTION: 1","Implement — the decision tree yields a 73% chance of correctness for a 0.50–0.70 average-rating gap, and Back to the Future matches Person 1's strong preference for Adventure/Sci‑Fi films.  
-DECISION: 0",,,2026-03-17T21:15:59.345023
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Back to the Future is the higher-rated film by 0.58 (in the 0.50–0.70 range where users pick the higher-rated movie 73% of the time) and also aligns with Person 1's clear preference for adventure/comedy, so they would likely rate Movie A higher.  
+PREDICTION: 1","The decision-tree rule gives a 73% probability that Person 1 will prefer the higher-rated movie (Back to the Future), and their past ratings show a clear preference for adventure/comedy which matches Movie A. Given this strong prior and model support, implement the prediction.  
+DECISION: 0",,,2026-03-18T17:13:01.163780
+avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
+
+- Medicine Man (1992) (Adventure|Romance): Rated 4.0/5
+- Thomas Crown Affair, The (1999) (Action|Mystery): Rated 4.5/5
+- Adventures of Robin Hood, The (1938) (Action|Adventure|Romance): Rated 5.0/5
+- Total Recall (1990) (Action|Adventure|Sci-Fi|Thriller): Rated 4.5/5
+- Back to the Future (1985) (Adventure|Comedy|Sci-Fi): Rated 4.5/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Mary Poppins (1964) (Children|Comedy|Fantasy|Musical), average rating 3.69/5 (508 ratings)
+- Movie B: Pete's Dragon (1977) (Adventure|Animation|Children|Musical), average rating 3.09/5 (115 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Movie A's average rating is 0.60 higher than Movie B's and the decision tree shows users pick the higher-rated film 73% of the time for differences of 0.50–0.70, Person 1 is likely to rate Movie A higher.
+PREDICTION: 1","Implement, because the decision tree gives a 73% probability that Person 1 prefers the higher-rated Movie A for a 0.60 rating difference, making implementation the more likely-to-be-correct action. Escalating would only make sense if the confidence were much lower or the cost of a wrong decision was high.
+DECISION: 0",,,2026-03-18T17:13:01.756462
+avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
+
+- Die Hard: With a Vengeance (1995) (Action|Crime|Thriller): Rated 4.5/5
+- Hurt Locker, The (2008) (Action|Drama|Thriller|War): Rated 4.0/5
+- Kiss Kiss Bang Bang (2005) (Comedy|Crime|Mystery|Thriller): Rated 5.0/5
+- Pan's Labyrinth (Laberinto del fauno, El) (2006) (Drama|Fantasy|Thriller): Rated 4.5/5
+- Dark Knight, The (2008) (Action|Crime|Drama|IMAX): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: The Imitation Game (2014) (Drama|Thriller|War), average rating 4.04/5 (781 ratings)
+- Movie B: Cape Fear (1991) (Thriller), average rating 3.51/5 (329 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The average ratings differ by 0.53 (within the 0.50–0.70 range) and the decision tree shows users choose the higher-rated film 73% of the time, so Person 1 is more likely to rate Movie A higher.
+
+PREDICTION: 1","The decision tree indicates a 73% chance Person 1 will prefer the higher-rated film when the average ratings differ by 0.50–0.70, and Movie A also matches Person 1's affinity for drama/thriller blends, so implementing the prediction is the better option. 
+
+DECISION: 0",,,2026-03-18T17:13:04.345379
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Rain Man (1988) (Drama): Rated 4.0/5
-- Rebecca (1940) (Drama|Mystery|Romance|Thriller): Rated 4.0/5
-- Usual Suspects, The (1995) (Crime|Mystery|Thriller): Rated 4.0/5
-- Christmas Story, A (1983) (Children|Comedy): Rated 3.0/5
-- Good Will Hunting (1997) (Drama|Romance): Rated 5.0/5
+- Star Wars: Episode V - The Empire Strikes Back (1980) (Action|Adventure|Sci-Fi): Rated 1.5/5
+- 22 Jump Street (2014) (Action|Comedy|Crime): Rated 4.5/5
+- Venom (2018) (Action|Horror|Sci-Fi|Thriller): Rated 3.5/5
+- Dark Knight Rises, The (2012) (Action|Adventure|Crime|IMAX): Rated 3.0/5
+- V for Vendetta (2006) (Action|Sci-Fi|Thriller|IMAX): Rated 5.0/5
 
 Consider these two movies they have not seen:
 
-- Movie A: One Flew Over the Cuckoo's Nest (1975) (Drama), average rating 4.21/5 (1407 ratings)
-- Movie B: E.T. the Extra-Terrestrial (1982) (Children|Drama|Sci-Fi), average rating 3.68/5 (1229 ratings)
+- Movie A: Dark Knight, The (2008) (Action|Crime|Drama|IMAX), average rating 4.16/5 (1880 ratings)
+- Movie B: Ant-Man and the Wasp (2018) (Action|Adventure|Comedy|Fantasy|Sci-Fi), average rating 3.49/5 (149 ratings)
 
 A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The average ratings differ by 0.53 (in the 0.50–0.70 range where users pick the higher-rated film 73% of the time), and Person 1's strong preference for dramas makes Movie A (One Flew Over the Cuckoo's Nest) the more likely higher rating.  
-PREDICTION: 1","Implement, because the decision-tree gives a 73% chance the higher-rated film is preferred and Person 1's history shows a strong favoring of dramas, which further supports Movie A.  
-DECISION: 0",,,2026-03-17T21:16:05.369911
-avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The average-rating gap is 0.67 (within the 0.50–0.70 range) and the decision tree predicts users choose the higher-rated film 73% of the time, so Person 1 is likely to rate The Dark Knight higher.  
+PREDICTION: 1","The decision tree gives a 73% probability the user prefers the higher-rated film and The Dark Knight aligns with genres (Action/IMAX/Crime) Person 1 has liked (e.g., V for Vendetta), so implementing the prediction is reasonable.  
+DECISION: 0",,,2026-03-18T17:13:12.120776
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Wrestler, The (2008) (Drama): Rated 4.5/5
-- Memento (2000) (Mystery|Thriller): Rated 4.0/5
-- Sixth Sense, The (1999) (Drama|Horror|Mystery): Rated 3.5/5
-- Fight Club (1999) (Action|Crime|Drama|Thriller): Rated 4.5/5
-- Stand by Me (1986) (Adventure|Drama): Rated 4.0/5
+- Postman, The (Postino, Il) (1994) (Comedy|Drama|Romance): Rated 5.0/5
+- Broken Arrow (1996) (Action|Adventure|Thriller): Rated 3.0/5
+- Mr. Holland's Opus (1995) (Drama): Rated 5.0/5
+- Ghost and the Darkness, The (1996) (Action|Adventure): Rated 2.0/5
+- Rock, The (1996) (Action|Adventure|Thriller): Rated 4.0/5
 
 Consider these two movies they have not seen:
 
-- Movie A: Schindler's List (1993) (Drama|War), average rating 4.24/5 (2305 ratings)
-- Movie B: Watchmen (2009) (Action|Drama|Mystery|Sci-Fi|Thriller|IMAX), average rating 3.72/5 (555 ratings)
+- Movie A: Jerry Maguire (1996) (Drama|Romance), average rating 3.67/5 (832 ratings)
+- Movie B: Down Periscope (1996) (Comedy), average rating 3.07/5 (187 ratings)
 
 A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 favors drama and character-driven films and Schindler's List has the higher average rating (difference = 0.52, within the 0.50–0.70 range where users prefer the higher-rated movie 73% of the time), they would likely rate Schindler's List higher.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The average ratings differ by 0.60 (in the 0.50–0.70 range where users choose the higher-rated movie 73% of the time), and Person 1's strong preference for dramas/romances (5/5 for Postino and Mr. Holland's Opus) suggests they would rate Movie A (Jerry Maguire) higher.  
+PREDICTION: 1","The decision-tree baseline gives a 73% chance the user picks the higher-rated film (and the average difference is in that range), and Person 1's history shows strong preference for drama/romance over comedy, so implementing is justified.  
+DECISION: 0",,,2026-03-18T17:13:19.856957
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-PREDICTION: 1","The decision tree gives a 73% probability that the higher-rated film (Schindler's List) is preferred when the average-rating gap is 0.50–0.70, and Person 1's past ratings show a clear preference for drama and character-driven films, so implementing the prediction is the better choice. There is residual uncertainty (~27%), but the combined statistical and preference evidence supports implementation.
+- Fargo (1996) (Comedy|Crime|Drama|Thriller): Rated 5.0/5
+- Leaving Las Vegas (1995) (Drama|Romance): Rated 3.0/5
+- Toy Story (1995) (Adventure|Animation|Children|Comedy|Fantasy): Rated 3.0/5
+- Sabrina (1995) (Comedy|Romance): Rated 3.0/5
+- Time to Kill, A (1996) (Drama|Thriller): Rated 5.0/5
 
-DECISION: 0",,,2026-03-17T21:16:06.590512
+Consider these two movies they have not seen:
+
+- Movie A: Executive Decision (1996) (Action|Adventure|Thriller), average rating 3.36/5 (395 ratings)
+- Movie B: Nutty Professor, The (1996) (Comedy|Fantasy|Romance|Sci-Fi), average rating 2.79/5 (675 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The average ratings differ by 0.57 (in the 0.50–0.70 band where users pick the higher-rated film 73% of the time), and Person 1's strong preference for thriller/drama over comedy/romance makes Executive Decision more likely to be rated higher.  
+PREDICTION: 1","Implement, because the decision-tree base rate (73% when average ratings differ 0.50–0.70) combined with Person 1's strong preference for thrillers/dramas (5/5 for Fargo and Time to Kill) gives reasonable confidence that Executive Decision would be rated higher.  
+DECISION: 0",,,2026-03-18T17:13:28.714628
 avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
 
-- Showgirls (1995) (Drama): Rated 4.0/5
-- Die Hard: With a Vengeance (1995) (Action|Crime|Thriller): Rated 3.0/5
+- Napoleon Dynamite (2004) (Comedy): Rated 4.0/5
+- Blue Velvet (1986) (Drama|Mystery|Thriller): Rated 5.0/5
+- Blue Jasmine (2013) (Drama): Rated 5.0/5
+- Drugstore Cowboy (1989) (Crime|Drama): Rated 5.0/5
+- 2001: A Space Odyssey (1968) (Adventure|Drama|Sci-Fi): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Groundhog Day (1993) (Comedy|Fantasy|Romance), average rating 3.91/5 (1454 ratings)
+- Movie B: Eating Raoul (1982) (Comedy), average rating 3.36/5 (18 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Groundhog Day's average is 0.55 higher (in the 0.50–0.70 band where users pick the higher-rated film 73% of the time) and Person 1 has positively rated comedies, they would likely rate Groundhog Day higher.
+PREDICTION: 1","The decision-tree rule gives a 73% probability my prediction is correct (difference = 0.55 in the 0.50–0.70 band), and Person 1's history favors the higher-rated, well-known comedy, so implementing is reasonable.  
+DECISION: 0",,,2026-03-18T17:13:30.659450
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
+- Grumpier Old Men (1995) (Comedy|Romance): Rated 2.0/5
+- Jerry Maguire (1996) (Drama|Romance): Rated 3.0/5
+- Rock, The (1996) (Action|Adventure|Thriller): Rated 3.0/5
+- Vegas Vacation (National Lampoon's Las Vegas Vacation) (1997) (Comedy): Rated 2.0/5
+- Twelve Monkeys (a.k.a. 12 Monkeys) (1995) (Mystery|Sci-Fi|Thriller): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Shine (1996) (Drama|Romance), average rating 3.91/5 (262 ratings)
+- Movie B: Absolute Power (1997) (Mystery|Thriller), average rating 3.33/5 (130 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Shine's average rating is 0.58 higher than Absolute Power (in the 0.50–0.70 range) and the decision tree indicates users choose the higher-rated film 73% of the time, Person 1 is more likely to rate Movie A higher.  
+PREDICTION: 1","The decision tree gives a 73% chance that users prefer the higher-rated film for a 0.58 difference, so it's reasonably likely Person 1 will prefer Movie A and implementing the prediction is justified; escalate only if you need higher certainty.  
+DECISION: 0",,,2026-03-18T17:13:32.195789
+avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
+
+- What's Eating Gilbert Grape (1993) (Drama): Rated 3.0/5
+- Disclosure (1994) (Drama|Thriller): Rated 5.0/5
 - Fargo (1996) (Comedy|Crime|Drama|Thriller): Rated 3.0/5
-- Fugitive, The (1993) (Thriller): Rated 5.0/5
-- Three Musketeers, The (1993) (Action|Adventure|Comedy|Romance): Rated 5.0/5
+- Léon: The Professional (a.k.a. The Professional) (Léon) (1994) (Action|Crime|Drama|Thriller): Rated 5.0/5
+- Broken Arrow (1996) (Action|Adventure|Thriller): Rated 3.0/5
 
 Consider these two movies they have not seen:
 
@@ -420,102 +874,37 @@ A decision tree trained on this dataset finds that when the two movies' average 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The average ratings differ by 0.58 (within the 0.50–0.70 range) and the decision tree shows users prefer the higher-rated film 73% of the time, so Person 1 is predicted to prefer Movie A (Dead Man Walking).  
-PREDICTION: 1","The decision-tree rule gives a 73% chance Person 1 will prefer the higher-rated Movie A given the 0.58 rating gap, so the expected probability of my prediction being correct is sufficiently high to implement it rather than escalate.  
-DECISION: 0",,,2026-03-17T21:16:11.047923
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The two films' average ratings differ by 0.58 (in the 0.50–0.70 range where users choose the higher-rated movie 73% of the time) and Person 1's past preferences lean toward dramas/thrillers rather than comedy/romance, so they would likely rate Movie A higher.  
+PREDICTION: 1","The decision-tree rule gives a 73% chance Person 1 prefers the higher-rated film (Movie A), and their past ratings show a clear preference for dramas/thrillers over comedy/romance, so confidence is sufficient to act.  
+DECISION: 0",,,2026-03-18T17:13:37.756139
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Tin Cup (1996) (Comedy|Drama|Romance): Rated 2.0/5
-- Fargo (1996) (Comedy|Crime|Drama|Thriller): Rated 4.0/5
-- Leaving Las Vegas (1995) (Drama|Romance): Rated 4.0/5
-- Carried Away (1996) (Drama|Romance): Rated 5.0/5
-- Beautiful Girls (1996) (Comedy|Drama|Romance): Rated 4.0/5
+- Freaks Out (2021) (Action|Adventure|Drama|Sci-Fi): Rated 4.0/5
+- Apartment, The (1960) (Comedy|Drama|Romance): Rated 3.5/5
+- Harry Potter and the Deathly Hallows: Part 1 (2010) (Action|Adventure|Fantasy|IMAX): Rated 4.0/5
+- Pearl Harbor (2001) (Action|Drama|Romance|War): Rated 3.0/5
+- Rocketman (2019) (Drama): Rated 4.0/5
 
 Consider these two movies they have not seen:
 
-- Movie A: Dead Man Walking (1995) (Crime|Drama), average rating 3.92/5 (681 ratings)
-- Movie B: Crossing Guard, The (1995) (Action|Crime|Drama|Thriller), average rating 3.25/5 (40 ratings)
+- Movie A: Kill Bill: Vol. 2 (2004) (Action|Drama|Thriller), average rating 3.83/5 (1186 ratings)
+- Movie B: House of Gucci (2021) (Crime|Drama), average rating 3.19/5 (18 ratings)
 
 A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 favors dramas/romances and Movie A (Dead Man Walking) is both a drama and has a 0.67 higher average rating—within the decision tree's 73% preference window—so they would likely rate Movie A higher.  
-PREDICTION: 1","The decision tree indicates users choose the higher-rated film 73% of the time when the average ratings differ by 0.50–0.70 (here 0.67), and Person 1's past strong preference for dramas/romances aligns better with Movie A, so it's more likely my prediction is correct.  
-DECISION: 0",,,2026-03-17T21:16:13.952524
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the average ratings differ by 0.64 (in the 0.50–0.70 range where users pick the higher-rated movie 73% of the time) and Person 1’s history favors action/drama titles like Kill Bill over a crime drama, they would likely rate Kill Bill higher. 
+PREDICTION: 1","The decision-tree rule gives a 73% chance the user prefers the higher-rated film (Kill Bill), and Person 1’s history favors action/drama which aligns with Kill Bill, so implementing the prediction is reasonable.  
+DECISION: 0",,,2026-03-18T17:13:45.048875
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Citizen Kane (1941) (Drama|Mystery): Rated 4.5/5
-- GoldenEye (1995) (Action|Adventure|Thriller): Rated 2.5/5
-- Hot Shots! (1991) (Action|Comedy|Romance|War): Rated 3.0/5
-- Chinatown (1974) (Crime|Film-Noir|Mystery|Thriller): Rated 4.5/5
-- Inside Man (2006) (Crime|Drama|Thriller): Rated 3.0/5
-
-Consider these two movies they have not seen:
-
-- Movie A: Maltese Falcon, The (1941) (Film-Noir|Mystery), average rating 4.19/5 (433 ratings)
-- Movie B: Lethal Weapon (1987) (Action|Comedy|Crime|Drama), average rating 3.65/5 (700 ratings)
-
-A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
-
-TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
-TASK: Should we implement your prediction, or escalate to Person 1?
-A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 has strongly favored classic Film‑Noir/Mystery titles (e.g., Chinatown, Citizen Kane) and since Maltese Falcon is a higher-rated Film‑Noir with an average rating 0.54 points above Lethal Weapon — a range where the decision tree predicts the higher-rated film is preferred 73% of the time — they would likely rate Maltese Falcon higher.  
-PREDICTION: 1","Implement — Person 1's clear preference for classic Film‑Noir/Mystery films and Maltese Falcon's 0.54 higher average rating, coupled with the decision-tree's 73% preference probability in that rating-difference range, give sufficient confidence to act on the prediction.  
-DECISION: 0",,,2026-03-17T21:16:14.517319
-avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
-
-- Seabiscuit (2003) (Drama): Rated 4.5/5
-- Joe Versus the Volcano (1990) (Comedy|Romance): Rated 3.0/5
-- Glass House, The (2001) (Thriller): Rated 2.5/5
-- Ring, The (2002) (Horror|Mystery|Thriller): Rated 3.5/5
-- Don't Say a Word (2001) (Thriller): Rated 3.5/5
-
-Consider these two movies they have not seen:
-
-- Movie A: White Fang (1991) (Adventure), average rating 2.95/5 (19 ratings)
-- Movie B: Baby's Day Out (1994) (Comedy), average rating 2.31/5 (18 ratings)
-
-A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
-
-TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
-TASK: Should we implement your prediction, or escalate to Person 1?
-A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Movie A's average (2.95) is 0.64 points higher than Movie B's (2.31) and the decision tree indicates users choose the higher-rated film 73% of the time when the gap is 0.50–0.70, Person 1 is more likely to rate Movie A higher.
-
-PREDICTION: 1","The decision tree gives a 73% success rate for a 0.50–0.70 rating gap (this case is 0.64), so there's reasonable confidence that Movie A is the true preference and implementation is justified. 
-
-DECISION: 0",,,2026-03-17T21:16:19.526767
-avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
-
-- Dersu Uzala (1975) (Adventure|Drama): Rated 5.0/5
-- Gold Rush, The (1925) (Adventure|Comedy|Romance): Rated 5.0/5
-- Boondock Saints, The (2000) (Action|Crime|Drama|Thriller): Rated 1.0/5
-- Monty Python's Life of Brian (1979) (Comedy): Rated 4.5/5
-- Amour (2012) (Drama|Romance): Rated 4.5/5
-
-Consider these two movies they have not seen:
-
-- Movie A: Grand Illusion (La grande illusion) (1937) (Drama|War), average rating 4.28/5 (67 ratings)
-- Movie B: Army of Shadows (L'armée des ombres) (1969) (Action|Drama|Thriller|War), average rating 3.77/5 (30 ratings)
-
-A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
-
-TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
-TASK: Should we implement your prediction, or escalate to Person 1?
-A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Grand Illusion has the higher average rating (difference ≈0.51 falls in the 0.50–0.70 bin where users pick the higher-rated title 73% of the time) and Person 1's history favors classic dramas/war films, they'll likely rate Movie A higher.  
-PREDICTION: 1","Implement — the decision-tree rule gives a 73% chance the higher-rated film (Grand Illusion) is preferred given the ~0.51 rating gap, and Person 1's history of favoring classic dramas further supports choosing Movie A.  
-DECISION: 0",,,2026-03-17T21:16:21.495321
-avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
-
-- Crimson Tide (1995) (Drama|Thriller|War): Rated 5.0/5
-- Species (1995) (Horror|Sci-Fi): Rated 4.0/5
-- Firm, The (1993) (Drama|Thriller): Rated 3.0/5
-- Mask, The (1994) (Action|Comedy|Crime|Fantasy): Rated 3.0/5
-- Die Hard: With a Vengeance (1995) (Action|Crime|Thriller): Rated 4.0/5
+- Disclosure (1994) (Drama|Thriller): Rated 3.0/5
+- Clear and Present Danger (1994) (Action|Crime|Drama|Thriller): Rated 4.0/5
+- Jurassic Park (1993) (Action|Adventure|Sci-Fi|Thriller): Rated 4.0/5
+- Terminator 2: Judgment Day (1991) (Action|Sci-Fi): Rated 4.0/5
+- Ace Ventura: Pet Detective (1994) (Comedy): Rated 4.0/5
 
 Consider these two movies they have not seen:
 
@@ -527,16 +916,58 @@ A decision tree trained on this dataset finds that when the two movies' average 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 prefers action/thriller movies (e.g., Crimson Tide and Die Hard) and Speed is both action and thriller and also has the higher average rating (difference ≈ 0.53), so they are likely to prefer Movie A.  
-PREDICTION: 1","Person 1's history shows a clear preference for action/thrillers and the 0.53 average-rating gap falls in the range where users pick the higher-rated film 73% of the time, so implementing the prediction is reasonable.  
-DECISION: 0",,,2026-03-17T21:16:24.721830
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Speed is higher-rated by 0.53 (in the 0.50–0.70 range where users pick the higher-rated film 73% of the time) and fits Person 1's strong preference for action/thrillers, they would likely rate Movie A higher.
+PREDICTION: 1","The decision tree gives a 73% chance the user prefers the higher-rated film and Speed aligns closely with Person 1's clear preference for action/thrillers, so the prediction is likely correct.  
+DECISION: 0",,,2026-03-18T17:13:54.939721
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Mission: Impossible (1996) (Action|Adventure|Mystery|Thriller): Rated 3.0/5
+- Gosford Park (2001) (Comedy|Drama|Mystery): Rated 3.5/5
+- L.A. Confidential (1997) (Crime|Film-Noir|Mystery|Thriller): Rated 5.0/5
+- Superman (1978) (Action|Adventure|Sci-Fi): Rated 5.0/5
+- Fargo (1996) (Comedy|Crime|Drama|Thriller): Rated 5.0/5
+- Snatch (2000) (Comedy|Crime|Thriller): Rated 4.5/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Terminator 2: Judgment Day (1991) (Action|Sci-Fi), average rating 3.95/5 (2136 ratings)
+- Movie B: Willow (1988) (Action|Adventure|Fantasy), average rating 3.41/5 (327 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 gave Superman (Action|Sci‑Fi) a 5/5 and the decision-tree rule says when averages differ by 0.54 users pick the higher-rated film 73% of the time, they would likely rate Terminator 2 higher.  
+PREDICTION: 1","Implement, because the decision-tree gives a 73% chance the higher-average film (Terminator 2) will be preferred and Person 1's 5/5 for Superman (Action|Sci‑Fi) increases confidence in an Action/Sci‑Fi pick.  
+DECISION: 0",,,2026-03-18T17:13:55.381661
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
+- Indiana Jones and the Last Crusade (1989) (Action|Adventure): Rated 3.0/5
+- River Wild, The (1994) (Action|Thriller): Rated 3.0/5
+- Interview with the Vampire: The Vampire Chronicles (1994) (Drama|Horror): Rated 4.0/5
+- Fox and the Hound, The (1981) (Animation|Children|Drama): Rated 3.0/5
 - Junior (1994) (Comedy|Sci-Fi): Rated 3.0/5
-- Bad Boys (1995) (Action|Comedy|Crime|Drama|Thriller): Rated 3.0/5
-- Disclosure (1994) (Drama|Thriller): Rated 3.0/5
-- Ace Ventura: Pet Detective (1994) (Comedy): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Singin' in the Rain (1952) (Comedy|Musical|Romance), average rating 3.96/5 (414 ratings)
+- Movie B: Homeward Bound: The Incredible Journey (1993) (Adventure|Children|Drama), average rating 3.37/5 (127 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Singin' in the Rain's average is 0.59 points higher than Homeward Bound's and the decision tree indicates users prefer the higher-rated film 73% of the time in that 0.50–0.70 gap, so Person 1 is more likely to rate Movie A higher.  
+PREDICTION: 1","The decision tree gives a 73% chance that a user will prefer the higher-rated movie for a 0.50–0.70 gap (here 0.59), so it is reasonable to implement the prediction rather than escalate given the strong model signal.  
+DECISION: 0",,,2026-03-18T17:13:59.972471
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
+- Stargate (1994) (Action|Adventure|Sci-Fi): Rated 3.0/5
+- Demolition Man (1993) (Action|Adventure|Sci-Fi): Rated 3.0/5
+- Firm, The (1993) (Drama|Thriller): Rated 3.0/5
+- In the Line of Fire (1993) (Action|Thriller): Rated 3.0/5
+- Mission: Impossible (1996) (Action|Adventure|Mystery|Thriller): Rated 3.0/5
 
 Consider these two movies they have not seen:
 
@@ -548,58 +979,37 @@ A decision tree trained on this dataset finds that when the two movies' average 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Movie A has a higher average (3.49 vs 2.91, a 0.58 difference), and the decision tree indicates users pick the higher-rated film 73% of the time in that range, so Person 1 is likely to rate Movie A higher.  
-PREDICTION: 1","The decision tree gives a 73% chance the higher-rated film will be preferred in this rating-difference range, and True Lies' action/thriller/adventure mix better matches Person 1's liked films than the parody war-comedy; therefore it's reasonably likely the prediction is correct.  
-DECISION: 0",,,2026-03-17T21:16:29.521194
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because True Lies has the higher average rating (3.49 vs 2.91), the 0.58 difference falls in the 0.50–0.70 range where users pick the higher-rated film 73% of the time and its action/adventure/thriller mix better matches Person 1's past preferences, I predict they would rate Movie A higher.  
+PREDICTION: 1","The decision tree gives a 73% chance the higher-rated film (True Lies) is preferred when average ratings differ by 0.50–0.70, and True Lies' action/adventure/thriller elements better match Person 1's past tastes, so it's reasonable to implement the prediction.  
+DECISION: 0",,,2026-03-18T17:14:01.133067
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Boondock Saints, The (2000) (Action|Crime|Drama|Thriller): Rated 5.0/5
-- Apocalypse Now (1979) (Action|Drama|War): Rated 5.0/5
-- 3:10 to Yuma (2007) (Action|Crime|Drama|Western): Rated 4.0/5
-- Blazing Saddles (1974) (Comedy|Western): Rated 4.0/5
-- Gremlins (1984) (Comedy|Horror): Rated 2.0/5
+- Raging Bull (1980) (Drama): Rated 4.5/5
+- Moneyball (2011) (Drama): Rated 4.5/5
+- The Imitation Game (2014) (Drama|Thriller|War): Rated 4.5/5
+- V for Vendetta (2006) (Action|Sci-Fi|Thriller|IMAX): Rated 3.5/5
+- In Bruges (2008) (Comedy|Crime|Drama|Thriller): Rated 3.0/5
 
 Consider these two movies they have not seen:
 
-- Movie A: Chinatown (1974) (Crime|Film-Noir|Mystery|Thriller), average rating 4.14/5 (668 ratings)
-- Movie B: Courage Under Fire (1996) (Action|Crime|Drama|War), average rating 3.61/5 (254 ratings)
+- Movie A: Shawshank Redemption, The (1994) (Crime|Drama), average rating 4.42/5 (3232 ratings)
+- Movie B: The Machinist (2004) (Drama|Mystery|Thriller), average rating 3.85/5 (389 ratings)
 
 A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Chinatown is 0.53 points higher (in the 0.50–0.70 range where users pick the higher-rated film 73% of the time) and its crime/noir/thriller genres align with this user's strong preference for crime/drama, so they will likely prefer Chinatown.  
-PREDICTION: 1","Implement: the decision tree indicates a 73% chance users pick the higher-rated film when the difference is 0.50–0.70, and Person 1's strong preference for crime/drama/noir makes Chinatown the more likely pick.  
-DECISION: 0",,,2026-03-17T21:16:33.743120
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The average ratings differ by 0.57 (in the 0.50–0.70 range where users pick the higher-rated film 73% of the time), and Person 1 consistently rates dramas very highly, so they would likely rate The Shawshank Redemption higher.  
+PREDICTION: 1","The decision-tree rule gives a 73% chance the higher-rated film (Shawshank) will be preferred, and Person 1 has a strong history of rating dramas very highly, so confidence is sufficient to implement the prediction.  
+DECISION: 0",,,2026-03-18T17:14:01.680133
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- 13 Going on 30 (2004) (Comedy|Fantasy|Romance): Rated 3.0/5
-- Dark Knight, The (2008) (Action|Crime|Drama|IMAX): Rated 3.5/5
-- X-Men: The Last Stand (2006) (Action|Sci-Fi|Thriller): Rated 3.5/5
-- Erin Brockovich (2000) (Drama): Rated 4.0/5
-- Miami Vice (2006) (Action|Crime|Drama|Thriller): Rated 2.0/5
-
-Consider these two movies they have not seen:
-
-- Movie A: Truman Show, The (1998) (Comedy|Drama|Sci-Fi), average rating 3.91/5 (1395 ratings)
-- Movie B: Over the Hedge (2006) (Adventure|Animation|Children|Comedy), average rating 3.29/5 (129 ratings)
-
-A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
-
-TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
-TASK: Should we implement your prediction, or escalate to Person 1?
-A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Truman Show's average is 3.91 vs Over the Hedge's 3.29 (difference 0.62, in the 0.50–0.70 range where users pick the higher-rated film 73% of the time) and Person 1 shows a preference for dramas like Erin Brockovich, they would likely rate Truman Show higher.
-PREDICTION: 1","The decision tree indicates a 73% chance the higher-rated Truman Show will be preferred given the 0.62 rating gap. Truman Show also aligns better with Person 1's stronger preference for drama than the children's Over the Hedge, so implement the prediction.
-DECISION: 0",,,2026-03-17T21:16:34.409766
-avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
-
+- Pacific Rim (2013) (Action|Adventure|Sci-Fi|IMAX): Rated 4.0/5
+- Star Wars: Episode V - The Empire Strikes Back (1980) (Action|Adventure|Sci-Fi): Rated 4.0/5
 - Lord of the Rings: The Fellowship of the Ring, The (2001) (Adventure|Fantasy): Rated 4.5/5
-- Lord of the Rings: The Return of the King, The (2003) (Action|Adventure|Drama|Fantasy): Rated 4.5/5
-- Prometheus (2012) (Action|Horror|Sci-Fi|IMAX): Rated 3.0/5
-- Lord of the Rings: The Two Towers, The (2002) (Adventure|Fantasy): Rated 4.5/5
-- Star Wars: Episode IV - A New Hope (1977) (Action|Adventure|Sci-Fi): Rated 4.0/5
+- Indiana Jones and the Last Crusade (1989) (Action|Adventure): Rated 4.0/5
+- Raiders of the Lost Ark (Indiana Jones and the Raiders of the Lost Ark) (1981) (Action|Adventure): Rated 4.0/5
 
 Consider these two movies they have not seen:
 
@@ -611,16 +1021,58 @@ A decision tree trained on this dataset finds that when the two movies' average 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Serenity's average rating is 0.58 higher than Crank's (in the 0.50–0.70 range) and the decision tree predicts users choose the higher-rated film 73% of the time — supported by Person 1's preference for action/adventure/sci‑fi — they will likely rate Serenity higher.
-PREDICTION: 1","The decision tree gives a 73% probability favoring the higher-rated film for a 0.58 rating gap and Person 1's history strongly favors Action/Adventure/Sci‑Fi (matching Serenity), so it's reasonable to implement the prediction. The remaining uncertainty (27%) is outweighed by the genre alignment and Serenity's larger rating sample, so escalate is unnecessary.
-DECISION: 0",,,2026-03-17T21:16:35.189072
-avg_diff_050_070,0,1,0,1,"Person 1 has reviewed the following movies:
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 is predicted to prefer Movie A because it matches their strong Action/Adventure/Sci‑Fi preferences and has the higher average rating (difference ≈0.58), and the decision tree indicates users pick the higher-rated movie 73% of the time in that range.  
+PREDICTION: 1","The decision tree gives a 73% chance the higher-rated movie (A) is preferred, and Person 1's strong Action/Adventure/Sci‑Fi history further increases confidence, so we should implement the prediction.  
+DECISION: 0",,,2026-03-18T17:14:14.809213
+avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
 
-- Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb (1964) (Comedy|War): Rated 4.0/5
+- American Beauty (1999) (Drama|Romance): Rated 2.0/5
+- Entrapment (1999) (Crime|Thriller): Rated 4.0/5
+- Payback (1999) (Action|Thriller): Rated 4.0/5
+- Cell, The (2000) (Drama|Horror|Thriller): Rated 3.0/5
+- Stir of Echoes (1999) (Horror|Mystery|Thriller): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Erin Brockovich (2000) (Drama), average rating 3.63/5 (693 ratings)
+- Movie B: Dinosaur (2000) (Adventure|Animation|Children), average rating 3.01/5 (92 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the average ratings differ by 0.62 (in the 0.50–0.70 range where users pick the higher-rated film 73% of the time) and Person 1's history favors adult dramas/thrillers over children's animation, they would likely prefer Erin Brockovich.  
+PREDICTION: 1","The decision tree gives a 73% chance the higher-rated film (Erin Brockovich) will be preferred for a 0.62 rating gap, and Person 1's history favors adult thrillers/dramas over children's animation, so the prediction is reasonably confident.  
+DECISION: 0",,,2026-03-18T17:14:17.141667
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
+- Roxanne (1987) (Comedy|Romance): Rated 4.0/5
+- Prairie Home Companion, A (2006) (Comedy|Drama|Musical): Rated 4.0/5
+- O Brother, Where Art Thou? (2000) (Adventure|Comedy|Crime): Rated 5.0/5
+- Breakfast Club, The (1985) (Comedy|Drama): Rated 3.5/5
+- Shall We Dance? (2004) (Comedy|Romance): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Truman Show, The (1998) (Comedy|Drama|Sci-Fi), average rating 3.91/5 (1395 ratings)
+- Movie B: Over the Hedge (2006) (Adventure|Animation|Children|Comedy), average rating 3.29/5 (129 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The average ratings differ by 0.62 (in the 0.50–0.70 range), so per the decision tree Person 1 is likely to pick the higher-rated Truman Show (which also matches their comedy/drama preferences) over Over the Hedge.  
+PREDICTION: 1","Yes—implement: the decision tree gives a 73% chance the higher-rated Truman Show is preferred, and Person 1's past ratings favor comedy/drama films like Truman Show over family animation, so the prediction is reasonably supported.  
+DECISION: 0",,,2026-03-18T17:14:19.815677
+avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
+
+- Godfather: Part II, The (1974) (Crime|Drama): Rated 5.0/5
+- Cocoon (1985) (Comedy|Sci-Fi): Rated 3.0/5
 - Mimic (1997) (Horror|Sci-Fi|Thriller): Rated 2.0/5
-- Birdcage, The (1996) (Comedy): Rated 3.0/5
-- Glory (1989) (Drama|War): Rated 5.0/5
-- Pi (1998) (Drama|Sci-Fi|Thriller): Rated 5.0/5
+- Metropolis (1927) (Drama|Sci-Fi): Rated 4.0/5
+- Star Trek: The Motion Picture (1979) (Adventure|Sci-Fi): Rated 2.0/5
 
 Consider these two movies they have not seen:
 
@@ -632,38 +1084,102 @@ A decision tree trained on this dataset finds that when the two movies' average 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Movie A's average (4.07) is 0.54 higher than Movie B's (3.53)—which falls in the 0.50–0.70 range where users prefer the higher-rated film 73% of the time—Person 1 is more likely to rate Movie A higher.
-
-PREDICTION: 1","The decision-tree gives a 73% chance that Movie A is preferred given the 0.54 rating gap, but a 27% chance of being wrong; since asking Person 1 would eliminate uncertainty and ensure a correct choice, we should escalate.  
-DECISION: 1",,,2026-03-17T21:16:36.245361
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The two movies' average ratings differ by 0.54 (within 0.50–0.70), and the decision tree predicts users choose the higher-rated movie 73% of the time, so Person 1 is predicted to rate Movie A higher.
+PREDICTION: 1","The decision tree gives a 73% chance Person 1 prefers the higher-rated film for a 0.54 rating gap, so it's reasonable to implement the prediction rather than escalate given the majority probability (though there's a 27% chance of being wrong).  
+DECISION: 0",,,2026-03-18T17:14:27.197573
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Bolt (2008) (Action|Adventure|Animation|Children|Comedy): Rated 4.5/5
-- Fight Club (1999) (Action|Crime|Drama|Thriller): Rated 4.5/5
-- Monsters, Inc. (2001) (Adventure|Animation|Children|Comedy|Fantasy): Rated 4.5/5
-- I Am Legend (2007) (Action|Horror|Sci-Fi|Thriller|IMAX): Rated 4.5/5
-- Truman Show, The (1998) (Comedy|Drama|Sci-Fi): Rated 4.5/5
+- Seabiscuit (2003) (Drama): Rated 4.0/5
+- American Tail, An (1986) (Adventure|Animation|Children|Comedy): Rated 5.0/5
+- Amelie (Fabuleux destin d'Amélie Poulain, Le) (2001) (Comedy|Romance): Rated 4.5/5
+- Pirates of the Caribbean: At World's End (2007) (Action|Adventure|Comedy|Fantasy): Rated 4.5/5
+- Juno (2007) (Comedy|Drama|Romance): Rated 4.0/5
 
 Consider these two movies they have not seen:
 
-- Movie A: Beautiful Mind, A (2001) (Drama|Romance), average rating 3.96/5 (1283 ratings)
-- Movie B: Host, The (Gwoemul) (2006) (Comedy|Drama|Horror|Sci-Fi|Thriller), average rating 3.38/5 (80 ratings)
+- Movie A: Yes Man (2008) (Comedy), average rating 3.33/5 (286 ratings)
+- Movie B: 102 Dalmatians (2000) (Children|Comedy), average rating 2.71/5 (58 ratings)
 
 A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Beautiful Mind (3.96) is higher-rated than The Host (3.38) by 0.58, which falls in the 0.50–0.70 range where the decision tree predicts users pick the higher-rated movie 73% of the time, so Person 1 is predicted to prefer Movie A.  
-PREDICTION: 1","The decision tree gives a 73% chance the higher-rated movie (Beautiful Mind) is preferred, and Person 1's history shows several drama-leaning likes (Fight Club, Truman Show), so the evidence favors implementing the prediction rather than escalating.  
-DECISION: 0",,,2026-03-17T21:16:36.675363
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 consistently rates comedies and children's films highly and Movie A (Yes Man) has a higher average than Movie B by 0.62—which falls in the 0.50–0.70 gap where users pick the higher-rated film 73% of the time—they will likely rate Movie A higher.  
+PREDICTION: 1","Person 1's past strong preference for comedies/children's films and the 0.62 rating gap (in the 0.50–0.70 range where users choose the higher-rated film 73% of the time) make it more likely my prediction is correct, so implement it.  
+DECISION: 0",,,2026-03-18T17:14:29.009695
+avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
+
+- Swingers (1996) (Comedy|Drama): Rated 3.0/5
+- Apollo 13 (1995) (Adventure|Drama|IMAX): Rated 4.0/5
+- Nobody's Fool (1994) (Comedy|Drama|Romance): Rated 3.0/5
+- Sleepless in Seattle (1993) (Comedy|Drama|Romance): Rated 3.0/5
+- Hoop Dreams (1994) (Documentary): Rated 4.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Wallace & Gromit: The Best of Aardman Animation (1996) (Adventure|Animation|Comedy), average rating 4.20/5 (266 ratings)
+- Movie B: American President, The (1995) (Comedy|Drama|Romance), average rating 3.69/5 (610 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The average ratings differ by 0.51 in favor of Movie A, and since the decision tree shows users choose the higher-rated film 73% of the time when the gap is 0.50–0.70, Person 1 is more likely to rate Movie A higher.  
+PREDICTION: 1","The decision-tree indicates a 73% chance users pick the higher-rated movie for a 0.50–0.70 gap (here 0.51 favoring Movie A), so implementing the prediction is the reasonable choice given the relatively high likelihood of correctness.  
+DECISION: 0",,,2026-03-18T17:14:35.689911
+avg_diff_050_070,0,1,0,1,"Person 1 has reviewed the following movies:
+
+- Incredibles, The (2004) (Action|Adventure|Animation|Children|Comedy): Rated 2.5/5
+- Monty Python's Life of Brian (1979) (Comedy): Rated 4.5/5
+- Austin Powers in Goldmember (2002) (Comedy): Rated 3.0/5
+- 8 Women (2002) (Comedy|Crime|Musical|Mystery): Rated 4.0/5
+- Harry Potter and the Prisoner of Azkaban (2004) (Adventure|Fantasy|IMAX): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Last Unicorn, The (1982) (Animation|Children|Fantasy), average rating 3.78/5 (48 ratings)
+- Movie B: Ocean's Twelve (2004) (Action|Comedy|Crime|Thriller), average rating 3.28/5 (422 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Movie A (Last Unicorn) has the higher average rating by 0.50, matches Person 1's taste in fantasy/animation/children films, and the decision tree indicates users pick the higher-rated movie 73% of the time in that rating-difference range, I predict they would rate Movie A higher.
+
+PREDICTION: 1","The decision tree gives a 73% chance of preferring the higher-rated Movie A, but Person 1's strong preference for comedies and relatively low rating for an animated children's film (Incredibles) introduce enough uncertainty that we should confirm with them.  
+
+DECISION: 1",,,2026-03-18T17:14:40.319269
+avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
+
+- Mission: Impossible - Ghost Protocol (2011) (Action|Adventure|Thriller|IMAX): Rated 4.5/5
+- How to Train Your Dragon 2 (2014) (Action|Adventure|Animation): Rated 4.0/5
+- 300 (2007) (Action|Fantasy|War|IMAX): Rated 4.0/5
+- Mad Max: Fury Road (2015) (Action|Adventure|Sci-Fi|Thriller): Rated 3.5/5
+- Big Hero 6 (2014) (Action|Animation|Comedy): Rated 4.5/5
+
+Consider these two movies they have not seen:
+
+- Movie A: The Martian (2015) (Adventure|Drama|Sci-Fi), average rating 4.07/5 (892 ratings)
+- Movie B: Spider-Man (2002) (Action|Adventure|Sci-Fi|Thriller), average rating 3.48/5 (1243 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The Martian's average rating is 0.59 points higher than Spider-Man's and, given the decision tree's finding that when the difference is 0.50–0.70 users pick the higher-rated movie 73% of the time, Person 1 is more likely to rate The Martian higher.  
+PREDICTION: 1","The decision tree gives a 73% chance the higher-rated movie (The Martian) is preferred given the 0.59 rating gap, so it's reasonable to implement the prediction rather than escalate; although Person 1's genre history slightly favors action/Adventure (Spider-Man), the model's confidence justifies proceeding.  
+DECISION: 0",,,2026-03-18T17:14:42.622405
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Harry Potter and the Prisoner of Azkaban (2004) (Adventure|Fantasy|IMAX): Rated 5.0/5
-- Ferris Bueller's Day Off (1986) (Comedy): Rated 5.0/5
-- Harry Potter and the Sorcerer's Stone (a.k.a. Harry Potter and the Philosopher's Stone) (2001) (Adventure|Children|Fantasy): Rated 5.0/5
-- Usual Suspects, The (1995) (Crime|Mystery|Thriller): Rated 3.0/5
-- Harry Potter and the Chamber of Secrets (2002) (Adventure|Fantasy): Rated 5.0/5
+- Mr. & Mrs. Smith (2005) (Action|Adventure|Comedy|Romance): Rated 0.5/5
+- Star Wars: Episode IV - A New Hope (1977) (Action|Adventure|Sci-Fi): Rated 5.0/5
+- Harry Potter and the Half-Blood Prince (2009) (Adventure|Fantasy|Mystery|Romance|IMAX): Rated 5.0/5
+- Star Trek: Generations (1994) (Adventure|Drama|Sci-Fi): Rated 5.0/5
+- Ocean's Twelve (2004) (Action|Comedy|Crime|Thriller): Rated 3.0/5
 
 Consider these two movies they have not seen:
 
@@ -675,39 +1191,100 @@ A decision tree trained on this dataset finds that when the two movies' average 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Movie A is higher-rated by 0.67 (in the 0.50–0.70 range where users pick the higher-rated film 73% of the time) and Person 1 strongly favors Adventure/Fantasy (three Harry Potter films rated 5/5), they would likely rate The Return of the King higher.
-PREDICTION: 1","The decision-tree rule gives a 73% chance of choosing the higher-rated movie for a 0.50–0.70 rating gap, and Person 1's strong preference for Adventure/Fantasy (three Harry Potter 5/5s) further supports The Return of the King; therefore implementing the prediction is reasonable.  
-DECISION: 0",,,2026-03-17T21:16:41.724396
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Person 1 has strongly favored adventure/fantasy/sci‑fi films (multiple 5/5s) and since Movie A is a fantasy/adventure with a 0.67 higher average (in the 0.50–0.70 bin where users pick the higher-rated movie 73% of the time), they are likely to rate Movie A higher.  
+PREDICTION: 1","Person 1's history shows a strong preference for adventure/fantasy/sci‑fi (multiple 5/5s) and Movie A both matches those genres and is 0.67 higher—falling in the 0.50–0.70 bin where the higher-rated movie is chosen 73% of the time—so I have reasonable confidence in the prediction.  
+DECISION: 0",,,2026-03-18T17:14:45.206839
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Raiders of the Lost Ark (Indiana Jones and the Raiders of the Lost Ark) (1981) (Action|Adventure): Rated 4.0/5
-- Braveheart (1995) (Action|Drama|War): Rated 4.0/5
-- Thelma & Louise (1991) (Adventure|Crime|Drama): Rated 5.0/5
-- Cyrano de Bergerac (1990) (Comedy|Drama|Romance): Rated 4.0/5
-- Beverly Hills Cop (1984) (Action|Comedy|Crime|Drama): Rated 3.0/5
+- WALL·E (2008) (Adventure|Animation|Children|Romance|Sci-Fi): Rated 3.0/5
+- World War Z (2013) (Action|Drama|Horror|IMAX): Rated 4.0/5
+- Django Unchained (2012) (Action|Drama|Western): Rated 5.0/5
+- Blind Side, The  (2009) (Drama): Rated 5.0/5
+- Deadpool (2016) (Action|Adventure|Comedy|Sci-Fi): Rated 3.5/5
 
 Consider these two movies they have not seen:
 
-- Movie A: Star Wars: Episode VI - Return of the Jedi (1983) (Action|Adventure|Sci-Fi), average rating 4.00/5 (2052 ratings)
-- Movie B: Fatal Attraction (1987) (Drama|Thriller), average rating 3.49/5 (320 ratings)
+- Movie A: Up (2009) (Adventure|Animation|Children|Drama), average rating 3.96/5 (1142 ratings)
+- Movie B: Dirty Dancing (1987) (Drama|Musical|Romance), average rating 3.35/5 (436 ratings)
 
 A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Return of the Jedi is 0.51 points higher (in the 0.50–0.70 range where users pick the higher-rated film 73% of the time) and Person 1 favors action/adventure films, they would likely rate Movie A higher.
-
-PREDICTION: 1","The decision tree gives a 73% chance the higher-rated film will be preferred for a 0.51 difference, and Person 1's history shows a clear preference for action/adventure titles like Return of the Jedi, so implementing is reasonable.  
-
-DECISION: 0",,,2026-03-17T21:16:52.489621
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Up's average rating is 0.61 points higher than Dirty Dancing's, which falls in the 0.50–0.70 range where the decision tree indicates users pick the higher-rated film 73% of the time, so Person 1 is predicted to rate Up higher.  
+PREDICTION: 1","The decision tree gives a 73% chance the higher-rated film (Up) matches Person 1's preference, which is a strong enough probability to act on the prediction rather than escalate.  
+DECISION: 0",,,2026-03-18T17:15:09.361575
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Django Unchained (2012) (Action|Drama|Western): Rated 4.5/5
-- Nightcrawler (2014) (Crime|Drama|Thriller): Rated 3.5/5
-- Seven (a.k.a. Se7en) (1995) (Mystery|Thriller): Rated 4.0/5
-- Inception (2010) (Action|Crime|Drama|Mystery|Sci-Fi|Thriller|IMAX): Rated 5.0/5
+- Young Frankenstein (1974) (Comedy|Fantasy): Rated 5.0/5
+- Misery (1990) (Drama|Horror|Thriller): Rated 4.0/5
+- Mortal Thoughts (1991) (Mystery|Thriller): Rated 2.0/5
+- Crouching Tiger, Hidden Dragon (Wo hu cang long) (2000) (Action|Drama|Romance): Rated 5.0/5
+- Star Wars: Episode V - The Empire Strikes Back (1980) (Action|Adventure|Sci-Fi): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Godfather: Part II, The (1974) (Crime|Drama), average rating 4.29/5 (1376 ratings)
+- Movie B: House of Games (1987) (Crime|Film-Noir|Mystery|Thriller), average rating 3.65/5 (57 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because the average-rating gap is 0.64 (within the 0.50–0.70 range) and the decision tree indicates users pick the higher-rated film 73% of the time, Person 1 is predicted to prefer Movie A (Godfather: Part II). 
+PREDICTION: 1","The decision tree gives a 73% chance the higher-rated film (Godfather: Part II) is preferred, and Person 1's past ratings show a strong preference for critically acclaimed dramas, so implementing the prediction is the more justified action.  
+DECISION: 0",,,2026-03-18T17:15:17.053595
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
+- Precious (2009) (Drama): Rated 4.0/5
+- Big Daddy (1999) (Comedy): Rated 4.5/5
+- Fight Club (1999) (Action|Crime|Drama|Thriller): Rated 4.5/5
+- Jungle Book, The (1994) (Adventure|Children|Romance): Rated 0.5/5
+- Jay and Silent Bob Strike Back (2001) (Adventure|Comedy): Rated 3.5/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Howl's Moving Castle (Hauru no ugoku shiro) (2004) (Adventure|Animation|Fantasy|Romance), average rating 4.10/5 (513 ratings)
+- Movie B: Chicken Run (2000) (Animation|Children|Comedy), average rating 3.42/5 (663 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Movie A's average is 0.68 higher than Movie B and, given the decision tree's finding that users choose the higher-rated film 73% of the time when averages differ by 0.50–0.70, Person 1 is predicted to rate Movie A higher.  
+PREDICTION: 1","The decision tree indicates a 73% chance that users choose the higher-rated movie in this rating-difference range, so implementing the prediction maximizes the probability of being correct (0.73 vs 0.27 for escalating).  
+DECISION: 0",,,2026-03-18T17:15:19.342841
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
+- Sunset Blvd. (a.k.a. Sunset Boulevard) (1950) (Drama|Film-Noir|Romance): Rated 4.0/5
+- Dirty Dancing (1987) (Drama|Musical|Romance): Rated 2.0/5
+- North by Northwest (1959) (Action|Adventure|Mystery|Romance|Thriller): Rated 5.0/5
+- Enemy of the State (1998) (Action|Thriller): Rated 4.0/5
+- Producers, The (1968) (Comedy): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Grand Illusion (La grande illusion) (1937) (Drama|War), average rating 4.28/5 (67 ratings)
+- Movie B: Peter Pan (1953) (Animation|Children|Fantasy|Musical), average rating 3.65/5 (265 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The average ratings differ by 0.63 (between 0.50 and 0.70), and since the decision tree reports users choose the higher-rated film 73% of the time, Person 1 is predicted to prefer Grand Illusion (Movie A).  
+PREDICTION: 1","The decision tree gives a 73% chance the higher-rated film (Movie A) is preferred, so implementing is more likely to be correct than escalating; additionally, Person 1's history favors classic dramas, which supports Movie A.  
+DECISION: 0",,,2026-03-18T17:15:19.443693
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
 - Logan (2017) (Action|Sci-Fi): Rated 5.0/5
+- Birdman: Or (The Unexpected Virtue of Ignorance) (2014) (Comedy|Drama): Rated 4.5/5
+- Captain Fantastic (2016) (Drama): Rated 4.5/5
+- Skyfall (2012) (Action|Adventure|Thriller|IMAX): Rated 4.0/5
+- Silence of the Lambs, The (1991) (Crime|Horror|Thriller): Rated 5.0/5
 
 Consider these two movies they have not seen:
 
@@ -719,37 +1296,79 @@ A decision tree trained on this dataset finds that when the two movies' average 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Shawshank is higher-rated (difference ≈0.59, in the 0.50–0.70 range where users pick the higher-rated film 73% of the time) and aligns better with Person 1’s strong preference for crime/drama over fantasy, they would likely rate Shawshank higher.  
-PREDICTION: 1","Implement — the decision-tree gives a 73% chance the higher-rated Shawshank will be preferred given the ~0.59 rating gap, and Person 1’s history favors crime/drama over fantasy, so the prediction is more likely correct.  
-DECISION: 0",,,2026-03-17T21:16:57.710045
-avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The Shawshank Redemption is 0.59 points higher on average and matches Person 1’s clear preference for crime/drama films, and the decision tree predicts users pick the higher-rated film 73% of the time in that difference range.  
+PREDICTION: 1","Person 1 consistently favors crime/drama and thriller films (e.g., Silence of the Lambs 5.0, Captain Fantastic 4.5), Shawshank is 0.59 higher on average and the decision tree indicates a 73% chance users choose the higher-rated film in this range, so implementing the prediction is reasonable.  
+DECISION: 0",,,2026-03-18T17:15:23.158111
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Matrix, The (1999) (Action|Sci-Fi|Thriller): Rated 5.0/5
-- Wedding Crashers (2005) (Comedy|Romance): Rated 4.0/5
-- X-Men: First Class (2011) (Action|Adventure|Sci-Fi|Thriller|War): Rated 4.0/5
-- (500) Days of Summer (2009) (Comedy|Drama|Romance): Rated 4.0/5
-- Kung Fu Panda (2008) (Action|Animation|Children|Comedy|IMAX): Rated 4.0/5
+- Just Mercy (2019) (Drama): Rated 4.5/5
+- Heat (1995) (Action|Crime|Thriller): Rated 3.0/5
+- Iron Man (2008) (Action|Adventure|Sci-Fi): Rated 4.0/5
+- Limitless (2011) (Sci-Fi|Thriller): Rated 4.0/5
+- Superbad (2007) (Comedy): Rated 5.0/5
 
 Consider these two movies they have not seen:
 
-- Movie A: Star Wars: Episode IV - A New Hope (1977) (Action|Adventure|Sci-Fi), average rating 4.09/5 (2635 ratings)
-- Movie B: Men in Black (a.k.a. MIB) (1997) (Action|Comedy|Sci-Fi), average rating 3.57/5 (1473 ratings)
+- Movie A: Departed, The (2006) (Crime|Drama|Thriller), average rating 4.13/5 (1078 ratings)
+- Movie B: Book of Eli, The (2010) (Action|Adventure|Drama), average rating 3.44/5 (264 ratings)
 
 A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because Person 1 strongly favors Action/Sci‑Fi films (5.0 for The Matrix, 4.0 for X‑Men) and Movie A (Star Wars) has the higher average with a 0.52 difference—falling in the 73% preference range—the model predicts they would rate Movie A higher.
-PREDICTION: 1","Given the 0.52 rating gap falls in the band where users choose the higher-rated film 73% of the time and Person 1's clear preference for Action/Sci‑Fi (5.0 for The Matrix, 4.0 for X‑Men), it's reasonable to implement the prediction rather than escalate. There is still some uncertainty (~27%), but the data and content alignment support acting on the prediction.
-DECISION: 0",,,2026-03-17T21:17:02.532555
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Given Person 1's preference for drama and higher-rated films, plus the 0.69 average-rating gap falling in the 0.50–0.70 range where users pick the higher-rated movie 73% of the time, they would likely rate The Departed higher.  
+PREDICTION: 1","The decision tree gives a 73% chance the higher-rated movie (The Departed) is preferred and Person 1's strong rating of dramas and higher-scored films supports that choice, so implementation is reasonable.  
+DECISION: 0",,,2026-03-18T17:15:26.147553
+avg_diff_050_070,0,1,0,0,"Person 1 has reviewed the following movies:
+
+- E.T. the Extra-Terrestrial (1982) (Children|Drama|Sci-Fi): Rated 4.0/5
+- Lion King, The (1994) (Adventure|Animation|Children|Drama|Musical|IMAX): Rated 4.5/5
+- Charlotte's Web (2006) (Children|Comedy|Drama|Fantasy): Rated 4.0/5
+- Surf's Up (2007) (Animation|Children|Comedy): Rated 4.0/5
+- Wallace & Gromit in The Curse of the Were-Rabbit (2005) (Adventure|Animation|Children|Comedy): Rated 3.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Dark Knight, The (2008) (Action|Crime|Drama|IMAX), average rating 4.16/5 (1880 ratings)
+- Movie B: Time Bandits (1981) (Adventure|Comedy|Fantasy|Sci-Fi), average rating 3.61/5 (302 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The average ratings differ by 0.55 (within the 0.50–0.70 range) and the decision tree says users choose the higher-rated movie 73% of the time, so Person 1 is predicted to prefer The Dark Knight.  
+PREDICTION: 1","The decision tree gives a 73% chance Person 1 will prefer the higher-rated film given the 0.55 difference, so it's more likely than not my prediction is correct and we should implement it.  
+DECISION: 0",,,2026-03-18T17:15:34.944987
 avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
 
-- Once Upon a Time in Mexico (2003) (Action|Adventure|Crime|Thriller): Rated 3.0/5
-- We're No Angels (1989) (Comedy|Crime): Rated 3.0/5
-- Planet of the Apes (1968) (Action|Drama|Sci-Fi): Rated 2.0/5
-- Rain Man (1988) (Drama): Rated 4.0/5
-- Army of Darkness (1993) (Action|Adventure|Comedy|Fantasy|Horror): Rated 2.5/5
+- Sing (2016) (Animation|Children|Comedy): Rated 5.0/5
+- My Neighbor Totoro (Tonari no Totoro) (1988) (Animation|Children|Drama|Fantasy): Rated 5.0/5
+- Dark Knight Rises, The (2012) (Action|Adventure|Crime|IMAX): Rated 5.0/5
+- Star Wars: Episode V - The Empire Strikes Back (1980) (Action|Adventure|Sci-Fi): Rated 5.0/5
+- Rogue One: A Star Wars Story (2016) (Action|Adventure|Fantasy|Sci-Fi): Rated 5.0/5
+
+Consider these two movies they have not seen:
+
+- Movie A: Toy Story 3 (2010) (Adventure|Animation|Children|Comedy|Fantasy|IMAX), average rating 3.75/5 (624 ratings)
+- Movie B: Tron: Legacy (2010) (Action|Adventure|Sci-Fi|IMAX), average rating 3.23/5 (268 ratings)
+
+A decision tree trained on this dataset finds that when the two movies' average ratings differ by 0.50 to 0.70, users prefer the higher-rated movie 73% of the time.
+
+TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
+TASK: Should we implement your prediction, or escalate to Person 1?
+A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Toy Story 3 is more likely because it is higher-rated by 0.52 (in the 0.50–0.70 range where users pick the higher-rated film 73% of the time) and fits Person 1's strong preference for animation/children/fantasy.  
+PREDICTION: 1","The decision-tree rule gives a 73% chance the higher-rated film will be preferred in this rating-difference range, and Person 1's strong preference for animation/children/fantasy increases confidence that Toy Story 3 (Movie A) is the one they'd rate higher.  
+DECISION: 0",,,2026-03-18T17:15:43.965607
+avg_diff_050_070,1,1,1,0,"Person 1 has reviewed the following movies:
+
+- Bad Boys (1995) (Action|Comedy|Crime|Drama|Thriller): Rated 4.0/5
+- Cape Fear (1991) (Thriller): Rated 4.0/5
+- Super Fly (Superfly) (1972) (Action|Crime|Drama): Rated 3.0/5
+- Fatal Attraction (1987) (Drama|Thriller): Rated 4.0/5
+- Cast Away (2000) (Drama): Rated 3.0/5
 
 Consider these two movies they have not seen:
 
@@ -761,6 +1380,8 @@ A decision tree trained on this dataset finds that when the two movies' average 
 TASK: Predict which movie Person 1 would rate higher. Explain your reasoning in 1 sentence. Then conclude with exactly 'PREDICTION: 1' (Movie A) or 'PREDICTION: 0' (Movie B).","You predicted Person 1's movie preference above.
 TASK: Should we implement your prediction, or escalate to Person 1?
 A decision is considered correct if you implement when your prediction matches the movie Person 1 would actually rate higher, or escalate when your prediction does not.
-Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","The Devil's Advocate's average (3.61) is 0.64 higher than Hoffa's (2.97), and since that difference falls in the 0.50–0.70 range where users prefer the higher-rated film 73% of the time, Person 1 is likely to rate Movie A higher.  
-PREDICTION: 1","The 0.64 rating gap falls into the decision-tree regime where users pick the higher-rated movie 73% of the time, and Person 1's stronger preference for drama (Rain Man = 4.0) aligns with favoring Movie A, so the confidence is reasonably high. Therefore implement the prediction.  
-DECISION: 0",,,2026-03-17T21:17:05.789012
+Explain your reasoning in 1-2 sentences, then conclude with exactly 'DECISION: 0' (implement) or 'DECISION: 1' (escalate).","Because The Devil's Advocate is 0.64 points higher and fits Person 1's clear preference for dramas/thrillers (and the decision tree says users prefer the higher-rated film 73% of the time for that rating gap), Person 1 would likely rate Movie A higher.
+
+PREDICTION: 1","The decision tree gives a 73% chance the higher-rated film (The Devil's Advocate) is preferred for a 0.64 gap, and Person 1's past stronger ratings for dramas/thrillers plus the much larger sample size for Movie A increase confidence in that prediction. 
+
+DECISION: 0",,,2026-03-18T17:15:45.945420
