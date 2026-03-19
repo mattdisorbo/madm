@@ -141,7 +141,6 @@ def main():
         gradient_accumulation_steps=2,
         report_to="none",
         max_length=512,
-        max_prompt_length=480,
     )
 
     print(f"Loading model {args.model}...", flush=True)
