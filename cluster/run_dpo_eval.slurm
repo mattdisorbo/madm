@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH -J dpo-perturb
-#SBATCH -o logs/dpo_perturb.%j.out
-#SBATCH -e logs/dpo_perturb.%j.err
+#SBATCH -J dpo-study3
+#SBATCH -o logs/dpo_study3.%j.out
+#SBATCH -e logs/dpo_study3.%j.err
 #SBATCH -p mi2508x
 #SBATCH -N 1
 #SBATCH -n 1
@@ -13,5 +13,8 @@ export PYTHONUNBUFFERED=1
 export HF_HOME=/work1/harangju/harang/.cache/huggingface
 export TOGETHER_API_KEY=unused
 
-python scripts/dpo_eval_perturbations.py --adapter outputs/dpo_full
+for ds in HotelBookings LendingClub MoralMachine WikipediaToxicity MovieLens; do
+    echo "========== $ds =========="
+    python scripts/dpo_eval_study3.py --adapter outputs/dpo_full --dataset $ds --n 10
+done
 echo DONE
