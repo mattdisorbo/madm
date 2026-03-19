@@ -17,10 +17,7 @@ export TMPDIR=/work1/harangju/harang/.cache/tmp
 mkdir -p "$UV_CACHE_DIR" "$PIP_CACHE_DIR" "$TMPDIR"
 export TOGETHER_API_KEY=unused  # study3.py import requires this
 
-# Full run
-python scripts/grpo_escalation.py --output-dir outputs/grpo_full
-
-# Evaluate
-python scripts/grpo_eval.py --model Qwen/Qwen3.5-9B --adapter outputs/grpo_full --n 20
+# DPO training
+python scripts/dpo_escalation.py --output-dir outputs/dpo_full
 
 echo "DONE at $(date)"
