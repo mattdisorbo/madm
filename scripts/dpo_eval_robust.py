@@ -132,9 +132,9 @@ def main():
     eval_set(model, tokenizer, device, SEEN_BASE_RATES, n_repeats=10,
              label="SEEN BASE RATES (10 repeats each)")
 
-    # 2. Novel base rates
-    eval_set(model, tokenizer, device, NOVEL_BASE_RATES, n_repeats=1,
-             label="NOVEL BASE RATES (never in training)")
+    # 2. Novel base rates with 10 repeats
+    eval_set(model, tokenizer, device, NOVEL_BASE_RATES, n_repeats=10,
+             label="NOVEL BASE RATES (never in training, 10 repeats)")
 
 
 if __name__ == "__main__":
