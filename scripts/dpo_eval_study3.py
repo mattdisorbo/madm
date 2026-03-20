@@ -58,7 +58,7 @@ def make_esc_prompt(R, fmt="original"):
 FORMATS = ["study3", "original", "dollar", "wording", "none"]
 
 
-def eval_model(model, tokenizer, device, dataset_name, n_per_condition=10):
+def eval_model(model, tokenizer, device, dataset_name, n_per_condition=10, fmt_list=None):
     """Evaluate on study3 data. Uses nothink CSVs for predictions."""
     results_dir = "results/study3"
 
@@ -89,8 +89,9 @@ def eval_model(model, tokenizer, device, dataset_name, n_per_condition=10):
             cond_br[c["name"]] = c["base_rate"]
 
     all_results = {}
+    formats_to_test = fmt_list if fmt_list else FORMATS
 
-    for fmt in FORMATS:
+    for fmt in formats_to_test:
         correct_by_r = {R: {"c": 0, "n": 0} for R in COST_RATIOS}
         total_correct = 0
         total_n = 0
@@ -162,6 +163,7 @@ def main():
     parser.add_argument("--adapter", default=None)
     parser.add_argument("--n", type=int, default=10, help="Samples per condition")
     parser.add_argument("--dataset", default="HotelBookings")
+    parser.add_argument("--formats", default=None, help="Comma-separated formats to test (default: all)")
     args = parser.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -180,8 +182,9 @@ def main():
         print("Adapter loaded.", flush=True)
     model.eval()
 
+    fmt_list = args.formats.split(",") if args.formats else None
     print("\n=== DPO-TRAINED ===" if args.adapter else "\n=== BASELINE ===", flush=True)
-    eval_model(model, tokenizer, device, args.dataset, n_per_condition=args.n)
+    eval_model(model, tokenizer, device, args.dataset, n_per_condition=args.n, fmt_list=fmt_list)
 
     print("\nDONE", flush=True)
 
