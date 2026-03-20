@@ -770,17 +770,33 @@ if __name__ == "__main__":
         think_tag = "_think" if THINKING else "_nothink"
         hint_tag = "_nohint" if NOHINT else ""
         out_path = f"{OUTPUT_DIR}/{DATASET}_{name}{cost_tag}{think_tag}{hint_tag}_{model_short}.csv"
+        existing_prompts = set()
+        existing_df = None
         if os.path.exists(out_path):
-            print(f"\n  Skipping {name} (already exists: {out_path})")
-            continue
+            existing_df = pd.read_csv(out_path)
+            if len(existing_df) >= N_PER_CONDITION:
+                print(f"\n  Skipping {name} (already has {len(existing_df)} rows)")
+                continue
+            existing_prompts = set(existing_df["prompt"].tolist())
+            print(f"\n  Appending to {name} ({len(existing_df)} existing, need {N_PER_CONDITION})")
 
         subset = df[mask]
-        sample = subset.sample(n=min(N_PER_CONDITION, len(subset)), random_state=42)
+        n_needed = N_PER_CONDITION - len(existing_prompts)
+        if n_needed <= 0:
+            print(f"  No new samples needed")
+            continue
+        # Exclude rows whose prompts are already in existing data
+        if existing_prompts:
+            subset = subset[~subset.apply(lambda r: create_prompt(r) in existing_prompts, axis=1)]
+        sample = subset.sample(n=min(n_needed, len(subset)), random_state=43)
         scenarios = [create_prompt(r) for _, r in sample.iterrows()]
         gts = [int(r[gt_col]) for _, r in sample.iterrows()]
+        if not scenarios:
+            print(f"  No new samples to run")
+            continue
 
         print(f"\n{'='*60}")
-        print(f"  {name} (base_rate={base_rate:.0%}, n={len(sample)})")
+        print(f"  {name} (base_rate={base_rate:.0%}, n={len(scenarios)} new samples)")
         print(f"{'='*60}")
 
         results = []
@@ -798,6 +814,8 @@ if __name__ == "__main__":
                     failed += 1
 
         rdf = pd.DataFrame(results)
+        if existing_df is not None and len(rdf) > 0:
+            rdf = pd.concat([existing_df, rdf], ignore_index=True)
         rdf.to_csv(out_path, index=False)
 
         if len(rdf) == 0:
