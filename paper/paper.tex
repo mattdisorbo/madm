@@ -1,613 +1,296 @@
-\documentclass[12pt]{article}
+\documentclass{article}
+\usepackage[submission]{colm2026_conference}
 
-\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
-\usepackage{booktabs}
-\usepackage{hyperref}
-\usepackage{natbib}
-\usepackage{microtype}
-\usepackage{setspace}
-\usepackage{authblk}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{xcolor}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, positioning, calc}
 
-\doublespacing
+\definecolor{darkblue}{rgb}{0, 0, 0.5}
+\hypersetup{colorlinks=true, citecolor=darkblue, linkcolor=darkblue, urlcolor=darkblue}
 
-\hypersetup{
-  colorlinks=true,
-  linkcolor=blue,
-  citecolor=blue,
-  urlcolor=blue,
-}
+\input{math_commands.tex}
 
-% -----------------------------------------------------------------------
-\title{Adversarial Reasoning Improves Multi-Agent Decision-Making}
+\title{Do LLM Agents Know When to Ask for Help? \\
+Characterizing and Calibrating Escalation in Automated Decision-Making}
 
-\author[1]{Author One}
-\author[1]{Author Two}
-\affil[1]{Institution, City, Country}
-
-\date{}
-% -----------------------------------------------------------------------
+\author{Author One \And Author Two}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-Large language models (LLMs) deployed in high-stakes settings tend to be overconfident:
-they commit to decisions even when their predictions are poor, because their
-training encourages coherent support for an answer rather than valid
-critique of it.
-We study whether a structured adversarial pipeline---predict, critique,
-evaluate---can correct this tendency without providing the model any new
-information.
-Across nine datasets spanning loan approval, fact-checking, content
-moderation, and mathematical reasoning, the adversarial auditor reliably
-improves final decision quality over a single-agent baseline.
-The gains arise not from better predictions but from better-calibrated
-escalation: the auditor surfaces uncertainty that the base model suppresses,
-routing uncertain cases to human review.
-Activation patching across all 36 layers of Qwen3-4B reveals that the
-adversarial critique's causal influence is concentrated in a narrow band
-of middle layers, peaking at layer~19 where patching flips 45\% of
-decisions.
-A steering vector derived from this layer shifts decisions without any
-prompt change, demonstrating that adversarial reasoning engages a
-localizable neural circuit that can be directly probed.
+As organizations deploy LLM-based agents to automate decisions, a critical question emerges: can these agents reliably recognize when to escalate to a human rather than implement their own solution? We study this question across five models, four decision-making domains, and multiple interventions. We find that each model exhibits a distinct ``escalation personality,'' characterized by two hidden properties: an implicit accuracy threshold $p^*$ at which the model transitions from escalating to implementing, and a self-estimated accuracy $\hat{a}$ that the model applies regardless of task difficulty. These properties vary widely across models ($p^*$ ranges from 56\% to 92\%; $\hat{a}$ ranges from 79\% to 94\%) and cannot be predicted from model architecture or scale alone. We then test interventions to align escalation behavior with a cost-optimal threshold. Cost-ratio prompting alone fails for models without reasoning capabilities, but the combination of chain-of-thought reasoning and cost framing achieves 88\% correct escalation decisions, compared to 70\% at baseline. Our results demonstrate that escalation behavior is a latent, model-specific property that practitioners must characterize before deployment, and we provide both a methodology and a set of interventions for doing so.
 \end{abstract}
 
+% ======================================================================
 \section{Introduction}
+\label{sec:intro}
+% ======================================================================
 
-Large language models can process decisions orders of magnitude faster than
-humans, but there is often a large gap between their accuracy and the
-accuracy that high-stakes settings require.
-When that gap exists, the right response is not to decide faster but to
-escalate: to flag uncertainty and route the case to a human reviewer.
-LLMs are bad at this.
-Calibration research documents their overconfidence
-broadly~\citep{kadavath2022language,xiong2024can}, but the underlying
-cause is underappreciated: the pretraining objective rewards producing
-coherent, well-supported answers, not identifying the conditions under
-which an answer should be withheld.
-A model asked to justify a decision will find justifications; a model asked
-to critique that same decision engages a qualitatively different
-computation.
+LLM-based agents are increasingly deployed to automate consequential decisions: approving loan applications, moderating content, and managing customer interactions. In each of these settings, the agent faces a choice that receives far less scrutiny than its predictive accuracy: should it implement its own decision, or escalate to a human?
 
-This asymmetry motivates a multi-agent approach.
-Rather than prompting a single model to decide, we introduce an adversarial
-auditor that sees the initial decision and is asked to argue against it
-before a final verdict is produced.
-The pipeline has three steps: (1) the base agent predicts, (2) the auditor
-critiques, and (3) the base agent decides whether to implement or escalate
-in light of the critique.
-Crucially, no new information enters the system at any step; any performance
-gain must come from reorganizing the model's existing computation.
+This escalation decision is fundamental to safe automation. An agent that never escalates will implement wrong decisions at scale. An agent that always escalates provides no labor savings. A trustworthy agent must identify the cases where it is likely to be wrong and defer only on those, while confidently implementing decisions it is likely to get right.
 
-We evaluate this setup across nine datasets spanning loan approval,
-fact-checking, content moderation, moral reasoning, and
-mathematics~(Section~\ref{sec:data}).
-The base agent predicts and decides in a single step;
-the adversarial pipeline inserts a critique that asks whether the case
-should be escalated to human review.
-Despite this minimal addition, four findings emerge.
+Two conditions must hold for reliable escalation. First, the agent must have an accurate sense of its own performance: it should recognize when its predictions are likely wrong. Second, the agent must apply a consistent escalation threshold that reflects the relative costs of errors and human review. We find that current LLMs satisfy neither condition.
 
-First, prediction accuracy is roughly flat across all reasoning
-methods---the adversarial pipeline does not help the model guess better
-(Figure~\ref{fig:main_results}).
-Second, the adversarial pipeline dramatically increases escalation rates,
-routing uncertain cases to human review that the base model would have
-handled incorrectly.
-This escalation is what drives the final accuracy improvement.
-Third, two control conditions---an agreeable critique oriented toward
-implementation and a multiagent pipeline combining both
-perspectives---produce escalation rates and final accuracy nearly identical
-to the base path, demonstrating that the adversarial framing
-itself, not the mere presence of a critique step, is the active ingredient.
-Fourth, activation patching localizes the critique's causal influence to a
-narrow band of middle layers in Qwen3-4B, and a steering vector derived from
-the peak layer shifts decisions at test time without any prompt change.
+We study escalation behavior across five models spanning three model families and a range of scales: Qwen3.5-9B, Qwen3.5-397B-A17B (17B active parameters), Qwen3-Next-80B-A3B (3B active), Llama~4~Maverick, and GPT-5-mini. We evaluate these models on four decision-making tasks: hotel booking prediction, loan approval, content moderation, and movie preference prediction. By varying the difficulty of each task through statistically grounded hints, we construct escalation curves that reveal each model's implicit decision-making behavior.
 
-\section{Related Work}
+Our contributions are threefold. First, we introduce a methodology for characterizing LLM escalation behavior, revealing that each model has a distinct ``escalation personality'' defined by two quantities: an implicit accuracy threshold $p^*$ and a self-estimated accuracy $\hat{a}$. Second, we show that providing accuracy information via a decision-tree tool calibrates the agent's predictive accuracy to the true base rate, correcting both overperformance and underperformance. Third, we demonstrate that the combination of chain-of-thought reasoning and cost framing produces near-optimal escalation decisions (88\% correct), while neither intervention succeeds in isolation.
 
-\paragraph{LLM overconfidence and calibration.}
-Models exhibit overconfidence across question-answering, factual recall, and
-reasoning tasks~\citep{kadavath2022language,xiong2024can}.
-Selective prediction methods attempt to improve calibration by training
-separate confidence heads~\citep{geifman2017selective}, but they require
-labeled abstention data.
-Our approach recovers calibration gains at inference time through prompting
-alone.
 
-\paragraph{Multi-agent and debate-based reasoning.}
-Multi-agent debate between LLM instances can improve factual accuracy on
-reasoning tasks~\citep{du2023improving,chan2023chateval}.
-Society of Mind approaches decompose tasks across specialized
-agents~\citep{liang2023encouraging}.
-We contribute a complementary finding: adversarial prompting within a single
-model---not just across separate model instances---is sufficient to engage a
-distinct reasoning circuit.
+% ======================================================================
+\section{Theory}
+\label{sec:theory}
+% ======================================================================
 
-\paragraph{Mechanistic interpretability.}
-Circuits work~\citep{olah2020zoom} and sparse
-autoencoders~\citep{bricken2023monosemanticity,cunningham2023sparse} have
-shown that specific model behaviors trace to identifiable, localized
-computational structures.
-We extend this line of work to multi-step decision-making, linking a
-behaviorally meaningful distinction (support vs.\ critique) to a geometric
-separation in activation space.
+\subsection{The Escalation Decision}
 
-\paragraph{Activation steering.}
-Mean-difference steering vectors can shift model behavior at inference time
-without any weight updates~\citep{turner2023activation,panickssery2023steering}.
-Prior applications include persona induction and toxicity suppression; we
-demonstrate steering on a decision task with verifiable outcomes, providing
-causal evidence that the identified circuit mediates the behavioral
-difference.
+Consider a workflow in which a human delegates a binary prediction task to an LLM-based agent. The agent observes a scenario $x$, produces a prediction $\hat{y} \in \{0, 1\}$, and then decides whether to \emph{implement} (act on) its prediction or \emph{escalate} (defer to the human). Every action an agent takes in practice contains an implicit escalation decision: when it makes a tool call, generates a response, or commits a change, it is choosing to implement rather than ask for guidance.
 
-\paragraph{Algorithmic auditing.}
-Auditing machine learning systems for fairness and reliability is legally
-required in many lending contexts~\citep{barocas2023fairness}.
-Input perturbation methods~\citep{datta2016algorithmic} probe model behavior
-from the outside; our activation-based approach probes it from the inside,
-offering a window into the computations that precede any output.
+We model the agent's behavior as follows. After producing its prediction, the agent forms an internal estimate $\hat{p}$ of its probability of being correct. It then compares $\hat{p}$ to a threshold $\tau$ and escalates if $\hat{p} < \tau$.
 
-\section{Data}
-\label{sec:data}
+\subsection{Cost Structure}
 
-We evaluate across nine publicly available datasets spanning domains in which
-humans make binary decisions.
+The principal incurs one of two costs depending on the agent's action. If the agent escalates, the principal pays a labor cost $c_\ell > 0$ for human review. If the agent implements and its prediction is wrong, the principal pays an error cost $c_w > c_\ell$. Correct implementations incur zero cost.
 
+The agent minimizes expected cost by escalating whenever
+\begin{equation}
+\hat{p} < \frac{c_w}{c_w + c_\ell} \equiv \tau^*.
+\label{eq:threshold}
+\end{equation}
+For a cost ratio $R = c_w / c_\ell = 4$, the optimal threshold is $\tau^* = 4/5 = 80\%$. At $R = 1$ (errors and escalation cost the same), the threshold drops to 50\%.
+
+\subsection{Two Sources of Miscalibration}
+
+Cost-optimal escalation requires two conditions. The agent's probability estimate $\hat{p}$ must equal the true probability of being correct (calibration), and the agent's threshold $\tau$ must equal the cost-optimal threshold $\tau^*$ (threshold alignment). We measure violations of each condition independently.
+
+To assess calibration, we compare the agent's behavior when it receives no information about task difficulty (revealing its self-estimated accuracy $\hat{a}$) to its actual accuracy. To assess threshold alignment, we construct escalation curves by varying task difficulty and identify the accuracy level $p^*$ at which the agent's escalation rate crosses 50\%. If the agent were perfectly aligned for a cost ratio $R$, we would observe $p^* = \tau^* = R/(R+1)$.
+
+
+% ======================================================================
+\section{Experimental Design}
+\label{sec:design}
+% ======================================================================
+
+\subsection{Datasets}
+
+We evaluate on four binary prediction tasks, each drawn from a publicly available dataset.
+
+\paragraph{Hotel Bookings.} We predict whether a hotel booking will be kept or canceled, using features such as lead time, number of special requests, and guest history \citep{antonio2019hotel}. We define 10 conditions by partitioning bookings along decision-tree splits (e.g., ``lead time under 30 days with special requests''), producing base rates ranging from 52\% to 95\%.
+
+\paragraph{LendingClub.} We predict whether a loan application will be approved, using applicant features such as FICO score, debt-to-income ratio, and loan amount \citep{lending_data}. Ten conditions span base rates from 51\% to 93\%.
+
+\paragraph{Wikipedia Toxicity.} We predict whether a Wikipedia discussion comment will be labeled toxic by crowd-workers \citep{wulczyn2017exmachina}. Ten conditions based on keyword presence span base rates from 52\% to 94\%.
+
+\paragraph{MovieLens.} We predict which of two movies a user would rate more highly, given five prior ratings and average community ratings \citep{harper2015movielens}. Ten conditions based on the difference in average ratings span base rates from 51\% to 94\%.
+
+Each condition is accompanied by a \emph{hint}: a natural-language description of the decision tree's base rate for that condition (e.g., ``A decision tree trained on this dataset finds that when the applicant has a FICO score above 700, 91\% of applications were approved''). This hint serves as a tool output that an agent might receive in a realistic deployment.
+
+\subsection{Models}
+
+We evaluate five models spanning three families and a range of scales:
 \begin{itemize}
+    \item \textbf{Qwen3.5-9B}: 9B dense parameters, with controllable thinking mode \citep{qwen3}.
+    \item \textbf{Qwen3.5-397B-A17B}: 397B total parameters with 17B active (sparse MoE).
+    \item \textbf{Qwen3-Next-80B-A3B}: 80B total, 3B active (sparse MoE).
+    \item \textbf{Llama~4~Maverick}: 17B parameter dense model.
+    \item \textbf{GPT-5-mini}: Closed-source model with built-in reasoning capabilities.
+\end{itemize}
+GPT-5-mini results exclude MovieLens (partial data due to content filter restrictions) and MoralMachine; all other models are evaluated on all four main datasets.
 
-  \item \textbf{LendingClub}~\citep{lending_data}.
-  Consumer loan applications from the LendingClub peer-to-peer lending
-  platform, each described by loan amount, purpose, US state, employment
-  length, and policy code.
-  The ground truth is the platform's binary accept/reject decision.
-  We sample 100{,}000 accepted and 100{,}000 rejected applications.
+\subsection{Prompting Protocol}
 
-  \item \textbf{MovieLens}~\citep{harper2015movielens}.
-  User ratings from the MovieLens collaborative-filtering benchmark.
-  Each example is a pairwise preference question: given a user's rating
-  history, which of two candidate films did they rate higher?
-  The ground truth is the user's actual higher-rated film, capturing
-  real consumer preference.
-  We use the first 1{,}000{,}000 rows of the rating file to stay within
-  memory limits.
+Each sample proceeds in two turns within a single conversation. In the first turn, the agent receives the scenario, the hint (when applicable), and a prediction prompt asking it to explain its reasoning in one sentence and conclude with \texttt{PREDICTION: 1} or \texttt{PREDICTION: 0}. In the second turn, the agent sees its own prediction and is asked whether to implement or escalate, concluding with \texttt{DECISION: 0} (implement) or \texttt{DECISION: 1} (escalate).
 
-  \item \textbf{FEVEROUS}~\citep{aly2021feverous}.
-  Wikipedia-grounded claim verification in which each example is a
-  natural-language statement paired with evidence drawn from both Wikipedia
-  prose and tables.
-  The ground truth is a crowd-sourced human judgment of \textit{supported}
-  or \textit{refuted}.
-  We exclude claims labeled \textit{not enough information}, retaining
-  roughly half the original corpus.
-
-  \item \textbf{Wikipedia Toxicity}~\citep{wulczyn2017exmachina}.
-  Comments from Wikipedia talk pages rated by crowd workers for personal
-  attacks.
-  The ground truth is the majority toxicity label assigned by the
-  annotators.
-
-  \item \textbf{Uber}~\citep{uber_data}.
-  Ride-booking records from New York City indicating whether a requested
-  ride was cancelled before pickup.
-  The ground truth is the binary cancellation outcome.
-
-  \item \textbf{Hotel Bookings}~\citep{antonio2019hotel}.
-  Reservation records from two Portuguese hotels.
-  The ground truth is whether a booking was ultimately cancelled by the
-  guest.
-
-  \item \textbf{AIME}.
-  American Invitational Mathematics Examination competition problems.
-  The ground truth is the correct numerical answer to each problem.
-
-  \item \textbf{JFLEG}~\citep{napoles2017jfleg}.
-  A corpus of sentences written by English-as-a-second-language learners,
-  each annotated with human-corrected fluent rewrites.
-  The ground truth is the human's fluency judgment.
-
-  \item \textbf{Moral Machine}~\citep{awad2018moral}.
-  Trolley-problem scenarios from the MIT Moral Machine experiment in which
-  participants chose who an autonomous vehicle should prioritize in
-  unavoidable collisions.
-  The ground truth is the human's moral decision.
-
+We evaluate several variants of this protocol:
+\begin{itemize}
+    \item \textbf{Baseline}: Hint provided, no cost framing, no explicit thinking.
+    \item \textbf{No hint}: The hint is omitted, revealing the model's default confidence.
+    \item \textbf{Cost ratio 4}: The escalation prompt is prepended with ``Implementing a wrong answer costs 4$\times$ more than escalating.''
+    \item \textbf{Thinking}: For Qwen3.5-9B, we enable the model's chain-of-thought reasoning mode. GPT-5-mini uses built-in reasoning by default.
+    \item \textbf{Thinking + Cost 4}: Both thinking and cost framing are active.
 \end{itemize}
 
-\section{Methods}
+For each condition, we sample 250 scenarios (50 for thinking runs) and report means with standard errors.
 
-\subsection{Dataset}
 
-Input features vary by domain.
-LendingClub applications include loan amount, purpose, US state, employment
-length, and policy code; employment length is normalized to $[0,1]$ and all
-categorical fields are rendered as natural-language phrases.
-Other datasets are formatted analogously, with each row converted to a brief
-natural-language scenario.
+% ======================================================================
+\section{Results I: Escalation Personalities}
+\label{sec:results1}
+% ======================================================================
 
-\subsection{Reasoning Pipelines}
+% TODO: Add prompting diagram figure (Figure 1)
 
-Each example is formatted as a brief scenario and presented to
-Qwen3 models (1.7B, 4B, 8B, 14B)~\citep{qwen3} under one of four
-multi-step instructions (Figure~\ref{fig:pipelines}).
+\subsection{Each Model Has a Distinct Escalation Curve}
 
-\emph{Base.} The model produces a prediction and an escalation decision
-in a single step, with no intermediate critique.
+Figure~\ref{fig:esc_curves} presents escalation rate versus predictive accuracy for each model across all four datasets. Several patterns emerge.
 
-\emph{Adversarial.} The model produces an initial prediction, then
-constructs a counter-argument against that prediction. The critique
-explicitly asks whether the case should be escalated to human review.
-A final decision follows in light of the critique.
-
-\emph{Agreeable.} The model produces an initial prediction, then constructs
-a critique focused on implementation rather than escalation.
-The critique asks how to best carry out the predicted decision, reinforcing
-rather than challenging the initial prediction.
-
-\emph{Multiagent.} The model produces an initial prediction, then generates
-two separate critiques: one adversarial (oriented toward escalation) and one
-agreeable (oriented toward implementation). A final decision integrates both
-perspectives.
-
-The base path predicts and decides in a single step; the other three
-paths insert one or two intermediate critiques between prediction and
-decision. Only the framing of that critique differs.
-All generations are capped at 512 tokens to control for length confounds.
-Figure~\ref{fig:pipelines} illustrates each pipeline with an example
-trace from the LendingClub dataset (Qwen3-8B).
-
-\begin{figure*}[t]
-  \centering
-  \tikzset{
-    step/.style={
-      draw, rounded corners=2pt, font=\scriptsize,
-      inner sep=3pt, line width=0.3pt, align=left, text width=\linewidth-3cm
-    },
-    redstep/.style={step, fill=red!10, draw=red!50},
-    bluestep/.style={step, fill=blue!10, draw=blue!50},
-    lbl/.style={font=\scriptsize\bfseries, text width=2.1cm, align=right, anchor=east},
-    arr/.style={-{Stealth[length=2.5pt]}, line width=0.3pt},
-  }
-
-  %% ---- Shared task and scenario ----
-  \begin{tikzpicture}
-    \node[lbl] (l0) at (0,0) {Task};
-    \node[step, right=0.2cm of l0, fill=gray!8] (s0)
-      {Predict the human officer's decision. Then \textbf{implement} or \textbf{escalate} to the officer.};
-    \node[lbl, below=0.15cm of l0] (l1) {Scenario};
-    \node[step, right=0.2cm of l1, fill=gray!8] (s1)
-      {Loan: \$5{,}000 for debt consolidation. Employed 3 years, DTI 10.1\%, credit score 695.};
-    \draw[arr] ([xshift=0.4cm]s0.south west) -- ([xshift=0.4cm]s1.north west);
-  \end{tikzpicture}
-
-  \medskip
-  \hrule
-  \medskip
-
-  %% ---- Base ----
-  \textbf{\small (a) Base}\par\vspace{2pt}
-  \begin{tikzpicture}
-    \node[lbl] (l2) at (0,0) {Predict + Decide};
-    \node[step, right=0.2cm of l2] (s2)
-      {Prediction: \textbf{approve}. \enspace Decision: \textbf{implement}.};
-  \end{tikzpicture}
-
-  \medskip
-
-  %% ---- Adversarial ----
-  \textbf{\small (b) Adversarial}\par\vspace{2pt}
-  \begin{tikzpicture}
-    \node[lbl] (l2) at (0,0) {Predict};
-    \node[step, right=0.2cm of l2] (s2)
-      {Stable employment, manageable DTI, decent credit score. \textbf{Prediction: approve.}};
-    \node[lbl, below=0.15cm of l2] (l3) {\textcolor{red!70}{Argue: escalate}};
-    \node[redstep, right=0.2cm of l3] (s3)
-      {DTI may not reflect the full financial picture. Review savings and income stability.};
-    \node[lbl, below=0.15cm of l3] (l4) {Decide};
-    \node[step, right=0.2cm of l4] (s4)
-      {Decision: \textbf{escalate}.};
-    \draw[arr] ([xshift=0.4cm]s2.south west) -- ([xshift=0.4cm]s3.north west);
-    \draw[arr] ([xshift=0.4cm]s3.south west) -- ([xshift=0.4cm]s4.north west);
-  \end{tikzpicture}
-
-  \medskip
-
-  %% ---- Agreeable ----
-  \textbf{\small (c) Agreeable}\par\vspace{2pt}
-  \begin{tikzpicture}
-    \node[lbl] (l2) at (0,0) {Predict};
-    \node[step, right=0.2cm of l2] (s2)
-      {Stable employment, manageable DTI, decent credit score. \textbf{Prediction: approve.}};
-    \node[lbl, below=0.15cm of l2] (l3) {\textcolor{blue!70}{Argue: implement}};
-    \node[bluestep, right=0.2cm of l3] (s3)
-      {Meets standard lending criteria with low default risk. Suitable for automated approval.};
-    \node[lbl, below=0.15cm of l3] (l4) {Decide};
-    \node[step, right=0.2cm of l4] (s4)
-      {Decision: \textbf{implement}.};
-    \draw[arr] ([xshift=0.4cm]s2.south west) -- ([xshift=0.4cm]s3.north west);
-    \draw[arr] ([xshift=0.4cm]s3.south west) -- ([xshift=0.4cm]s4.north west);
-  \end{tikzpicture}
-
-  \medskip
-
-  %% ---- Multiagent ----
-  \textbf{\small (d) Multiagent}\par\vspace{2pt}
-  \begin{tikzpicture}
-    \node[lbl] (l2) at (0,0) {Predict};
-    \node[step, right=0.2cm of l2] (s2)
-      {Stable employment, manageable DTI, decent credit score. \textbf{Prediction: approve.}};
-    \node[lbl, below=0.15cm of l2] (l3) {\textcolor{red!70}{Argue: escalate}};
-    \node[redstep, right=0.2cm of l3] (s3)
-      {DTI may not reflect the full financial picture. Review savings and income stability.};
-    \node[lbl, below=0.15cm of l3] (l4) {\textcolor{blue!70}{Argue: implement}};
-    \node[bluestep, right=0.2cm of l4] (s4)
-      {Meets standard lending criteria with low default risk. Suitable for automated approval.};
-    \node[lbl, below=0.15cm of l4] (l5) {Decide};
-    \node[step, right=0.2cm of l5] (s5)
-      {Decision: \textbf{implement}.};
-    \draw[arr] ([xshift=0.4cm]s2.south west) -- ([xshift=0.4cm]s3.north west);
-    \draw[arr] ([xshift=0.4cm]s3.south west) -- ([xshift=0.4cm]s4.north west);
-    \draw[arr] ([xshift=0.4cm]s4.south west) -- ([xshift=0.4cm]s5.north west);
-  \end{tikzpicture}
-
-  \caption{Illustrative traces for a LendingClub applicant under each
-           pipeline, constructed from representative Qwen3-8B outputs
-           (actual experiments sample independently per method).
-           The model predicts the human officer's decision, then implements
-           or escalates. All four methods predict \emph{approve}, but only
-           the adversarial path escalates.
-           \textcolor{red!70}{Red} = argues for escalation;
-           \textcolor{blue!70}{blue} = argues for implementation.
-           Critique text is abridged.}
-  \label{fig:pipelines}
-\end{figure*}
-
-\subsection{Escalation}
-
-In addition to predicting an outcome, models decide whether to
-\emph{implement} their prediction or \emph{escalate} it to a human for
-final review.
-We measure escalation rate as the fraction of inputs routed to human review,
-and final accuracy as accuracy on implemented cases plus 100\% credit for
-escalated cases (since a human reviewer would decide correctly).
-
-\subsection{Activation Patching}
-
-We use activation patching to identify which layers mediate the behavioral
-difference between the agreeable and adversarial pipelines.
-For each of 50 loan applications, we run both the agreeable and adversarial
-chains through Qwen3-4B (36 layers) using greedy decoding, matching the
-stage~0 protocol exactly.
-Samples where the two pipelines disagree (20 of 50) form the analysis set.
-
-For each disagreeing sample, we cache the attention output at every layer
-via forward hooks during a single forward pass on the final decision prompt.
-We then re-run the agreeable prompt through \texttt{generate()}, patching
-in the adversarial attention output at one layer at a time during the
-initial prefill pass.
-A layer is considered causal if the patched generation flips the agreeable
-decision from ``implement'' to ``escalate,'' matching the adversarial outcome.
-
-\subsection{Steering Vectors}
-
-For the top three layers identified by patching, we compute a steering vector
-$\mathbf{v} = \overline{\mathbf{h}}_{\text{adv}} - \overline{\mathbf{h}}_{\text{agree}}$,
-where each $\overline{\mathbf{h}}$ is the mean attention output at the final
-token position, averaged over the 20 disagreeing samples.
-We normalize $\mathbf{v}$ to unit length and add $\alpha \mathbf{v}$ to the
-attention output during the prefill pass of an agreeable generation, testing
-coefficients $\alpha \in \{5, 20, 50, 100\}$.
-
-\section{Results}
-
-\subsection{Decision Quality and Escalation}
-
-Figure~\ref{fig:main_results} summarizes performance across all eight
-datasets, aggregated over the four Qwen3 model sizes.
-Prediction accuracy is roughly flat across all four pipelines and barely
-exceeds the naive (majority class) baseline, confirming that the critique
-step does not help the model guess better.
-The center panel reveals the mechanism: the adversarial pipeline escalates
-far more aggressively than all other methods, routing uncertain cases to
-human review.
-This escalation drives large gains in final accuracy, because cases the
-model would have gotten wrong are instead handled by a human reviewer.
-
-The agreeable and multiagent pipelines are particularly informative as
-controls.
-The base pipeline and the agreeable pipeline produce nearly identical
-escalation rates and final accuracy, despite the agreeable pipeline
-including an explicit critique step.
-A critique oriented toward implementation rather than escalation does not
-meaningfully change the model's behavior relative to the base path.
-The multiagent pipeline, which receives both an adversarial and an agreeable
-critique, escalates at roughly the same low rate as the agreeable path
-alone, suggesting that the implementation-focused critique dominates when
-both perspectives are present.
-These comparisons isolate the active ingredient: the adversarial framing
-itself, not the mere presence of a second reasoning step, is what drives
-the escalation gains.
+% TODO: Generate and include Figure 2: 5-panel esc vs acc chart
 
 \begin{figure}[t]
-  \centering
-  \includegraphics[width=\linewidth]{figures/main/fig_main.pdf}
-  \caption{Prediction accuracy, escalation rate, and final accuracy for the
-           four reasoning pipelines, aggregated across eight datasets and
-           four Qwen3 models (1.7B, 4B, 8B, 14B).
-           Prediction accuracy is flat across methods, but the adversarial
-           pipeline escalates far more aggressively, driving the highest
-           final accuracy.
-           Bar heights are row-weighted means; error bars show $\pm 1$
-           standard error.
-           The dashed line marks naive (majority class) accuracy.}
-  \label{fig:main_results}
+    \centering
+    \includegraphics[width=\textwidth]{figures/esc_vs_acc_nothink_3models.png}
+    \caption{Escalation rate versus predictive accuracy for three representative models across four datasets (with hints, no thinking). The vertical dotted line marks 75\% accuracy. Each model exhibits a distinct escalation personality: Qwen3.5-9B escalates moderately, Qwen3.5-397B escalates heavily, and GPT-5-mini shows domain-dependent behavior.}
+    \label{fig:esc_curves}
 \end{figure}
 
-\subsection{LLM Overconfidence}
+First, every model exhibits a generally negative relationship between predictive accuracy and escalation rate: as the model becomes more accurate (due to stronger hints), it escalates less. This indicates that all models have some sensitivity to their own performance.
 
-The base, agreeable, and multiagent pipelines all escalate well below the
-rate at which their predictions are incorrect.
-Only the adversarial path recovers a substantial share of this
-miscalibration, redirecting uncertain cases toward human review rather than
-committing to a wrong answer.
-The similarity between the base and agreeable escalation rates reinforces
-the interpretation that the default mode of a language model is supportive
-reasoning: asked to critique for implementation, the model behaves as
-though it were asked to support.
+Second, the models differ dramatically in their overall escalation levels. Qwen3.5-9B escalates between 3\% and 80\% across conditions, while Qwen3.5-397B escalates between 0\% and 100\%. The same accuracy level can produce vastly different escalation rates depending on the model.
 
-These results illustrate that the primary opportunity for improvement lies
-in escalation rather than raw prediction skill.
-A model that predicted randomly but escalated perfectly would outperform a
-highly accurate but overconfident model in settings where escalation is
-possible; the adversarial pipeline moves in that direction without any
-retraining.
+Third, several models' curves are non-monotonic: escalation does not always decrease as accuracy improves. This suggests that models incorporate factors beyond accuracy when deciding whether to escalate, or that escalation behavior is inherently noisy.
 
-\subsection{Utility Under Escalation Cost}
+\subsection{The Implicit Threshold $p^*$}
 
-The escalation gains of the adversarial pipeline come at a price: every
-escalated case requires human review.
-To quantify this tradeoff, we define a simple utility function.
-Implementing a correct decision yields $+1$, implementing an incorrect
-decision yields $-1$, and escalating yields $+1 - c$, where $c$ is the
-cost of human review.
-Figure~\ref{fig:utility} plots expected utility as a function of $c$ for
-each pipeline.
+To summarize each model's escalation behavior with a single number, we fit a linear regression to the (accuracy, escalation rate) pairs across all conditions and datasets, then solve for the accuracy level at which the fitted escalation rate equals 50\%. We call this the model's \emph{implicit threshold} $p^*$.
 
-The adversarial pipeline dominates at low escalation cost, reflecting its
-ability to route uncertain cases to human review.
-As $c$ increases, however, the high escalation rate becomes a liability,
-and the adversarial line crosses below the agreeable and multiagent
-pipelines at $c \approx 0.75$.
-The base pipeline performs worst across nearly the entire range, dropping
-below zero utility before $c = 1$.
-The agreeable and multiagent pipelines occupy a middle ground, maintaining
-moderate utility even at high escalation cost because they rarely escalate.
-The crossover point provides a practical decision rule: adversarial
-prompting is the preferred strategy whenever human review costs less than
-roughly 75\% of the value of a correct decision.
+\begin{table}[t]
+    \centering
+    \caption{Implicit escalation threshold $p^*$ and self-estimated accuracy $\hat{a}$ for each model. The threshold $p^*$ is the accuracy level at which the model's escalation rate crosses 50\%. Self-estimated accuracy is derived by mapping the model's no-hint escalation rate onto its hint-based escalation curve (Section~\ref{sec:results2}).}
+    \label{tab:pstar}
+    \begin{tabular}{lcc}
+        \toprule
+        Model & $p^*$ & $\hat{a}$ \\
+        \midrule
+        Qwen3.5-9B & 56.0\% & 93.6\% \\
+        Qwen3-Next-3B & 81.4\% & 91.4\% \\
+        Llama~4~Maverick & 91.9\% & 86.5\% \\
+        GPT-5-mini & 57.4\% & 83.0\% \\
+        Qwen3.5-397B & 81.2\% & 79.0\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=0.75\linewidth]{figures/utility/fig_utility.pdf}
-  \caption{Expected utility as a function of escalation cost $c$.
-           Implementing a correct decision yields $+1$, an incorrect
-           decision yields $-1$, and escalating yields $+1 - c$.
-           The adversarial pipeline dominates at low cost but crosses
-           below the agreeable and multiagent pipelines near $c = 0.75$.}
-  \label{fig:utility}
-\end{figure}
+Table~\ref{tab:pstar} reveals striking variation. Qwen3.5-9B and GPT-5-mini have low thresholds ($p^* \approx 57\%$), meaning they transition from escalating to implementing at relatively low accuracy levels. Llama~4~Maverick has a high threshold ($p^* = 91.9\%$), continuing to escalate even when it is quite accurate. This variation persists within the same model family: Qwen3.5-9B ($p^* = 56\%$) and Qwen3.5-397B ($p^* = 81\%$) differ by 25 percentage points despite sharing the same architecture and training pipeline.
 
-\subsection{Localization of Critique Influence}
+For a practitioner choosing a model for automated decision-making, these differences are consequential. A model with $p^* = 56\%$ will implement aggressively, accepting a higher error rate in exchange for lower escalation costs. A model with $p^* = 92\%$ will escalate most decisions, providing safety at the expense of automation. Neither behavior is inherently correct; the right threshold depends on the cost ratio $R$. The problem is that these thresholds are hidden, model-specific properties that cannot be determined without empirical characterization.
 
-Figure~\ref{fig:stage2} shows the flip rate for each layer when
-adversarial attention outputs are patched into the agreeable generation.
-Layer~19 produces the highest flip rate at 45\% (9 of 20 disagreements),
-with layers~18 and~20 each reaching 30\%.
-The last third of the network (layers 24--35) shows no patching effect
-at all, indicating that the critique's influence is fully encoded by the
-middle layers and passes through unchanged thereafter.
-The early layers (0--4) show moderate activity, consistent with initial
-divergence in how the two critique types are represented.
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=0.85\linewidth]{figures/stage2/fig_stage2.pdf}
-  \caption{Activation patching and steering flip rates by layer in Qwen3-4B.
-  Blue bars show the fraction of disagreeing samples (out of 20) whose
-  agreeable decision flips to the adversarial outcome when that layer's
-  attention output is patched.
-  Red bars show the fraction flipped by a steering vector at
-  $\alpha = 20$.
-  The critique's causal influence peaks sharply at layer~19.}
-  \label{fig:stage2}
-\end{figure}
+% ======================================================================
+\section{Results II: Self-Estimated Accuracy}
+\label{sec:results2}
+% ======================================================================
 
-\subsection{Causal Steering}
+We now examine the calibration of each model's internal sense of its own accuracy. We exploit the no-hint condition, in which the model receives no information about task difficulty and must rely entirely on its prior beliefs.
 
-The steering vector at layer~19 flips 4 of 20 samples (20\%) at
-$\alpha = 20$, and layer~20 matches this rate.
-Layer~18 shows no steering effect despite its 30\% patching rate,
-suggesting that its causal role depends on sample-specific activation
-patterns rather than a shared directional component.
-The gap between patching (45\%) and steering (20\%) at layer~19 confirms
-that some of the critique's influence is sample-specific, while a
-consistent ``escalate more'' direction accounts for roughly half of the
-effect.
-The model can be steered toward the adversarial decision posture without
-any prompt change, by injecting a single direction into the attention
-output at layer~19.
+\subsection{Mapping No-Hint Escalation to Self-Estimated Accuracy}
 
-\section{Discussion}
+When a model receives no hint, it escalates at a rate that reflects its default confidence level. We map this escalation rate onto the model's hint-based escalation curve (from Section~\ref{sec:results1}) to find the accuracy level that would produce the same escalation rate in the hint condition. This mapping yields the model's \emph{self-estimated accuracy} $\hat{a}$: the accuracy level at which the model behaves as if it is performing.
 
-\paragraph{Why does the base model fail to escalate?}
-The pretraining objective on text corpora rewards coherent, well-supported
-output.
-A model that encounters a decision scenario will find it easier to
-reconstruct the kind of reasoning that justified similar decisions in its
-training data than to identify the specific conditions that should trigger
-uncertainty.
-Support is a recall task; critique is a detection task.
-The agreeable control confirms this interpretation: even when explicitly
-asked to critique, a model given an implementation-oriented frame produces
-escalation behavior indistinguishable from the base path.
-The default computational mode of the model is confirmation, and only an
-adversarial frame breaks out of it.
-This asymmetry explains why inserting a single escalation-oriented
-critique step is sufficient to activate a qualitatively different circuit.
+Table~\ref{tab:pstar} reports these values. All models overestimate their accuracy to some degree, with self-estimates ranging from 79\% (Qwen3.5-397B) to 94\% (Qwen3.5-9B). The actual average accuracy across conditions is 76--82\% depending on the model, indicating systematic overconfidence.
 
-\paragraph{Information-free improvement.}
-The auditor adds no external information: no new features, no retrieved
-documents, no additional examples.
-The performance gain is entirely a function of how the existing context is
-processed.
-This has a practical implication: adversarial prompting is a cheap
-intervention applicable to any deployed model without access to its weights
-or training data.
+\subsection{Overconfidence Varies by Domain}
 
-\paragraph{Steering as an auditing probe.}
-The causal steering result suggests an alternative use case.
-Rather than deploying the full predict-critique-evaluate pipeline, an
-auditor could apply the steering vector to a base model's intermediate
-representations and observe whether the decision changes.
-A decision that is robust to steering provides evidence that the base model
-is not suppressing relevant uncertainty; a decision that flips provides a
-flag for human review.
-This activation-level probe is harder to game than chain-of-thought
-inspection, since it operates on representations that precede any generated
-text.
+The aggregate self-estimated accuracies mask substantial domain-level variation. While some models appear well-calibrated on average, this results from offsetting errors rather than genuine calibration.
 
-\paragraph{Limitations.}
-The activation patching analysis uses 50 samples from a single dataset
-(LendingClub) and a single model (Qwen3-4B), yielding 20 disagreements
-for the causal analysis.
-Replication across datasets, model sizes, and model families would
-strengthen the generality of the layer~19 localization finding.
-Future work should examine interaction with known fairness-relevant input
-features and behavior under adversarial prompts designed to confound the
-critique circuit.
+GPT-5-mini provides a striking example. Its average self-estimated accuracy of 83\% nearly matches its actual accuracy of 82\%. Across individual conditions, the gap ranges from $-39$ percentage points (LendingClub, where the model dramatically underestimates its ability) to $+33$ points (HotelBookings, where it is severely overconfident). The standard deviation of the per-condition gap is 23 percentage points. This model is not calibrated; it simply has offsetting biases.
 
+Qwen3.5-9B shows a more consistent pattern: it is overconfident on nearly every condition, with gaps ranging from $+3$ to $+37$ points and a standard deviation of 11 points. The consistency of its overconfidence makes it more predictable, if not more calibrated.
+
+\subsection{A Universal Self-Confidence Prior}
+
+Despite their varied architectures and scales, the models cluster in a narrow range of self-estimated accuracy: 79\% to 94\%. This is remarkable given that these estimates apply to tasks the models know nothing about a priori. The contrast with the much wider range of $p^*$ values (56\% to 92\%) suggests that models agree roughly on ``how good they think they are'' but disagree wildly on ``when to act on that belief.'' These are two independent dimensions of the escalation personality, and practitioners must characterize both.
+
+
+% ======================================================================
+\section{Results III: Calibrating the Threshold}
+\label{sec:results3}
+% ======================================================================
+
+We now test whether the escalation threshold can be aligned with a target cost ratio through prompting interventions and preference optimization.
+
+\subsection{Prompting Interventions}
+
+We evaluate Qwen3.5-9B under four conditions: baseline (hint, no thinking, no cost framing), cost framing alone, thinking alone, and thinking with cost framing. We measure the fraction of conditions on which the model makes the correct condition-level decision for a cost ratio of $R = 4$ (optimal threshold $\tau^* = 80\%$): escalate when predictive accuracy is below 75\% and implement when above.
+
+\begin{table}[t]
+    \centering
+    \caption{Condition-level decision accuracy for Qwen3.5-9B under different interventions, evaluated against the optimal policy for cost ratio $R = 4$. Each cell reports the fraction of conditions (out of 50: 10 conditions $\times$ 5 datasets including MoralMachine) where the model's majority escalation decision matches the cost-optimal action.}
+    \label{tab:interventions}
+    \begin{tabular}{lc}
+        \toprule
+        Intervention & Decision Accuracy \\
+        \midrule
+        Baseline (hint, no thinking) & 70\% \\
+        Cost framing only & 68\% \\
+        Thinking only & 66\% \\
+        Thinking + Cost framing & \textbf{88\%} \\
+        \midrule
+        GPT-5-mini + Cost framing & 83\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Table~\ref{tab:interventions} reveals a clear interaction effect. Cost framing alone does not improve decision accuracy for Qwen3.5-9B (68\% vs.\ 70\% baseline), and the model appears to ignore the cost information entirely. Thinking alone actually reduces accuracy slightly (66\%), because the model becomes more accurate in its predictions but escalates less, leading to over-implementation.
+
+The combination of thinking and cost framing achieves 88\% accuracy, a substantial improvement over all other conditions. Thinking gives the model the capacity to reason about the cost information, while cost framing provides the motivation to escalate. Neither intervention is sufficient alone; they are complementary.
+
+GPT-5-mini, which uses built-in reasoning by default, achieves 83\% with cost framing alone. This is consistent with our interpretation: the model's native reasoning capabilities serve the same role as explicit thinking mode, enabling it to process cost information effectively.
+
+\subsection{Preference Optimization}
+
+% TODO: Add DPO results
+% DPOv1: high accuracy on training format, decent on Study3 format
+% DPOv2: slight improvement on Study3 format
+% Both have low accuracy at R=4
+% Note: working on DPOv3
+
+We also explore whether direct preference optimization (DPO) can enforce a consistent escalation threshold. \textbf{[TODO: DPO results to be added.]}
+
+
+% ======================================================================
+\section{Related Work}
+\label{sec:related}
+% ======================================================================
+
+Our work connects to several lines of research.
+
+\paragraph{LLM calibration.} \citet{kadavath2022language} show that language models have some ability to assess their own uncertainty, and \citet{xiong2024can} evaluate confidence elicitation methods. We extend this work by measuring calibration in the context of a specific downstream decision (escalation) rather than confidence scores alone.
+
+\paragraph{Selective prediction.} The machine learning literature on selective prediction, or ``learning to abstain,'' addresses when a classifier should decline to predict \citep{geifman2017selective}. We adapt this concept to LLM agents, where the abstention decision is more nuanced: the agent must weigh its confidence against explicit cost structures.
+
+\paragraph{Multi-agent debate.} \citet{du2023improving} and \citet{liang2023encouraging} study multi-agent debate for improving factuality. Our multi-turn prompting protocol is related, but the second turn evaluates the agent's \emph{own} prediction rather than introducing an adversarial perspective.
+
+
+% ======================================================================
 \section{Conclusion}
+\label{sec:conclusion}
+% ======================================================================
 
-A single-word difference in a prompt is enough to activate a distinct neural
-circuit in a language model and measurably improve its decision quality.
-The mechanism is calibration: adversarial critique surfaces uncertainty that
-supportive reasoning suppresses, redirecting confident errors toward
-appropriate escalation.
-Activation patching localizes the critique's causal influence to a narrow
-band of middle layers, and a steering vector derived from this region
-shifts decisions without any prompt change.
-These results open a path toward lightweight, activation-based auditing of
-model decision-making that does not depend on inspecting generated text.
+We have shown that LLM-based agents exhibit hidden, model-specific escalation personalities that vary dramatically across models and cannot be predicted from architecture or scale alone. Each model implicitly applies a different accuracy threshold when deciding whether to implement or escalate, and each model carries a different (and typically overconfident) belief about its own accuracy.
 
-\bibliographystyle{plainnat}
+These findings have immediate practical implications. Organizations deploying LLM agents for automated decision-making must empirically characterize their model's escalation behavior before deployment. Our methodology, based on varying task difficulty through calibrated hints, provides a tractable approach for doing so.
+
+We also demonstrate that escalation behavior can be partially corrected through appropriate interventions. The combination of chain-of-thought reasoning and cost framing achieves near-optimal escalation decisions, improving from 70\% to 88\% correct decisions at a cost ratio of 4. This intervention is simple to implement and does not require model fine-tuning.
+
+Several limitations suggest directions for future work. Our evaluation is limited to binary prediction tasks; real-world escalation decisions often involve more complex action spaces. We evaluate a small number of models; a broader survey would strengthen the generality of our findings. Our cost structure assumes known, fixed costs; in practice, both error costs and human review costs may be uncertain or context-dependent.
+
 \bibliography{references}
+\bibliographystyle{colm2026_conference}
+
+% ======================================================================
+\appendix
+\section{MoralMachine Results}
+\label{app:moral}
+% TODO: Add MoralMachine results as robustness check
+% - Ethical dilemma domain, not a typical agent task
+% - Results show same escalation personality patterns
+% - Models correctly recognize high uncertainty in moral dilemmas
+
+\section{Thinking Mode Results}
+\label{app:thinking}
+% TODO: Add detailed thinking mode results
+% - Qwen3.5-9B thinking accuracy tracks hints better than nothink
+% - Escalation collapses to near-zero without cost framing
+% - Isolated escalation results
 
 \end{document}
