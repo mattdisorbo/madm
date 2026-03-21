@@ -238,13 +238,47 @@ GPT-5-mini, which uses built-in reasoning by default, achieves 83\% with cost fr
 
 \subsection{Preference Optimization}
 
-% TODO: Add DPO results
-% DPOv1: high accuracy on training format, decent on Study3 format
-% DPOv2: slight improvement on Study3 format
-% Both have low accuracy at R=4
-% Note: working on DPOv3
+Prompt-based interventions improve escalation accuracy but remain imperfect. We investigate whether direct preference optimization (DPO) can train a model to internalize cost-sensitive escalation behavior. We fine-tune Qwen3.5-9B with LoRA using oracle preference pairs: given a cost ratio $R$ and a condition with base rate $p$, the chosen response matches the Bayes-optimal decision (escalate when $R(1-p) > 1$) and the rejected response is the opposite.
 
-We also explore whether direct preference optimization (DPO) can enforce a consistent escalation threshold. \textbf{[TODO: DPO results to be added.]}
+\paragraph{Simplified prompts.} We first train on simplified prompts that contain only the base rate hint and cost ratio. The model achieves 95.7\% escalation accuracy across all cost ratios, and this performance transfers across datasets without additional training (Table~\ref{tab:dpo_simple}). The model learns the general decision rule and applies it correctly even to unseen prediction domains.
+
+\begin{table}[h]
+    \centering
+    \caption{DPO on simplified prompts. The model learns the cost-sensitive decision rule and applies it across unseen datasets.}
+    \label{tab:dpo_simple}
+    \begin{tabular}{lcc}
+        \toprule
+        Dataset & Baseline & DPO \\
+        \midrule
+        Pooled (all datasets) & 35.0\% & \textbf{95.7\%} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\paragraph{Full scenario prompts.} We then train on the complete multi-turn prompts from Study~3, which include the full scenario description, the model's prediction, and the escalation decision. Table~\ref{tab:dpo_study3} reports the results. On the training dataset (HotelBookings), the model achieves 88.3\% overall accuracy and 98\% at the most difficult threshold ($R = 4$), where the optimal decision depends on the condition-specific base rate. Performance on unseen datasets is weaker, averaging 80.3\%.
+
+\begin{table}[h]
+    \centering
+    \caption{DPO on full scenario prompts (Study~3 format). The model is trained on HotelBookings and evaluated on all five datasets.}
+    \label{tab:dpo_study3}
+    \begin{tabular}{lccc}
+        \toprule
+        Dataset & Overall & $R = 4$ \\
+        \midrule
+        HotelBookings (trained) & \textbf{88.3\%} & \textbf{98\%} \\
+        MoralMachine & 86.7\% & 52\% \\
+        MovieLens & 84.3\% & 48\% \\
+        LendingClub & 79.0\% & 50\% \\
+        WikipediaToxicity & 71.3\% & 34\% \\
+        \midrule
+        Average (unseen) & 80.3\% & 46\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+The contrast between overall accuracy and $R = 4$ accuracy reveals the mechanism behind these results. At extreme cost ratios ($R \geq 20$), the optimal decision is always to escalate regardless of base rate, and the model achieves near-perfect accuracy there. At $R = 4$, however, the correct decision depends on whether $4(1-p) > 1$, which varies across conditions. The model achieves 98\% at $R = 4$ on HotelBookings but only 46\% on unseen datasets, suggesting it memorized condition-specific decisions for the training domain rather than learning the general rule.
+
+This finding highlights a fundamental tension in preference optimization for decision-making. On simplified prompts, where the base rate is the only varying input, DPO successfully learns the decision rule and generalizes. On full scenario prompts, the richer context provides a shortcut: the model can associate specific scenario features with decisions without understanding why. The result is near-perfect in-domain performance that does not transfer.
 
 
 % ======================================================================

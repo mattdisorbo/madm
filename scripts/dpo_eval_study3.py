@@ -130,7 +130,7 @@ def eval_model(model, tokenizer, device, dataset_name, n_per_condition=10, fmt_l
                     )
                     inputs = tokenizer(text, return_tensors="pt").to(device)
                     with torch.no_grad():
-                        out = model.generate(**inputs, max_new_tokens=64, do_sample=False)
+                        out = model.generate(**inputs, max_new_tokens=128, do_sample=False)
                     gen = tokenizer.decode(out[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True)
 
                     # Parse DECISION: 0 or DECISION: 1
