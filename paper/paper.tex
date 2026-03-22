@@ -214,27 +214,28 @@ We evaluate Qwen3.5-9B under four conditions: baseline (hint, no thinking, no co
 
 \begin{table}[t]
     \centering
-    \caption{Condition-level decision accuracy for Qwen3.5-9B under different interventions, evaluated against the optimal policy for cost ratio $R = 4$. Each cell reports the fraction of conditions (out of 50: 10 conditions $\times$ 5 datasets including MoralMachine) where the model's majority escalation decision matches the cost-optimal action.}
+    \caption{Sample-level escalation accuracy under different interventions, evaluated against the optimal policy for cost ratio $R = 4$. For each sample, the correct action is to escalate if the condition's predictive accuracy is below 75\% and implement if above. GPT-5-mini excludes MoralMachine and MovieLens due to content filter restrictions; its cost-framing run has fewer samples due to higher API failure rates.}
     \label{tab:interventions}
-    \begin{tabular}{lc}
+    \begin{tabular}{lccc}
         \toprule
-        Intervention & Decision Accuracy \\
+        Intervention & Correct & Total & Accuracy \\
         \midrule
-        Baseline (hint, no thinking) & 70\% \\
-        Cost framing only & 68\% \\
-        Thinking only & 66\% \\
-        Thinking + Cost framing & \textbf{88\%} \\
+        Qwen 9B baseline & 7,683 & 12,254 & 62.7\% \\
+        Qwen 9B + cost framing & 7,732 & 12,395 & 62.4\% \\
+        Qwen 9B + thinking & 1,548 & 2,500 & 61.9\% \\
+        Qwen 9B + thinking + cost framing & 1,936 & 2,500 & \textbf{77.4\%} \\
         \midrule
-        GPT-5-mini + Cost framing & 83\% \\
+        GPT-5-mini baseline & 5,565 & 7,550 & 73.7\% \\
+        GPT-5-mini + cost framing & 2,943 & 3,360 & \textbf{87.6\%} \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-Table~\ref{tab:interventions} reveals a clear interaction effect. Cost framing alone does not improve decision accuracy for Qwen3.5-9B (68\% vs.\ 70\% baseline), and the model appears to ignore the cost information entirely. Thinking alone actually reduces accuracy slightly (66\%), because the model becomes more accurate in its predictions but escalates less, leading to over-implementation.
+Table~\ref{tab:interventions} reveals a clear interaction effect. Cost framing alone does not improve sample-level decision accuracy for Qwen3.5-9B (62.4\% vs.\ 62.7\% baseline), and the model appears to ignore the cost information entirely. Thinking alone performs similarly (61.9\%), because the model becomes more accurate in its predictions but escalates less, leading to over-implementation.
 
-The combination of thinking and cost framing achieves 88\% accuracy, a substantial improvement over all other conditions. Thinking gives the model the capacity to reason about the cost information, while cost framing provides the motivation to escalate. Neither intervention is sufficient alone; they are complementary.
+The combination of thinking and cost framing achieves 77.4\% accuracy, a substantial improvement over all other Qwen conditions. Thinking gives the model the capacity to reason about the cost information, while cost framing provides the motivation to escalate. Neither intervention is sufficient alone; they are complementary.
 
-GPT-5-mini, which uses built-in reasoning by default, achieves 83\% with cost framing alone. This is consistent with our interpretation: the model's native reasoning capabilities serve the same role as explicit thinking mode, enabling it to process cost information effectively.
+GPT-5-mini, which uses built-in reasoning by default, achieves 87.6\% with cost framing alone. This is consistent with our interpretation: the model's native reasoning capabilities serve the same role as explicit thinking mode, enabling it to process cost information effectively. The lower sample count for GPT-5-mini with cost framing (3,360 vs.\ 7,550 at baseline) reflects higher API failure rates during that run rather than a methodological difference; accuracy is computed only over successfully completed samples.
 
 \subsection{Preference Optimization}
 
