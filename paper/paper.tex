@@ -5,7 +5,8 @@
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{booktabs}
-\usepackage{amsmath,amssymb}
+\usepackage{amsmath,amssymb,amsthm}
+\newtheorem{theorem}{Theorem}
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subcaption}
@@ -68,6 +69,38 @@ The agent minimizes expected cost by escalating whenever
 \label{eq:threshold}
 \end{equation}
 For a cost ratio $R = c_w / c_\ell = 4$, the optimal threshold is $\tau^* = 4/5 = 80\%$. At $R = 1$ (errors and escalation cost the same), the threshold drops to 50\%.
+
+\subsection{Optimality of the Threshold}
+
+We now show that $\tau^*$ is the unique cost-minimizing threshold, and that miscalibration strictly increases expected cost.
+
+\begin{theorem}[Uniqueness of the optimal threshold]
+\label{thm:threshold}
+Let the agent escalate whenever $\hat{p} < \tau$ for some threshold $\tau \in [0,1]$, and suppose $\hat{p}$ is perfectly calibrated (i.e., $\hat{p} = p$, the true probability of a correct prediction). Then $\tau^* = c_w / (c_w + c_\ell)$ is the unique threshold that minimizes expected cost. Any $\tau \neq \tau^*$ incurs strictly higher expected cost on the set of instances where $p$ falls between $\tau$ and $\tau^*$.
+\end{theorem}
+
+\begin{proof}
+For a single instance with true accuracy $p$, the expected cost under threshold $\tau$ is
+\[
+C(p, \tau) = \begin{cases} c_\ell & \text{if } p < \tau \text{ (escalate)} \\ (1-p) \, c_w & \text{if } p \geq \tau \text{ (implement).} \end{cases}
+\]
+The agent should escalate when $c_\ell < (1-p) \, c_w$, i.e., when $p < c_w/(c_w + c_\ell) = \tau^*$. For any instance with $p$ between $\tau$ and $\tau^*$ (or between $\tau^*$ and $\tau$), the agent's action under $\tau$ differs from the action under $\tau^*$, and the cost under $\tau^*$ is strictly lower by construction. Since costs are continuous in $p$, any $\tau \neq \tau^*$ incurs excess cost on a positive-measure set of instances whenever the distribution of $p$ has support in the interval between $\tau$ and $\tau^*$.
+\end{proof}
+
+\begin{theorem}[Cost of miscalibration]
+\label{thm:calibration}
+Let the agent use the optimal threshold $\tau^*$ but have miscalibrated probability estimates $\hat{p} = p + \varepsilon$, where $\varepsilon$ is a mean-zero calibration error independent of $p$. Then expected cost is increasing in $\mathrm{Var}(\varepsilon)$. Specifically, the excess cost relative to perfect calibration is
+\[
+\Delta C = (c_w + c_\ell) \, f(\tau^*) \, \mathrm{Var}(\varepsilon) + O(\mathrm{Var}(\varepsilon)^{3/2}),
+\]
+where $f(\tau^*)$ is the density of $p$ at $\tau^*$.
+\end{theorem}
+
+\begin{proof}
+Under perfect calibration, the agent escalates when $p < \tau^*$ and implements otherwise. Under miscalibration, the agent escalates when $p + \varepsilon < \tau^*$, i.e., when $p < \tau^* - \varepsilon$. The excess cost comes from two types of errors. When $\varepsilon > 0$ (overconfidence), some instances with $p \in [\tau^* - \varepsilon, \tau^*)$ are incorrectly implemented, each incurring excess cost $(1-p) c_w - c_\ell > 0$. When $\varepsilon < 0$ (underconfidence), some instances with $p \in [\tau^*, \tau^* - \varepsilon)$ are incorrectly escalated, each incurring excess cost $c_\ell - (1-p) c_w > 0$. In both cases the excess cost per instance is approximately $(c_w + c_\ell)|\varepsilon|$ for small $|\varepsilon|$, since $p \approx \tau^*$ in the affected region. The expected number of affected instances is $f(\tau^*) \, \mathbb{E}[|\varepsilon|]$, and $\mathbb{E}[|\varepsilon|] \leq \sqrt{\mathrm{Var}(\varepsilon)}$ by Jensen's inequality. A second-order expansion yields the stated result: the excess cost scales linearly with $\mathrm{Var}(\varepsilon)$ through the density of $p$ at the decision boundary.
+\end{proof}
+
+Theorem~\ref{thm:threshold} establishes that practitioners cannot avoid characterizing their model's threshold: any deviation from $\tau^*$ creates avoidable cost. Theorem~\ref{thm:calibration} shows that even with the correct threshold, miscalibration increases cost in proportion to its variance. A model that is ``calibrated on average'' (mean-zero $\varepsilon$) but highly variable across conditions still incurs substantial excess cost. Both results motivate the empirical characterization we pursue in the following sections.
 
 \subsection{Two Sources of Miscalibration}
 
@@ -281,7 +314,28 @@ The contrast between overall accuracy and $R = 4$ accuracy reveals the mechanism
 
 For comparison, the best prompt-based intervention (GPT-5-mini with cost framing) achieves 87.6\% sample-level accuracy at $R = 4$ without any fine-tuning, and Qwen3.5-9B with thinking and cost framing achieves 77.4\%. DPO on simplified prompts surpasses both at 95.7\%, demonstrating that preference optimization can outperform prompt engineering when the training signal is well-structured. On full scenario prompts, DPO achieves 98\% in-domain but only 46\% on unseen datasets at $R = 4$, falling well below the prompt-based approaches.
 
-This finding highlights a fundamental tension in preference optimization for decision-making. On simplified prompts, where the base rate is the only varying input, DPO successfully learns the decision rule and generalizes. On full scenario prompts, the richer context provides a shortcut: the model can associate specific scenario features with decisions without understanding why. The result is near-perfect in-domain performance that does not transfer. We are currently investigating DPO training on broader data to improve cross-domain generalization.
+\paragraph{Cross-domain training.} To test whether broader training data can overcome the memorization problem, we train on four datasets simultaneously (HotelBookings, LendingClub, MoralMachine, WikipediaToxicity) and hold out MovieLens entirely. Table~\ref{tab:dpo_cross} reports the results.
+
+\begin{table}[h]
+    \centering
+    \caption{DPO trained on four datasets, evaluated on all five. MovieLens is held out entirely from training. $R = 4$ is the threshold where the optimal decision depends on the condition-specific base rate.}
+    \label{tab:dpo_cross}
+    \begin{tabular}{lccc}
+        \toprule
+        Dataset & Overall & $R = 4$ & Trained? \\
+        \midrule
+        MovieLens & \textbf{90.0\%} & \textbf{76\%} & No \\
+        MoralMachine & 86.7\% & 38\% & Yes \\
+        HotelBookings & 82.7\% & 82\% & Yes \\
+        LendingClub & 71.3\% & 20\% & Yes \\
+        WikipediaToxicity & 65.3\% & 16\% & Yes \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+The results are striking in their inconsistency. The held-out dataset (MovieLens) achieves the highest overall accuracy (90.0\%) and the second-highest $R = 4$ accuracy (76\%), outperforming three of the four training datasets. This demonstrates that cross-domain generalization is possible in principle. At the same time, $R = 4$ accuracy ranges from 16\% to 82\% across datasets, with no clear relationship to whether the dataset appeared in training. All five datasets have similar base rate distributions (roughly uniform between 0.50 and 0.95), so the variation cannot be attributed to differences in task difficulty.
+
+These results paint a nuanced picture of preference optimization for decision-making. DPO reliably learns the cost-sensitive decision rule on simplified prompts, where the base rate is the only varying input (95.7\%). On full scenario prompts, the model can achieve strong in-domain performance (98\% at $R = 4$ on a single training dataset) and can even generalize to held-out domains (76\% on MovieLens). However, this generalization is highly unstable: some trained datasets show worse $R = 4$ performance than the held-out dataset, suggesting that the interaction between scenario context and decision learning remains poorly understood.
 
 
 % ======================================================================
