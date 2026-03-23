@@ -55,7 +55,14 @@ Our contributions are threefold. First, we introduce a methodology for character
 
 \subsection{The Escalation Decision}
 
-Consider a workflow in which a human delegates a binary prediction task to an LLM-based agent. The agent observes a scenario $x$, produces a prediction $\hat{y} \in \{0, 1\}$, and then decides whether to \emph{implement} (act on) its prediction or \emph{escalate} (defer to the human). Every action an agent takes in practice contains an implicit escalation decision: when it makes a tool call, generates a response, or commits a change, it is choosing to implement rather than ask for guidance.
+Consider a workflow in which a human delegates a binary prediction task to an LLM-based agent. The agent observes a scenario $x$, produces a prediction $\hat{y} \in \{0, 1\}$, and then decides whether to \emph{implement} (act on) its prediction or \emph{escalate} (defer to the human). Every action an agent takes in practice contains an implicit escalation decision: when it makes a tool call, generates a response, or commits a change, it is choosing to implement rather than ask for guidance. Figure~\ref{fig:workflow} illustrates this workflow.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{figures/workflow_diagram.png}
+    \caption{The escalation decision. A human delegates a task to an LLM agent, which produces a prediction and then decides whether to implement (incurring error cost $c_w$ if wrong) or escalate (incurring labor cost $c_\ell$). The agent escalates when its estimated probability of being correct $\hat{p}$ falls below a threshold $\tau$.}
+    \label{fig:workflow}
+\end{figure}
 
 We model the agent's behavior as follows. After producing its prediction, the agent forms an internal estimate $\hat{p}$ of its probability of being correct. It then compares $\hat{p}$ to a threshold $\tau$ and escalates if $\hat{p} < \tau$.
 
@@ -184,24 +191,14 @@ Third, several models' curves are non-monotonic: escalation does not always decr
 
 To summarize each model's escalation behavior with a single number, we fit a linear regression to the (accuracy, escalation rate) pairs across all conditions and datasets, then solve for the accuracy level at which the fitted escalation rate equals 50\%. We call this the model's \emph{implicit threshold} $p^*$.
 
-\begin{table}[t]
+\begin{figure}[t]
     \centering
-    \caption{Implicit escalation threshold $p^*$ and self-estimated accuracy $\hat{a}$ for each model. The threshold $p^*$ is the accuracy level at which the model's escalation rate crosses 50\%. Self-estimated accuracy is derived by mapping the model's no-hint escalation rate onto its hint-based escalation curve (Section~\ref{sec:results2}).}
-    \label{tab:pstar}
-    \begin{tabular}{lcc}
-        \toprule
-        Model & $p^*$ & $\hat{a}$ \\
-        \midrule
-        Qwen3.5-9B & 56.0\% & 93.6\% \\
-        Qwen3-Next-3B & 81.4\% & 91.4\% \\
-        Llama~4~Maverick & 91.9\% & 86.5\% \\
-        GPT-5-mini & 57.4\% & 83.0\% \\
-        Qwen3.5-397B & 81.2\% & 79.0\% \\
-        \bottomrule
-    \end{tabular}
-\end{table}
+    \includegraphics[width=\textwidth]{figures/pstar_ahat_bars.png}
+    \caption{Implicit escalation threshold $p^*$ (left) and self-estimated accuracy $\hat{a}$ (right) for each model. The threshold $p^*$ varies widely (56\% to 92\%), while self-estimated accuracy clusters in a narrow range (79\% to 94\%). The dotted lines show the optimal threshold at cost ratio $R = 4$ (left) and average actual accuracy (right).}
+    \label{fig:pstar}
+\end{figure}
 
-Table~\ref{tab:pstar} reveals striking variation. Qwen3.5-9B and GPT-5-mini have low thresholds ($p^* \approx 57\%$), meaning they transition from escalating to implementing at relatively low accuracy levels. Llama~4~Maverick has a high threshold ($p^* = 91.9\%$), continuing to escalate even when it is quite accurate. This variation persists within the same model family: Qwen3.5-9B ($p^* = 56\%$) and Qwen3.5-397B ($p^* = 81\%$) differ by 25 percentage points despite sharing the same architecture and training pipeline.
+Figure~\ref{fig:pstar} reveals striking variation. Qwen3.5-9B and GPT-5-mini have low thresholds ($p^* \approx 57\%$), meaning they transition from escalating to implementing at relatively low accuracy levels. Llama~4~Maverick has a high threshold ($p^* = 91.9\%$), continuing to escalate even when it is quite accurate. This variation persists within the same model family: Qwen3.5-9B ($p^* = 56\%$) and Qwen3.5-397B ($p^* = 81\%$) differ by 25 percentage points despite sharing the same architecture and training pipeline.
 
 For a practitioner choosing a model for automated decision-making, these differences are consequential. A model with $p^* = 56\%$ will implement aggressively, accepting a higher error rate in exchange for lower escalation costs. A model with $p^* = 92\%$ will escalate most decisions, providing safety at the expense of automation. Neither behavior is inherently correct; the right threshold depends on the cost ratio $R$. The problem is that these thresholds are hidden, model-specific properties that cannot be determined without empirical characterization.
 
@@ -217,7 +214,7 @@ We now examine the calibration of each model's internal sense of its own accurac
 
 When a model receives no hint, it escalates at a rate that reflects its default confidence level. We map this escalation rate onto the model's hint-based escalation curve (from Section~\ref{sec:results1}) to find the accuracy level that would produce the same escalation rate in the hint condition. This mapping yields the model's \emph{self-estimated accuracy} $\hat{a}$: the accuracy level at which the model behaves as if it is performing.
 
-Table~\ref{tab:pstar} reports these values. All models overestimate their accuracy to some degree, with self-estimates ranging from 79\% (Qwen3.5-397B) to 94\% (Qwen3.5-9B). The actual average accuracy across conditions is 76--82\% depending on the model, indicating systematic overconfidence. Across all models and conditions, the average absolute calibration error $|\hat{a} - a|$ is 16 percentage points, confirming that self-assessment is unreliable regardless of model choice.
+Figure~\ref{fig:pstar} reports these values. All models overestimate their accuracy to some degree, with self-estimates ranging from 79\% (Qwen3.5-397B) to 94\% (Qwen3.5-9B). The actual average accuracy across conditions is 76--82\% depending on the model, indicating systematic overconfidence. Across all models and conditions, the average absolute calibration error $|\hat{a} - a|$ is 16 percentage points, confirming that self-assessment is unreliable regardless of model choice.
 
 \subsection{Overconfidence Varies by Domain}
 
