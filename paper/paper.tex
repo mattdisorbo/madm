@@ -224,6 +224,15 @@ GPT-5-mini provides a striking example. Its average self-estimated accuracy of 8
 
 Qwen3.5-9B shows a more consistent pattern: it is overconfident on nearly every condition, with gaps ranging from $+3$ to $+37$ points and a standard deviation of 11 points. The consistency of its overconfidence makes it more predictable, if not more calibrated.
 
+Figure~\ref{fig:overconfidence} presents the full picture across all models and conditions. Two patterns stand out. First, overconfidence is worse at low accuracy: conditions where the model performs poorly (left side of each panel) tend to have the largest positive gaps. Second, LendingClub is a systematic outlier: every model underestimates its accuracy on lending decisions, while overestimating on HotelBookings and WikipediaToxicity.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{figures/overconfidence_by_condition.png}
+    \caption{Per-condition overconfidence (self-estimated accuracy minus actual accuracy) for each model across four datasets. Points above zero indicate overconfidence; points below indicate underconfidence. Models are generally overconfident, but LendingClub (blue) is a consistent exception.}
+    \label{fig:overconfidence}
+\end{figure}
+
 \subsection{A Universal Self-Confidence Prior}
 
 Despite their varied architectures and scales, the models cluster in a narrow range of self-estimated accuracy: 79\% to 94\%. This is remarkable given that these estimates apply to tasks the models know nothing about a priori. The contrast with the much wider range of $p^*$ values (56\% to 92\%) suggests that models agree roughly on ``how good they think they are'' but disagree wildly on ``when to act on that belief.'' These are two independent dimensions of the escalation personality, and practitioners must characterize both.
