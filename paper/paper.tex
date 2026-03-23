@@ -217,7 +217,7 @@ We now examine the calibration of each model's internal sense of its own accurac
 
 When a model receives no hint, it escalates at a rate that reflects its default confidence level. We map this escalation rate onto the model's hint-based escalation curve (from Section~\ref{sec:results1}) to find the accuracy level that would produce the same escalation rate in the hint condition. This mapping yields the model's \emph{self-estimated accuracy} $\hat{a}$: the accuracy level at which the model behaves as if it is performing.
 
-Table~\ref{tab:pstar} reports these values. All models overestimate their accuracy to some degree, with self-estimates ranging from 79\% (Qwen3.5-397B) to 94\% (Qwen3.5-9B). The actual average accuracy across conditions is 76--82\% depending on the model, indicating systematic overconfidence.
+Table~\ref{tab:pstar} reports these values. All models overestimate their accuracy to some degree, with self-estimates ranging from 79\% (Qwen3.5-397B) to 94\% (Qwen3.5-9B). The actual average accuracy across conditions is 76--82\% depending on the model, indicating systematic overconfidence. Across all models and conditions, the average absolute calibration error $|\hat{a} - a|$ is 16 percentage points, confirming that self-assessment is unreliable regardless of model choice.
 
 \subsection{Overconfidence Varies by Domain}
 
