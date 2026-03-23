@@ -70,10 +70,6 @@ The agent minimizes expected cost by escalating whenever
 \end{equation}
 For a cost ratio $R = c_w / c_\ell = 4$, the optimal threshold is $\tau^* = 4/5 = 80\%$. At $R = 1$ (errors and escalation cost the same), the threshold drops to 50\%.
 
-\subsection{Optimality of the Threshold}
-
-We now show that $\tau^*$ is the unique cost-minimizing threshold, and that miscalibration strictly increases expected cost.
-
 \begin{theorem}[Uniqueness of the optimal threshold]
 \label{thm:threshold}
 Let the agent escalate whenever $\hat{p} < \tau$ for some threshold $\tau \in [0,1]$, and suppose $\hat{p}$ is perfectly calibrated (i.e., $\hat{p} = p$, the true probability of a correct prediction). Then $\tau^* = c_w / (c_w + c_\ell)$ is the unique threshold that minimizes expected cost. Any $\tau \neq \tau^*$ incurs strictly higher expected cost on the set of instances where $p$ falls between $\tau$ and $\tau^*$.
