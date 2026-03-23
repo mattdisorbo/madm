@@ -273,11 +273,11 @@ Prompt-based interventions improve escalation accuracy but remain imperfect. We 
 
 \paragraph{DPO on full scenario prompts.} We then train DPO on the complete multi-turn prompts from Study~3, which include the full scenario description, the model's prediction, and the escalation decision. On the training dataset (HotelBookings), the model achieves 100\% accuracy. However, DPO produces short responses (a single token) that provide insufficient gradient signal for the model to learn the arithmetic relationship between cost ratio and base rate in the presence of rich scenario context. The model instead learns to associate specific scenario features with decisions, resulting in strong in-domain performance that does not reliably generalize.
 
-\paragraph{SFT with chain-of-thought.} We train Qwen3.5-9B with SFT on chain-of-thought responses that explicitly extract the base rate from the hint and compute the expected cost. The target response follows a template: ``The hint suggests an accuracy of $X$\%, so the error rate is $Y$\%. The expected cost of implementing is $R \times Y = Z$, which exceeds/is below 1.'' We train on four datasets (HotelBookings, LendingClub, MoralMachine, WikipediaToxicity), four cost framings, and six cost ratios, holding out MovieLens entirely. Table~\ref{tab:sft_results} reports the results.
+\paragraph{SFT with chain-of-thought.} We train Qwen3.5-9B with SFT on chain-of-thought responses that explicitly extract the base rate from the hint and compute the expected cost. The target response follows a template: ``The hint suggests an accuracy of $X$\%, so the error rate is $Y$\%. The expected cost of implementing is $R \times Y = Z$, which exceeds/is below 1.'' We train on three of the four main datasets (HotelBookings, LendingClub, WikipediaToxicity), four cost framings, and six cost ratios, holding out MovieLens entirely. Table~\ref{tab:sft_results} reports the results.
 
 \begin{table}[h]
     \centering
-    \caption{SFT with chain-of-thought reasoning on full scenario prompts. The model is trained on four datasets and evaluated on all five, including the held-out MovieLens. Accuracy is measured against the Bayes-optimal policy across six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), with 300 samples per dataset (50 per $R$).}
+    \caption{SFT with chain-of-thought reasoning on full scenario prompts. The model is trained on three datasets and evaluated on all four main datasets, including the held-out MovieLens. Accuracy is measured against the Bayes-optimal policy across six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), with 300 samples per dataset (50 per $R$). MoralMachine results are reported in Appendix~\ref{app:moral}.}
     \label{tab:sft_results}
     \begin{tabular}{lcccc}
         \toprule
@@ -285,14 +285,13 @@ Prompt-based interventions improve escalation accuracy but remain imperfect. We 
         \midrule
         HotelBookings & 100\% & 98.3\% & 100\% & Yes \\
         LendingClub & 100\% & 100\% & 100\% & Yes \\
-        MoralMachine & 100\% & 100\% & 100\% & Yes \\
         WikipediaToxicity & 100\% & 100\% & 100\% & Yes \\
         MovieLens & 100\% & 100\% & 100\% & No \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-The SFT model achieves near-perfect accuracy across all five datasets, all cost ratios, and all cost framings. The single error (HotelBookings, dollar format, $R = 20$) occurs at a boundary case where $R(1-p) = 1.00$ exactly. The held-out dataset (MovieLens) achieves 100\%, demonstrating that the model learned a general procedure rather than memorizing dataset-specific decisions.
+The SFT model achieves near-perfect accuracy across all four main datasets, all cost ratios, and all cost framings. The single error (HotelBookings, dollar format, $R = 20$) occurs at a boundary case where $R(1-p) = 1.00$ exactly. The held-out dataset (MovieLens) achieves 100\%, demonstrating that the model learned a general procedure rather than memorizing dataset-specific decisions.
 
 \paragraph{Ablation: removing the base rate hint.} To verify that the model relies on the base rate hint rather than exploiting some other signal, we evaluate the SFT model on prompts that omit the hint entirely. Table~\ref{tab:sft_nohint} reports the results.
 
