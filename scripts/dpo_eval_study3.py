@@ -16,17 +16,18 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import PeftModel
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__))))
-from study3 import hotel_conditions, load_hotel, lending_conditions, moral_conditions, \
-    wiki_conditions, movielens_conditions, HOTEL, LENDING, MORAL, WIKI, MOVIELENS
+from study3 import (hotel_conditions, load_hotel, lending_conditions, load_lending,
+    moral_conditions, load_moral, wiki_conditions, load_wiki,
+    movielens_conditions, load_movielens, HOTEL, LENDING, MORAL, WIKI, MOVIELENS)
 
 COST_RATIOS = [2, 4, 8, 10, 20, 50]
 
 DATASETS = {
     "HotelBookings": {"load": load_hotel, "conditions": hotel_conditions, "config": HOTEL},
-    "LendingClub": {"load": None, "conditions": lending_conditions, "config": LENDING},
-    "MoralMachine": {"load": None, "conditions": moral_conditions, "config": MORAL},
-    "WikipediaToxicity": {"load": None, "conditions": wiki_conditions, "config": WIKI},
-    "MovieLens": {"load": None, "conditions": movielens_conditions, "config": MOVIELENS},
+    "LendingClub": {"load": load_lending, "conditions": lending_conditions, "config": LENDING},
+    "MoralMachine": {"load": load_moral, "conditions": moral_conditions, "config": MORAL},
+    "WikipediaToxicity": {"load": load_wiki, "conditions": wiki_conditions, "config": WIKI},
+    "MovieLens": {"load": load_movielens, "conditions": movielens_conditions, "config": MOVIELENS},
 }
 
 
@@ -58,7 +59,7 @@ def make_esc_prompt(R, fmt="original"):
 FORMATS = ["study3", "original", "dollar", "wording", "none"]
 
 
-def eval_model(model, tokenizer, device, dataset_name, n_per_condition=10, fmt_list=None):
+def eval_model(model, tokenizer, device, dataset_name, n_per_condition=10, fmt_list=None, nohint=False):
     """Evaluate on study3 data. Uses nothink CSVs for predictions."""
     results_dir = "results/study3"
 
@@ -75,9 +76,14 @@ def eval_model(model, tokenizer, device, dataset_name, n_per_condition=10, fmt_l
 
     # Build condition -> base_rate mapping from available CSVs
     cond_br = {}
-    pattern = f"{results_dir}/{dataset_name}_*_nothink_Qwen3.5-9B.csv"
-    csv_files = glob.glob(pattern)
-    csv_files = [f for f in csv_files if "cost" not in f and "nohint" not in f and "summary" not in f and "isolated" not in f]
+    if nohint:
+        pattern = f"{results_dir}/{dataset_name}_*_nothink_nohint_Qwen3.5-9B.csv"
+        csv_files = glob.glob(pattern)
+        csv_files = [f for f in csv_files if "cost" not in f and "summary" not in f and "isolated" not in f]
+    else:
+        pattern = f"{results_dir}/{dataset_name}_*_nothink_Qwen3.5-9B.csv"
+        csv_files = glob.glob(pattern)
+        csv_files = [f for f in csv_files if "cost" not in f and "nohint" not in f and "summary" not in f and "isolated" not in f]
 
     if not csv_files:
         print(f"  No CSVs found for {dataset_name}", flush=True)
@@ -103,7 +109,8 @@ def eval_model(model, tokenizer, device, dataset_name, n_per_condition=10, fmt_l
 
             # Get condition name from filename
             basename = os.path.basename(csv_file)
-            cond_name = basename.replace(f"{dataset_name}_", "").replace("_nothink_Qwen3.5-9B.csv", "")
+            cond_name = basename.replace(f"{dataset_name}_", "")
+            cond_name = cond_name.replace("_nothink_nohint_Qwen3.5-9B.csv", "").replace("_nothink_Qwen3.5-9B.csv", "")
             base_rate = cond_br.get(cond_name, 0.5)
 
             # Sample rows
@@ -146,6 +153,9 @@ def eval_model(model, tokenizer, device, dataset_name, n_per_condition=10, fmt_l
                     correct_by_r[R]["c"] += int(is_correct)
                     correct_by_r[R]["n"] += 1
 
+                    if not is_correct:
+                        print(f"    WRONG: {cond_name} R={R} br={base_rate:.2f} optimal={optimal} decision={decision} gen=[{gen[:150]}]", flush=True)
+
         acc = total_correct / total_n if total_n > 0 else 0
         all_results[fmt] = acc
         print(f"  {fmt:<12}: {total_correct}/{total_n} ({acc:.1%})", flush=True)
@@ -164,6 +174,7 @@ def main():
     parser.add_argument("--n", type=int, default=10, help="Samples per condition")
     parser.add_argument("--dataset", default="HotelBookings")
     parser.add_argument("--formats", default=None, help="Comma-separated formats to test (default: all)")
+    parser.add_argument("--nohint", action="store_true", help="Use nohint CSVs (no base rate hint in prompt)")
     args = parser.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -184,7 +195,7 @@ def main():
 
     fmt_list = args.formats.split(",") if args.formats else None
     print("\n=== DPO-TRAINED ===" if args.adapter else "\n=== BASELINE ===", flush=True)
-    eval_model(model, tokenizer, device, args.dataset, n_per_condition=args.n, fmt_list=fmt_list)
+    eval_model(model, tokenizer, device, args.dataset, n_per_condition=args.n, fmt_list=fmt_list, nohint=args.nohint)
 
     print("\nDONE", flush=True)
 
