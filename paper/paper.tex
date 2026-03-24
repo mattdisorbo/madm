@@ -57,7 +57,7 @@ We test a series of interventions designed to control and align escalation behav
 
 \subsection{The Escalation Decision}
 
-Consider a workflow in which a human delegates a binary task to an LLM-based agent. The agent observes a scenario $x$, produces a prediction $\hat{y} \in \{0, 1\}$; the ground truth is the human's latent preference $y \in \{0, 1}$. The agent then decides whether to \emph{implement} (act on) its prediction or \emph{escalate} (defer to the human). Every action an agent takes in practice contains an implicit escalation decision: when it makes a tool call, generates a response, or commits a change, it is choosing to implement rather than ask for guidance. Figure~\ref{fig:workflow} illustrates this workflow.
+Consider a workflow in which a human delegates a binary task to an LLM-based agent. The agent observes a scenario $x$, produces a prediction $\hat{y} \in \{0, 1\}$; the ground truth is the human's latent preference $y \in \{0, 1\}$. The agent then decides whether to \emph{implement} (act on) its prediction or \emph{escalate} (defer to the human). Every action an agent takes in practice contains an implicit escalation decision: when it makes a tool call, generates a response, or commits a change, it is choosing to implement rather than ask for guidance. Figure~\ref{fig:workflow} illustrates this workflow.
 
 \begin{figure}[t]
     \centering
@@ -133,7 +133,7 @@ We evaluate LLMs on four tasks, each drawn from a publicly available dataset. We
 
 \paragraph{MoralMachine (Appendix).} We predict which group an autonomous vehicle should save in an ethical dilemma, based on the Moral Machine dataset, which also includes demographic information about the human `driver' \citep{awad2018moral}. 
 
-Each condition is accompanied by a \emph{hint}: a natural-language description of the decision tree's base rate for that condition (e.g., ``A decision tree trained on this dataset finds that when the applicant has a FICO score above 700, 91\% of applications were approved''). This hint serves as a tool output that an agent might receive in a realistic deployment.
+Each condition is accompanied by a \emph{signal}: a natural-language description of the decision tree's base rate for that condition (e.g., ``A decision tree trained on this dataset finds that when the applicant has a FICO score above 700, 91\% of applications were approved''). This signal serves as a tool output that an agent might receive in a realistic deployment.
 
 \subsection{Models}
 
@@ -149,12 +149,12 @@ GPT-5-mini results exclude MovieLens (partial data due to content filter restric
 
 \subsection{Prompting Protocol}
 
-Each sample proceeds in two turns within a single conversation. In the first turn, the agent receives the scenario, the hint (when applicable), and a prediction prompt asking it to explain its reasoning in one sentence and conclude with \texttt{PREDICTION: 1} or \texttt{PREDICTION: 0}. In the second turn, the agent sees its own prediction and is asked whether to implement or escalate, concluding with \texttt{DECISION: 0} (implement) or \texttt{DECISION: 1} (escalate).
+Each sample proceeds in two turns within a single conversation. In the first turn, the agent receives the scenario, the signal (when applicable), and a prediction prompt asking it to explain its reasoning in one sentence and conclude with \texttt{PREDICTION: 1} or \texttt{PREDICTION: 0}. In the second turn, the agent sees its own prediction and is asked whether to implement or escalate, concluding with \texttt{DECISION: 0} (implement) or \texttt{DECISION: 1} (escalate).
 
 We evaluate several variants of this protocol:
 \begin{itemize}
-    \item \textbf{Baseline}: Hint provided, no cost framing, no explicit thinking.
-    \item \textbf{No hint}: The hint is omitted, revealing the model's default confidence.
+    \item \textbf{Baseline}: Signal provided, no cost framing, no explicit thinking.
+    \item \textbf{No signal}: The signal is omitted, revealing the model's default confidence.
     \item \textbf{Cost ratio 4}: The escalation prompt is prepended with ``Implementing a wrong answer costs 4$\times$ more than escalating.''
     \item \textbf{Thinking}: For Qwen3.5-9B, we enable the model's chain-of-thought reasoning mode. GPT-5-mini uses built-in reasoning by default.
     \item \textbf{Thinking + Cost 4}: Both thinking and cost framing are active.
@@ -179,11 +179,11 @@ Figure~\ref{fig:esc_curves} presents escalation rate versus predictive accuracy 
 \begin{figure}[t]
     \centering
     \includegraphics[width=\textwidth]{figures/esc_vs_acc_nothink_5models.png}
-    \caption{Escalation rate versus predictive accuracy for all five models across four datasets (with hints, no thinking). The vertical dotted line marks 75\% accuracy. Each model exhibits a distinct escalation personality, varying in both overall escalation level and sensitivity to accuracy.}
+    \caption{Escalation rate versus predictive accuracy for all five models across four datasets (with signals, no thinking). The vertical dotted line marks 75\% accuracy. Each model exhibits a distinct escalation personality, varying in both overall escalation level and sensitivity to accuracy.}
     \label{fig:esc_curves}
 \end{figure}
 
-First, every model exhibits a generally negative relationship between predictive accuracy and escalation rate: as the model becomes more accurate (due to stronger hints), it escalates less. This indicates that all models have some sensitivity to their own performance.
+First, every model exhibits a generally negative relationship between predictive accuracy and escalation rate: as the model becomes more accurate (due to stronger signals), it escalates less. This indicates that all models have some sensitivity to their own performance.
 
 Second, the models differ dramatically in their overall escalation levels. Qwen3.5-9B escalates between 3\% and 80\% across conditions, while Qwen3.5-397B escalates between 0\% and 100\%. The same accuracy level can produce vastly different escalation rates depending on the model.
 
@@ -210,11 +210,11 @@ For a practitioner choosing a model for automated decision-making, these differe
 \label{sec:results2}
 % ======================================================================
 
-We now examine the calibration of each model's internal sense of its own accuracy. We exploit the no-hint condition, in which the model receives no information about task difficulty and must rely entirely on its prior beliefs.
+We now examine the calibration of each model's internal sense of its own accuracy. We exploit the no-signal condition, in which the model receives no information about task difficulty and must rely entirely on its prior beliefs.
 
-\subsection{Mapping No-Hint Escalation to Self-Estimated Accuracy}
+\subsection{Mapping No-Signal Escalation to Self-Estimated Accuracy}
 
-When a model receives no hint, it escalates at a rate that reflects its default confidence level. We map this escalation rate onto the model's hint-based escalation curve (from Section~\ref{sec:results1}) to find the accuracy level that would produce the same escalation rate in the hint condition. This mapping yields the model's \emph{self-estimated accuracy} $\hat{a}$: the accuracy level at which the model behaves as if it is performing.
+When a model receives no signal, it escalates at a rate that reflects its default confidence level. We map this escalation rate onto the model's signal-based escalation curve (from Section~\ref{sec:results1}) to find the accuracy level that would produce the same escalation rate in the signal condition. This mapping yields the model's \emph{self-estimated accuracy} $\hat{a}$: the accuracy level at which the model behaves as if it is performing.
 
 Figure~\ref{fig:pstar} reports these values. All models overestimate their accuracy to some degree, with self-estimates ranging from 79\% (Qwen3.5-397B) to 94\% (Qwen3.5-9B). The actual average accuracy across conditions is 76--82\% depending on the model, indicating systematic overconfidence. Across all models and conditions, the average absolute calibration error $|\hat{a} - a|$ is 16 percentage points, confirming that self-assessment is unreliable regardless of model choice.
 
@@ -249,7 +249,7 @@ We now test whether the escalation threshold can be aligned with a target cost r
 
 \subsection{Prompting Interventions}
 
-We evaluate Qwen3.5-9B under four conditions: baseline (hint, no thinking, no cost framing), cost framing alone, thinking alone, and thinking with cost framing. We measure the fraction of conditions on which the model makes the correct condition-level decision for a cost ratio of $R = 4$ (optimal threshold $\tau^* = 80\%$): escalate when predictive accuracy is below 75\% and implement when above.
+We evaluate Qwen3.5-9B under four conditions: baseline (signal, no thinking, no cost framing), cost framing alone, thinking alone, and thinking with cost framing. We measure the fraction of conditions on which the model makes the correct condition-level decision for a cost ratio of $R = 4$ (optimal threshold $\tau^* = 80\%$): escalate when predictive accuracy is below 75\% and implement when above.
 
 \begin{table}[t]
     \centering
@@ -280,11 +280,11 @@ GPT-5-mini, which uses built-in reasoning by default, achieves 87.6\% with cost 
 
 Prompt-based interventions improve escalation accuracy but remain imperfect. We investigate whether fine-tuning can train a model to internalize cost-sensitive escalation behavior. We compare two approaches: direct preference optimization (DPO), which trains on oracle preference pairs, and supervised fine-tuning (SFT), which trains on chain-of-thought responses that explicitly compute the expected cost.
 
-\paragraph{DPO on simplified prompts.} We first train Qwen3.5-9B with DPO on simplified prompts containing only the base rate hint and cost ratio. The model achieves 95.7\% escalation accuracy across all cost ratios (vs.\ 35.0\% baseline), and this performance transfers across datasets without additional training. DPO successfully learns the general decision rule when the base rate is the only varying input.
+\paragraph{DPO on simplified prompts.} We first train Qwen3.5-9B with DPO on simplified prompts containing only the base rate signal and cost ratio. The model achieves 95.7\% escalation accuracy across all cost ratios (vs.\ 35.0\% baseline), and this performance transfers across datasets without additional training. DPO successfully learns the general decision rule when the base rate is the only varying input.
 
 \paragraph{DPO on full scenario prompts.} We then train DPO on the complete multi-turn prompts from Study~3, which include the full scenario description, the model's prediction, and the escalation decision. On the training dataset (HotelBookings), the model achieves 100\% accuracy. However, DPO produces short responses (a single token) that provide insufficient gradient signal for the model to learn the arithmetic relationship between cost ratio and base rate in the presence of rich scenario context. The model instead learns to associate specific scenario features with decisions, resulting in strong in-domain performance that does not reliably generalize.
 
-\paragraph{SFT with chain-of-thought.} We train Qwen3.5-9B with SFT on chain-of-thought responses that explicitly extract the base rate from the hint and compute the expected cost. The target response follows a template: ``The hint suggests an accuracy of $X$\%, so the error rate is $Y$\%. The expected cost of implementing is $R \times Y = Z$, which exceeds/is below 1.'' We train on three of the four main datasets (HotelBookings, LendingClub, WikipediaToxicity), four cost framings, and six cost ratios, holding out MovieLens entirely. Table~\ref{tab:sft_results} reports the results.
+\paragraph{SFT with chain-of-thought.} We train Qwen3.5-9B with SFT on chain-of-thought responses that explicitly extract the base rate from the signal and compute the expected cost. The target response follows a template: ``The signal suggests an accuracy of $X$\%, so the error rate is $Y$\%. The expected cost of implementing is $R \times Y = Z$, which exceeds/is below 1.'' We train on three of the four main datasets (HotelBookings, LendingClub, WikipediaToxicity), four cost framings, and six cost ratios, holding out MovieLens entirely. Table~\ref{tab:sft_results} reports the results.
 
 \begin{table}[h]
     \centering
@@ -304,15 +304,15 @@ Prompt-based interventions improve escalation accuracy but remain imperfect. We 
 
 The SFT model achieves near-perfect accuracy across all four main datasets, all cost ratios, and all cost framings. The single error (HotelBookings, dollar format, $R = 20$) occurs at a boundary case where $R(1-p) = 1.00$ exactly. The held-out dataset (MovieLens) achieves 100\%, demonstrating that the model learned a general procedure rather than memorizing dataset-specific decisions.
 
-\paragraph{Ablation: removing the base rate hint.} To verify that the model relies on the base rate hint rather than exploiting some other signal, we evaluate the SFT model on prompts that omit the hint entirely. Table~\ref{tab:sft_nohint} reports the results.
+\paragraph{Ablation: removing the base rate signal.} To verify that the model relies on the base rate signal rather than exploiting some other signal, we evaluate the SFT model on prompts that omit the signal entirely. Table~\ref{tab:sft_nosignal} reports the results.
 
 \begin{table}[h]
     \centering
-    \caption{SFT model evaluated with and without the base rate hint, on the original cost framing.}
-    \label{tab:sft_nohint}
+    \caption{SFT model evaluated with and without the accuracy signal, on the original cost framing.}
+    \label{tab:sft_nosignal}
     \begin{tabular}{lcc}
         \toprule
-        Dataset & With hint & Without hint \\
+        Dataset & With signal & Without signal \\
         \midrule
         HotelBookings & 100\% & 84.7\% \\
         LendingClub & 100\% & 84.0\% \\
@@ -320,7 +320,7 @@ The SFT model achieves near-perfect accuracy across all four main datasets, all 
     \end{tabular}
 \end{table}
 
-Without the hint, accuracy drops from 100\% to approximately 84\%. The model still follows the trained reasoning template, but it halluccinates a base rate (typically 75--85\%) rather than reading it from the prompt. The hallucinated rates are systematically optimistic, which produces correct decisions at extreme cost ratios (where the decision is insensitive to the exact base rate) but incorrect decisions at $R = 4$ (where accuracy drops to 48--68\%). The model's arithmetic remains correct throughout; only the input is wrong. This confirms that the SFT model genuinely reads and uses the base rate hint, and that the hint is the critical ingredient for perfect performance.
+Without the signal, accuracy drops from 100\% to approximately 84\%. The model still follows the trained reasoning template, but it halluccinates a base rate (typically 75--85\%) rather than reading it from the prompt. The hallucinated rates are systematically optimistic, which produces correct decisions at extreme cost ratios (where the decision is insensitive to the exact base rate) but incorrect decisions at $R = 4$ (where accuracy drops to 48--68\%). The model's arithmetic remains correct throughout; only the input is wrong. This confirms that the SFT model genuinely reads and uses the base rate signal, and that the signal is the critical ingredient for perfect performance.
 
 The contrast between DPO and SFT reveals why chain-of-thought supervision matters for this task. DPO trains on preference pairs with single-token responses, which provides insufficient signal for the model to learn the arithmetic relationship $R(1-p) > 1$ in the presence of rich scenario context. SFT directly supervises every token of the reasoning chain, teaching the model a reliable procedure: extract the base rate, compute the expected cost, and compare to 1. This procedure generalizes perfectly across datasets, cost framings, and to held-out domains.
 
@@ -346,7 +346,7 @@ Our work connects to several lines of research.
 
 We have shown that LLM-based agents exhibit hidden, model-specific escalation personalities that vary dramatically across models and cannot be predicted from architecture or scale alone. Each model implicitly applies a different accuracy threshold when deciding whether to implement or escalate, and each model carries a different (and typically overconfident) belief about its own accuracy.
 
-These findings have immediate practical implications. Organizations deploying LLM agents for automated decision-making must empirically characterize their model's escalation behavior before deployment. Our methodology, based on varying task difficulty through calibrated hints, provides a tractable approach for doing so.
+These findings have immediate practical implications. Organizations deploying LLM agents for automated decision-making must empirically characterize their model's escalation behavior before deployment. Our methodology, based on varying task difficulty through calibrated signals, provides a tractable approach for doing so.
 
 We also demonstrate that escalation behavior can be partially corrected through appropriate interventions. The combination of chain-of-thought reasoning and cost framing achieves near-optimal escalation decisions, improving from 70\% to 88\% correct decisions at a cost ratio of 4. This intervention is simple to implement and does not require model fine-tuning.
 
@@ -367,7 +367,7 @@ Several limitations suggest directions for future work. Our evaluation is limite
 \section{Thinking Mode Results}
 \label{app:thinking}
 % TODO: Add detailed thinking mode results
-% - Qwen3.5-9B thinking accuracy tracks hints better than nothink
+% - Qwen3.5-9B thinking accuracy tracks signals better than nothink
 % - Escalation collapses to near-zero without cost framing
 % - Isolated escalation results
 
