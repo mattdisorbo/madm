@@ -121,17 +121,17 @@ To assess calibration, we compare the agent's behavior when it receives no infor
 
 \subsection{Datasets}
 
-We evaluate on four binary prediction tasks, each drawn from a publicly available dataset. We also include a fifth dataset (MoralMachine) as a robustness check; because ethical dilemmas are not a typical agent task, we report those results in Appendix~\ref{app:moral}.
+We evaluate LLMs on four tasks, each drawn from a publicly available dataset. We also include a fifth dataset (MoralMachine) as a robustness check; because ethical dilemmas are not a typical agent task, we report those results in Appendix~\ref{app:moral}. Each setting centers around a binary decision for which we have real data on human preference. 
 
-\paragraph{Hotel Bookings.} We predict whether a hotel booking will be kept or canceled, using features such as lead time, number of special requests, and guest history \citep{antonio2019hotel}. We define 10 conditions by partitioning bookings along decision-tree splits (e.g., ``lead time under 30 days with special requests''), producing base rates ranging from 52\% to 95\%.
+\paragraph{Demand forecasting (`HotelBookings').} We predict whether a hotel booking will be kept or canceled, using features such as lead time, number of special requests, and guest history \citep{antonio2019hotel}. 
 
-\paragraph{LendingClub.} We predict whether a loan application will be approved, using applicant features such as FICO score, debt-to-income ratio, and loan amount \citep{lending_data}. Ten conditions span base rates from 51\% to 93\%.
+\paragraph{Loan approval (`LendingClub').} We predict whether a loan application will be approved, using applicant features such as FICO score, debt-to-income ratio, and loan amount \citep{lending_data}. 
 
-\paragraph{Wikipedia Toxicity.} We predict whether a Wikipedia discussion comment will be labeled toxic by crowd-workers \citep{wulczyn2017exmachina}. Ten conditions based on keyword presence span base rates from 52\% to 94\%.
+\paragraph{Content moderation (`Wikipedia Toxicity').} We predict whether a Wikipedia discussion comment will be labeled toxic by crowd-workers \citep{wulczyn2017exmachina}. 
 
-\paragraph{MovieLens.} We predict which of two movies a user would rate more highly, given five prior ratings and average community ratings \citep{harper2015movielens}. Ten conditions based on the difference in average ratings span base rates from 51\% to 94\%.
+\paragraph{Content recommendation (`MovieLens').} We predict which of two movies a user would rate more highly, given five prior ratings and average community ratings \citep{harper2015movielens}.94\%.
 
-\paragraph{MoralMachine (Appendix).} We predict which group an autonomous vehicle should save in an ethical dilemma, based on the Moral Machine dataset \citep{awad2018moral}. Ten conditions based on moral dimensions (e.g., young vs.\ old, legal crossing) span base rates from 50\% to 91\%. We include this dataset to test whether escalation patterns generalize beyond practical agent tasks, but we report results separately because the domain differs qualitatively from the others.
+\paragraph{MoralMachine (Appendix).} We predict which group an autonomous vehicle should save in an ethical dilemma, based on the Moral Machine dataset, which also includes demographic information about the human `driver' \citep{awad2018moral}. 
 
 Each condition is accompanied by a \emph{hint}: a natural-language description of the decision tree's base rate for that condition (e.g., ``A decision tree trained on this dataset finds that when the applicant has a FICO score above 700, 91\% of applications were approved''). This hint serves as a tool output that an agent might receive in a realistic deployment.
 
