@@ -47,7 +47,7 @@ First, LLMs are overconfident in their prediction ability, and tend to overestim
 
 Second, escalation behavior varies substantially across different models; this variance is not associated with model architecture or size. Some models tend to prefer escalating (lower decision threshold), some generally favor implementing (higher decision threshold). This is a critical insight for practitioners hoping to automate tasks or processes with AI: models have hidden escalation profiles that fluctuate drastically, which could lead to extreme differences in escalation behavior if practitioners are not aware.
 
-We test a series of interventions designed to control and align escalation behavior. Cost framing — specifying the relationship between the cost of labor and implementing a wrong prediction — alone has no effect, while the combination of cost framing and chain-of-thought reasoning produces substantial improvement (77\% accuracy at $R = 4$). We then turn to fine-tuning: direct preference optimization (DPO) achieves 96\% on simplified prompts but fails to generalize to full scenario prompts, where it memorizes domain-specific associations rather than learning the decision rule. Supervised fine-tuning (SFT) with chain-of-thought reasoning yields the best results, producing a model that makes optimal escalation decisions across all datasets, cost ratios, and framings, including held-out domains it was never trained on.
+We test a series of interventions designed to control and align escalation behavior. Cost framing — specifying the relationship between the cost of labor and implementing a wrong prediction — alone has no effect, while the combination of cost framing and chain-of-thought reasoning produces substantial improvement. We then turn to fine-tuning: direct preference optimization (DPO) achieves 96\% escalation accuracy on simplified prompts but fails to generalize to full scenario prompts, where it memorizes domain-specific associations rather than learning the decision rule. Supervised fine-tuning (SFT) with chain-of-thought reasoning yields the best results, producing a model that makes optimal escalation decisions across all datasets, cost ratios, and framings, including held-out domains it was never trained on.
 
 
 % ======================================================================
@@ -57,7 +57,7 @@ We test a series of interventions designed to control and align escalation behav
 
 \subsection{The Escalation Decision}
 
-Consider a workflow in which a human delegates a binary prediction task to an LLM-based agent. The agent observes a scenario $x$, produces a prediction $\hat{y} \in \{0, 1\}$, and then decides whether to \emph{implement} (act on) its prediction or \emph{escalate} (defer to the human). Every action an agent takes in practice contains an implicit escalation decision: when it makes a tool call, generates a response, or commits a change, it is choosing to implement rather than ask for guidance. Figure~\ref{fig:workflow} illustrates this workflow.
+Consider a workflow in which a human delegates a binary task to an LLM-based agent. The agent observes a scenario $x$, produces a prediction $\hat{y} \in \{0, 1\}$; the ground truth is the human's latent preference $y \in \{0, 1}$. The agent then decides whether to \emph{implement} (act on) its prediction or \emph{escalate} (defer to the human). Every action an agent takes in practice contains an implicit escalation decision: when it makes a tool call, generates a response, or commits a change, it is choosing to implement rather than ask for guidance. Figure~\ref{fig:workflow} illustrates this workflow.
 
 \begin{figure}[t]
     \centering
@@ -66,11 +66,11 @@ Consider a workflow in which a human delegates a binary prediction task to an LL
     \label{fig:workflow}
 \end{figure}
 
-We model the agent's behavior as follows. After producing its prediction, the agent forms an internal estimate $\hat{p}$ of its probability of being correct. It then compares $\hat{p}$ to a threshold $\tau$ and escalates if $\hat{p} < \tau$.
+We model the agent's behavior as follows. After producing its prediction, the agent forms an internal estimate $\hat{p}$ of its probability of being correct, or $P(\hat{y} = y)$. It then compares $\hat{p}$ to a threshold $\tau$ and escalates if $\hat{p} < \tau$.
 
 \subsection{Cost Structure}
 
-The principal incurs one of two costs depending on the agent's action. If the agent escalates, the principal pays a labor cost $c_\ell > 0$ for human review. If the agent implements and its prediction is wrong, the principal pays an error cost $c_w > c_\ell$. Correct implementations incur zero cost.
+One of two costs can be incurred depending on the agent's action. If the agent escalates, the human pays a labor cost $c_\ell > 0$, which represents the time and effort of human review. If the agent implements and its prediction is wrong, the human pays an error cost $c_w > c_\ell$. Correct implementations incur zero cost.
 
 The agent minimizes expected cost by escalating whenever
 \begin{equation}
