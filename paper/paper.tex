@@ -168,7 +168,12 @@ For each condition, we sample 250 scenarios (50 for thinking runs) and report me
 \label{sec:results1}
 % ======================================================================
 
-% TODO: Add prompting diagram figure (Figure 1)
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{figures/prompting_protocol.png}
+    \caption{The multi-turn prompting protocol, illustrated with a LendingClub example. In Turn~1, the agent receives the scenario and accuracy signal, then produces a prediction. In Turn~2, the agent sees its own prediction and decides whether to implement or escalate. The accuracy signal (green) provides the base rate from a decision tree trained on the dataset.}
+    \label{fig:protocol}
+\end{figure}
 
 \subsection{Each Model Has a Distinct Escalation Curve}
 
