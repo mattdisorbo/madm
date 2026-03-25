@@ -29,7 +29,7 @@ AI Models Have Hidden Escalation Behaviors That Need To Be Aligned}
 \maketitle
 
 \begin{abstract}
-Effective automation depends on deciding when to act and when to escalate. We model this as a decision under uncertainty: an LLM forms a prediction, estimates its probability of being correct, and compares the expected costs of acting and escalating. Across simulated agentic decision tasks, models differ systematically in the implicit thresholds they use to trade off these costs. These thresholds vary substantially and are not predicted by architecture or scale, while self-estimates are typically overconfident and poorly calibrated. By varying cost ratios and providing explicit accuracy hints, we directly test the components of this decision process. We then test interventions for inducing the desired escalation rule in these tasks. Prompting alone is insufficient for models without strong reasoning ability, though reasoning models combined with explicit cost framing show improved alignment. Direct preference optimization aligns behavior on simplified prompts but fails to recover the underlying decision rule on realistic scenario descriptions, instead relying on brittle domain associations. In contrast, supervised fine-tuning using chain-of-thought targets yields robust escalation policies that generalize across datasets, cost ratios, framings, and held-out domains by learning to infer base rates and compare expected costs. These results suggest that escalation behavior is a model-specific property that should be characterized before deployment, and that robust alignment benefits from training models to reason explicitly about uncertainty and decision costs.
+Effective automation depends on deciding when to act and when to escalate. We model this as a decision under uncertainty: an LLM forms a prediction, estimates its probability of being correct, and compares the expected costs of acting and escalating. Across simulated agentic decision tasks, models differ systematically in the implicit thresholds they use to trade off these costs. These thresholds vary substantially and are not predicted by architecture or scale — creating a hidden ``Automation Iceberg' that could wreck unsuspecting pratictioners — while self-estimates are typically overconfident and poorly calibrated. By varying cost ratios and providing explicit accuracy signals, we directly elicit the components of this decision process. We then test interventions for inducing the desired escalation behavior in these tasks. Prompting alone is insufficient for models without strong reasoning ability, though reasoning models combined with explicit cost framing show improved alignment. Direct preference optimization aligns behavior on simplified prompts but fails to recover the underlying decision rule on prompt perturbations, instead relying on brittle domain associations. In contrast, supervised fine-tuning using chain-of-thought targets yields robust escalation policies that generalize across datasets, cost ratios, framings, and held-out domains by learning to infer base rates and compare expected costs. These results suggest that escalation behavior is a hidden model-specific property that should be characterized before deployment, and that robust alignment benefits from training models to reason explicitly about uncertainty and decision costs.
 \end{abstract}
 
 % ======================================================================
@@ -37,9 +37,9 @@ Effective automation depends on deciding when to act and when to escalate. We mo
 \label{sec:intro}
 % ======================================================================
 
-LLM-based agents are increasingly deployed to automate consequential decisions. Recent systems use LLMs to triage customer support tickets \citep{li2024agent_survey}, generate and execute code \citep{jimenez2024swebench}, and manage multi-step workflows in enterprise settings \citep{wu2023autogen}. It is natural to assess agents' capabilities based on speed, accuracy and cost-savings \citep{jimenez2024swebench, chiang2024chatbot_arena, trivedi2024appworld}. However, in each setting, an agent faces a choice that receives far less scrutiny: should it implement its own decision, or escalate to a human?
+LLM-based agents are increasingly deployed to automate consequential decisions. Systems today use LLMs to triage customer support tickets \citep{li2024agent_survey}, generate and execute code \citep{jimenez2024swebench}, and manage multi-step workflows in enterprise settings \citep{wu2023autogen}. It is natural to assess agents' capabilities based on speed, accuracy and cost-savings \citep{jimenez2024swebench, chiang2024chatbot_arena, trivedi2024appworld}. However, in each setting, an agent faces a choice that receives far less scrutiny: should it implement its own decision, or escalate to a human?
 
-Agent escalation behavior is fundamental to responsible automation. An agent that fails to escalate when it is uncertain, or incorrect, will implement wrong decisions at scale \citep{bai2024measuring_faithfulness}, while an agent that always escalates defeats the purpose of automation. Two parameters govern responsible escalation. First, the agent must have a calibrated sense of its own accuracy: it should recognize when its predictions are likely wrong, and thus escalation is more appropriate. Second, the agent must apply a consistent decision threshold — the predictive accuracy at which the agent is indifferent to escalating vs. implementing — that reflects the relative costs of implementing an error vs. human labor in a specific situation.
+Agent escalation behavior is fundamental to responsible automation. An agent that fails to escalate when it is uncertain, or incorrect, will implement wrong decisions at scale \citep{bai2024measuring_faithfulness}, while an agent that always escalates defeats the purpose of automation. Two parameters govern responsible escalation. First, the agent must have a calibrated sense of its own accuracy: it should recognize when its predictions are likely wrong (correct), and thus escalation is more (less) appropriate. Second, the agent must apply a consistent decision threshold — the predictive accuracy at which the agent is indifferent to escalating vs. implementing — that reflects the relative costs of implementing an error vs. human labor in a specific situation.
 
 We study escalation behavior across five models spanning three model families and a range of model sizes: Qwen3.5-9B, Qwen3.5-397B-A17B, Qwen3-Next-80B-A3B, Llama~4~Maverick, and GPT-5-mini. We evaluate these models on five decision-making tasks: demand forecasting, loan approval, content moderation, content recommendation and moral dilemmas (featured in the Appendix). Ultimately, we find that LLMs do not satisfy either condition for reliable escalation. 
 
@@ -47,7 +47,7 @@ First, LLMs are overconfident in their prediction ability, and tend to overestim
 
 Second, escalation behavior varies substantially across different models; this variance is not associated with model architecture or size. Some models tend to prefer escalating (lower decision threshold), some generally favor implementing (higher decision threshold). This is a critical insight for practitioners hoping to automate tasks or processes with AI: models have hidden escalation profiles that fluctuate drastically, which could lead to extreme differences in escalation behavior if practitioners are not aware. Togther, this overconfidence and variance in escalation behavior constitute the ``Automation Iceberg": hidden model dynamics that could disrupt a larger workflow.
 
-We test a series of interventions designed to control and align escalation behavior. Cost framing — specifying the relationship between the cost of labor and implementing a wrong prediction — alone has no effect, while the combination of cost framing and extended thinking produces substantial improvement. We then turn to fine-tuning: direct preference optimization (DPO) achieves 96\% escalation accuracy on simplified prompts but fails to generalize to full scenario prompts, where it memorizes domain-specific associations rather than learning the decision rule. Supervised fine-tuning (SFT) with chain-of-thought reasoning yields the best results, producing a model that makes optimal escalation decisions across all datasets, cost ratios, and framings, including held-out domains it was never trained on.
+We test a series of interventions designed to control and align escalation behavior. Cost framing — specifying the relationship between the cost of labor and implementing a wrong prediction — alone has no effect, while the combination of cost framing and extended thinking produces substantial improvement. We then turn to fine-tuning: direct preference optimization (DPO) achieves near-perfect escalation accuracy on simplified prompts but fails to generalize to full scenario prompts, where it memorizes domain-specific associations rather than learning the decision rule. Supervised fine-tuning (SFT) with chain-of-thought reasoning yields the best results, producing a model that makes optimal escalation decisions across all datasets, cost ratios, and framings, including held-out domains it was never trained on.
 
 
 % ======================================================================
@@ -57,7 +57,7 @@ We test a series of interventions designed to control and align escalation behav
 
 \subsection{The Escalation Decision}
 
-Consider a workflow in which a human delegates a binary task to an LLM-based agent. The agent observes a scenario $x$, produces a prediction $\hat{y} \in \{0, 1\}$; the ground truth is the human's latent preference $y \in \{0, 1\}$. The agent then decides whether to \emph{implement} (act on) its prediction or \emph{escalate} (defer to the human). Every action an agent takes in practice contains an implicit escalation decision: when it makes a tool call, generates a response, or commits a change, it is choosing to implement rather than ask for guidance. Figure~\ref{fig:workflow} illustrates this workflow.
+Consider a workflow in which a human delegates a binary task to an LLM-based agent. The agent observes a scenario $x$, produces a prediction $\hat{y} \in \{0, 1\}$; the ground truth is the human's latent preference $y \in \{0, 1\}$. The agent then decides whether to \emph{implement} (act on) its prediction or \emph{escalate} (defer to the human). Every action an agent takes in practice contains an implicit escalation decision: when it makes a tool call, generates a response, or commits a change, it is choosing to implement rather than escalate and ask for guidance. Figure~\ref{fig:workflow} illustrates this workflow.
 
 \begin{figure}[t]
     \centering
@@ -111,7 +111,7 @@ Theorem~\ref{thm:threshold} establishes that practitioners cannot avoid characte
 
 Cost-optimal escalation requires two conditions. The agent's probability estimate $\hat{p}$ must equal the true probability of being correct (calibration), and the agent's threshold $\tau$ must equal the cost-optimal threshold $\tau^*$ (threshold alignment). We measure violations of each condition independently.
 
-To assess calibration, we compare the agent's behavior when it receives no information about task difficulty (revealing its self-estimated accuracy $\hat{a}$) to its actual accuracy. To assess threshold alignment, we construct escalation curves by varying task difficulty and identify the accuracy level $p^*$ at which the agent's escalation rate crosses 50\%. If the agent were perfectly aligned for a cost ratio $R$, we would observe $p^* = \tau^* = R/(R+1)$.
+To assess calibration, we compare the agent's behavior when it receives no signal about task difficulty (revealing its self-estimated accuracy $\hat{a}$) to its actual accuracy. To assess threshold alignment, we construct escalation curves by varying task difficulty and identify the accuracy level $p^*$ at which the agent's escalation rate crosses 50\%. If the agent were perfectly aligned for a cost ratio $R$, we would observe $p^* = \tau^* = R/(R+1)$.
 
 
 % ======================================================================
@@ -145,7 +145,7 @@ We evaluate five models spanning three families and a range of scales:
     \item \textbf{Llama~4~Maverick}: Dense model from Meta.
     \item \textbf{GPT-5-mini}: Closed-source model with built-in reasoning capabilities.
 \end{itemize}
-GPT-5-mini results exclude MovieLens (partial data due to content filter restrictions) and MoralMachine; all other models are evaluated on all four main datasets.
+GPT-5-mini results exclude MovieLens (partial data due to content filter restrictions) and MoralMachine; all other models are evaluated on all five datasets.
 
 \subsection{Prompting Protocol}
 
@@ -171,7 +171,7 @@ For each condition, we sample 250 scenarios (50 for thinking runs) and report me
 \begin{figure}[t]
     \centering
     \includegraphics[width=\textwidth]{figures/prompting_protocol.png}
-    \caption{The multi-turn prompting protocol, illustrated with a LendingClub example. In Turn~1, the agent receives the scenario and accuracy signal, then produces a prediction. In Turn~2, the agent sees its own prediction and decides whether to implement or escalate. The accuracy signal (green) provides the base rate from a decision tree trained on the dataset.}
+    \caption{The multi-turn prompting protocol, illustrated with a LendingClub example. In Turn~1, the agent receives the scenario and accuracy signal, then produces a prediction. In Turn~2, the agent sees its own prediction and decides whether to implement or escalate. The accuracy signal provides the base rate from a decision tree trained on the dataset.}
     \label{fig:protocol}
 \end{figure}
 
@@ -188,13 +188,7 @@ Figure~\ref{fig:esc_curves} presents escalation rate versus predictive accuracy 
     \label{fig:esc_curves}
 \end{figure}
 
-First, every model exhibits a generally negative relationship between predictive accuracy and escalation rate: as the model becomes more accurate (due to stronger signals), it escalates less. This indicates that all models have some sensitivity to their own performance.
-
-Second, the models differ dramatically in their overall escalation levels. Qwen3.5-9B escalates between 3\% and 80\% across conditions, while Qwen3.5-397B escalates between 0\% and 100\%. The same accuracy level can produce vastly different escalation rates depending on the model.
-
-Third, several models' curves are non-monotonic: escalation does not always decrease as accuracy improves. This suggests that models incorporate factors beyond accuracy when deciding whether to escalate, or that escalation behavior is inherently noisy.
-
-\subsection{The Implicit Threshold $p^*$}
+First, every model exhibits a generally negative relationship between predictive accuracy and escalation rate: as the model becomes more accurate (due to stronger signals), it escalates less. This indicates that all models have a general understanding that lower certainty should lead to higher escalation, and vice versa. Second, the models differ dramatically in their overall escalation levels. The same accuracy level can produce vastly different escalation rates depending on the model. Third, several models' curves are non-monotonic: escalation does not always decrease as accuracy improves. This suggests that models incorporate factors beyond accuracy when deciding whether to escalate, or that escalation behavior is inherently noisy.
 
 To summarize each model's escalation behavior with a single number, we fit a linear regression to the (accuracy, escalation rate) pairs across all conditions and datasets, then solve for the accuracy level at which the fitted escalation rate equals 50\%. We call this the model's \emph{implicit threshold} $p^*$.
 
@@ -205,9 +199,9 @@ To summarize each model's escalation behavior with a single number, we fit a lin
     \label{fig:pstar}
 \end{figure}
 
-Figure~\ref{fig:pstar} reveals striking variation. Qwen3.5-9B and GPT-5-mini have low thresholds ($p^* \approx 57\%$), meaning they transition from escalating to implementing at relatively low accuracy levels. Llama~4~Maverick has a high threshold ($p^* = 91.9\%$), continuing to escalate even when it is quite accurate. This variation persists within the same model family: Qwen3.5-9B ($p^* = 56\%$) and Qwen3.5-397B ($p^* = 81\%$) differ by 25 percentage points despite sharing the same architecture and training pipeline.
+Figure~\ref{fig:pstar} reveals striking variation. Qwen3.5-9B and GPT-5-mini have low thresholds ($p^* \approx 57\%$), meaning they transition from escalating to implementing at relatively low accuracy levels.  Put another way, these models prefer to implement. Llama~4~Maverick has a high threshold ($p^* = 91.9\%$), preferring to escalate even when it is quite accurate. This variation persists within the same model family: Qwen3.5-9B ($p^* = 56\%$) and Qwen3.5-397B ($p^* = 81\%$) differ by 25 percentage points despite sharing the same architecture and training pipeline.
 
-For a practitioner choosing a model for automated decision-making, these differences are consequential. A model with $p^* = 56\%$ will implement aggressively, accepting a higher error rate in exchange for lower escalation costs. A model with $p^* = 92\%$ will escalate most decisions, providing safety at the expense of automation. Neither behavior is inherently correct; the right threshold depends on the cost ratio $R$. The problem is that these thresholds are hidden, model-specific properties that cannot be determined without empirical characterization.
+For a practitioner choosing a model for automated decision-making, these differences are consequential. A model with $p^* = 56\%$ will implement aggressively, accepting frequent implementation errors in exchange for fewer escalations. A model with $p^* = 92\%$ will escalate most decisions, providing safety at the expense of automation. Of course, neither behavior is inherently correct: the `correct' threshold depends on the cost ratio $R$. However, it is important to note these thresholds are hidden, model-specific properties that cannot be determined without empirical characterization. This constitutes the `Automation Iceberg': practitioners cannot know a model's escalation behavior, which could cause significant damage (e.g., deploying a model with $p^* = 56\%$ in a setting with a high cost ratio) if left unexplored.
 
 
 % ======================================================================
@@ -215,7 +209,7 @@ For a practitioner choosing a model for automated decision-making, these differe
 \label{sec:results2}
 % ======================================================================
 
-We now examine the calibration of each model's internal sense of its own accuracy. We exploit the no-signal condition, in which the model receives no information about task difficulty and must rely entirely on its prior beliefs.
+The no-signal condition, in which the model receives no information about task difficulty and must rely entirely on its prior beliefs, allows us to recover the model's implicit estimate of its own accuracy.
 
 \subsection{Mapping No-Signal Escalation to Self-Estimated Accuracy}
 
