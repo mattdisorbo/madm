@@ -213,17 +213,13 @@ The no-signal condition, in which the model receives no information about task d
 
 \subsection{Mapping No-Signal Escalation to Self-Estimated Accuracy}
 
-When a model receives no signal, it escalates at a rate that reflects its default confidence level. We map this escalation rate onto the model's signal-based escalation curve (from Section~\ref{sec:results1}) to find the accuracy level that would produce the same escalation rate in the signal condition. This mapping yields the model's \emph{self-estimated accuracy} $\hat{a}$: the accuracy level at which the model behaves as if it is performing.
+When a model receives no signal, it escalates at a rate that reflects its default confidence level. We map this escalation rate onto the model's signal-based escalation curve (from Section~\ref{sec:results1}) to find the accuracy level that would produce the same escalation rate in the signal condition. This mapping yields the model's \emph{self-estimated accuracy} $\hat{a}$.
 
-Figure~\ref{fig:pstar} reports these values. All models overestimate their accuracy to some degree, with self-estimates ranging from 79\% (Qwen3.5-397B) to 94\% (Qwen3.5-9B). The actual average accuracy across conditions is 76--82\% depending on the model, indicating systematic overconfidence. Across all models and conditions, the average absolute calibration error $|\hat{a} - a|$ is 16 percentage points, confirming that self-assessment is unreliable regardless of model choice.
+Figure~\ref{fig:pstar} reports these values. All models overestimate their accuracy to some degree, with self-estimates ranging from 79\% (Qwen3.5-397B) to 94\% (Qwen3.5-9B).  Across all models and conditions, the average absolute calibration error $|\hat{a} - a|$ is 16 percentage points, confirming that self-assessment is unreliable regardless of model choice.
 
-\subsection{Overconfidence Varies by Domain}
+The actual average accuracy across conditions is 76--82\% depending on the model, slightly lower than the range of self-estimated accuracy. However, the aggregate self-estimated accuracies mask more substantial domain-level variation. While some models appear well-calibrated on average, this results from offsetting errors rather than genuine calibration.
 
-The aggregate self-estimated accuracies mask substantial domain-level variation. While some models appear well-calibrated on average, this results from offsetting errors rather than genuine calibration.
-
-GPT-5-mini provides a striking example. Its average self-estimated accuracy of 83\% nearly matches its actual accuracy of 82\%. Across individual conditions, the gap ranges from $-39$ percentage points (LendingClub, where the model dramatically underestimates its ability) to $+33$ points (HotelBookings, where it is severely overconfident). The standard deviation of the per-condition gap is 23 percentage points. This model is not calibrated; it simply has offsetting biases.
-
-Qwen3.5-9B shows a more consistent pattern: it is overconfident on nearly every condition, with gaps ranging from $+3$ to $+37$ points and a standard deviation of 11 points. The consistency of its overconfidence makes it more predictable, if not more calibrated.
+GPT-5-mini provides a striking example. Its average self-estimated accuracy of 83\% nearly matches its actual accuracy of 82\%. Across individual conditions, the gap ranges from $-39$ percentage points (LendingClub, where the model dramatically underestimates its ability) to $+33$ points (HotelBookings, where it is severely overconfident). The standard deviation of the per-condition gap is 23 percentage points. This model is not calibrated; it simply has offsetting biases. Qwen3.5-9B shows a more consistent pattern: it is overconfident on nearly every condition, with gaps ranging from $+3$ to $+37$ points and a standard deviation of 11 points. The consistency of its overconfidence makes it more predictable, if not more calibrated.
 
 Figure~\ref{fig:overconfidence} presents the full picture across all models and conditions. Two patterns stand out. First, overconfidence is worse at low accuracy: conditions where the model performs poorly (left side of each panel) tend to have the largest positive gaps. Second, LendingClub is a systematic outlier: every model underestimates its accuracy on lending decisions, while overestimating on HotelBookings and WikipediaToxicity.
 
@@ -234,7 +230,6 @@ Figure~\ref{fig:overconfidence} presents the full picture across all models and 
     \label{fig:overconfidence}
 \end{figure}
 
-\subsection{A Universal Self-Confidence Prior}
 
 Despite their varied architectures and scales, the models cluster in a narrow range of self-estimated accuracy: 79\% to 94\%. This is remarkable given that these estimates apply to tasks the models know nothing about a priori. The contrast with the much wider range of $p^*$ values (56\% to 92\%) suggests that models agree roughly on ``how good they think they are'' but disagree wildly on ``when to act on that belief.'' These are two independent dimensions of the escalation personality, and practitioners must characterize both.
 
@@ -279,9 +274,9 @@ GPT-5-mini, which uses built-in reasoning by default, achieves 87.6\% with cost 
 
 Prompt-based interventions improve escalation accuracy but remain imperfect. We investigate whether fine-tuning can train a model to internalize cost-sensitive escalation behavior. We compare two approaches: direct preference optimization (DPO), which trains on oracle preference pairs, and supervised fine-tuning (SFT), which trains on chain-of-thought responses that explicitly compute the expected cost.
 
-\paragraph{DPO on simplified prompts.} We first train Qwen3.5-9B with DPO on simplified prompts containing only the base rate signal and cost ratio. The model achieves 95.7\% escalation accuracy across all cost ratios (vs.\ 35.0\% baseline), and this performance transfers across datasets without additional training. DPO successfully learns the general decision rule when the base rate is the only varying input.
+\paragraph{DPO on simplified prompts.} We first train Qwen3.5-9B with DPO on simplified prompts containing only the base rate signal and cost ratio. The model achieves 95.7\% escalation accuracy across all cost ratios, and this performance transfers across datasets without additional training. DPO successfully learns the general decision rule when the base rate is the only varying input.
 
-\paragraph{DPO on full scenario prompts.} We then train DPO on the complete multi-turn prompts from Study~3, which include the full scenario description, the model's prediction, and the escalation decision. On the training dataset (HotelBookings), the model achieves 100\% accuracy. However, DPO produces short responses (a single token) that provide insufficient gradient signal for the model to learn the arithmetic relationship between cost ratio and base rate in the presence of rich scenario context. The model instead learns to associate specific scenario features with decisions, resulting in strong in-domain performance that does not reliably generalize.
+\paragraph{DPO on full scenario prompts.} We then train DPO on the complete multi-turn prompts from Study~3, which include the full scenario description, the model's prediction, and the escalation decision. On the training dataset (HotelBookings), the model achieves perfect accuracy. However, DPO produces short responses (a single token) that provide insufficient gradient signal for the model to learn the arithmetic relationship between cost ratio and base rate in the presence of rich scenario context. The model instead learns to associate specific scenario features with decisions, resulting in strong in-domain performance that does not reliably generalize.
 
 \paragraph{SFT with chain-of-thought.} We train Qwen3.5-9B with SFT on chain-of-thought responses that explicitly extract the base rate from the signal and compute the expected cost. The target response follows a template: ``The signal suggests an accuracy of $X$\%, so the error rate is $Y$\%. The expected cost of implementing is $R \times Y = Z$, which exceeds/is below 1.'' We train on three of the four main datasets (HotelBookings, LendingClub, WikipediaToxicity), four cost framings, and six cost ratios, holding out MovieLens entirely. Table~\ref{tab:sft_results} reports the results.
 
@@ -343,11 +338,11 @@ Our work connects to several lines of research.
 \label{sec:conclusion}
 % ======================================================================
 
-We have shown that LLM-based agents exhibit hidden, model-specific escalation personalities that vary dramatically across models and cannot be predicted from architecture or scale alone. Each model implicitly applies a different accuracy threshold when deciding whether to implement or escalate, and each model carries a different (and typically overconfident) belief about its own accuracy.
+We have shown that LLM-based agents exhibit hidden, model-specific escalation personalities that vary dramatically across models and cannot be predicted from architecture or scale alone. Each model implicitly applies a different accuracy threshold when deciding whether to implement or escalate, and each model carries a different (and typically overconfident) belief about its own accuracy. These hidden decisions represents the `Automation Iceberg': below-the-surface behavior that could disrupt a decision-making process without sufficient exploration.
 
-These findings have immediate practical implications. Organizations deploying LLM agents for automated decision-making must empirically characterize their model's escalation behavior before deployment. Our methodology, based on varying task difficulty through calibrated signals, provides a tractable approach for doing so.
+These findings have immediate and extensive practical implications. Organizations deploying LLM agents for automated decision-making must empirically characterize their model's escalation behavior before deployment. Our methodology, based on varying task difficulty through calibrated signals, provides a tractable approach for doing so.
 
-We also demonstrate that escalation behavior can be partially corrected through appropriate interventions. The combination of extended thinking and cost framing achieves near-optimal escalation decisions, improving from 70\% to 88\% correct decisions at a cost ratio of 4. This intervention is simple to implement and does not require model fine-tuning.
+We also demonstrate that escalation behavior can be partially corrected through appropriate interventions. The combination of extended thinking and cost framing achieves near-optimal escalation decisions, improving from 70\% to 88\% correct decisions at a cost ratio of 4. However, the highest accuracy can be achieved through supervised fine-tuning; this approach is robust to different domains, framings and costs.
 
 Several limitations suggest directions for future work. Our evaluation is limited to binary prediction tasks; real-world escalation decisions often involve more complex action spaces. We evaluate a small number of models; a broader survey would strengthen the generality of our findings. Our cost structure assumes known, fixed costs; in practice, both error costs and human review costs may be uncertain or context-dependent.
 
