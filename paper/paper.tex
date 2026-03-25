@@ -123,13 +123,13 @@ To assess calibration, we compare the agent's behavior when it receives no signa
 
 We evaluate LLMs on four tasks, each drawn from a publicly available dataset. We also include a fifth dataset (MoralMachine) as a robustness check; because ethical dilemmas are not a typical agent task, we report those results in Appendix~\ref{app:moral}. Each setting centers around a binary decision for which we have real data on human preference. 
 
-\paragraph{Demand forecasting (`HotelBookings').} We predict whether a hotel booking will be kept or canceled, using features such as lead time, number of special requests, and guest history \citep{antonio2019hotel}. 
+\paragraph{Demand forecasting (`HotelBookings').} We predict whether a hotel booking will be kept or canceled, using features such as lead time, number of special requests, and guest history \citep{antonio2019hotel}. An example scenario: ``Person 1 has booked a hotel stay arriving on July 12, 2017 (week 28), with 2 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 1 car parking space(s) and made 2 special request(s).''
 
-\paragraph{Loan approval (`LendingClub').} We predict whether a loan application will be approved, using applicant features such as FICO score, debt-to-income ratio, and loan amount \citep{lending_data}. 
+\paragraph{Loan approval (`LendingClub').} We predict whether a loan application will be approved, using applicant features such as FICO score, debt-to-income ratio, and loan amount \citep{lending_data}. An example scenario: ``The applicant is requesting \$12,000 for debt consolidation. They have been employed for 5 years, a debt-to-income ratio of 14.3\%, and a credit score of 712.''
 
-\paragraph{Content moderation (`Wikipedia Toxicity').} We predict whether a Wikipedia discussion comment will be labeled toxic by crowd-workers \citep{wulczyn2017exmachina}. 
+\paragraph{Content moderation (`Wikipedia Toxicity').} We predict whether a Wikipedia discussion comment will be labeled toxic by crowd-workers \citep{wulczyn2017exmachina}. An example scenario: ``This comment needs to be checked: `Please stop removing content from Wikipedia. It is considered vandalism.'\,''
 
-\paragraph{Content recommendation (`MovieLens').} We predict which of two movies a user would rate more highly, given five prior ratings and average community ratings \citep{harper2015movielens}.94\%.
+\paragraph{Content recommendation (`MovieLens').} We predict which of two movies a user would rate more highly, given five prior ratings and average community ratings \citep{harper2015movielens}. An example scenario: ``Consider these two movies: Movie A: The Shawshank Redemption (Drama), average rating 4.43/5 (311 ratings). Movie B: Forrest Gump (Comedy|Drama|Romance|War), average rating 4.05/5 (329 ratings).''
 
 \paragraph{MoralMachine (Appendix).} We predict which group an autonomous vehicle should save in an ethical dilemma, based on the Moral Machine dataset, which also includes demographic information about the human `driver' \citep{awad2018moral}. 
 
