@@ -19,8 +19,7 @@
 
 \input{math_commands.tex}
 
-\title{The Automation Iceberg: \\
-AI Models Have Hidden Escalation Behaviors That Require Alignment}
+\title{Act or Escalate? Evaluating Escalation Behavior in Automation with Language Models}
 
 \author{Author One \And Author Two}
 
@@ -319,7 +318,7 @@ Figure~\ref{fig:overconfidence} presents the full picture across all models and 
 \begin{figure}[t]
     \centering
     \includegraphics[width=\textwidth]{figures/overconfidence_by_condition.png}
-    \caption{Per-condition overconfidence (self-estimated accuracy minus actual accuracy) for each model across four datasets. Points above zero indicate overconfidence; points below indicate underconfidence. Models are generally overconfident, but LendingClub (blue) is a consistent exception.}
+    \caption{Actual accuracy versus self-estimated accuracy for each model across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). Across 120 model $\times$ condition pairs, 98 (82\%) are overconfident. LendingClub is a consistent exception where models underestimate their accuracy.}
     \label{fig:overconfidence}
 \end{figure}
 
