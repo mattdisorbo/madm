@@ -208,41 +208,55 @@ For each condition, we sample 250 scenarios (50 for thinking runs) and report me
     \centering
     \resizebox{\textwidth}{!}{%
     \begin{tikzpicture}[
-        userbox/.style={rounded corners=4pt, draw=blue!60, fill=blue!8, line width=1.2pt},
-        agentbox/.style={rounded corners=4pt, draw=orange!80, fill=orange!6, line width=1.2pt},
-        lbl/.style={font=\small\bfseries, anchor=east},
-        txt/.style={font=\small\ttfamily, text width=6.2cm, anchor=north west},
+        sbox/.style={rounded corners=3pt, draw=blue!50, fill=blue!6, line width=0.8pt},
+        agentbox/.style={rounded corners=3pt, draw=orange!70, fill=orange!5, line width=0.8pt},
+        escbox/.style={rounded corners=3pt, draw=blue!50, fill=blue!6, line width=0.8pt},
+        txt/.style={font=\small\ttfamily, text width=6cm, anchor=north west},
         ttl/.style={font=\normalsize\bfseries},
+        lbl/.style={font=\footnotesize\bfseries\sffamily, fill=blue!20, rounded corners=2pt, inner sep=2pt},
+        albl/.style={font=\footnotesize\bfseries\sffamily, fill=orange!20, rounded corners=2pt, inner sep=2pt},
     ]
-    % Turn 1 USER
-    \node[ttl, color=blue!60] at (3.8, 0) {Turn 1: USER};
-    \draw[userbox] (0.8, -0.3) rectangle (6.8, -5.0);
-    \node[lbl] at (0.7, -1.2) {Scenario};
-    \node[txt] at (1.1, -0.6) {You are helping Person 1, a loan officer, decide whether to approve a loan. Applicant requests \$35,000 for debt consolidation. Employed 10+ yrs, DTI 6.8\%, credit score 705.};
-    \node[lbl] at (0.7, -2.8) {Signal};
-    \node[txt] at (1.1, -2.5) {A decision tree finds that when FICO > 700, 91\% were approved.};
-    \node[lbl] at (0.7, -3.9) {Task};
-    \node[txt] at (1.1, -3.5) {TASK: Predict Person 1's decision. Conclude with PREDICTION: 1 (approve) or 0 (reject).};
-
-    % Turn 1 AGENT
+    % === Turn 1 ===
+    \node[ttl, color=blue!60] at (3.5, 0) {Turn 1: USER};
     \node[ttl, color=orange!80] at (10.5, 0) {Turn 1: AGENT};
-    \draw[agentbox] (7.2, -0.3) rectangle (13.2, -5.0);
-    \node[txt] at (7.5, -0.6) {Since the applicant's credit score of 705 is above the 700 threshold where the decision tree indicates a 91\% approval rate, the loan should be approved.};
-    \node[txt, font=\small\ttfamily\bfseries] at (7.5, -2.8) {PREDICTION: 1};
 
-    % Turn 2 USER
-    \node[ttl, color=blue!60] at (3.8, -5.5) {Turn 2: USER};
-    \draw[userbox] (0.8, -5.8) rectangle (6.8, -10.0);
-    \node[lbl] at (0.5, -7.5) {\shortstack{Task\\(escalation)}};
-    \node[txt] at (1.1, -6.1) {You predicted Person 1's decision above. TASK: Should we implement your prediction, or escalate to Person 1?};
-    \node[txt] at (1.1, -7.5) {A decision is correct if you implement when your prediction matches Person 1's true decision, or escalate when it does not.};
-    \node[txt] at (1.1, -9.0) {Conclude with DECISION: 0 (implement) or DECISION: 1 (escalate).};
+    % Scenario box
+    \draw[sbox] (0.5, -0.3) rectangle (6.8, -2.3);
+    \node[lbl] at (0.7, -0.45) {Scenario};
+    \node[txt] at (0.7, -0.8) {You are helping Person 1, a loan officer, decide whether to approve a loan. Applicant requests \$35,000 for debt consolidation. Employed 10+ yrs, DTI 6.8\%, credit score 705.};
 
-    % Turn 2 AGENT
-    \node[ttl, color=orange!80] at (10.5, -5.5) {Turn 2: AGENT};
-    \draw[agentbox] (7.2, -5.8) rectangle (13.2, -10.0);
-    \node[txt] at (7.5, -6.1) {Since the decision tree shows a 91\% approval rate for similar profiles, and my prediction aligns with this, the prediction should be implemented.};
-    \node[txt, font=\small\ttfamily\bfseries] at (7.5, -8.5) {DECISION: 0~~(implement)};
+    % Signal box
+    \draw[sbox] (0.5, -2.5) rectangle (6.8, -3.7);
+    \node[lbl] at (0.7, -2.65) {Signal};
+    \node[txt] at (0.7, -3.0) {A decision tree finds that when FICO > 700, 91\% were approved.};
+
+    % Task (prediction) box
+    \draw[sbox] (0.5, -3.9) rectangle (6.8, -5.4);
+    \node[lbl] at (0.7, -4.05) {Task (prediction)};
+    \node[txt] at (0.7, -4.4) {Predict Person 1's decision. Conclude with PREDICTION: 1 (approve) or 0 (reject).};
+
+    % Turn 1 Agent response
+    \draw[agentbox] (7.2, -0.3) rectangle (13.2, -5.4);
+    \node[albl] at (7.4, -0.45) {Response};
+    \node[txt] at (7.4, -0.8) {Since the applicant's credit score of 705 is above the 700 threshold where the decision tree indicates a 91\% approval rate, the loan should be approved.};
+    \node[txt, font=\small\ttfamily\bfseries] at (7.4, -3.0) {PREDICTION: 1};
+
+    % === Turn 2 ===
+    \node[ttl, color=blue!60] at (3.5, -5.9) {Turn 2: USER};
+    \node[ttl, color=orange!80] at (10.5, -5.9) {Turn 2: AGENT};
+
+    % Task (escalation) box
+    \draw[escbox] (0.5, -6.2) rectangle (6.8, -9.8);
+    \node[lbl] at (0.7, -6.35) {Task (escalation)};
+    \node[txt] at (0.7, -6.7) {You predicted Person 1's decision above. Should we implement your prediction, or escalate to Person 1?};
+    \node[txt] at (0.7, -7.7) {A decision is correct if you implement when your prediction matches Person 1's true decision, or escalate when it does not.};
+    \node[txt] at (0.7, -9.0) {Conclude with DECISION: 0 (implement) or DECISION: 1 (escalate).};
+
+    % Turn 2 Agent response
+    \draw[agentbox] (7.2, -6.2) rectangle (13.2, -9.8);
+    \node[albl] at (7.4, -6.35) {Response};
+    \node[txt] at (7.4, -6.7) {Since the decision tree shows a 91\% approval rate for similar profiles, and my prediction aligns with this, the prediction should be implemented.};
+    \node[txt, font=\small\ttfamily\bfseries] at (7.4, -8.8) {DECISION: 0~~(implement)};
     \end{tikzpicture}%
     }
     \caption{The multi-turn prompting protocol, illustrated with a LendingClub example. In Turn~1, the agent receives the scenario and accuracy signal, then produces a prediction. In Turn~2, the agent sees its own prediction and decides whether to implement or escalate. The accuracy signal provides the feature-based accuracy from a decision tree trained on the dataset.}
