@@ -169,7 +169,7 @@ We evaluate LLMs on four tasks, each drawn from a publicly available dataset. We
 
 \paragraph{MoralMachine (Appendix).} We predict which group an autonomous vehicle should save in an ethical dilemma, based on the Moral Machine dataset, from which we sample 500,000 scenarios from the full 1M-response US survey. The dataset also includes demographic information about the human `driver' \citep{awad2018moral}. An example scenario: ``An autonomous vehicle is about to get in an accident. If the car doesn't swerve, 2 elderly pedestrians will die. If the car swerves, 3 passengers will die. The pedestrians are legally crossing the street. The person behind the wheel is a 34-year-old male with a Bachelor Degree.''
 
-Each condition is accompanied by a \emph{signal}: a natural-language description of the decision tree's base rate for that condition (e.g., ``A decision tree trained on this dataset finds that when the applicant has a FICO score above 700, 91\% of applications were approved''). This signal serves as a tool output that an agent might receive in a realistic deployment.
+Each condition is accompanied by a \emph{signal}: a natural-language description of the decision tree's accuracy for that feature-defined condition (e.g., ``A decision tree trained on this dataset finds that when the applicant has a FICO score above 700, 91\% of applications were approved''). This signal serves as a tool output that an agent might receive in a realistic deployment.
 
 \subsection{Models}
 
@@ -245,7 +245,7 @@ For each condition, we sample 250 scenarios (50 for thinking runs) and report me
     \node[txt, font=\small\ttfamily\bfseries] at (7.5, -8.5) {DECISION: 0~~(implement)};
     \end{tikzpicture}%
     }
-    \caption{The multi-turn prompting protocol, illustrated with a LendingClub example. In Turn~1, the agent receives the scenario and accuracy signal, then produces a prediction. In Turn~2, the agent sees its own prediction and decides whether to implement or escalate. The accuracy signal provides the base rate from a decision tree trained on the dataset.}
+    \caption{The multi-turn prompting protocol, illustrated with a LendingClub example. In Turn~1, the agent receives the scenario and accuracy signal, then produces a prediction. In Turn~2, the agent sees its own prediction and decides whether to implement or escalate. The accuracy signal provides the feature-based accuracy from a decision tree trained on the dataset.}
     \label{fig:protocol}
 \end{figure}
 
@@ -321,19 +321,19 @@ We evaluate Qwen3.5-9B under four conditions: baseline (signal, no thinking, no 
 
 \begin{table}[t]
     \centering
-    \caption{Sample-level escalation accuracy under different interventions, evaluated against the optimal policy for cost ratio $R = 4$. For each sample, the correct action is to escalate if the condition's predictive accuracy is below 75\% and implement if above. GPT-5-mini excludes MoralMachine and MovieLens due to content filter restrictions; its cost-framing run has fewer samples due to higher API failure rates.}
+    \caption{Sample-level escalation accuracy under different interventions, evaluated against the optimal policy for cost ratio $R = 4$ ($\tau^* = 80\%$, $c_w = 4 c_\ell$). For each sample, the correct action is to escalate if the condition's predictive accuracy is below 75\% and implement if above. GPT-5-mini excludes MoralMachine and MovieLens due to content filter restrictions; its cost-framing run has fewer samples due to higher API failure rates.}
     \label{tab:interventions}
-    \begin{tabular}{lccc}
+    \begin{tabular}{lcc}
         \toprule
-        Intervention & Correct & Total & Accuracy \\
+        Intervention & Accuracy & $\Delta$ \\
         \midrule
-        Qwen 9B baseline & 7,683 & 12,254 & 62.7\% \\
-        Qwen 9B + cost framing & 7,732 & 12,395 & 62.4\% \\
-        Qwen 9B + thinking & 1,548 & 2,500 & 61.9\% \\
-        Qwen 9B + thinking + cost framing & 1,936 & 2,500 & \textbf{77.4\%} \\
+        Qwen 9B baseline & 62.7\% & --- \\
+        \quad + cost framing & 62.4\% & $-0.3$ \\
+        \quad + thinking & 61.9\% & $-0.8$ \\
+        \quad + thinking + cost framing & \textbf{77.4\%} & $+14.7$ \\
         \midrule
-        GPT-5-mini baseline & 5,565 & 7,550 & 73.7\% \\
-        GPT-5-mini + cost framing & 2,943 & 3,360 & \textbf{87.6\%} \\
+        GPT-5-mini baseline & 73.7\% & --- \\
+        \quad + cost framing & \textbf{87.6\%} & $+13.9$ \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -348,11 +348,11 @@ GPT-5-mini, which uses built-in reasoning by default, achieves 87.6\% with cost 
 
 Prompt-based interventions improve escalation accuracy but remain imperfect. We investigate whether fine-tuning can train a model to internalize cost-sensitive escalation behavior. We compare two approaches: direct preference optimization (DPO), which trains on oracle preference pairs, and supervised fine-tuning (SFT), which trains on chain-of-thought responses that explicitly compute the expected cost.
 
-\paragraph{DPO on simplified prompts.} We first train Qwen3.5-9B with DPO on simplified prompts containing only the base rate signal and cost ratio. The model achieves 95.7\% escalation accuracy across all cost ratios, and this performance transfers across datasets without additional training. DPO successfully learns the general decision rule when the base rate is the only varying input.
+\paragraph{DPO on simplified prompts.} We first train Qwen3.5-9B with DPO on simplified prompts containing only the feature signal and cost ratio. The model achieves 95.7\% escalation accuracy across all cost ratios, and this performance transfers across datasets without additional training. DPO successfully learns the general decision rule when the feature signal is the only varying input.
 
-\paragraph{DPO on full scenario prompts.} We then train DPO on the complete multi-turn prompts from Study~3, which include the full scenario description, the model's prediction, and the escalation decision. On the training dataset (HotelBookings), the model achieves perfect accuracy. However, DPO produces short responses (a single token) that provide insufficient gradient signal for the model to learn the arithmetic relationship between cost ratio and base rate in the presence of rich scenario context. The model instead learns to associate specific scenario features with decisions, resulting in strong in-domain performance that does not reliably generalize.
+\paragraph{DPO on full scenario prompts.} We then train DPO on the complete multi-turn prompts from Study~3, which include the full scenario description, the model's prediction, and the escalation decision. On the training dataset (HotelBookings), the model achieves perfect accuracy. However, DPO produces short responses (a single token) that provide insufficient gradient signal for the model to learn the arithmetic relationship between cost ratio and feature-based accuracy in the presence of rich scenario context. The model instead learns to associate specific scenario features with decisions, resulting in strong in-domain performance that does not reliably generalize.
 
-\paragraph{SFT with chain-of-thought.} We train Qwen3.5-9B with SFT on chain-of-thought responses that explicitly extract the base rate from the signal and compute the expected cost. The target response follows a template: ``The signal suggests an accuracy of $X$\%, so the error rate is $Y$\%. The expected cost of implementing is $R \times Y = Z$, which exceeds/is below 1.'' We train on three of the four main datasets (HotelBookings, LendingClub, WikipediaToxicity), four cost framings, and six cost ratios, holding out MovieLens entirely. Table~\ref{tab:sft_results} reports the results.
+\paragraph{SFT with chain-of-thought.} We train Qwen3.5-9B with SFT on chain-of-thought responses that explicitly extract the feature-based accuracy from the signal and compute the expected cost. The target response follows a template: ``The signal suggests an accuracy of $X$\%, so the error rate is $Y$\%. The expected cost of implementing is $R \times Y = Z$, which exceeds/is below 1.'' We train on three of the four main datasets (HotelBookings, LendingClub, WikipediaToxicity), four cost framings, and six cost ratios, holding out MovieLens entirely. Table~\ref{tab:sft_results} reports the results.
 
 \begin{table}[h]
     \centering
@@ -372,7 +372,7 @@ Prompt-based interventions improve escalation accuracy but remain imperfect. We 
 
 The SFT model achieves near-perfect accuracy across all four main datasets, all cost ratios, and all cost framings. The single error (HotelBookings, dollar format, $R = 20$) occurs at a boundary case where $R(1-p) = 1.00$ exactly. The held-out dataset (MovieLens) achieves 100\%, demonstrating that the model learned a general procedure rather than memorizing dataset-specific decisions.
 
-\paragraph{Ablation: removing the base rate signal.} To verify that the model relies on the base rate signal rather than exploiting some other signal, we evaluate the SFT model on prompts that omit the signal entirely. Table~\ref{tab:sft_nosignal} reports the results.
+\paragraph{Ablation: removing the feature signal.} To verify that the model relies on the feature signal rather than exploiting some other signal, we evaluate the SFT model on prompts that omit the signal entirely. Table~\ref{tab:sft_nosignal} reports the results.
 
 \begin{table}[h]
     \centering
@@ -388,9 +388,9 @@ The SFT model achieves near-perfect accuracy across all four main datasets, all 
     \end{tabular}
 \end{table}
 
-Without the signal, accuracy drops from 100\% to approximately 84\%. The model still follows the trained reasoning template, but it halluccinates a base rate (typically 75--85\%) rather than reading it from the prompt. The hallucinated rates are systematically optimistic, which produces correct decisions at extreme cost ratios (where the decision is insensitive to the exact base rate) but incorrect decisions at $R = 4$ (where accuracy drops to 48--68\%). The model's arithmetic remains correct throughout; only the input is wrong. This confirms that the SFT model genuinely reads and uses the base rate signal, and that the signal is the critical ingredient for perfect performance.
+Without the signal, accuracy drops from 100\% to approximately 84\%. The model still follows the trained reasoning template, but it hallucinates an accuracy estimate (typically 75--85\%) rather than reading it from the prompt. The hallucinated rates are systematically optimistic, which produces correct decisions at extreme cost ratios (where the decision is insensitive to the exact accuracy) but incorrect decisions at $R = 4$ (where accuracy drops to 48--68\%). The model's arithmetic remains correct throughout; only the input is wrong. This confirms that the SFT model genuinely reads and uses the feature signal, and that the signal is the critical ingredient for perfect performance.
 
-The contrast between DPO and SFT reveals why chain-of-thought supervision matters for this task. DPO trains on preference pairs with single-token responses, which provides insufficient signal for the model to learn the arithmetic relationship $R(1-p) > 1$ in the presence of rich scenario context. SFT directly supervises every token of the reasoning chain, teaching the model a reliable procedure: extract the base rate, compute the expected cost, and compare to 1. This procedure generalizes perfectly across datasets, cost framings, and to held-out domains.
+The contrast between DPO and SFT reveals why chain-of-thought supervision matters for this task. DPO trains on preference pairs with single-token responses, which provides insufficient signal for the model to learn the arithmetic relationship $R(1-p) > 1$ in the presence of rich scenario context. SFT directly supervises every token of the reasoning chain, teaching the model a reliable procedure: extract the feature-based accuracy, compute the expected cost, and compare to 1. This procedure generalizes perfectly across datasets, cost framings, and to held-out domains.
 
 
 % ======================================================================
