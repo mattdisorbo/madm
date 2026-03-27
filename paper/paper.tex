@@ -290,12 +290,12 @@ The actual average accuracy across conditions is 76--82\% depending on the model
 
 GPT-5-mini provides a striking example. Its average self-estimated accuracy of 83\% nearly matches its actual accuracy of 82\%. Across individual conditions, the gap ranges from $-39$ percentage points (LendingClub, where the model dramatically underestimates its ability) to $+33$ points (HotelBookings, where it is severely overconfident). The standard deviation of the per-condition gap is 23 percentage points. This model is not calibrated; it simply has offsetting biases. Qwen3.5-9B shows a more consistent pattern: it is overconfident on nearly every condition, with gaps ranging from $+3$ to $+37$ points and a standard deviation of 11 points. The consistency of its overconfidence makes it more predictable, if not more calibrated.
 
-Figure~\ref{fig:overconfidence} presents the full picture across all models and conditions. Two patterns stand out. First, overconfidence is worse at low accuracy: conditions where the model performs poorly (left side of each panel) tend to have the largest positive gaps. Second, LendingClub is a systematic outlier: most models underestimate their accuracy on lending decisions, while overestimating on HotelBookings and WikipediaToxicity.
+Figure~\ref{fig:overconfidence} presents the full picture across all models and conditions. Two patterns stand out. First, overconfidence is worse at low accuracy: conditions where the model performs poorly (left side of each panel) tend to have the largest positive gaps. Second, calibration bias is dataset-dependent: models consistently overestimate their accuracy on HotelBookings and WikipediaToxicity, but LendingClub shows a mixed pattern where some models underestimate and others overestimate their accuracy.
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.9\textwidth]{figures/overconfidence_by_condition.png}
-    \caption{Actual accuracy versus self-estimated accuracy for each model across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). Across 190 model $\times$ condition pairs, 147 (77\%) are overconfident. LendingClub is a notable exception where most models underestimate their accuracy.}
+    \caption{Actual accuracy versus self-estimated accuracy for each model across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). Across 190 model $\times$ condition pairs, 147 (77\%) are overconfident. LendingClub shows mixed calibration across models.}
     \label{fig:overconfidence}
 \end{figure}
 
