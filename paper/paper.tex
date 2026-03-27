@@ -60,18 +60,19 @@ Consider a workflow in which a human delegates a binary task to an LLM-based age
 
 \begin{figure}[t]
     \centering
+    \resizebox{0.85\textwidth}{!}{%
     \begin{tikzpicture}[
         box/.style={rounded corners=4pt, draw, line width=1.2pt, align=center},
         arr/.style={-{Stealth[length=3mm]}, line width=1.2pt, color=gray!60},
         node distance=1.6cm
     ]
     % Human Principal
-    \node[box, fill=blue!10, draw=blue!60, text width=2.4cm, inner sep=8pt] (human) {
+    \node[box, fill=gray!10, draw=gray!60, text width=2.4cm, inner sep=8pt] (human) {
         \textbf{\large Human\\Principal}\\[4pt]
         {\small\itshape Ground truth $y$}
     };
     % LLM Agent — single box with bullet points
-    \node[box, fill=yellow!10, draw=yellow!70!black, text width=3.8cm, inner sep=8pt, right=of human] (agent) {
+    \node[box, fill=gray!10, draw=gray!60, text width=3.8cm, inner sep=8pt, right=of human] (agent) {
         \textbf{\large LLM Agent}\\[6pt]
         {\small\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}\setlength{\topsep}{0pt}\setlength{\leftmargini}{12pt}
             \item Predicts $\hat{y}$
@@ -97,7 +98,8 @@ Consider a workflow in which a human delegates a binary task to an LLM-based age
     \draw[-{Stealth[length=3mm]}, line width=1.2pt, color=red!50!black]
         (agent.east) ++(0,-0.1) -- ++(0.5,0) |- (escalate.west);
     \node[font=\footnotesize\bfseries, color=red!50!black, anchor=north west] at ($(escalate.west) + (-0.9, -0.05)$) {Yes};
-    \end{tikzpicture}
+    \end{tikzpicture}%
+    }
     \caption{The escalation decision. A human delegates a task to an LLM agent, which produces a prediction and then decides whether to implement (incurring error cost $c_w$ if wrong) or escalate (incurring labor cost $c_\ell$). The agent escalates when its estimated probability of being correct $\hat{p}$ falls below a threshold $\tau$.}
     \label{fig:workflow}
 \end{figure}
@@ -151,15 +153,17 @@ To assess calibration, we compare the agent's behavior when it receives no signa
 
 We evaluate LLMs on four tasks, each drawn from a publicly available dataset. We also include a fifth dataset (MoralMachine) as a robustness check; because ethical dilemmas are not a typical agent task, we report those results in Appendix~\ref{app:moral}. Each setting centers around a binary decision for which we have real data on human preference. 
 
-\paragraph{Demand forecasting (`HotelBookings').} We predict whether a hotel booking will be kept or canceled, using features such as lead time, number of special requests, and guest history \citep{antonio2019hotel}. The dataset contains 119,390 bookings. An example scenario: ``Person 1 has booked a hotel stay arriving on July 12, 2017 (week 28), with 2 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 1 car parking space(s) and made 2 special request(s).''
+\paragraph{Demand forecasting (`HotelBookings').} We predict whether a hotel booking will be kept or canceled, using features such as lead time, number of special requests, and guest history \citep{antonio2019hotel}. The dataset contains 119,390 bookings.
 
-\paragraph{Loan approval (`LendingClub').} We predict whether a loan application will be approved, using applicant features such as FICO score, debt-to-income ratio, and loan amount \citep{lending_data}. We sample 20,000 applications (10,000 accepted, 10,000 rejected) from the full dataset. An example scenario: ``The applicant is requesting \$12,000 for debt consolidation. They have been employed for 5 years, a debt-to-income ratio of 14.3\%, and a credit score of 712.''
+\paragraph{Loan approval (`LendingClub').} We predict whether a loan application will be approved, using applicant features such as FICO score, debt-to-income ratio, and loan amount \citep{lending_data}. We sample 20,000 applications (10,000 accepted, 10,000 rejected) from the full dataset.
 
-\paragraph{Content moderation (`Wikipedia Toxicity').} We predict whether a Wikipedia discussion comment will be labeled toxic by crowd-workers \citep{wulczyn2017exmachina}. The dataset contains 159,686 unique comments. An example scenario: ``This comment needs to be checked: `Please stop removing content from Wikipedia. It is considered vandalism.'\,''
+\paragraph{Content moderation (`Wikipedia Toxicity').} We predict whether a Wikipedia discussion comment will be labeled toxic by crowd-workers \citep{wulczyn2017exmachina}. The dataset contains 159,686 unique comments.
 
-\paragraph{Content recommendation (`MovieLens').} We predict which of two movies a user would rate more highly, given five prior ratings and average community ratings \citep{harper2015movielens}. We construct pairwise comparisons from a sample of 1,000,000 ratings by 6,307 users from the full MovieLens 25M dataset. An example scenario: ``Person 1 has reviewed: Toy Story (4/5), Braveheart (5/5), Apollo 13 (4/5), Pulp Fiction (5/5), Forrest Gump (3/5). Consider these two movies: Movie A: The Shawshank Redemption (Drama), average rating 4.43/5 (311 ratings). Movie B: Twelve Monkeys (Mystery|Sci-Fi|Thriller), average rating 3.64/5 (229 ratings).''
+\paragraph{Content recommendation (`MovieLens').} We predict which of two movies a user would rate more highly, given five prior ratings and average community ratings \citep{harper2015movielens}. We construct pairwise comparisons from a sample of 1,000,000 ratings by 6,307 users from the full MovieLens 25M dataset.
 
-\paragraph{MoralMachine (Appendix).} We predict which group an autonomous vehicle should save in an ethical dilemma, based on the Moral Machine dataset, from which we sample 500,000 scenarios from the full 1M-response US survey. The dataset also includes demographic information about the human `driver' \citep{awad2018moral}. An example scenario: ``An autonomous vehicle is about to get in an accident. If the car doesn't swerve, 2 elderly pedestrians will die. If the car swerves, 3 passengers will die. The pedestrians are legally crossing the street. The person behind the wheel is a 34-year-old male with a Bachelor Degree.''
+\paragraph{MoralMachine (Appendix).} We predict which group an autonomous vehicle should save in an ethical dilemma, based on the Moral Machine dataset, from which we sample 500,000 scenarios from the full 1M-response US survey. The dataset also includes demographic information about the human `driver' \citep{awad2018moral}.
+
+Example scenarios for each dataset are provided in Appendix~\ref{app:examples}.
 
 Each condition is accompanied by a \emph{signal}: a natural-language description of the decision tree's accuracy for that feature-defined condition (e.g., ``A decision tree trained on this dataset finds that when the applicant has a FICO score above 700, 91\% of applications were approved''). This signal serves as a tool output that an agent might receive in a realistic deployment.
 
@@ -274,14 +278,7 @@ First, every model exhibits a generally negative relationship between predictive
 
 To summarize each model's escalation behavior with a single number, we fit a linear regression to the (accuracy, escalation rate) pairs across all conditions and datasets, then solve for the accuracy level at which the fitted escalation rate equals 50\%. We call this the model's \emph{implicit threshold} $p^*$.
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=\textwidth]{figures/pstar_ahat_bars.png}
-    \caption{Implicit escalation threshold $p^*$ (left) and self-estimated accuracy $\hat{a}$ (right) for each model. The threshold $p^*$ varies widely (56\% to 92\%), while self-estimated accuracy clusters in a narrow range (79\% to 94\%). The dotted lines show the optimal threshold at cost ratio $R = 4$ (left) and average actual accuracy (right).}
-    \label{fig:pstar}
-\end{figure}
-
-Figure~\ref{fig:pstar} reveals striking variation. Qwen3.5-9B and GPT-5-mini have low thresholds ($p^* \approx 57\%$), meaning they transition from escalating to implementing at relatively low accuracy levels.  Put another way, these models prefer to implement. Llama~4~Maverick has a high threshold ($p^* = 91.9\%$), preferring to escalate even when it is quite accurate. This variation persists within the same model family: Qwen3.5-9B ($p^* = 56\%$) and Qwen3.5-397B ($p^* = 81\%$) differ by 25 percentage points despite sharing the same architecture and training pipeline.
+Figure~\ref{fig:pstar} (Appendix~\ref{app:pstar}) summarizes these values and reveals striking variation. Qwen3.5-9B and GPT-5-mini have low thresholds ($p^* \approx 57\%$), meaning they transition from escalating to implementing at relatively low accuracy levels.  Put another way, these models prefer to implement. Llama~4~Maverick has a high threshold ($p^* = 91.9\%$), preferring to escalate even when it is quite accurate. This variation persists within the same model family: Qwen3.5-9B ($p^* = 56\%$) and Qwen3.5-397B ($p^* = 81\%$) differ by 25 percentage points despite sharing the same architecture and training pipeline.
 
 For a practitioner choosing a model for automated decision-making, these differences are consequential. A model with $p^* = 56\%$ will implement aggressively, accepting frequent implementation errors in exchange for fewer escalations. A model with $p^* = 92\%$ will escalate most decisions, providing safety at the expense of automation. Of course, neither behavior is inherently correct: the `correct' threshold depends on the cost ratio $R$. However, it is important to note these thresholds are hidden, model-specific properties that cannot be determined without empirical characterization. This constitutes the `Automation Iceberg': practitioners cannot know a model's escalation behavior, which could cause significant damage (e.g., deploying a model with $p^* = 56\%$ in a setting with a high cost ratio) if left unexplored.
 
@@ -297,7 +294,7 @@ The no-signal condition, in which the model receives no information about task d
 
 When a model receives no signal, it escalates at a rate that reflects its default confidence level. We map this escalation rate onto the model's signal-based escalation curve (from Section~\ref{sec:results1}) to find the accuracy level that would produce the same escalation rate in the signal condition. This mapping yields the model's \emph{self-estimated accuracy} $\hat{a}$.
 
-Figure~\ref{fig:pstar} reports these values. All models overestimate their accuracy to some degree, with self-estimates ranging from 79\% (Qwen3.5-397B) to 94\% (Qwen3.5-9B).  Across all models and conditions, the average absolute calibration error $|\hat{a} - a|$ is 16 percentage points, confirming that self-assessment is unreliable regardless of model choice.
+Figure~\ref{fig:pstar} (Appendix~\ref{app:pstar}) reports these values. All models overestimate their accuracy to some degree, with self-estimates ranging from 79\% (Qwen3.5-397B) to 94\% (Qwen3.5-9B).  Across all models and conditions, the average absolute calibration error $|\hat{a} - a|$ is 16 percentage points, confirming that self-assessment is unreliable regardless of model choice.
 
 The actual average accuracy across conditions is 76--82\% depending on the model, slightly lower than the range of self-estimated accuracy. However, the aggregate self-estimated accuracies mask more substantial domain-level variation. While some models appear well-calibrated on average, this results from offsetting errors rather than genuine calibration.
 
@@ -386,11 +383,7 @@ An ablation removing the feature signal confirms that the SFT model genuinely re
 
 Our work connects to several lines of research.
 
-\paragraph{LLM calibration.} \citet{kadavath2022language} show that language models have some ability to assess their own uncertainty, and \citet{xiong2024can} evaluate confidence elicitation methods. We extend this work by measuring calibration in the context of a specific downstream decision (escalation) rather than confidence scores alone.
-
-\paragraph{Selective prediction.} The machine learning literature on selective prediction, or ``learning to abstain,'' addresses when a classifier should decline to predict \citep{geifman2017selective}. We adapt this concept to LLM agents, where the abstention decision is more nuanced: the agent must weigh its confidence against explicit cost structures.
-
-\paragraph{Multi-agent debate.} \citet{du2023improving} and \citet{liang2023encouraging} study multi-agent debate for improving factuality. Our multi-turn prompting protocol is related, but the second turn evaluates the agent's \emph{own} prediction rather than introducing an adversarial perspective.
+Our work connects to LLM calibration, where \citet{kadavath2022language} show that language models can assess their own uncertainty and \citet{xiong2024can} evaluate confidence elicitation methods; we extend this by measuring calibration in the context of a downstream escalation decision rather than confidence scores alone. We also draw on selective prediction, or ``learning to abstain'' \citep{geifman2017selective}, adapting it to LLM agents that must weigh confidence against explicit cost structures. Our multi-turn prompting protocol is related to multi-agent debate \citep{du2023improving, liang2023encouraging}, but the second turn evaluates the agent's own prediction rather than introducing an adversarial perspective.
 
 
 % ======================================================================
@@ -467,5 +460,33 @@ The agent should escalate when $c_\ell < (1-p) \, c_w$, i.e., when $p < c_w/(c_w
 \begin{proof}[Proof of Theorem~\ref{thm:calibration}]
 Under perfect calibration, the agent escalates when $p < \tau^*$ and implements otherwise. Under miscalibration, the agent escalates when $p + \varepsilon < \tau^*$, i.e., when $p < \tau^* - \varepsilon$. The excess cost comes from two types of errors. When $\varepsilon > 0$ (overconfidence), some instances with $p \in [\tau^* - \varepsilon, \tau^*)$ are incorrectly implemented, each incurring excess cost $(1-p) c_w - c_\ell > 0$. When $\varepsilon < 0$ (underconfidence), some instances with $p \in [\tau^*, \tau^* - \varepsilon)$ are incorrectly escalated, each incurring excess cost $c_\ell - (1-p) c_w > 0$. In both cases the excess cost per instance is approximately $(c_w + c_\ell)|\varepsilon|$ for small $|\varepsilon|$, since $p \approx \tau^*$ in the affected region. The expected number of affected instances is $f(\tau^*) \, \mathbb{E}[|\varepsilon|]$, and $\mathbb{E}[|\varepsilon|] \leq \sqrt{\mathrm{Var}(\varepsilon)}$ by Jensen's inequality. A second-order expansion yields the stated result: the excess cost scales linearly with $\mathrm{Var}(\varepsilon)$ through the density of $p$ at the decision boundary.
 \end{proof}
+
+\section{Escalation Threshold and Self-Estimated Accuracy}
+\label{app:pstar}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{figures/pstar_ahat_bars.png}
+    \caption{Implicit escalation threshold $p^*$ (left) and self-estimated accuracy $\hat{a}$ (right) for each model. The threshold $p^*$ varies widely (56\% to 92\%), while self-estimated accuracy clusters in a narrow range (79\% to 94\%). The dotted lines show the optimal threshold at cost ratio $R = 4$ (left) and average actual accuracy (right).}
+    \label{fig:pstar}
+\end{figure}
+
+\section{Example Scenarios}
+\label{app:examples}
+
+\paragraph{HotelBookings.} ``Person 1 has booked a hotel stay arriving on July 12, 2017 (week 28), with 2 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 1 car parking space(s) and made 2 special request(s).''
+
+\paragraph{LendingClub.} ``The applicant is requesting \$12,000 for debt consolidation. They have been employed for 5 years, a debt-to-income ratio of 14.3\%, and a credit score of 712.''
+
+\paragraph{Wikipedia Toxicity.} ``This comment needs to be checked: `Please stop removing content from Wikipedia. It is considered vandalism.'\,''
+
+\paragraph{MovieLens.} ``Person 1 has reviewed: Toy Story (4/5), Braveheart (5/5), Apollo 13 (4/5), Pulp Fiction (5/5), Forrest Gump (3/5). Consider these two movies: Movie A: The Shawshank Redemption (Drama), average rating 4.43/5 (311 ratings). Movie B: Twelve Monkeys (Mystery|Sci-Fi|Thriller), average rating 3.64/5 (229 ratings).''
+
+\paragraph{MoralMachine.} ``An autonomous vehicle is about to get in an accident. If the car doesn't swerve, 2 elderly pedestrians will die. If the car swerves, 3 passengers will die. The pedestrians are legally crossing the street. The person behind the wheel is a 34-year-old male with a Bachelor Degree.''
+
+\section{LLM Disclosure}
+\label{app:llm_disclosure}
+
+Large language models were used to help draft and edit this paper (including generating plots and figures) and to build the code repository for running experiments and analysis.
 
 \end{document}
