@@ -242,11 +242,11 @@ For each condition, we sample 250 scenarios (50 for thinking runs) and report me
     };
 
     % === Turn 2 ===
-    \node[ttl, color=blue!60] at (3.5, -0.7 |- task1.south) {Turn 2: USER};
-    \node[ttl, color=orange!80] at (10.2, -0.7 |- task1.south) {Turn 2: AGENT};
+    \node[ttl, color=blue!60] at (3.5, -1.0 |- task1.south) {Turn 2: USER};
+    \node[ttl, color=orange!80] at (10.2, -1.0 |- task1.south) {Turn 2: AGENT};
 
     % Task (escalation) box
-    \node[ubox] (task2) at (0.5, -1.1 |- task1.south) {%
+    \node[ubox] (task2) at (0.5, -1.4 |- task1.south) {%
         {\footnotesize\bfseries\sffamily Task (escalation)}\\[3pt]
         {\small\ttfamily You predicted Person 1's decision above. Should we implement your prediction, or escalate to Person 1?}\\[6pt]
         {\small\ttfamily A decision is correct if you implement when your prediction matches Person 1's true decision, or escalate when it does not.}\\[6pt]
@@ -255,8 +255,8 @@ For each condition, we sample 250 scenarios (50 for thinking runs) and report me
 
     % Turn 2 Agent response — drawn to match user column height
     \draw[rounded corners=3pt, draw=orange!70, fill=orange!5, line width=0.8pt]
-        (7.0, -1.1 |- task1.south) rectangle (13.0, 0 |- task2.south);
-    \node[text width=5.8cm, inner sep=6pt, anchor=north west] at (7.0, -1.1 |- task1.south) {%
+        (7.0, -1.4 |- task1.south) rectangle (13.0, 0 |- task2.south);
+    \node[text width=5.8cm, inner sep=6pt, anchor=north west] at (7.0, -1.4 |- task1.south) {%
         {\footnotesize\bfseries\sffamily Response}\\[3pt]
         {\small\ttfamily Since the decision tree shows a 91\% approval rate for similar profiles, and my prediction aligns with this, the prediction should be implemented.}\\[12pt]
         {\small\ttfamily\bfseries DECISION: 0~~(implement)}
