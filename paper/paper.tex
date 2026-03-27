@@ -118,10 +118,8 @@ The agent minimizes expected cost by escalating whenever
 
 \begin{theorem}[Uniqueness of the optimal threshold]
 \label{thm:threshold}
-Let the agent escalate whenever $\hat{p} < \tau$ for some threshold $\tau \in [0,1]$, and suppose $\hat{p}$ is perfectly calibrated (i.e., $\hat{p} = p$, the true probability of a correct prediction). Then $\tau^* = c_w / (c_w + c_\ell)$ is the unique threshold that minimizes expected cost. Any $\tau \neq \tau^*$ incurs strictly higher expected cost on the set of instances where $p$ falls between $\tau$ and $\tau^*$.
+Let the agent escalate whenever $\hat{p} < \tau$ for some threshold $\tau \in [0,1]$, and suppose $\hat{p}$ is perfectly calibrated (i.e., $\hat{p} = p$, the true probability of a correct prediction). Then $\tau^* = c_w / (c_w + c_\ell)$ is the unique threshold that minimizes expected cost.
 \end{theorem}
-
-Proof in Appendix~\ref{app:proofs}.
 
 \begin{theorem}[Cost of miscalibration]
 \label{thm:calibration}
@@ -132,7 +130,7 @@ Let the agent use the optimal threshold $\tau^*$ but have miscalibrated probabil
 where $f(\tau^*)$ is the density of $p$ at $\tau^*$.
 \end{theorem}
 
-Proof in Appendix~\ref{app:proofs}.
+All proofs are in Appendix~\ref{app:proofs}.
 
 Theorem~\ref{thm:threshold} establishes that practitioners cannot avoid characterizing their model's threshold: any deviation from $\tau^*$ creates avoidable cost. Theorem~\ref{thm:calibration} shows that even with the correct threshold, miscalibration increases cost in proportion to its variance. A model that is ``calibrated on average'' (mean-zero $\varepsilon$) but highly variable across conditions still incurs substantial excess cost. Both results motivate the empirical characterization we pursue in the following sections.
 
@@ -433,7 +431,7 @@ For a single instance with true accuracy $p$, the expected cost under threshold 
 \[
 C(p, \tau) = \begin{cases} c_\ell & \text{if } p < \tau \text{ (escalate)} \\ (1-p) \, c_w & \text{if } p \geq \tau \text{ (implement).} \end{cases}
 \]
-The agent should escalate when $c_\ell < (1-p) \, c_w$, i.e., when $p < c_w/(c_w + c_\ell) = \tau^*$. For any instance with $p$ between $\tau$ and $\tau^*$ (or between $\tau^*$ and $\tau$), the agent's action under $\tau$ differs from the action under $\tau^*$, and the cost under $\tau^*$ is strictly lower by construction. Since costs are continuous in $p$, any $\tau \neq \tau^*$ incurs excess cost on a positive-measure set of instances whenever the distribution of $p$ has support in the interval between $\tau$ and $\tau^*$.
+The agent should escalate when $c_\ell < (1-p) \, c_w$, i.e., when $p < c_w/(c_w + c_\ell) = \tau^*$. This threshold uniquely minimizes expected cost because it is the only value at which the agent is indifferent between escalating and implementing.
 \end{proof}
 
 \begin{proof}[Proof of Theorem~\ref{thm:calibration}]
