@@ -120,13 +120,7 @@ For a cost ratio $R = c_w / c_\ell = 4$, the optimal threshold is $\tau^* = 4/5 
 Let the agent escalate whenever $\hat{p} < \tau$ for some threshold $\tau \in [0,1]$, and suppose $\hat{p}$ is perfectly calibrated (i.e., $\hat{p} = p$, the true probability of a correct prediction). Then $\tau^* = c_w / (c_w + c_\ell)$ is the unique threshold that minimizes expected cost. Any $\tau \neq \tau^*$ incurs strictly higher expected cost on the set of instances where $p$ falls between $\tau$ and $\tau^*$.
 \end{theorem}
 
-\begin{proof}
-For a single instance with true accuracy $p$, the expected cost under threshold $\tau$ is
-\[
-C(p, \tau) = \begin{cases} c_\ell & \text{if } p < \tau \text{ (escalate)} \\ (1-p) \, c_w & \text{if } p \geq \tau \text{ (implement).} \end{cases}
-\]
-The agent should escalate when $c_\ell < (1-p) \, c_w$, i.e., when $p < c_w/(c_w + c_\ell) = \tau^*$. For any instance with $p$ between $\tau$ and $\tau^*$ (or between $\tau^*$ and $\tau$), the agent's action under $\tau$ differs from the action under $\tau^*$, and the cost under $\tau^*$ is strictly lower by construction. Since costs are continuous in $p$, any $\tau \neq \tau^*$ incurs excess cost on a positive-measure set of instances whenever the distribution of $p$ has support in the interval between $\tau$ and $\tau^*$.
-\end{proof}
+Proof in Appendix~\ref{app:proofs}.
 
 \begin{theorem}[Cost of miscalibration]
 \label{thm:calibration}
@@ -137,9 +131,7 @@ Let the agent use the optimal threshold $\tau^*$ but have miscalibrated probabil
 where $f(\tau^*)$ is the density of $p$ at $\tau^*$.
 \end{theorem}
 
-\begin{proof}
-Under perfect calibration, the agent escalates when $p < \tau^*$ and implements otherwise. Under miscalibration, the agent escalates when $p + \varepsilon < \tau^*$, i.e., when $p < \tau^* - \varepsilon$. The excess cost comes from two types of errors. When $\varepsilon > 0$ (overconfidence), some instances with $p \in [\tau^* - \varepsilon, \tau^*)$ are incorrectly implemented, each incurring excess cost $(1-p) c_w - c_\ell > 0$. When $\varepsilon < 0$ (underconfidence), some instances with $p \in [\tau^*, \tau^* - \varepsilon)$ are incorrectly escalated, each incurring excess cost $c_\ell - (1-p) c_w > 0$. In both cases the excess cost per instance is approximately $(c_w + c_\ell)|\varepsilon|$ for small $|\varepsilon|$, since $p \approx \tau^*$ in the affected region. The expected number of affected instances is $f(\tau^*) \, \mathbb{E}[|\varepsilon|]$, and $\mathbb{E}[|\varepsilon|] \leq \sqrt{\mathrm{Var}(\varepsilon)}$ by Jensen's inequality. A second-order expansion yields the stated result: the excess cost scales linearly with $\mathrm{Var}(\varepsilon)$ through the density of $p$ at the decision boundary.
-\end{proof}
+Proof in Appendix~\ref{app:proofs}.
 
 Theorem~\ref{thm:threshold} establishes that practitioners cannot avoid characterizing their model's threshold: any deviation from $\tau^*$ creates avoidable cost. Theorem~\ref{thm:calibration} shows that even with the correct threshold, miscalibration increases cost in proportion to its variance. A model that is ``calibrated on average'' (mean-zero $\varepsilon$) but highly variable across conditions still incurs substantial excess cost. Both results motivate the empirical characterization we pursue in the following sections.
 
@@ -454,5 +446,20 @@ Several limitations suggest directions for future work. Our evaluation is limite
 % - Qwen3.5-9B thinking accuracy tracks signals better than nothink
 % - Escalation collapses to near-zero without cost framing
 % - Isolated escalation results
+
+\section{Proofs}
+\label{app:proofs}
+
+\begin{proof}[Proof of Theorem~\ref{thm:threshold}]
+For a single instance with true accuracy $p$, the expected cost under threshold $\tau$ is
+\[
+C(p, \tau) = \begin{cases} c_\ell & \text{if } p < \tau \text{ (escalate)} \\ (1-p) \, c_w & \text{if } p \geq \tau \text{ (implement).} \end{cases}
+\]
+The agent should escalate when $c_\ell < (1-p) \, c_w$, i.e., when $p < c_w/(c_w + c_\ell) = \tau^*$. For any instance with $p$ between $\tau$ and $\tau^*$ (or between $\tau^*$ and $\tau$), the agent's action under $\tau$ differs from the action under $\tau^*$, and the cost under $\tau^*$ is strictly lower by construction. Since costs are continuous in $p$, any $\tau \neq \tau^*$ incurs excess cost on a positive-measure set of instances whenever the distribution of $p$ has support in the interval between $\tau$ and $\tau^*$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:calibration}]
+Under perfect calibration, the agent escalates when $p < \tau^*$ and implements otherwise. Under miscalibration, the agent escalates when $p + \varepsilon < \tau^*$, i.e., when $p < \tau^* - \varepsilon$. The excess cost comes from two types of errors. When $\varepsilon > 0$ (overconfidence), some instances with $p \in [\tau^* - \varepsilon, \tau^*)$ are incorrectly implemented, each incurring excess cost $(1-p) c_w - c_\ell > 0$. When $\varepsilon < 0$ (underconfidence), some instances with $p \in [\tau^*, \tau^* - \varepsilon)$ are incorrectly escalated, each incurring excess cost $c_\ell - (1-p) c_w > 0$. In both cases the excess cost per instance is approximately $(c_w + c_\ell)|\varepsilon|$ for small $|\varepsilon|$, since $p \approx \tau^*$ in the affected region. The expected number of affected instances is $f(\tau^*) \, \mathbb{E}[|\varepsilon|]$, and $\mathbb{E}[|\varepsilon|] \leq \sqrt{\mathrm{Var}(\varepsilon)}$ by Jensen's inequality. A second-order expansion yields the stated result: the excess cost scales linearly with $\mathrm{Var}(\varepsilon)$ through the density of $p$ at the decision boundary.
+\end{proof}
 
 \end{document}
