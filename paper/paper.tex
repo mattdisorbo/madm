@@ -367,13 +367,13 @@ Our multi-turn prompting protocol is related to multi-agent debate \citep{du2023
 \label{sec:conclusion}
 % ======================================================================
 
-We have shown that LLM-based agents exhibit hidden, model-specific escalation personalities that vary dramatically across models and cannot be predicted from architecture or scale alone. Each model implicitly applies a different accuracy threshold when deciding whether to implement or escalate, and each model carries a different (and typically overconfident) belief about its own accuracy. These hidden decisions represent below-the-surface behavior that could disrupt a decision-making process without sufficient exploration.
+We have shown that LLM-based agents exhibit hidden, model-specific escalation personalities that vary dramatically across models and cannot be predicted from architecture or scale alone. Each model implicitly applies a different decision threshold when deciding whether to implement or escalate, and models carry uncalibrated, and typically overconfident, beliefs about their own accuracy. These hidden decisions represent below-the-surface behavior that could disrupt a decision-making process without sufficient exploration.
 
 These findings have immediate and extensive practical implications. Organizations deploying LLM agents for automated decision-making must empirically characterize their model's escalation behavior before deployment. Our methodology, based on varying task difficulty through calibrated signals, provides a tractable approach for doing so.
 
-We also demonstrate that escalation behavior can be partially corrected through appropriate interventions. The combination of extended thinking and cost framing achieves near-optimal escalation decisions, improving from 70\% to 88\% correct decisions at a cost ratio of 4. However, the highest accuracy can be achieved through supervised fine-tuning; this approach is robust to different domains, framings and costs.
+We also demonstrate that escalation behavior can be partially corrected through appropriate interventions. The combination of extended thinking and cost framing achieves near-optimal escalation decisions. However, the highest escalation accuracy can be achieved through supervised fine-tuning; this approach is robust to different domains, framings and costs.
 
-Several limitations suggest directions for future work. Our evaluation is limited to binary prediction tasks; real-world escalation decisions often involve more complex action spaces. We evaluate a small number of models; a broader survey would strengthen the generality of our findings. Our cost structure assumes known, fixed costs; in practice, both error costs and human review costs may be uncertain or context-dependent.
+Several limitations suggest directions for future work. Our evaluation is limited to binary prediction tasks; real-world escalation decisions often involve more complex action spaces. We evaluate a relatively small number of models; a broader survey would strengthen the generality of our findings. Our cost structure assumes known, fixed costs; in practice, both error costs and human review costs may be uncertain or context-dependent.
 
 \newpage
 \bibliography{references}
