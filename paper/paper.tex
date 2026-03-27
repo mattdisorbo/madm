@@ -81,22 +81,22 @@ Consider a workflow in which a human delegates a binary task to an LLM-based age
         \end{itemize}}
     };
     % Implement
-    \node[box, fill=green!10, draw=green!50!black, text width=1.8cm, inner sep=6pt, above right=0.4cm and 1.2cm of agent] (implement) {
+    \node[box, fill=green!10, draw=green!50!black, text width=1.8cm, inner sep=6pt, above right=0.15cm and 1.8cm of agent] (implement) {
         \textbf{Implement}\\[2pt]
         {\small $(1{-}p)\,c_w$}
     };
     % Escalate
-    \node[box, fill=red!8, draw=red!50!black, text width=1.8cm, inner sep=6pt, below right=0.4cm and 1.2cm of agent] (escalate) {
+    \node[box, fill=red!8, draw=red!50!black, text width=1.8cm, inner sep=6pt, below right=0.15cm and 1.8cm of agent] (escalate) {
         \textbf{Escalate}\\[2pt]
         {\small $c_\ell$}
     };
     % Arrows
     \draw[arr] (human) -- node[above, font=\footnotesize, color=gray!60] {delegates} (agent);
     \draw[-{Stealth[length=3mm]}, line width=1.2pt, color=green!50!black]
-        (agent.east) ++(0,0.1) -- ++(0.5,0) |- (implement.west);
+        (agent.east) ++(0,0.05) -- ++(0.8,0) |- (implement.west);
     \node[font=\footnotesize\bfseries, color=green!50!black, anchor=south west] at ($(implement.west) + (-0.9, 0.05)$) {No};
     \draw[-{Stealth[length=3mm]}, line width=1.2pt, color=red!50!black]
-        (agent.east) ++(0,-0.1) -- ++(0.5,0) |- (escalate.west);
+        (agent.east) ++(0,-0.05) -- ++(0.8,0) |- (escalate.west);
     \node[font=\footnotesize\bfseries, color=red!50!black, anchor=north west] at ($(escalate.west) + (-0.9, -0.05)$) {Yes};
     \end{tikzpicture}%
     }
@@ -262,7 +262,7 @@ Figure~\ref{fig:esc_curves} presents escalation rate versus predictive accuracy 
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\textwidth]{figures/esc_vs_acc_nothink_5models.png}
+    \includegraphics[width=0.9\textwidth]{figures/esc_vs_acc_nothink_5models.png}
     \caption{Escalation rate versus predictive accuracy for all five models across four datasets (with signals, no thinking). Each model exhibits a distinct escalation personality, varying in both overall escalation level and sensitivity to accuracy.}
     \label{fig:esc_curves}
 \end{figure}
@@ -297,7 +297,7 @@ Figure~\ref{fig:overconfidence} presents the full picture across all models and 
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\textwidth]{figures/overconfidence_by_condition.png}
+    \includegraphics[width=0.9\textwidth]{figures/overconfidence_by_condition.png}
     \caption{Actual accuracy versus self-estimated accuracy for each model across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). Across 190 model $\times$ condition pairs, 147 (77\%) are overconfident. LendingClub is a consistent exception where models underestimate their accuracy.}
     \label{fig:overconfidence}
 \end{figure}
@@ -356,7 +356,13 @@ An ablation removing the feature signal confirms that the SFT model genuinely re
 \label{sec:related}
 % ======================================================================
 
-Our work connects to LLM calibration, where \citet{kadavath2022language} show that language models can assess their own uncertainty and \citet{xiong2024can} evaluate confidence elicitation methods; we extend this by measuring calibration in the context of a downstream escalation decision rather than confidence scores alone. We also draw on selective prediction, or ``learning to abstain'' \citep{geifman2017selective}, adapting it to LLM agents that must weigh confidence against explicit cost structures. Our multi-turn prompting protocol is related to multi-agent debate \citep{du2023improving, liang2023encouraging}, but the second turn evaluates the agent's own prediction rather than introducing an adversarial perspective.
+Our work connects to LLM calibration, where \citet{kadavath2022language} show that language models can assess their own uncertainty and \citet{xiong2024can} evaluate confidence elicitation methods. \citet{guo2017calibration} demonstrate that modern neural networks are poorly calibrated, and \citet{tian2023just} find that verbalized confidence from LLMs can outperform token-level probabilities in some settings. We extend this line of work by measuring calibration in the context of a downstream escalation decision rather than confidence scores alone.
+
+We draw on selective prediction, or ``learning to abstain'' \citep{geifman2017selective}, and the related literature on learning to defer, where a classifier can route instances to a human expert \citep{madras2018predict, mozannar2020consistent}. Our cost-based formulation connects to cost-sensitive classification \citep{elkan2001foundations}, which optimizes decision thresholds under asymmetric misclassification costs. We adapt these ideas to LLM agents that must weigh confidence against explicit cost structures without access to class probabilities.
+
+Chain-of-thought prompting \citep{wei2022chain} enables models to reason step-by-step, improving performance on arithmetic and multi-step tasks. Our finding that extended thinking is necessary for cost framing to take effect aligns with evidence that explicit reasoning unlocks capabilities latent in the base model. On the alignment side, DPO \citep{rafailov2023direct} and RLHF \citep{ouyang2022training} train models to match human preferences; we test both approaches for aligning escalation behavior and find that chain-of-thought supervision via SFT generalizes where preference optimization does not.
+
+Our multi-turn prompting protocol is related to multi-agent debate \citep{du2023improving, liang2023encouraging}, but the second turn evaluates the agent's own prediction rather than introducing an adversarial perspective.
 
 
 % ======================================================================
