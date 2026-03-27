@@ -61,41 +61,43 @@ Consider a workflow in which a human delegates a binary task to an LLM-based age
 \begin{figure}[t]
     \centering
     \begin{tikzpicture}[
-        box/.style={rounded corners=4pt, draw, line width=1.2pt, minimum height=1.6cm, text width=2.4cm, align=center, font=\small},
-        arr/.style={-{Stealth[length=3mm]}, line width=1.2pt, color=gray!70},
-        node distance=1.2cm
+        box/.style={rounded corners=4pt, draw, line width=1.2pt, align=center},
+        arr/.style={-{Stealth[length=3mm]}, line width=1.2pt, color=gray!60},
+        node distance=1.4cm
     ]
     % Human Principal
-    \node[box, fill=blue!10, draw=blue!60, text width=2.6cm, minimum height=1.8cm] (human) {
+    \node[box, fill=blue!10, draw=blue!60, text width=2.4cm, inner sep=8pt] (human) {
         \textbf{\large Human\\Principal}\\[4pt]
-        \textit{Ground truth $y$}
+        {\small\itshape Ground truth $y$}
     };
-    % LLM Agent
-    \node[box, fill=yellow!10, draw=yellow!70!black, text width=2.8cm, minimum height=1.8cm, right=of human] (agent) {
+    % LLM Agent — predicts
+    \node[box, fill=yellow!10, draw=yellow!70!black, text width=2.4cm, inner sep=8pt, right=of human] (agent) {
         \textbf{\large LLM Agent}\\[4pt]
-        \textit{Predicts $\hat{y}$}
+        {\small\itshape Predicts $\hat{y}$}
     };
-    % Decision
-    \node[box, fill=purple!12, draw=purple!70, text width=2.8cm, minimum height=2.0cm, right=of agent] (decision) {
-        LLM estimates\\[2pt]
-        $\hat{p}(\hat{y} = y)$\\[4pt]
-        \textbf{\large $\hat{p} < \tau$ \,?}
+    % LLM Agent — estimates and decides
+    \node[box, fill=yellow!10, draw=yellow!70!black, text width=2.8cm, inner sep=8pt, right=of agent] (decision) {
+        \textbf{\large LLM Agent}\\[4pt]
+        {\small Estimates $\hat{p}(\hat{y} = y)$}\\[4pt]
+        {\large $\hat{p} < \tau$ \,?}
     };
     % Implement
-    \node[box, fill=green!10, draw=green!50!black, text width=2.0cm, minimum height=1.2cm, above right=0.3cm and 1.2cm of decision] (implement) {
-        \textbf{Implement}\\[2pt]
-        Cost: $(1{-}p)c_w$
+    \node[box, fill=green!10, draw=green!50!black, text width=1.8cm, inner sep=6pt, above right=0.4cm and 1.0cm of decision] (implement) {
+        \textbf{Implement}
     };
     % Escalate
-    \node[box, fill=red!8, draw=red!50!black, text width=2.0cm, minimum height=1.2cm, below right=0.3cm and 1.2cm of decision] (escalate) {
-        \textbf{Escalate}\\[2pt]
-        Cost: $c_\ell$
+    \node[box, fill=red!8, draw=red!50!black, text width=1.8cm, inner sep=6pt, below right=0.4cm and 1.0cm of decision] (escalate) {
+        \textbf{Escalate}
     };
     % Arrows
-    \draw[arr] (human) -- node[above, font=\small\bfseries, color=gray!70] {delegates} (agent);
+    \draw[arr] (human) -- node[above, font=\footnotesize, color=gray!60] {delegates} (agent);
     \draw[arr] (agent) -- (decision);
-    \draw[-{Stealth[length=3mm]}, line width=1.2pt, color=green!50!black] (decision.east) ++(0,0.15) -- ++(0.3,0) |- node[pos=0.25, left, font=\small\bfseries, color=green!50!black] {No} (implement.west);
-    \draw[-{Stealth[length=3mm]}, line width=1.2pt, color=red!50!black] (decision.east) ++(0,-0.15) -- ++(0.3,0) |- node[pos=0.25, left, font=\small\bfseries, color=red!50!black] {Yes} (escalate.west);
+    \draw[-{Stealth[length=3mm]}, line width=1.2pt, color=green!50!black]
+        (decision.east) ++(0,0.1) -- ++(0.4,0) |- (implement.west)
+        node[pos=0.25, above, font=\footnotesize\bfseries, color=green!50!black] {No};
+    \draw[-{Stealth[length=3mm]}, line width=1.2pt, color=red!50!black]
+        (decision.east) ++(0,-0.1) -- ++(0.4,0) |- (escalate.west)
+        node[pos=0.25, below, font=\footnotesize\bfseries, color=red!50!black] {Yes};
     \end{tikzpicture}
     \caption{The escalation decision. A human delegates a task to an LLM agent, which produces a prediction and then decides whether to implement (incurring error cost $c_w$ if wrong) or escalate (incurring labor cost $c_\ell$). The agent escalates when its estimated probability of being correct $\hat{p}$ falls below a threshold $\tau$.}
     \label{fig:workflow}
