@@ -354,11 +354,7 @@ GPT-5-mini, which uses built-in reasoning by default, achieves 87.6\% with cost 
 
 \subsection{Fine-Tuning for Cost-Sensitive Escalation}
 
-Prompt-based interventions improve escalation accuracy but remain imperfect. We investigate whether fine-tuning can train a model to internalize cost-sensitive escalation behavior. We compare two approaches: direct preference optimization (DPO), which trains on oracle preference pairs, and supervised fine-tuning (SFT), which trains on chain-of-thought responses that explicitly compute the expected cost.
-
-\paragraph{DPO on simplified prompts.} We first train Qwen3.5-9B with DPO on simplified prompts containing only the feature signal and cost ratio. The model achieves 95.7\% escalation accuracy across all cost ratios, and this performance transfers across datasets without additional training. DPO successfully learns the general decision rule when the feature signal is the only varying input.
-
-\paragraph{DPO on full scenario prompts.} We then train DPO on the complete multi-turn prompts from Study~3, which include the full scenario description, the model's prediction, and the escalation decision. On the training dataset (HotelBookings), the model achieves perfect accuracy. However, DPO produces short responses (a single token) that provide insufficient gradient signal for the model to learn the arithmetic relationship between cost ratio and feature-based accuracy in the presence of rich scenario context. The model instead learns to associate specific scenario features with decisions, resulting in strong in-domain performance that does not reliably generalize.
+Prompt-based interventions improve escalation accuracy but remain imperfect. We investigate whether fine-tuning can train a model to internalize cost-sensitive escalation behavior. We first attempt DPO, which achieves 95.7\% accuracy on simplified prompts (feature signal and cost ratio only) but fails to generalize to full scenario prompts, where single-token responses provide insufficient gradient signal to learn the decision rule (details in Appendix~\ref{app:dpo}).
 
 \paragraph{SFT with chain-of-thought.} We train Qwen3.5-9B with SFT on chain-of-thought responses that explicitly extract the feature-based accuracy from the signal and compute the expected cost. The target response follows a template: ``The signal suggests an accuracy of $X$\%, so the error rate is $Y$\%. The expected cost of implementing is $R \times Y = Z$, which exceeds/is below 1.'' We train on three of the four main datasets (HotelBookings, LendingClub, WikipediaToxicity), four cost framings, and six cost ratios, holding out MovieLens entirely. Table~\ref{tab:sft_results} reports the results.
 
@@ -380,25 +376,7 @@ Prompt-based interventions improve escalation accuracy but remain imperfect. We 
 
 The SFT model achieves near-perfect accuracy across all four main datasets, all cost ratios, and all cost framings. The single error (HotelBookings, dollar format, $R = 20$) occurs at a boundary case where $R(1-p) = 1.00$ exactly. The held-out dataset (MovieLens) achieves 100\%, demonstrating that the model learned a general procedure rather than memorizing dataset-specific decisions.
 
-\paragraph{Ablation: removing the feature signal.} To verify that the model relies on the feature signal rather than exploiting some other signal, we evaluate the SFT model on prompts that omit the signal entirely. Table~\ref{tab:sft_nosignal} reports the results.
-
-\begin{table}[h]
-    \centering
-    \caption{SFT model evaluated with and without the accuracy signal, on the original cost framing.}
-    \label{tab:sft_nosignal}
-    \begin{tabular}{lcc}
-        \toprule
-        Dataset & With signal & Without signal \\
-        \midrule
-        HotelBookings & 100\% & 84.7\% \\
-        LendingClub & 100\% & 84.0\% \\
-        \bottomrule
-    \end{tabular}
-\end{table}
-
-Without the signal, accuracy drops from 100\% to approximately 84\%. The model still follows the trained reasoning template, but it hallucinates an accuracy estimate (typically 75--85\%) rather than reading it from the prompt. The hallucinated rates are systematically optimistic, which produces correct decisions at extreme cost ratios (where the decision is insensitive to the exact accuracy) but incorrect decisions at $R = 4$ (where accuracy drops to 48--68\%). The model's arithmetic remains correct throughout; only the input is wrong. This confirms that the SFT model genuinely reads and uses the feature signal, and that the signal is the critical ingredient for perfect performance.
-
-The contrast between DPO and SFT reveals why chain-of-thought supervision matters for this task. DPO trains on preference pairs with single-token responses, which provides insufficient signal for the model to learn the arithmetic relationship $R(1-p) > 1$ in the presence of rich scenario context. SFT directly supervises every token of the reasoning chain, teaching the model a reliable procedure: extract the feature-based accuracy, compute the expected cost, and compare to 1. This procedure generalizes perfectly across datasets, cost framings, and to held-out domains.
+An ablation removing the feature signal confirms that the SFT model genuinely reads and uses it; without the signal, accuracy drops from 100\% to approximately 84\% as the model hallucinates accuracy estimates (Appendix~\ref{app:sft_ablation}). The contrast between DPO and SFT reveals why chain-of-thought supervision matters: DPO's single-token responses provide insufficient signal to learn the arithmetic relationship $R(1-p) > 1$ in rich scenario context, while SFT directly supervises a reasoning procedure that generalizes across datasets, cost framings, and held-out domains.
 
 
 % ======================================================================
@@ -446,6 +424,34 @@ Several limitations suggest directions for future work. Our evaluation is limite
 % - Qwen3.5-9B thinking accuracy tracks signals better than nothink
 % - Escalation collapses to near-zero without cost framing
 % - Isolated escalation results
+
+\section{DPO Results}
+\label{app:dpo}
+
+\paragraph{DPO on simplified prompts.} We first train Qwen3.5-9B with DPO on simplified prompts containing only the feature signal and cost ratio. The model achieves 95.7\% escalation accuracy across all cost ratios, and this performance transfers across datasets without additional training. DPO successfully learns the general decision rule when the feature signal is the only varying input.
+
+\paragraph{DPO on full scenario prompts.} We then train DPO on the complete multi-turn prompts, which include the full scenario description, the model's prediction, and the escalation decision. On the training dataset (HotelBookings), the model achieves perfect accuracy. However, DPO produces short responses (a single token) that provide insufficient gradient signal for the model to learn the arithmetic relationship between cost ratio and feature-based accuracy in the presence of rich scenario context. The model instead learns to associate specific scenario features with decisions, resulting in strong in-domain performance that does not reliably generalize.
+
+\section{SFT Signal Ablation}
+\label{app:sft_ablation}
+
+To verify that the SFT model relies on the feature signal rather than exploiting some other signal, we evaluate it on prompts that omit the signal entirely. Table~\ref{tab:sft_nosignal} reports the results.
+
+\begin{table}[h]
+    \centering
+    \caption{SFT model evaluated with and without the accuracy signal, on the original cost framing.}
+    \label{tab:sft_nosignal}
+    \begin{tabular}{lcc}
+        \toprule
+        Dataset & With signal & Without signal \\
+        \midrule
+        HotelBookings & 100\% & 84.7\% \\
+        LendingClub & 100\% & 84.0\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Without the signal, accuracy drops from 100\% to approximately 84\%. The model still follows the trained reasoning template, but it hallucinates an accuracy estimate (typically 75--85\%) rather than reading it from the prompt. The hallucinated rates are systematically optimistic, which produces correct decisions at extreme cost ratios (where the decision is insensitive to the exact accuracy) but incorrect decisions at $R = 4$ (where accuracy drops to 48--68\%). The model's arithmetic remains correct throughout; only the input is wrong. This confirms that the SFT model genuinely reads and uses the feature signal, and that the signal is the critical ingredient for perfect performance.
 
 \section{Proofs}
 \label{app:proofs}
