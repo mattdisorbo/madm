@@ -71,7 +71,7 @@ Consider a workflow in which a human delegates a binary task to an LLM-based age
         {\small\itshape Ground truth $y$}
     };
     % LLM Agent — single box with bullet points
-    \node[box, fill=yellow!10, draw=yellow!70!black, text width=3.4cm, inner sep=8pt, right=of human] (agent) {
+    \node[box, fill=yellow!10, draw=yellow!70!black, text width=3.8cm, inner sep=8pt, right=of human] (agent) {
         \textbf{\large LLM Agent}\\[6pt]
         {\small\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}\setlength{\topsep}{0pt}\setlength{\leftmargini}{12pt}
             \item Predicts $\hat{y}$
@@ -81,11 +81,13 @@ Consider a workflow in which a human delegates a binary task to an LLM-based age
     };
     % Implement
     \node[box, fill=green!10, draw=green!50!black, text width=1.8cm, inner sep=6pt, above right=0.4cm and 1.2cm of agent] (implement) {
-        \textbf{Implement}
+        \textbf{Implement}\\[2pt]
+        {\small $(1{-}p)\,c_w$}
     };
     % Escalate
     \node[box, fill=red!8, draw=red!50!black, text width=1.8cm, inner sep=6pt, below right=0.4cm and 1.2cm of agent] (escalate) {
-        \textbf{Escalate}
+        \textbf{Escalate}\\[2pt]
+        {\small $c_\ell$}
     };
     % Arrows
     \draw[arr] (human) -- node[above, font=\footnotesize, color=gray!60] {delegates} (agent);
