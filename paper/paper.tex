@@ -325,8 +325,9 @@ We evaluate Qwen3.5-9B under four conditions: baseline (signal, no thinking, no 
         \quad + thinking & 61.9\% & $-0.8$ \\
         \quad + thinking + cost framing & \textbf{77.4\%} & $+14.7$ \\
         \midrule
-        GPT-5-mini baseline & 73.7\% & --- \\
-        \quad + cost framing & \textbf{87.6\%} & $+13.9$ \\
+        GPT-5-mini baseline (no reasoning) & 64.7\% & --- \\
+        \quad + reasoning & 73.2\% & $+8.5$ \\
+        \quad + reasoning + cost framing & \textbf{87.1\%} & $+22.4$ \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -335,7 +336,7 @@ Table~\ref{tab:interventions} reveals a clear interaction effect. Cost framing a
 
 The combination of thinking and cost framing achieves 77.4\% accuracy, a substantial improvement over all other Qwen conditions. Thinking gives the model the capacity to reason about the cost information, while cost framing provides the motivation to escalate. Neither intervention is sufficient alone; they are complementary.
 
-GPT-5-mini, which uses built-in reasoning by default, achieves 87.6\% with cost framing alone. This is consistent with our interpretation: the model's native reasoning capabilities serve the same role as explicit thinking mode, enabling it to process cost information effectively. The lower sample count for GPT-5-mini with cost framing (3,360 vs.\ 7,550 at baseline) reflects higher API failure rates during that run rather than a methodological difference; accuracy is computed only over successfully completed samples.
+GPT-5-mini uses built-in reasoning by default. With reasoning disabled, it achieves only 64.7\%, comparable to the Qwen baseline. Enabling reasoning improves accuracy to 73.2\%, and adding cost framing reaches 87.1\%. This mirrors the Qwen pattern: reasoning provides the capacity to process cost information, and cost framing provides the motivation to escalate.
 
 \subsection{Fine-Tuning for Cost-Sensitive Escalation}
 
