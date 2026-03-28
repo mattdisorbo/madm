@@ -28,7 +28,7 @@
 \maketitle
 
 \begin{abstract}
-Effective automation hinges on deciding when to act and when to escalate. We model this as a decision under uncertainty: an LLM forms a prediction, estimates its probability of being correct, and compares the expected costs of acting and escalating. Using this framework across five domains—demand forecasting, content recommendation, content moderation, loan approval, and autonomous driving—and across multiple model families, we find marked differences in the implicit thresholds models use to trade off these costs. These thresholds vary substantially and are not predicted by architecture or scale, while self-estimates are typically overconfident. We then test interventions that target this decision process by varying cost ratios, providing explicit accuracy hints, and training models to follow the desired escalation rule. Prompting helps mainly for reasoning models, while DPO fails to recover the underlying decision rule on realistic scenarios. SFT on chain-of-thought targets yields the most robust policies, which generalize across datasets, cost ratios, prompt framings, and held-out domains. These results suggest that escalation behavior is a model-specific property that should be characterized before deployment, and that robust alignment benefits from training models to reason explicitly about uncertainty and decision costs.
+Effective automation hinges on deciding when to act and when to escalate. We model this as a decision under uncertainty: an LLM forms a prediction, estimates its probability of being correct, and compares the expected costs of acting and escalating. Using this framework across five domains—demand forecasting, content recommendation, content moderation, loan approval, and autonomous driving—and across multiple model families, we find marked differences in the implicit thresholds models use to trade off these costs. These thresholds vary substantially and are not predicted by architecture or scale, while self-estimates are miscalibrated in model-specific ways. We then test interventions that target this decision process by varying cost ratios, providing explicit accuracy hints, and training models to follow the desired escalation rule. Prompting helps mainly for reasoning models, while DPO fails to recover the underlying decision rule on realistic scenarios. SFT on chain-of-thought targets yields the most robust policies, which generalize across datasets, cost ratios, prompt framings, and held-out domains. These results suggest that escalation behavior is a model-specific property that should be characterized before deployment, and that robust alignment benefits from training models to reason explicitly about uncertainty and decision costs.
 \end{abstract}
 
 % ======================================================================
@@ -259,7 +259,7 @@ Figure~\ref{fig:esc_curves} presents escalation rate versus predictive accuracy 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.9\textwidth]{figures/esc_vs_acc_nothink_5models.png}
-    \caption{Escalation rate versus predictive accuracy for all five models across four datasets (with signals, no thinking). Each model exhibits a distinct escalation personality, varying in both overall escalation level and sensitivity to accuracy.}
+    \caption{Escalation rate versus predictive accuracy for all six models across four datasets (with signals, no thinking). Each model exhibits a distinct escalation personality, varying in both overall escalation level and sensitivity to accuracy. Error bars show $\pm 1$ standard error.}
     \label{fig:esc_curves}
 \end{figure}
 
@@ -285,14 +285,14 @@ When a model receives no signal, it escalates at a rate that reflects its defaul
 
 Figure~\ref{fig:pstar} (Appendix~\ref{app:pstar}) reports these values. Self-estimates range from 76\% (Llama~3.3~70B) to 94\% (Qwen3.5-9B), while actual average accuracy ranges from 75\% to 80\%. The direction of miscalibration varies by model: Qwen3.5-9B overestimates its accuracy on 92\% of conditions, while GPT-5-mini and Llama~3.3~70B are overconfident on fewer than half.
 
-Aggregate self-estimated accuracies mask substantial domain-level variation. GPT-5-mini provides a striking example. Its average self-estimated accuracy of 83\% nearly matches its actual accuracy of 80\%, but individual condition gaps range from $-39$ percentage points (LendingClub) to $+33$ points (HotelBookings). The standard deviation of the per-condition gap is 23 percentage points; the model is not calibrated but simply has offsetting biases. Qwen3.5-9B shows a more consistent pattern: it is overconfident on nearly every condition, with gaps ranging from $+3$ to $+37$ points.
+Aggregate self-estimated accuracies mask substantial domain-level variation. GPT-5-mini provides a striking example. Its average self-estimated accuracy of 83\% nearly matches its actual accuracy of 80\%, but individual condition gaps range from $-30$ percentage points (LendingClub) to $+27$ points (WikipediaToxicity). The standard deviation of the per-condition gap is 14 percentage points; the model is not calibrated but simply has offsetting biases. Qwen3.5-9B shows a more consistent pattern: it is overconfident on nearly every condition, with gaps ranging from $+3$ to $+37$ points.
 
 Figure~\ref{fig:overconfidence} presents the full picture across all models and conditions. The direction and magnitude of miscalibration vary by both model and dataset. Qwen3.5-9B is overconfident across the board, while Llama~3.3~70B and GPT-5-nano tend toward underconfidence, estimating their accuracy below their actual performance. Within the same family, scaling up can shift calibration in either direction.
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.9\textwidth]{figures/overconfidence_by_condition.png}
-    \caption{Actual accuracy versus self-estimated accuracy for each model across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). Across 224 model $\times$ condition pairs, 140 (63\%) are overconfident. The direction of miscalibration varies by model: some are predominantly overconfident, others underconfident.}
+    \caption{Actual accuracy versus self-estimated accuracy for each model across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). Across 224 model $\times$ condition pairs, 140 (62\%) are overconfident. The direction of miscalibration varies by model: some are predominantly overconfident, others underconfident.}
     \label{fig:overconfidence}
 \end{figure}
 
@@ -313,16 +313,16 @@ We evaluate Qwen3.5-9B under four conditions: baseline (signal, no thinking, no 
 
 \begin{table}[t]
     \centering
-    \caption{Sample-level escalation accuracy under different interventions, evaluated against the optimal policy for cost ratio $R = 4$ ($\tau^* = 80\%$, $c_w = 4 c_\ell$). For each sample, the correct action is to escalate if the condition's predictive accuracy is below 75\% and implement if above. GPT-5-mini excludes MoralMachine and MovieLens due to content filter restrictions; its cost-framing run has fewer samples due to higher API failure rates.}
+    \caption{Sample-level escalation accuracy under different interventions, evaluated against the optimal policy for cost ratio $R = 4$ ($\tau^* = 80\%$, $c_w = 4 c_\ell$). For each sample, the correct action is to escalate if the condition's predictive accuracy is below 75\% and implement if above. MoralMachine is excluded from all rows. GPT-5-mini further excludes MovieLens due to content filter restrictions.}
     \label{tab:interventions}
     \begin{tabular}{lcc}
         \toprule
         Intervention & Accuracy & $\Delta$ \\
         \midrule
-        Qwen 9B baseline & 62.7\% & --- \\
-        \quad + cost framing & 62.4\% & $-0.3$ \\
-        \quad + thinking & 61.9\% & $-0.8$ \\
-        \quad + thinking + cost framing & \textbf{77.4\%} & $+14.7$ \\
+        Qwen 9B baseline & 62.0\% & --- \\
+        \quad + cost framing & 63.9\% & $+1.9$ \\
+        \quad + thinking & 61.9\% & $-0.1$ \\
+        \quad + thinking + cost framing & \textbf{78.8\%} & $+16.8$ \\
         \midrule
         GPT-5-mini baseline (no reasoning) & 64.7\% & --- \\
         \quad + cost framing & 75.8\% & $+11.1$ \\
@@ -332,9 +332,9 @@ We evaluate Qwen3.5-9B under four conditions: baseline (signal, no thinking, no 
     \end{tabular}
 \end{table}
 
-Table~\ref{tab:interventions} reveals a clear interaction effect. Cost framing alone does not improve sample-level decision accuracy for Qwen3.5-9B (62.4\% vs.\ 62.7\% baseline), and the model appears to ignore the cost information entirely. Thinking alone performs similarly (61.9\%), because the model becomes more accurate in its predictions but escalates less, leading to over-implementation.
+Table~\ref{tab:interventions} reveals a clear interaction effect. Cost framing alone barely improves sample-level decision accuracy for Qwen3.5-9B (63.9\% vs.\ 62.0\% baseline). Thinking alone performs similarly (61.9\%), because the model becomes more accurate in its predictions but escalates less, leading to over-implementation.
 
-The combination of thinking and cost framing achieves 77.4\% accuracy, a substantial improvement over all other Qwen conditions. Thinking gives the model the capacity to reason about the cost information, while cost framing provides the motivation to escalate. Neither intervention is sufficient alone; they are complementary.
+The combination of thinking and cost framing achieves 78.8\% accuracy, a substantial improvement over all other Qwen conditions. Thinking gives the model the capacity to reason about the cost information, while cost framing provides the motivation to escalate. Neither intervention is sufficient alone; they are complementary.
 
 GPT-5-mini uses built-in reasoning by default. With reasoning disabled, it achieves 64.7\%, comparable to the Qwen baseline. Unlike Qwen, cost framing alone improves GPT-5-mini to 75.8\% even without explicit reasoning, suggesting that the model retains some capacity to process cost information at the ``minimal'' reasoning level. Enabling full reasoning reaches 73.2\%, and the combination of reasoning and cost framing achieves 87.1\%.
 
@@ -464,7 +464,7 @@ Under perfect calibration, the agent escalates when $p < \tau^*$ and implements 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{figures/pstar_ahat_bars.png}
-    \caption{Implicit escalation threshold $p^*$ (left) and self-estimated accuracy $\hat{a}$ (right) for each model. The threshold $p^*$ varies widely (56\% to 92\%), while self-estimated accuracy clusters in a narrow range (79\% to 94\%). The dotted lines show the optimal threshold at cost ratio $R = 4$ (left) and average actual accuracy (right).}
+    \caption{Implicit escalation threshold $p^*$ (left) and self-estimated accuracy $\hat{a}$ (right) for each model. The threshold $p^*$ varies widely (56\% to 100\%), while self-estimated accuracy ranges from 76\% to 94\%. The dotted lines show the optimal threshold at cost ratio $R = 4$ (left) and average actual accuracy (right).}
     \label{fig:pstar}
 \end{figure}
 
