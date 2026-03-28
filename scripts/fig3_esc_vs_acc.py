@@ -12,11 +12,10 @@ OUT_PATH = '/Users/mdisorbo/madm/paper/figures/esc_vs_acc_nothink_5models.png'
 
 MODELS = [
     ('Qwen3.5-9B', 'Qwen3.5-9B'),
-    ('Qwen3.5-397B', 'Qwen3.5-397B-A17B'),
-    ('Qwen3-Next-3B', 'Qwen3-Next-80B-A3B-Instruct'),
-    ('Llama4-Maverick', 'Llama-4-Maverick-17B-128E-Instruct-FP8'),
-    ('GPT-5-mini', 'gpt-5-mini'),
     ('GPT-5-nano', 'gpt-5-nano'),
+    ('Llama4-Maverick', 'Llama-4-Maverick-17B-128E-Instruct-FP8'),
+    ('Qwen3.5-397B', 'Qwen3.5-397B-A17B'),
+    ('GPT-5-mini', 'gpt-5-mini'),
     ('Llama3.3-70B', 'Llama-3.3-70B-Instruct-Turbo'),
 ]
 
@@ -38,7 +37,7 @@ MODEL_DATASETS = {
     'Llama-3.3-70B-Instruct-Turbo': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
 }
 
-fig, axes = plt.subplots(2, 4, figsize=(16, 8))
+fig, axes = plt.subplots(2, 3, figsize=(12, 8))
 axes_flat = axes.flatten()
 
 # Collect global ranges
@@ -89,8 +88,6 @@ for i, (short_name, tag) in enumerate(MODELS):
     if i == 0:
         ax.legend(fontsize=8, loc='best')
 
-# Hide the 8th panel
-axes_flat[7].set_visible(False)
 
 plt.tight_layout()
 fig.savefig(OUT_PATH, dpi=300, bbox_inches='tight')
