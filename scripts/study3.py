@@ -13,6 +13,7 @@ N_PER_CONDITION = int(os.environ.get("N_PER_CONDITION", "250"))
 WORKERS = int(os.environ.get("WORKERS", "20"))
 THINKING = os.environ.get("THINKING", "0") == "1"
 NOHINT = os.environ.get("NOHINT", "0") == "1"
+NOREASONING = os.environ.get("NOREASONING", "0") == "1"  # Disable built-in reasoning (OpenAI)
 COST_RATIO = os.environ.get("COST_RATIO", "")  # e.g. "4" means c_w/c_e = 4
 OUTPUT_DIR = "results/study3"
 
@@ -61,7 +62,12 @@ def llm(messages, max_tokens=256):
         return text, thinking
 
     if PROVIDER == "openai":
-        kwargs = dict(model=MODEL, messages=messages, max_completion_tokens=max_tokens)
+        # OpenAI reasoning models need more tokens (reasoning tokens count toward limit)
+        openai_max = max(max_tokens, 2048)
+        kwargs = dict(model=MODEL, messages=messages, max_completion_tokens=openai_max)
+        # Minimize built-in reasoning for OpenAI models
+        if NOREASONING:
+            kwargs["reasoning_effort"] = "minimal"
     else:
         kwargs = dict(model=MODEL, messages=messages, max_tokens=max_tokens)
     # Disable thinking for Qwen3.5 models on Together when THINKING is off
@@ -768,8 +774,9 @@ if __name__ == "__main__":
 
         cost_tag = f"_cost{COST_RATIO}" if COST_RATIO else ""
         think_tag = "_think" if THINKING else "_nothink"
+        reason_tag = "_noreason" if NOREASONING else ""
         hint_tag = "_nohint" if NOHINT else ""
-        out_path = f"{OUTPUT_DIR}/{DATASET}_{name}{cost_tag}{think_tag}{hint_tag}_{model_short}.csv"
+        out_path = f"{OUTPUT_DIR}/{DATASET}_{name}{cost_tag}{think_tag}{reason_tag}{hint_tag}_{model_short}.csv"
         existing_prompts = set()
         existing_df = None
         if os.path.exists(out_path):
@@ -859,8 +866,9 @@ if __name__ == "__main__":
     summary = pd.DataFrame(summary_rows)
     cost_tag = f"_cost{COST_RATIO}" if COST_RATIO else ""
     think_tag = "_think" if THINKING else "_nothink"
+    reason_tag = "_noreason" if NOREASONING else ""
     hint_tag = "_nohint" if NOHINT else ""
-    summary.to_csv(f"{OUTPUT_DIR}/{DATASET}_summary{cost_tag}{think_tag}{hint_tag}_{model_short}.csv", index=False)
+    summary.to_csv(f"{OUTPUT_DIR}/{DATASET}_summary{cost_tag}{think_tag}{reason_tag}{hint_tag}_{model_short}.csv", index=False)
     print(f"\n\n{'='*60}")
     print("SUMMARY")
     print(f"{'='*60}")
