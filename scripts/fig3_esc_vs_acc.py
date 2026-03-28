@@ -1,6 +1,7 @@
 """Figure 3: Escalation rate vs predictive accuracy, 7 models."""
 
 import os
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib
@@ -78,7 +79,8 @@ for i, (short_name, tag) in enumerate(MODELS):
         if sub.empty:
             continue
         label = ds if i == 0 else None
-        ax.scatter(sub['pred_acc'], sub['esc_rate'], c=color, s=30, alpha=0.7, label=label, edgecolors='none')
+        se = np.sqrt(sub['esc_rate'] * (1 - sub['esc_rate']) / sub['n'])
+        ax.errorbar(sub['pred_acc'], sub['esc_rate'], yerr=se, fmt='o', c=color, ms=5, alpha=0.7, label=label, elinewidth=0.8, capsize=0)
     ax.set_xlim(xmin, xmax)
     ax.set_ylim(ymin, ymax)
     ax.set_title(short_name, fontsize=12)
