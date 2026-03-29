@@ -14,10 +14,10 @@ OUT_PATH = '/Users/mdisorbo/madm/paper/figures/overconfidence_by_condition.png'
 MODELS = [
     ('Qwen3.5-9B', 'Qwen3.5-9B'),
     ('GPT-5-nano', 'gpt-5-nano'),
-    ('Llama4-Maverick', 'Llama-4-Maverick-17B-128E-Instruct-FP8'),
+    ('Mixtral-8x7B', 'Mixtral-8x7B-Instruct-v0.1'),
     ('Qwen3.5-397B', 'Qwen3.5-397B-A17B'),
     ('GPT-5-mini', 'gpt-5-mini'),
-    ('Llama3.3-70B', 'Llama-3.3-70B-Instruct-Turbo'),
+    ('Mistral-Small-24B', 'Mistral-Small-24B-Instruct-2501'),
 ]
 
 DATASETS = {
@@ -35,7 +35,8 @@ MODEL_DATASETS = {
     'Llama-4-Maverick-17B-128E-Instruct-FP8': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
     'gpt-5-mini': ['HotelBookings', 'LendingClub', 'WikipediaToxicity'],
     'gpt-5-nano': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-    'Llama-3.3-70B-Instruct-Turbo': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
+    'Mixtral-8x7B-Instruct-v0.1': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
+    'Mistral-Small-24B-Instruct-2501': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
 }
 
 fig, axes = plt.subplots(2, 3, figsize=(12, 8))
