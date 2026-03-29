@@ -17,13 +17,19 @@ NOREASONING = os.environ.get("NOREASONING", "0") == "1"  # Disable built-in reas
 COST_RATIO = os.environ.get("COST_RATIO", "")  # e.g. "4" means c_w/c_e = 4
 OUTPUT_DIR = "results/study3"
 
+QUANTIZE_4BIT = os.environ.get("QUANTIZE_4BIT", "0") == "1"
+
 if PROVIDER == "local":
     from transformers import AutoModelForCausalLM, AutoTokenizer
     import torch
     _tokenizer = AutoTokenizer.from_pretrained(MODEL)
-    _model = AutoModelForCausalLM.from_pretrained(
-        MODEL, torch_dtype=torch.float16, device_map="auto",
-    )
+    load_kwargs = dict(torch_dtype=torch.float16, device_map="auto")
+    if QUANTIZE_4BIT:
+        from transformers import BitsAndBytesConfig
+        load_kwargs["quantization_config"] = BitsAndBytesConfig(
+            load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16,
+        )
+    _model = AutoModelForCausalLM.from_pretrained(MODEL, **load_kwargs)
     client = None
 elif PROVIDER == "openai":
     client = openai.OpenAI(api_key=os.environ["OPENAI_API_KEY"])

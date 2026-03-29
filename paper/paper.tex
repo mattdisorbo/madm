@@ -40,7 +40,7 @@ LLM-based agents are increasingly deployed to automate consequential decisions. 
 
 Agent escalation behavior is fundamental to responsible automation. An agent that fails to escalate when it is uncertain, or incorrect, will implement wrong decisions at scale \citep{bai2024measuring_faithfulness}, while an agent that always escalates defeats the purpose of automation. Two parameters govern responsible escalation. First, the agent must have a calibrated sense of its own accuracy: it should recognize when its predictions are likely wrong (correct), and thus escalation is more (less) appropriate. Second, the agent must apply a consistent decision threshold — the predictive accuracy at which the agent is indifferent to escalating vs. implementing — that reflects the relative costs of implementing an error vs. human labor in a specific situation.
 
-We study escalation behavior across six models spanning three model families and a range of model sizes: Qwen3.5-9B, Qwen3.5-397B-A17B, GPT-5-nano, GPT-5-mini, Mixtral~8x7B, and Mistral~Small~24B. We evaluate these models on five decision-making tasks: demand forecasting, loan approval, content moderation, content recommendation and moral dilemmas (featured in the Appendix). Ultimately, we find that LLMs do not satisfy either condition for reliable escalation.
+We study escalation behavior across eight models spanning four model families, each represented by a smaller and larger variant: Qwen3.5-9B and Qwen3.5-397B-A17B, GPT-5-nano and GPT-5-mini, Llama~4~Maverick and Llama~3.3~70B, and Mixtral~8x7B and Mistral~Small~24B. We evaluate these models on five decision-making tasks: demand forecasting, loan approval, content moderation, content recommendation and moral dilemmas (featured in the Appendix). Ultimately, we find that LLMs do not satisfy either condition for reliable escalation.
 
 First, LLMs are miscalibrated in their self-assessment: some models systematically overestimate their accuracy while others underestimate it, and the direction of miscalibration varies by model and domain. Prior work has documented LLM overconfidence in factual knowledge \citep{kadavath2022language} and calibration failures in question answering \citep{xiong2024can}, but these studies measure confidence in isolation. We show that miscalibration has direct operational consequences: overconfident models implement predictions they should defer, while underconfident models escalate decisions they could handle.
 
@@ -166,14 +166,12 @@ Each condition is accompanied by a \emph{signal}: a natural-language description
 
 \subsection{Models}
 
-We evaluate six models spanning three families, each with a smaller and larger variant:
+We evaluate eight models spanning four families, each with a smaller and larger variant:
 \begin{itemize}
-    \item \textbf{Qwen3.5-9B}: Dense model with controllable thinking mode \citep{qwen3}.
-    \item \textbf{Qwen3.5-397B-A17B}: Sparse MoE model from the same family.
-    \item \textbf{GPT-5-nano}: Closed-source reasoning model from OpenAI (smallest).
-    \item \textbf{GPT-5-mini}: Closed-source reasoning model from OpenAI (larger).
-    \item \textbf{Mixtral~8x7B}: Sparse MoE model from Mistral (12B active / 8 experts).
-    \item \textbf{Mistral~Small~24B}: Dense model from the same family.
+    \item \textbf{Qwen3.5-9B / Qwen3.5-397B-A17B}: Dense and sparse MoE models from the Qwen3.5 family \citep{qwen3}.
+    \item \textbf{GPT-5-nano / GPT-5-mini}: Closed-source reasoning models from OpenAI.
+    \item \textbf{Llama~4~Maverick / Llama~3.3~70B}: MoE (17B active / 128 experts) and dense models from Meta.
+    \item \textbf{Mixtral~8x7B / Mistral~Small~24B}: Sparse MoE (12B active / 8 experts) and dense models from Mistral.
 \end{itemize}
 GPT-5-mini excludes MovieLens and MoralMachine due to content filter restrictions. GPT-5-nano excludes MoralMachine for the same reason. All other models are evaluated on all five datasets.
 
@@ -259,7 +257,7 @@ Figure~\ref{fig:esc_curves} presents escalation rate versus predictive accuracy 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.9\textwidth]{figures/esc_vs_acc_nothink_5models.png}
-    \caption{Escalation rate versus predictive accuracy for all six models across four datasets (with signals, no thinking). Each model exhibits a distinct escalation personality, varying in both overall escalation level and sensitivity to accuracy. Error bars show $\pm 1$ standard error.}
+    \caption{Escalation rate versus predictive accuracy for all eight models across four datasets (with signals, no thinking). Same-family models are vertically aligned. Each model exhibits a distinct escalation personality, varying in both overall escalation level and sensitivity to accuracy. Error bars show $\pm 1$ standard error.}
     \label{fig:esc_curves}
 \end{figure}
 
@@ -267,7 +265,7 @@ First, every model exhibits a generally negative relationship between predictive
 
 To summarize each model's escalation behavior with a single number, we fit a linear regression to the (accuracy, escalation rate) pairs across all conditions and datasets, then solve for the accuracy level at which the fitted escalation rate equals 50\%. We call this the model's \emph{implicit threshold} $p^*$.
 
-Figure~\ref{fig:pstar} (Appendix~\ref{app:pstar}) summarizes these values and reveals striking variation. Qwen3.5-9B and GPT-5-mini have low thresholds ($p^* \approx 58\%$), meaning they prefer to implement even at low accuracy levels. GPT-5-nano and Mixtral~8x7B have high thresholds ($p^* > 91\%$), preferring to escalate even when quite accurate. This variation persists within the same model family: Qwen3.5-9B ($p^* = 56\%$) and Qwen3.5-397B ($p^* = 81\%$) differ by 25 percentage points despite sharing the same training pipeline. GPT-5-nano ($p^* = 91\%$) and GPT-5-mini ($p^* = 60\%$) differ by 31 points within the same closed-source family. Mixtral~8x7B ($p^* > 100\%$, meaning it never reaches 50\% escalation) and Mistral~Small~24B ($p^* = 85\%$) show the same pattern within the Mistral family.
+Figure~\ref{fig:pstar} (Appendix~\ref{app:pstar}) summarizes these values and reveals striking variation. Qwen3.5-9B and GPT-5-mini have low thresholds ($p^* \approx 58\%$), meaning they prefer to implement even at low accuracy levels. GPT-5-nano, Llama~4~Maverick, Llama~3.3~70B, and Mixtral~8x7B have high thresholds ($p^* > 91\%$), preferring to escalate even when quite accurate. This variation persists within every model family we test. Qwen3.5-9B ($p^* = 56\%$) and Qwen3.5-397B ($p^* = 81\%$) differ by 25 percentage points. GPT-5-nano ($p^* = 91\%$) and GPT-5-mini ($p^* = 60\%$) differ by 31 points. Llama~4~Maverick ($p^* = 92\%$) and Llama~3.3~70B ($p^* > 100\%$) both escalate aggressively but at different rates. Mixtral~8x7B ($p^* > 100\%$) and Mistral~Small~24B ($p^* = 85\%$) show a 30+ point gap within the Mistral family.
 
 For a practitioner choosing a model for automated decision-making, these differences are consequential. A model with $p^* = 56\%$ will implement aggressively, accepting frequent errors in exchange for fewer escalations. A model with $p^* = 91\%$ will escalate most decisions, providing safety at the expense of automation. Neither behavior is inherently correct; the optimal threshold depends on the cost ratio $R$. These thresholds are hidden, model-specific properties that cannot be determined without empirical characterization.
 
@@ -283,21 +281,21 @@ The no-signal condition, in which the model receives no information about task d
 
 When a model receives no signal, it escalates at a rate that reflects its default confidence level. We map this escalation rate onto the model's signal-based escalation curve (from Section~\ref{sec:results1}) to find the accuracy level that would produce the same escalation rate in the signal condition. This mapping yields the model's \emph{self-estimated accuracy} $\hat{a}$.
 
-Figure~\ref{fig:pstar} (Appendix~\ref{app:pstar}) reports these values. Self-estimates range from 79\% (Qwen3.5-397B) to 97\% (Mixtral~8x7B), while actual average accuracy ranges from 75\% to 80\%. The direction of miscalibration varies by model: Qwen3.5-9B overestimates its accuracy on 92\% of conditions, while GPT-5-mini is overconfident on fewer than half.
+Figure~\ref{fig:pstar} (Appendix~\ref{app:pstar}) reports these values. Self-estimates range from 76\% (Llama~3.3~70B) to 97\% (Mixtral~8x7B), while actual average accuracy ranges from 75\% to 80\%. The direction of miscalibration varies by model: Qwen3.5-9B overestimates its accuracy on 92\% of conditions, while Llama~3.3~70B and GPT-5-mini are overconfident on fewer than half.
 
 Aggregate self-estimated accuracies mask substantial domain-level variation. GPT-5-mini provides a striking example. Its average self-estimated accuracy of 83\% nearly matches its actual accuracy of 80\%, but individual condition gaps range from $-30$ percentage points (LendingClub) to $+27$ points (WikipediaToxicity). The standard deviation of the per-condition gap is 14 percentage points; the model is not calibrated but simply has offsetting biases. Qwen3.5-9B shows a more consistent pattern: it is overconfident on nearly every condition, with gaps ranging from $+3$ to $+37$ points.
 
-Figure~\ref{fig:overconfidence} presents the full picture across all models and conditions. The direction and magnitude of miscalibration vary by both model and dataset. Qwen3.5-9B, Mixtral~8x7B, and Mistral~Small~24B are overconfident on 75--92\% of conditions, while GPT-5-mini is overconfident on fewer than half. Within the same family, scaling up can shift calibration in either direction.
+Figure~\ref{fig:overconfidence} presents the full picture across all models and conditions. The direction and magnitude of miscalibration vary by both model and dataset. Qwen3.5-9B, Mixtral~8x7B, Mistral~Small~24B, and Llama~4~Maverick are overconfident on 75--92\% of conditions, while Llama~3.3~70B and GPT-5-mini are overconfident on fewer than half. Within the same family, scaling up can shift calibration in either direction.
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.9\textwidth]{figures/overconfidence_by_condition.png}
-    \caption{Actual accuracy versus self-estimated accuracy for each model across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). Across 224 model $\times$ condition pairs, 153 (68\%) are overconfident. The direction of miscalibration varies by model: some are predominantly overconfident, others underconfident.}
+    \caption{Actual accuracy versus self-estimated accuracy for each model across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). Across 304 model $\times$ condition pairs, 202 (66\%) are overconfident. The direction of miscalibration varies by model: some are predominantly overconfident, others underconfident.}
     \label{fig:overconfidence}
 \end{figure}
 
 
-Self-estimated accuracy spans a wide range (79\% to 97\%), as does the implicit threshold $p^*$ (56\% to over 100\%). These two dimensions of the escalation personality are largely independent: a model can be overconfident yet cautious (Mixtral~8x7B), or relatively well-calibrated yet aggressive (GPT-5-mini). Practitioners must characterize both dimensions before deployment.
+Self-estimated accuracy spans a wide range (76\% to 97\%), as does the implicit threshold $p^*$ (56\% to over 100\%). These two dimensions of the escalation personality are largely independent: a model can be overconfident yet cautious (Mixtral~8x7B), or relatively well-calibrated yet aggressive (GPT-5-mini). Practitioners must characterize both dimensions before deployment.
 
 
 % ======================================================================
@@ -464,7 +462,7 @@ Under perfect calibration, the agent escalates when $p < \tau^*$ and implements 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{figures/pstar_ahat_bars.png}
-    \caption{Implicit escalation threshold $p^*$ (left) and self-estimated accuracy $\hat{a}$ (right) for each model. The threshold $p^*$ varies widely (56\% to over 100\%), while self-estimated accuracy ranges from 79\% to 97\%. The dotted lines show the optimal threshold at cost ratio $R = 4$ (left) and average actual accuracy (right).}
+    \caption{Implicit escalation threshold $p^*$ (left) and self-estimated accuracy $\hat{a}$ (right) for each model. The threshold $p^*$ varies widely (56\% to over 100\%), while self-estimated accuracy ranges from 76\% to 97\%. The dotted lines show the optimal threshold at cost ratio $R = 4$ (left) and average actual accuracy (right).}
     \label{fig:pstar}
 \end{figure}
 
