@@ -443,7 +443,7 @@ The agent should escalate when $c_\ell < (1-p) \, c_w$, i.e., when $p < 1 - c_\e
 \end{proof}
 
 \begin{proof}[Proof of Theorem~\ref{thm:calibration}]
-The agent escalates when $\hat{p} = p + \varepsilon < \tau^*$, i.e., when $p < \tau^* - \varepsilon$. In expectation, this is equivalent to applying threshold $\tau^* - \mu$. When $\mu > 0$ (overconfidence), the effective threshold is lower than optimal, causing the agent to implement predictions it should defer. When $\mu < 0$ (underconfidence), the effective threshold is higher, causing unnecessary escalation. In either case, $\tau^* - \mu \neq \tau^*$, and by Theorem~\ref{thm:threshold} the expected cost is strictly higher than under the optimal threshold.
+The agent escalates when $\hat{p} = p + \varepsilon < \tau^*$, i.e., when $p < \tau^* - \varepsilon$. In expectation, this is equivalent to applying threshold $\tau^* - \mu$. By Theorem~\ref{thm:threshold}, $\tau^*$ uniquely minimizes expected cost, so any shift $|\mu| > 0$ increases it. Since the deviation of the effective threshold from $\tau^*$ grows with $|\mu|$, expected cost is increasing in $|\mu|$.
 \end{proof}
 
 \section{SFT Results}
