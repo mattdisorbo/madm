@@ -28,19 +28,8 @@ DATASETS = {
     'MovieLens': 'purple',
 }
 
-# Which datasets each model has (hint data)
-MODEL_DATASETS = {
-    'Qwen3.5-9B': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-    'Qwen3.5-397B-A17B': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-    'Qwen3-Next-80B-A3B-Instruct': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-    'Llama-4-Maverick-17B-128E-Instruct-FP8': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-    'gpt-5-mini': ['HotelBookings', 'LendingClub', 'WikipediaToxicity'],
-    'gpt-5-nano': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-    'Llama-4-Maverick-17B-128E-Instruct-FP8': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-    'Llama-3.3-70B-Instruct-Turbo': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-    'Mixtral-8x7B-Instruct-v0.1': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-    'Mistral-Small-24B-Instruct-2501': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-}
+# Auto-detect available datasets per model (excluding MoralMachine for main figures)
+ALL_DATASETS = ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens']
 
 fig, axes = plt.subplots(2, 4, figsize=(16, 8))
 axes_flat = axes.flatten()
@@ -52,7 +41,7 @@ all_acc, all_esc = [], []
 model_data = {}
 for short_name, tag in MODELS:
     frames = []
-    for ds in MODEL_DATASETS[tag]:
+    for ds in ALL_DATASETS:
         fpath = os.path.join(DATA_DIR, f'{ds}_summary_nothink_{tag}.csv')
         if os.path.exists(fpath):
             try:

@@ -29,19 +29,7 @@ DATASETS = {
     'MovieLens': 'purple',
 }
 
-# Datasets available for BOTH hint and nohint per model
-MODEL_DATASETS = {
-    'Qwen3.5-9B': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-    'Qwen3.5-397B-A17B': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-    'Qwen3-Next-80B-A3B-Instruct': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-    'Llama-4-Maverick-17B-128E-Instruct-FP8': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-    'gpt-5-mini': ['HotelBookings', 'LendingClub', 'WikipediaToxicity'],
-    'gpt-5-nano': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-    'Llama-4-Maverick-17B-128E-Instruct-FP8': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-    'Llama-3.3-70B-Instruct-Turbo': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-    'Mixtral-8x7B-Instruct-v0.1': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-    'Mistral-Small-24B-Instruct-2501': ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens'],
-}
+ALL_DATASETS = ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens']
 
 fig, axes = plt.subplots(2, 4, figsize=(16, 8))
 axes_flat = axes.flatten()
@@ -54,7 +42,7 @@ model_results = {}
 for short_name, tag in MODELS:
     # Load all hint data for this model
     hint_frames = []
-    for ds in MODEL_DATASETS[tag]:
+    for ds in ALL_DATASETS:
         fpath = os.path.join(DATA_DIR, f'{ds}_summary_nothink_{tag}.csv')
         if os.path.exists(fpath):
             try:
@@ -78,7 +66,7 @@ for short_name, tag in MODELS:
 
     # For each dataset, load nohint data and compute self-estimated accuracy
     results = []
-    for ds in MODEL_DATASETS[tag]:
+    for ds in ALL_DATASETS:
         nohint_path = os.path.join(DATA_DIR, f'{ds}_summary_nothink_nohint_{tag}.csv')
         hint_path = os.path.join(DATA_DIR, f'{ds}_summary_nothink_{tag}.csv')
         if not os.path.exists(nohint_path) or not os.path.exists(hint_path):
