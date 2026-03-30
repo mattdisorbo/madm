@@ -124,12 +124,12 @@ Let the agent escalate whenever $\hat{p} < \tau$ for some threshold $\tau \in [0
 
 \begin{theorem}[Cost of miscalibration]
 \label{thm:calibration}
-Let the agent use the optimal threshold $\tau^*$ but have miscalibrated probability estimates $\hat{p} = p + \varepsilon$, where $\varepsilon$ is a mean-zero calibration error independent of $p$. Then expected cost is increasing in $\mathrm{Var}(\varepsilon)$.
+Let the agent use the optimal threshold $\tau^*$ but have miscalibrated probability estimates $\hat{p} = p + \varepsilon$, where $\varepsilon$ has mean $\mu$. The agent effectively applies threshold $\tau^* - \mu$, and by Theorem~\ref{thm:threshold}, any $\mu \neq 0$ increases expected cost.
 \end{theorem}
 
 All proofs are in Appendix~\ref{app:proofs}.
 
-Theorem~\ref{thm:threshold} establishes that practitioners cannot avoid characterizing their model's threshold: any deviation from $\tau^*$ creates avoidable cost. Theorem~\ref{thm:calibration} shows that even with the correct threshold, miscalibration increases cost in proportion to its variance. A model that is ``calibrated on average'' (mean-zero $\varepsilon$) but highly variable across conditions still incurs substantial excess cost. Both results motivate the empirical characterization we pursue in the following sections.
+Theorem~\ref{thm:threshold} establishes that practitioners cannot avoid characterizing their model's threshold: any deviation from $\tau^*$ creates avoidable cost. Theorem~\ref{thm:calibration} shows that systematic miscalibration shifts the effective threshold away from $\tau^*$, with overconfident models implementing too aggressively and underconfident models escalating too often. Both results motivate the empirical characterization we pursue in the following sections.
 
 \subsection{Two Sources of Miscalibration}
 
@@ -443,7 +443,7 @@ The agent should escalate when $c_\ell < (1-p) \, c_w$, i.e., when $p < 1 - c_\e
 \end{proof}
 
 \begin{proof}[Proof of Theorem~\ref{thm:calibration}]
-Under perfect calibration, the agent escalates when $p < \tau^*$ and implements otherwise. Under miscalibration, the agent escalates when $p + \varepsilon < \tau^*$, i.e., when $p < \tau^* - \varepsilon$. The excess cost comes from two types of errors. When $\varepsilon > 0$ (overconfidence), some instances with $p \in [\tau^* - \varepsilon, \tau^*)$ are incorrectly implemented, each incurring excess cost $(1-p) c_w - c_\ell > 0$. When $\varepsilon < 0$ (underconfidence), some instances with $p \in [\tau^*, \tau^* - \varepsilon)$ are incorrectly escalated, each incurring excess cost $c_\ell - (1-p) c_w > 0$. In both cases the excess cost per instance is approximately $c_w |\varepsilon|$ for small $|\varepsilon|$, since $p \approx \tau^*$ in the affected region. The expected number of affected instances is $f(\tau^*) \, \mathbb{E}[|\varepsilon|]$, and $\mathbb{E}[|\varepsilon|] \leq \sqrt{\mathrm{Var}(\varepsilon)}$ by Jensen's inequality. A second-order expansion yields the stated result: the excess cost scales linearly with $\mathrm{Var}(\varepsilon)$ through the density of $p$ at the decision boundary.
+The agent escalates when $\hat{p} = p + \varepsilon < \tau^*$, i.e., when $p < \tau^* - \varepsilon$. In expectation, this is equivalent to applying threshold $\tau^* - \mu$. When $\mu > 0$ (overconfidence), the effective threshold is lower than optimal, causing the agent to implement predictions it should defer. When $\mu < 0$ (underconfidence), the effective threshold is higher, causing unnecessary escalation. In either case, $\tau^* - \mu \neq \tau^*$, and by Theorem~\ref{thm:threshold} the expected cost is strictly higher than under the optimal threshold.
 \end{proof}
 
 \section{SFT Results}
