@@ -268,7 +268,7 @@ gpt_mini_ahat <- ahat_results %>% filter(display == "GPT-5-mini") %>% pull(ahat)
 gpt_mini_actual <- ahat_results %>% filter(display == "GPT-5-mini") %>% pull(actual_avg)
 
 check("GPT-5-mini avg self-estimated accuracy (paper: 80%)", 0.80, gpt_mini_ahat, tol = 0.02)
-check("GPT-5-mini avg actual accuracy (paper: 80%)", 0.80, gpt_mini_actual, tol = 0.02)
+check("GPT-5-mini avg actual accuracy (paper: 78%)", 0.78, gpt_mini_actual, tol = 0.01)
 
 # Per-condition gap range: -30 to +27 pp
 gpt_mini_overconf <- overconf_data %>%
@@ -281,7 +281,7 @@ gap_sd <- sd(gpt_mini_overconf$gap_pp)
 
 check("GPT-5-mini per-condition gap min (paper: -38 pp)", -38, gap_min, tol = 2)
 check("GPT-5-mini per-condition gap max (paper: +27 pp)", 27, gap_max, tol = 2)
-check("GPT-5-mini gap SD (paper: 17 pp)", 17, gap_sd, tol = 2)
+# SD removed from paper text
 
 # Paper: "LendingClub" has -30pp, "WikipediaToxicity" has +27pp
 gpt_lc <- gpt_mini_overconf %>% filter(dataset == "LendingClub")
