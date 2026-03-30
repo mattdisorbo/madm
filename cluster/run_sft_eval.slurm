@@ -12,6 +12,7 @@ source .venv/bin/activate
 export PYTHONUNBUFFERED=1
 export HF_HOME=/work1/harangju/harang/.cache/huggingface
 export HF_HUB_OFFLINE=1
+export TOGETHER_API_KEY=unused
 export UV_CACHE_DIR=/work1/harangju/harang/.cache/uv
 export PIP_CACHE_DIR=/work1/harangju/harang/.cache/pip
 export TMPDIR=/work1/harangju/harang/.cache/tmp
