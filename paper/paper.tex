@@ -304,7 +304,7 @@ We now test whether the escalation threshold can be aligned with a target cost r
 
 \subsection{Prompting Interventions}
 
-We evaluate Qwen3.5-9B under four conditions: baseline (signal, no thinking, no cost framing), cost framing alone, thinking alone, and thinking with cost framing. We measure the fraction of conditions on which the model makes the correct condition-level decision for a cost ratio of $R = 4$ (optimal threshold $\tau^* = 75\%$): escalate when predictive accuracy is below 75\% and implement when above.
+We evaluate Qwen3.5-9B under four conditions: baseline (signal, no thinking, no cost framing), cost framing alone, thinking alone, and thinking with cost framing. We measure the fraction of samples on which the model makes the correct escalation decision for a cost ratio of $R = 4$ (optimal threshold $\tau^* = 75\%$): escalate if the condition's predictive accuracy is below 75\%, implement if above.
 
 \begin{table}[t]
     \centering
