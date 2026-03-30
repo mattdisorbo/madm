@@ -95,6 +95,7 @@ def eval_model(model, tokenizer, device, dataset_name, n_per_condition=10, fmt_l
             cond_br[c["name"]] = c["base_rate"]
 
     all_results = {}
+    all_rows = []
     formats_to_test = fmt_list if fmt_list else FORMATS
 
     for fmt in formats_to_test:
@@ -153,6 +154,21 @@ def eval_model(model, tokenizer, device, dataset_name, n_per_condition=10, fmt_l
                     correct_by_r[R]["c"] += int(is_correct)
                     correct_by_r[R]["n"] += 1
 
+                    all_rows.append({
+                        "dataset": dataset_name,
+                        "condition": cond_name,
+                        "base_rate": base_rate,
+                        "cost_ratio": R,
+                        "framing": fmt,
+                        "threshold": (R - 1) / R,
+                        "optimal": optimal,
+                        "decision": decision,
+                        "correct": is_correct,
+                        "pred_correct": pred_correct,
+                        "nohint": nohint,
+                        "response": gen,
+                    })
+
                     if not is_correct:
                         print(f"    WRONG: {cond_name} R={R} br={base_rate:.2f} optimal={optimal} decision={decision} gen=[{gen[:150]}]", flush=True)
 
@@ -164,7 +180,7 @@ def eval_model(model, tokenizer, device, dataset_name, n_per_condition=10, fmt_l
             if d["n"] > 0:
                 print(f"    R={R:>2}: {d['c']/d['n']:.0%} ({d['n']})", flush=True)
 
-    return all_results
+    return all_results, all_rows
 
 
 def main():
@@ -195,7 +211,17 @@ def main():
 
     fmt_list = args.formats.split(",") if args.formats else None
     print("\n=== DPO-TRAINED ===" if args.adapter else "\n=== BASELINE ===", flush=True)
-    eval_model(model, tokenizer, device, args.dataset, n_per_condition=args.n, fmt_list=fmt_list, nohint=args.nohint)
+    results, rows = eval_model(model, tokenizer, device, args.dataset, n_per_condition=args.n, fmt_list=fmt_list, nohint=args.nohint)
+
+    # Save results to CSV
+    if rows:
+        out_dir = "results/dpo_eval"
+        os.makedirs(out_dir, exist_ok=True)
+        tag = "dpo" if args.adapter else "baseline"
+        hint_tag = "nohint" if args.nohint else "hint"
+        out_path = os.path.join(out_dir, f"{tag}_{args.dataset}_{hint_tag}.csv")
+        pd.DataFrame(rows).to_csv(out_path, index=False)
+        print(f"\nSaved {len(rows)} rows to {out_path}", flush=True)
 
     print("\nDONE", flush=True)
 
