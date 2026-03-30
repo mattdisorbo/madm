@@ -110,13 +110,6 @@ We model the agent's behavior as follows. After producing its prediction, the ag
 
 One of two costs can be incurred depending on the agent's action. If the agent escalates, the human pays a labor cost $c_\ell > 0$, which represents the time and effort of human review. If the agent implements and its prediction is wrong, the human pays an error cost $c_w > c_\ell$. Correct implementations incur zero cost.
 
-The agent minimizes expected cost by escalating whenever
-\begin{equation}
-\hat{p} < 1 - \frac{c_\ell}{c_w} \equiv \tau^*.
-\label{eq:threshold}
-\end{equation}
-For a cost ratio $R = c_w / c_\ell = 4$, the optimal threshold is $\tau^* = 1 - 1/4 = 75\%$.
-
 \begin{theorem}[Uniqueness of the optimal threshold]
 \label{thm:threshold}
 Let the agent escalate whenever $\hat{p} < \tau$ for some threshold $\tau \in [0,1]$, and suppose $\hat{p}$ is perfectly calibrated (i.e., $\hat{p} = p$, the true probability of a correct prediction). Then $\tau^* = 1 - c_\ell / c_w$ is the unique threshold that minimizes expected cost.
