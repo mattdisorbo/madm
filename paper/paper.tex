@@ -124,12 +124,12 @@ Let the agent escalate whenever $\hat{p} < \tau$ for some threshold $\tau \in [0
 
 \begin{theorem}[Cost of miscalibration]
 \label{thm:calibration}
-Let the agent use the optimal threshold $\tau^*$ but have miscalibrated probability estimates $\hat{p} = p + \varepsilon$, where $\varepsilon$ has mean $\mu$. Then expected cost is increasing in $|\mu|$.
+Let the agent use the optimal threshold $\tau^*$ but have a systematic bias $\mu$ in its probability estimates, so that $\hat{p} = p + \mu$. Then expected cost is increasing in $|\mu|$.
 \end{theorem}
 
 All proofs are in Appendix~\ref{app:proofs}.
 
-Theorem~\ref{thm:threshold} establishes that practitioners cannot avoid characterizing their model's threshold: any deviation from $\tau^*$ creates avoidable cost. Theorem~\ref{thm:calibration} shows that systematic miscalibration shifts the effective threshold away from $\tau^*$, with overconfident models implementing too aggressively and underconfident models escalating too often. Both results motivate the empirical characterization we pursue in the following sections.
+Theorem~\ref{thm:threshold} establishes that practitioners cannot avoid characterizing their model's threshold: any deviation from $\tau^*$ creates avoidable cost. Theorem~\ref{thm:calibration} shows that a systematic bias $\mu$ shifts the effective threshold to $\tau^* - \mu$, with overconfident models ($\mu > 0$) implementing too aggressively and underconfident models ($\mu < 0$) escalating too often. Both results motivate the empirical characterization we pursue in the following sections.
 
 \subsection{Two Sources of Miscalibration}
 
@@ -443,7 +443,7 @@ The agent should escalate when $c_\ell < (1-p) \, c_w$, i.e., when $p < 1 - c_\e
 \end{proof}
 
 \begin{proof}[Proof of Theorem~\ref{thm:calibration}]
-The agent escalates when $\hat{p} = p + \varepsilon < \tau^*$, i.e., when $p < \tau^* - \varepsilon$. In expectation, this is equivalent to applying threshold $\tau^* - \mu$. The expected cost as a function of threshold $\tau$ is $C(\tau) = \int_0^\tau c_\ell \, f(p) \, dp + \int_\tau^1 (1-p) \, c_w \, f(p) \, dp$, with derivative $C'(\tau) = f(\tau) [c_\ell - (1-\tau) c_w]$. For $\tau < \tau^*$, we have $(1-\tau) > c_\ell / c_w$, so $C'(\tau) < 0$: moving the threshold further below $\tau^*$ increases cost. For $\tau > \tau^*$, $C'(\tau) > 0$: moving further above $\tau^*$ also increases cost. Therefore $C(\tau^* - \mu)$ is increasing in $|\mu|$.
+The agent escalates when $\hat{p} = p + \mu < \tau^*$, i.e., when $p < \tau^* - \mu$. The agent therefore applies threshold $\tau^* - \mu$. The expected cost as a function of threshold $\tau$ is $C(\tau) = \int_0^\tau c_\ell \, f(p) \, dp + \int_\tau^1 (1-p) \, c_w \, f(p) \, dp$, with derivative $C'(\tau) = f(\tau) [c_\ell - (1-\tau) c_w]$. For $\tau < \tau^*$, we have $(1-\tau) > c_\ell / c_w$, so $C'(\tau) < 0$: moving the threshold further below $\tau^*$ increases cost. For $\tau > \tau^*$, $C'(\tau) > 0$: moving further above $\tau^*$ also increases cost. Therefore $C(\tau^* - \mu)$ is increasing in $|\mu|$.
 \end{proof}
 
 \section{SFT Results}
