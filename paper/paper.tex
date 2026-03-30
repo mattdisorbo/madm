@@ -112,20 +112,21 @@ One of two costs can be incurred depending on the agent's action. If the agent e
 
 The agent minimizes expected cost by escalating whenever
 \begin{equation}
-\hat{p} < \frac{c_w}{c_w + c_\ell} \equiv \tau^*.
+\hat{p} < 1 - \frac{c_\ell}{c_w} \equiv \tau^*.
 \label{eq:threshold}
 \end{equation}
+For a cost ratio $R = c_w / c_\ell = 4$, the optimal threshold is $\tau^* = 1 - 1/4 = 75\%$.
 
 \begin{theorem}[Uniqueness of the optimal threshold]
 \label{thm:threshold}
-Let the agent escalate whenever $\hat{p} < \tau$ for some threshold $\tau \in [0,1]$, and suppose $\hat{p}$ is perfectly calibrated (i.e., $\hat{p} = p$, the true probability of a correct prediction). Then $\tau^* = c_w / (c_w + c_\ell)$ is the unique threshold that minimizes expected cost.
+Let the agent escalate whenever $\hat{p} < \tau$ for some threshold $\tau \in [0,1]$, and suppose $\hat{p}$ is perfectly calibrated (i.e., $\hat{p} = p$, the true probability of a correct prediction). Then $\tau^* = 1 - c_\ell / c_w$ is the unique threshold that minimizes expected cost.
 \end{theorem}
 
 \begin{theorem}[Cost of miscalibration]
 \label{thm:calibration}
 Let the agent use the optimal threshold $\tau^*$ but have miscalibrated probability estimates $\hat{p} = p + \varepsilon$, where $\varepsilon$ is a mean-zero calibration error independent of $p$. Then expected cost is increasing in $\mathrm{Var}(\varepsilon)$. Specifically, the excess cost relative to perfect calibration is
 \[
-\Delta C = (c_w + c_\ell) \, f(\tau^*) \, \mathrm{Var}(\varepsilon) + O(\mathrm{Var}(\varepsilon)^{3/2}),
+\Delta C = c_w \, f(\tau^*) \, \mathrm{Var}(\varepsilon) + O(\mathrm{Var}(\varepsilon)^{3/2}),
 \]
 where $f(\tau^*)$ is the density of $p$ at $\tau^*$.
 \end{theorem}
@@ -138,7 +139,7 @@ Theorem~\ref{thm:threshold} establishes that practitioners cannot avoid characte
 
 Cost-optimal escalation requires two conditions. The agent's probability estimate $\hat{p}$ must equal the true probability of being correct (calibration), and the agent's threshold $\tau$ must equal the cost-optimal threshold $\tau^*$ (threshold alignment). We measure violations of each condition independently.
 
-To assess calibration, we compare the agent's behavior when it receives no signal about task difficulty (revealing its self-estimated accuracy $\hat{a}$) to its actual accuracy. To assess threshold alignment, we construct escalation curves by varying task difficulty and identify the accuracy level $p^*$ at which the agent's escalation rate crosses 50\%. If the agent were perfectly aligned for a cost ratio $R$, we would observe $p^* = \tau^* = R/(R+1)$.
+To assess calibration, we compare the agent's behavior when it receives no signal about task difficulty (revealing its self-estimated accuracy $\hat{a}$) to its actual accuracy. To assess threshold alignment, we construct escalation curves by varying task difficulty and identify the accuracy level $p^*$ at which the agent's escalation rate crosses 50\%. If the agent were perfectly aligned for a cost ratio $R$, we would observe $p^* = \tau^* = 1 - 1/R$.
 
 
 % ======================================================================
@@ -307,11 +308,11 @@ We now test whether the escalation threshold can be aligned with a target cost r
 
 \subsection{Prompting Interventions}
 
-We evaluate Qwen3.5-9B under four conditions: baseline (signal, no thinking, no cost framing), cost framing alone, thinking alone, and thinking with cost framing. We measure the fraction of conditions on which the model makes the correct condition-level decision for a cost ratio of $R = 4$ (optimal threshold $\tau^* = 80\%$): escalate when predictive accuracy is below 75\% and implement when above.
+We evaluate Qwen3.5-9B under four conditions: baseline (signal, no thinking, no cost framing), cost framing alone, thinking alone, and thinking with cost framing. We measure the fraction of conditions on which the model makes the correct condition-level decision for a cost ratio of $R = 4$ (optimal threshold $\tau^* = 75\%$): escalate when predictive accuracy is below 75\% and implement when above.
 
 \begin{table}[t]
     \centering
-    \caption{Sample-level escalation accuracy under different interventions, evaluated against the optimal policy for cost ratio $R = 4$ ($\tau^* = 80\%$, $c_w = 4 c_\ell$). For each sample, the correct action is to escalate if the condition's predictive accuracy is below 75\% and implement if above. MoralMachine is excluded from all rows. GPT-5-mini further excludes MovieLens due to content filter restrictions.}
+    \caption{Sample-level escalation accuracy under different interventions, evaluated against the optimal policy for cost ratio $R = 4$ ($\tau^* = 75\%$, $c_w = 4 c_\ell$). For each sample, the correct action is to escalate if the condition's predictive accuracy is below 75\% and implement if above. MoralMachine is excluded from all rows. GPT-5-mini further excludes MovieLens due to content filter restrictions.}
     \label{tab:interventions}
     \begin{tabular}{lcc}
         \toprule
@@ -406,13 +407,6 @@ Escalation rates are uniformly high across all models (68--100\%), reflecting ap
     \end{tabular}
 \end{table}
 
-\section{Thinking Mode Results}
-\label{app:thinking}
-% TODO: Add detailed thinking mode results
-% - Qwen3.5-9B thinking accuracy tracks signals better than nothink
-% - Escalation collapses to near-zero without cost framing
-% - Isolated escalation results
-
 \section{DPO Results}
 \label{app:dpo}
 
@@ -449,11 +443,11 @@ For a single instance with true accuracy $p$, the expected cost under threshold 
 \[
 C(p, \tau) = \begin{cases} c_\ell & \text{if } p < \tau \text{ (escalate)} \\ (1-p) \, c_w & \text{if } p \geq \tau \text{ (implement).} \end{cases}
 \]
-The agent should escalate when $c_\ell < (1-p) \, c_w$, i.e., when $p < c_w/(c_w + c_\ell) = \tau^*$. This threshold uniquely minimizes expected cost because it is the only value at which the agent is indifferent between escalating and implementing.
+The agent should escalate when $c_\ell < (1-p) \, c_w$, i.e., when $p < 1 - c_\ell/c_w = \tau^*$. This threshold uniquely minimizes expected cost because it is the only value at which the agent is indifferent between escalating and implementing.
 \end{proof}
 
 \begin{proof}[Proof of Theorem~\ref{thm:calibration}]
-Under perfect calibration, the agent escalates when $p < \tau^*$ and implements otherwise. Under miscalibration, the agent escalates when $p + \varepsilon < \tau^*$, i.e., when $p < \tau^* - \varepsilon$. The excess cost comes from two types of errors. When $\varepsilon > 0$ (overconfidence), some instances with $p \in [\tau^* - \varepsilon, \tau^*)$ are incorrectly implemented, each incurring excess cost $(1-p) c_w - c_\ell > 0$. When $\varepsilon < 0$ (underconfidence), some instances with $p \in [\tau^*, \tau^* - \varepsilon)$ are incorrectly escalated, each incurring excess cost $c_\ell - (1-p) c_w > 0$. In both cases the excess cost per instance is approximately $(c_w + c_\ell)|\varepsilon|$ for small $|\varepsilon|$, since $p \approx \tau^*$ in the affected region. The expected number of affected instances is $f(\tau^*) \, \mathbb{E}[|\varepsilon|]$, and $\mathbb{E}[|\varepsilon|] \leq \sqrt{\mathrm{Var}(\varepsilon)}$ by Jensen's inequality. A second-order expansion yields the stated result: the excess cost scales linearly with $\mathrm{Var}(\varepsilon)$ through the density of $p$ at the decision boundary.
+Under perfect calibration, the agent escalates when $p < \tau^*$ and implements otherwise. Under miscalibration, the agent escalates when $p + \varepsilon < \tau^*$, i.e., when $p < \tau^* - \varepsilon$. The excess cost comes from two types of errors. When $\varepsilon > 0$ (overconfidence), some instances with $p \in [\tau^* - \varepsilon, \tau^*)$ are incorrectly implemented, each incurring excess cost $(1-p) c_w - c_\ell > 0$. When $\varepsilon < 0$ (underconfidence), some instances with $p \in [\tau^*, \tau^* - \varepsilon)$ are incorrectly escalated, each incurring excess cost $c_\ell - (1-p) c_w > 0$. In both cases the excess cost per instance is approximately $c_w |\varepsilon|$ for small $|\varepsilon|$, since $p \approx \tau^*$ in the affected region. The expected number of affected instances is $f(\tau^*) \, \mathbb{E}[|\varepsilon|]$, and $\mathbb{E}[|\varepsilon|] \leq \sqrt{\mathrm{Var}(\varepsilon)}$ by Jensen's inequality. A second-order expansion yields the stated result: the excess cost scales linearly with $\mathrm{Var}(\varepsilon)$ through the density of $p$ at the decision boundary.
 \end{proof}
 
 \section{SFT Results}
@@ -481,7 +475,7 @@ Under perfect calibration, the agent escalates when $p < \tau^*$ and implements 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{figures/pstar_ahat_bars.png}
-    \caption{Implicit escalation threshold $p^*$ (left) and self-estimated accuracy $\hat{a}$ (right) for each model. The threshold $p^*$ varies widely (56\% to over 100\%), while self-estimated accuracy ranges from 76\% to 97\%. The dotted lines show the optimal threshold at cost ratio $R = 4$ (left) and average actual accuracy (right).}
+    \caption{Implicit escalation threshold $p^*$ (left) and self-estimated accuracy $\hat{a}$ (right) for each model. The threshold $p^*$ varies widely (53\% to over 100\%), while self-estimated accuracy ranges from 76\% to 97\%. The dotted lines show the optimal threshold $\tau^* = 75\%$ at cost ratio $R = 4$ (left) and average actual accuracy (right).}
     \label{fig:pstar}
 \end{figure}
 

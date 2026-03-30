@@ -60,7 +60,7 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
 
 colors = ['#4C72B0', '#4C72B0', '#DD8452', '#DD8452', '#55A868', '#55A868', '#C44E52', '#C44E52']
 bars1 = ax1.barh(df['name'], df['pstar'].clip(upper=1.2), color=colors, alpha=0.8)
-ax1.axvline(x=0.8, color='gray', linestyle=':', linewidth=1, label='$\\tau^*$ at $R=4$')
+ax1.axvline(x=0.75, color='gray', linestyle=':', linewidth=1, label='$\\tau^*$ at $R=4$')
 ax1.set_xlabel('Implicit threshold $p^*$')
 ax1.set_xlim(0, 1.2)
 ax1.invert_yaxis()

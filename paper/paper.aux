@@ -50,8 +50,8 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Mapping No-Signal Escalation to Self-Estimated Accuracy}{6}{subsection.5.1}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Actual accuracy versus self-estimated accuracy for each model across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). Across 304 model $\times $ condition pairs, 201 (66\%) are overconfident. The direction of miscalibration varies by model: some are predominantly overconfident, others underconfident.}}{7}{figure.caption.9}\protected@file@percent }
 \newlabel{fig:overconfidence}{{4}{7}{Actual accuracy versus self-estimated accuracy for each model across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). Across 304 model $\times $ condition pairs, 201 (66\%) are overconfident. The direction of miscalibration varies by model: some are predominantly overconfident, others underconfident}{figure.caption.9}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Sample-level escalation accuracy under different interventions, evaluated against the optimal policy for cost ratio $R = 4$ ($\tau ^* = 80\%$, $c_w = 4 c_\ell $). For each sample, the correct action is to escalate if the condition's predictive accuracy is below 75\% and implement if above. MoralMachine is excluded from all rows. GPT-5-mini further excludes MovieLens due to content filter restrictions.}}{7}{table.caption.10}\protected@file@percent }
-\newlabel{tab:interventions}{{1}{7}{Sample-level escalation accuracy under different interventions, evaluated against the optimal policy for cost ratio $R = 4$ ($\tau ^* = 80\%$, $c_w = 4 c_\ell $). For each sample, the correct action is to escalate if the condition's predictive accuracy is below 75\% and implement if above. MoralMachine is excluded from all rows. GPT-5-mini further excludes MovieLens due to content filter restrictions}{table.caption.10}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Sample-level escalation accuracy under different interventions, evaluated against the optimal policy for cost ratio $R = 4$ ($\tau ^* = 75\%$, $c_w = 4 c_\ell $). For each sample, the correct action is to escalate if the condition's predictive accuracy is below 75\% and implement if above. MoralMachine is excluded from all rows. GPT-5-mini further excludes MovieLens due to content filter restrictions.}}{7}{table.caption.10}\protected@file@percent }
+\newlabel{tab:interventions}{{1}{7}{Sample-level escalation accuracy under different interventions, evaluated against the optimal policy for cost ratio $R = 4$ ($\tau ^* = 75\%$, $c_w = 4 c_\ell $). For each sample, the correct action is to escalate if the condition's predictive accuracy is below 75\% and implement if above. MoralMachine is excluded from all rows. GPT-5-mini further excludes MovieLens due to content filter restrictions}{table.caption.10}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {6}Calibrating the Threshold}{7}{section.6}\protected@file@percent }
 \newlabel{sec:results3}{{6}{7}{Calibrating the Threshold}{section.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Prompting Interventions}{7}{subsection.6.1}\protected@file@percent }
@@ -103,31 +103,29 @@
 \@writefile{toc}{\contentsline {section}{\numberline {A}MoralMachine Results}{11}{appendix.A}\protected@file@percent }
 \newlabel{app:moral}{{A}{11}{MoralMachine Results}{appendix.A}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces MoralMachine escalation behavior. All models escalate at high rates, recognizing the inherent uncertainty of ethical dilemmas.}}{11}{table.caption.14}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {B}Thinking Mode Results}{12}{appendix.B}\protected@file@percent }
-\newlabel{app:thinking}{{B}{12}{Thinking Mode Results}{appendix.B}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {C}DPO Results}{12}{appendix.C}\protected@file@percent }
-\newlabel{app:dpo}{{C}{12}{DPO Results}{appendix.C}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}DPO Results}{12}{appendix.B}\protected@file@percent }
+\newlabel{app:dpo}{{B}{12}{DPO Results}{appendix.B}{}}
 \@writefile{toc}{\contentsline {paragraph}{DPO on simplified prompts.}{12}{section*.15}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{DPO on full scenario prompts.}{12}{section*.16}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {D}SFT Signal Ablation}{12}{appendix.D}\protected@file@percent }
-\newlabel{app:sft_ablation}{{D}{12}{SFT Signal Ablation}{appendix.D}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {C}SFT Signal Ablation}{12}{appendix.C}\protected@file@percent }
+\newlabel{app:sft_ablation}{{C}{12}{SFT Signal Ablation}{appendix.C}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces SFT model evaluated with and without the accuracy signal, on the original cost framing.}}{12}{table.caption.17}\protected@file@percent }
 \newlabel{tab:sft_nosignal}{{3}{12}{SFT model evaluated with and without the accuracy signal, on the original cost framing}{table.caption.17}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {E}Proofs}{12}{appendix.E}\protected@file@percent }
-\newlabel{app:proofs}{{E}{12}{Proofs}{appendix.E}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {F}SFT Results}{13}{appendix.F}\protected@file@percent }
-\newlabel{app:sft_table}{{F}{13}{SFT Results}{appendix.F}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {D}Proofs}{12}{appendix.D}\protected@file@percent }
+\newlabel{app:proofs}{{D}{12}{Proofs}{appendix.D}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {E}SFT Results}{13}{appendix.E}\protected@file@percent }
+\newlabel{app:sft_table}{{E}{13}{SFT Results}{appendix.E}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces SFT with chain-of-thought reasoning on full scenario prompts. The model is trained on three datasets and evaluated on all four main datasets, including the held-out MovieLens. Accuracy is measured against the Bayes-optimal policy across six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), with 300 samples per dataset (50 per $R$). MoralMachine results are reported in Appendix~\ref {app:moral}.}}{13}{table.caption.18}\protected@file@percent }
 \newlabel{tab:sft_results}{{4}{13}{SFT with chain-of-thought reasoning on full scenario prompts. The model is trained on three datasets and evaluated on all four main datasets, including the held-out MovieLens. Accuracy is measured against the Bayes-optimal policy across six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), with 300 samples per dataset (50 per $R$). MoralMachine results are reported in Appendix~\ref {app:moral}}{table.caption.18}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {G}Escalation Threshold and Self-Estimated Accuracy}{13}{appendix.G}\protected@file@percent }
-\newlabel{app:pstar}{{G}{13}{Escalation Threshold and Self-Estimated Accuracy}{appendix.G}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Implicit escalation threshold $p^*$ (left) and self-estimated accuracy $\hat  {a}$ (right) for each model. The threshold $p^*$ varies widely (56\% to over 100\%), while self-estimated accuracy ranges from 76\% to 97\%. The dotted lines show the optimal threshold at cost ratio $R = 4$ (left) and average actual accuracy (right).}}{13}{figure.caption.19}\protected@file@percent }
-\newlabel{fig:pstar}{{5}{13}{Implicit escalation threshold $p^*$ (left) and self-estimated accuracy $\hat {a}$ (right) for each model. The threshold $p^*$ varies widely (56\% to over 100\%), while self-estimated accuracy ranges from 76\% to 97\%. The dotted lines show the optimal threshold at cost ratio $R = 4$ (left) and average actual accuracy (right)}{figure.caption.19}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {H}Example Scenarios}{13}{appendix.H}\protected@file@percent }
-\newlabel{app:examples}{{H}{13}{Example Scenarios}{appendix.H}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {F}Escalation Threshold and Self-Estimated Accuracy}{13}{appendix.F}\protected@file@percent }
+\newlabel{app:pstar}{{F}{13}{Escalation Threshold and Self-Estimated Accuracy}{appendix.F}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Implicit escalation threshold $p^*$ (left) and self-estimated accuracy $\hat  {a}$ (right) for each model. The threshold $p^*$ varies widely (53\% to over 100\%), while self-estimated accuracy ranges from 76\% to 97\%. The dotted lines show the optimal threshold $\tau ^* = 75\%$ at cost ratio $R = 4$ (left) and average actual accuracy (right).}}{13}{figure.caption.19}\protected@file@percent }
+\newlabel{fig:pstar}{{5}{13}{Implicit escalation threshold $p^*$ (left) and self-estimated accuracy $\hat {a}$ (right) for each model. The threshold $p^*$ varies widely (53\% to over 100\%), while self-estimated accuracy ranges from 76\% to 97\%. The dotted lines show the optimal threshold $\tau ^* = 75\%$ at cost ratio $R = 4$ (left) and average actual accuracy (right)}{figure.caption.19}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {G}Example Scenarios}{13}{appendix.G}\protected@file@percent }
+\newlabel{app:examples}{{G}{13}{Example Scenarios}{appendix.G}{}}
 \@writefile{toc}{\contentsline {paragraph}{HotelBookings.}{13}{section*.20}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{LendingClub.}{13}{section*.21}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Wikipedia Toxicity.}{14}{section*.22}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Wikipedia Toxicity.}{13}{section*.22}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{MovieLens.}{14}{section*.23}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{MoralMachine.}{14}{section*.24}\protected@file@percent }
 \gdef \@abspage@last{14}
