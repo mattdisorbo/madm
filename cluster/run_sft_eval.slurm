@@ -19,17 +19,18 @@ export CUDA_VISIBLE_DEVICES=0
 export TOGETHER_API_KEY=unused
 
 ADAPTER="data/together_hotel/adapter"
+BASE_MODEL="Qwen/Qwen2.5-7B-Instruct"
 
 echo "========== SFT Eval (with signal) at $(date) =========="
 for ds in HotelBookings LendingClub WikipediaToxicity MovieLens; do
     echo "---------- EVAL: $ds ----------"
-    python scripts/dpo_eval_study3.py --adapter "$ADAPTER" --dataset $ds --n 10
+    python scripts/dpo_eval_study3.py --model "$BASE_MODEL" --adapter "$ADAPTER" --dataset $ds --n 10
 done
 
 echo "========== SFT Eval (no signal / nohint) at $(date) =========="
 for ds in HotelBookings LendingClub; do
     echo "---------- EVAL (nohint): $ds ----------"
-    python scripts/dpo_eval_study3.py --adapter "$ADAPTER" --dataset $ds --n 10 --nohint
+    python scripts/dpo_eval_study3.py --model "$BASE_MODEL" --adapter "$ADAPTER" --dataset $ds --n 10 --nohint
 done
 
 echo "ALL DONE at $(date)"
