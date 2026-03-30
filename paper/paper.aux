@@ -22,6 +22,7 @@
 \citation{lending_data}
 \citation{wulczyn2017exmachina}
 \citation{harper2015movielens}
+\citation{awad2018moral}
 \newlabel{eq:threshold}{{1}{3}{Cost Structure}{equation.1}{}}
 \newlabel{thm:threshold}{{1}{3}{Uniqueness of the optimal threshold}{theorem.1}{}}
 \newlabel{thm:calibration}{{2}{3}{Cost of miscalibration}{theorem.2}{}}
@@ -32,28 +33,27 @@
 \@writefile{toc}{\contentsline {paragraph}{Demand forecasting (`HotelBookings').}{3}{section*.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Loan approval (`LendingClub').}{3}{section*.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Content moderation (`Wikipedia Toxicity').}{3}{section*.4}\protected@file@percent }
-\citation{awad2018moral}
+\@writefile{toc}{\contentsline {paragraph}{Content recommendation (`MovieLens').}{3}{section*.5}\protected@file@percent }
 \citation{qwen3}
-\@writefile{toc}{\contentsline {paragraph}{Content recommendation (`MovieLens').}{4}{section*.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{MoralMachine (Appendix).}{4}{section*.6}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Models}{4}{subsection.3.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Prompting Protocol}{4}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Escalation Personalities}{4}{section.4}\protected@file@percent }
+\newlabel{sec:results1}{{4}{4}{Escalation Personalities}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Each Model Has a Distinct Escalation Curve}{4}{subsection.4.1}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces The multi-turn prompting protocol, illustrated with a LendingClub example. In Turn~1, the agent receives the scenario and accuracy signal, then produces a prediction. In Turn~2, the agent sees its own prediction and decides whether to implement or escalate. The accuracy signal provides the feature-based accuracy from a decision tree trained on the dataset.}}{5}{figure.caption.7}\protected@file@percent }
 \newlabel{fig:protocol}{{2}{5}{The multi-turn prompting protocol, illustrated with a LendingClub example. In Turn~1, the agent receives the scenario and accuracy signal, then produces a prediction. In Turn~2, the agent sees its own prediction and decides whether to implement or escalate. The accuracy signal provides the feature-based accuracy from a decision tree trained on the dataset}{figure.caption.7}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Escalation rate versus predictive accuracy for all eight models across four datasets (with signals, no thinking). Same-family models are vertically aligned. Each model exhibits a distinct escalation personality, varying in both overall escalation level and sensitivity to accuracy. Error bars show $\pm 1$ standard error.}}{5}{figure.caption.8}\protected@file@percent }
 \newlabel{fig:esc_curves}{{3}{5}{Escalation rate versus predictive accuracy for all eight models across four datasets (with signals, no thinking). Same-family models are vertically aligned. Each model exhibits a distinct escalation personality, varying in both overall escalation level and sensitivity to accuracy. Error bars show $\pm 1$ standard error}{figure.caption.8}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Escalation Personalities}{5}{section.4}\protected@file@percent }
-\newlabel{sec:results1}{{4}{5}{Escalation Personalities}{section.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Each Model Has a Distinct Escalation Curve}{5}{subsection.4.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {5}Self-Estimated Accuracy}{6}{section.5}\protected@file@percent }
 \newlabel{sec:results2}{{5}{6}{Self-Estimated Accuracy}{section.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Mapping No-Signal Escalation to Self-Estimated Accuracy}{6}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Calibrating the Threshold}{6}{section.6}\protected@file@percent }
+\newlabel{sec:results3}{{6}{6}{Calibrating the Threshold}{section.6}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Actual accuracy versus self-estimated accuracy for each model across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). Across 304 model $\times $ condition pairs, 201 (66\%) are overconfident. The direction of miscalibration varies by model: some are predominantly overconfident, others underconfident.}}{7}{figure.caption.9}\protected@file@percent }
 \newlabel{fig:overconfidence}{{4}{7}{Actual accuracy versus self-estimated accuracy for each model across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). Across 304 model $\times $ condition pairs, 201 (66\%) are overconfident. The direction of miscalibration varies by model: some are predominantly overconfident, others underconfident}{figure.caption.9}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Sample-level escalation accuracy under different interventions, evaluated against the optimal policy for cost ratio $R = 4$ ($\tau ^* = 75\%$, $c_w = 4 c_\ell $). For each sample, the correct action is to escalate if the condition's predictive accuracy is below 75\% and implement if above. MoralMachine is excluded from all rows. GPT-5-mini further excludes MovieLens due to content filter restrictions.}}{7}{table.caption.10}\protected@file@percent }
 \newlabel{tab:interventions}{{1}{7}{Sample-level escalation accuracy under different interventions, evaluated against the optimal policy for cost ratio $R = 4$ ($\tau ^* = 75\%$, $c_w = 4 c_\ell $). For each sample, the correct action is to escalate if the condition's predictive accuracy is below 75\% and implement if above. MoralMachine is excluded from all rows. GPT-5-mini further excludes MovieLens due to content filter restrictions}{table.caption.10}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Calibrating the Threshold}{7}{section.6}\protected@file@percent }
-\newlabel{sec:results3}{{6}{7}{Calibrating the Threshold}{section.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Prompting Interventions}{7}{subsection.6.1}\protected@file@percent }
 \citation{kadavath2022language}
 \citation{xiong2024can}
@@ -65,11 +65,11 @@
 \citation{wei2022chain}
 \citation{rafailov2023direct}
 \citation{ouyang2022training}
+\citation{du2023improving,liang2023encouraging}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Fine-Tuning for Cost-Sensitive Escalation}{8}{subsection.6.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{SFT with chain-of-thought.}{8}{section*.11}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {7}Related Work}{8}{section.7}\protected@file@percent }
 \newlabel{sec:related}{{7}{8}{Related Work}{section.7}{}}
-\citation{du2023improving,liang2023encouraging}
 \@writefile{toc}{\contentsline {section}{\numberline {8}Conclusion}{9}{section.8}\protected@file@percent }
 \newlabel{sec:conclusion}{{8}{9}{Conclusion}{section.8}{}}
 \@writefile{toc}{\contentsline {paragraph}{LLM Disclosure.}{9}{section*.12}\protected@file@percent }
