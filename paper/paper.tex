@@ -335,11 +335,11 @@ GPT-5-mini uses built-in reasoning by default. With reasoning disabled, it achie
 
 \subsection{Fine-Tuning for Cost-Sensitive Escalation}
 
-Prompt-based interventions improve escalation accuracy but remain imperfect. We investigate whether fine-tuning can train a model to internalize cost-sensitive escalation behavior. We first attempt DPO, which achieves 95.7\% accuracy on simplified prompts (feature signal and cost ratio only) but fails to generalize to full scenario prompts, where single-token responses provide insufficient gradient signal to learn the decision rule (details in Appendix~\ref{app:dpo}).
+Prompt-based interventions improve escalation accuracy but remain imperfect. We investigate whether fine-tuning can train a model to internalize cost-sensitive escalation behavior.
 
 \paragraph{SFT with chain-of-thought.} We train Qwen3.5-9B with SFT on chain-of-thought responses that explicitly extract the feature-based accuracy from the signal and compute the expected cost. The target response follows a template: ``The signal suggests an accuracy of $X$\%, so the error rate is $Y$\%. The expected cost of implementing is $R \times Y = Z$, which exceeds/is below 1.'' We train on three of the four main datasets (HotelBookings, LendingClub, WikipediaToxicity), four cost framings, and six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), holding out MovieLens entirely. The SFT model achieves near-perfect accuracy: 100\% on all datasets, cost ratios, and cost framings, with a single error at a boundary case where $R(1-p) = 1.00$ exactly (full results in Table~\ref{tab:sft_results}, Appendix~\ref{app:sft_table}). The held-out dataset (MovieLens) also achieves 100\%, demonstrating that the model learned a general procedure rather than memorizing dataset-specific decisions.
 
-An ablation removing the feature signal confirms that the SFT model genuinely reads and uses it; without the signal, accuracy drops from 100\% to approximately 84\% as the model hallucinates accuracy estimates (Appendix~\ref{app:sft_ablation}). The contrast between DPO and SFT reveals why chain-of-thought supervision matters: DPO's single-token responses provide insufficient signal to learn the arithmetic relationship $R(1-p) > 1$ in rich scenario context, while SFT directly supervises a reasoning procedure that generalizes across datasets, cost framings, and held-out domains.
+An ablation removing the feature signal confirms that the SFT model genuinely reads and uses it; without the signal, accuracy drops from 100\% to approximately 84\% as the model hallucinates accuracy estimates (Appendix~\ref{app:sft_ablation}). The chain-of-thought supervision is critical: SFT directly supervises a reasoning procedure that extracts the accuracy signal and computes expected cost, enabling generalization across datasets, cost framings, and held-out domains.
 
 
 % ======================================================================
@@ -351,7 +351,7 @@ Our work connects to LLM calibration, where \citet{kadavath2022language} show th
 
 We draw on selective prediction, or ``learning to abstain'' \citep{geifman2017selective}, and the related literature on learning to defer, where a classifier can route instances to a human expert \citep{madras2018predict, mozannar2020consistent}. Our cost-based formulation connects to cost-sensitive classification \citep{elkan2001foundations}, which optimizes decision thresholds under asymmetric misclassification costs. We adapt these ideas to LLM agents that must weigh confidence against explicit cost structures without access to class probabilities.
 
-Chain-of-thought prompting \citep{wei2022chain} enables models to reason step-by-step, improving performance on arithmetic and multi-step tasks. Our finding that extended thinking is necessary for cost framing to take effect aligns with evidence that explicit reasoning unlocks capabilities latent in the base model. On the alignment side, DPO \citep{rafailov2023direct} and RLHF \citep{ouyang2022training} train models to match human preferences; we test both approaches for aligning escalation behavior and find that chain-of-thought supervision via SFT generalizes where preference optimization does not.
+Chain-of-thought prompting \citep{wei2022chain} enables models to reason step-by-step, improving performance on arithmetic and multi-step tasks. Our finding that extended thinking is necessary for cost framing to take effect aligns with evidence that explicit reasoning unlocks capabilities latent in the base model. On the alignment side, RLHF \citep{ouyang2022training} and DPO \citep{rafailov2023direct} train models to match human preferences; we use SFT with chain-of-thought supervision to align escalation behavior with the optimal policy.
 
 Our multi-turn prompting protocol is related to multi-agent debate \citep{du2023improving, liang2023encouraging}, but the second turn evaluates the agent's own prediction rather than introducing an adversarial perspective.
 
@@ -402,13 +402,6 @@ Escalation rates are uniformly high across all models (68--100\%), reflecting ap
         \bottomrule
     \end{tabular}
 \end{table}
-
-\section{DPO Results}
-\label{app:dpo}
-
-\paragraph{DPO on simplified prompts.} We first train Qwen3.5-9B with DPO on simplified prompts containing only the feature signal and cost ratio. The model achieves 95.7\% escalation accuracy across all cost ratios, and this performance transfers across datasets without additional training. DPO successfully learns the general decision rule when the feature signal is the only varying input.
-
-\paragraph{DPO on full scenario prompts.} We then train DPO on the complete multi-turn prompts, which include the full scenario description, the model's prediction, and the escalation decision. On the training dataset (HotelBookings), the model achieves perfect accuracy. However, DPO produces short responses (a single token) that provide insufficient gradient signal for the model to learn the arithmetic relationship between cost ratio and feature-based accuracy in the presence of rich scenario context. The model instead learns to associate specific scenario features with decisions, resulting in strong in-domain performance that does not reliably generalize.
 
 \section{SFT Signal Ablation}
 \label{app:sft_ablation}
