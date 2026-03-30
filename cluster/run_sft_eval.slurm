@@ -21,16 +21,18 @@ export PYTORCH_ALLOC_CONF=expandable_segments:True
 echo "========== SFT Training at $(date) =========="
 python scripts/sft_escalation.py --output-dir outputs/sft_esc --holdout MovieLens --n 5
 
-echo "========== SFT Eval (all datasets, all formats) at $(date) =========="
-for ds in HotelBookings LendingClub WikipediaToxicity MovieLens MoralMachine; do
-    echo "---------- EVAL: $ds ----------"
-    python scripts/dpo_eval_study3.py --adapter outputs/sft_esc --dataset $ds --n 10
+echo "========== SFT Eval (per format) at $(date) =========="
+for fmt in original dollar wording; do
+    for ds in HotelBookings LendingClub WikipediaToxicity MovieLens; do
+        echo "---------- EVAL: $ds ($fmt) ----------"
+        python scripts/dpo_eval_study3.py --adapter outputs/sft_esc --dataset $ds --n 5 --formats $fmt
+    done
 done
 
 echo "========== SFT Eval (nohint ablation) at $(date) =========="
 for ds in HotelBookings LendingClub; do
     echo "---------- EVAL (nohint): $ds ----------"
-    python scripts/dpo_eval_study3.py --adapter outputs/sft_esc --dataset $ds --n 10 --nohint
+    python scripts/dpo_eval_study3.py --adapter outputs/sft_esc --dataset $ds --n 5 --formats original --nohint
 done
 
 echo "ALL DONE at $(date)"
