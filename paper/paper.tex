@@ -349,7 +349,7 @@ An ablation removing the feature signal confirms that the SFT model genuinely re
 
 Our work connects to LLM calibration, where \citet{kadavath2022language} show that language models can assess their own uncertainty and \citet{xiong2024can} evaluate confidence elicitation methods. \citet{guo2017calibration} demonstrate that modern neural networks are poorly calibrated, and \citet{tian2023just} find that verbalized confidence from LLMs can outperform token-level probabilities in some settings. We extend this line of work by measuring calibration in the context of a downstream escalation decision rather than confidence scores alone.
 
-We draw on selective prediction, or ``learning to abstain'' \citep{geifman2017selective}, and the related literature on learning to defer, where a classifier can route instances to a human expert \citep{madras2018predict, mozannar2020consistent}. Our cost-based formulation connects to cost-sensitive classification \citep{elkan2001foundations}, which optimizes decision thresholds under asymmetric misclassification costs. We adapt these ideas to LLM agents that must weigh confidence against explicit cost structures without access to class probabilities.
+We draw on selective prediction \citep{geifman2017selective}, and the related literature on learning to defer, where a classifier can route instances to a human expert \citep{madras2018predict, mozannar2020consistent}. Our cost-based formulation connects to cost-sensitive classification \citep{elkan2001foundations}, which optimizes decision thresholds under asymmetric misclassification costs. We adapt these ideas to LLM agents that must weigh confidence against explicit cost structures without access to class probabilities.
 
 Chain-of-thought prompting \citep{wei2022chain} enables models to reason step-by-step, improving performance on arithmetic and multi-step tasks. Our finding that extended thinking is necessary for cost framing to take effect aligns with evidence that explicit reasoning unlocks capabilities latent in the base model. On the alignment side, RLHF \citep{ouyang2022training} and DPO \citep{rafailov2023direct} train models to match human preferences; we use SFT with chain-of-thought supervision to align escalation behavior with the optimal policy.
 
@@ -370,6 +370,8 @@ We also demonstrate that escalation behavior can be partially corrected through 
 Several limitations suggest directions for future work. Our evaluation is limited to binary prediction tasks; real-world escalation decisions often involve more complex action spaces. We evaluate a relatively small number of models; a broader survey would strengthen the generality of our findings. Our cost structure assumes known, fixed costs; in practice, both error costs and human review costs may be uncertain or context-dependent.
 
 \paragraph{LLM Disclosure.} Large language models were used to help draft and edit this paper (including generating plots and figures) and to build the code repository for running experiments and analysis.
+
+\paragraph{Data and Code Availability.} All code, data, and experimental results are available at \url{https://github.com/mattdisorbo/madm}.
 
 \newpage
 \bibliography{references}
