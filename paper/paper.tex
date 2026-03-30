@@ -124,10 +124,6 @@ All proofs are in Appendix~\ref{app:proofs}.
 
 Theorem~\ref{thm:threshold} establishes that practitioners cannot avoid characterizing their model's threshold: any deviation from $\tau^*$ creates avoidable cost. Theorem~\ref{thm:calibration} shows that a systematic bias $\mu$ shifts the effective threshold to $\tau^* - \mu$, with overconfident models ($\mu > 0$) implementing too aggressively and underconfident models ($\mu < 0$) escalating too often. Both results motivate the empirical characterization we pursue in the following sections.
 
-\subsection{Two Sources of Miscalibration}
-
-Cost-optimal escalation requires two conditions. The agent's probability estimate $\hat{p}$ must equal the true probability of being correct (calibration), and the agent's threshold $\tau$ must equal the cost-optimal threshold $\tau^*$ (threshold alignment). We measure violations of each condition independently.
-
 To assess calibration, we compare the agent's behavior when it receives no signal about task difficulty (revealing its self-estimated accuracy $\hat{a}$) to its actual accuracy. To assess threshold alignment, we construct escalation curves by varying task difficulty and identify the accuracy level $p^*$ at which the agent's escalation rate crosses 50\%. If the agent were perfectly aligned for a cost ratio $R$, we would observe $p^* = \tau^* = 1 - 1/R$.
 
 
