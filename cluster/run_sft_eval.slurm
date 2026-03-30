@@ -5,7 +5,7 @@
 #SBATCH -p mi2508x
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH -t 10:00:00
+#SBATCH -t 04:00:00
 
 cd "${WORK}/madm"
 source .venv/bin/activate
@@ -18,21 +18,21 @@ mkdir -p "$UV_CACHE_DIR" "$PIP_CACHE_DIR" "$TMPDIR"
 export TOGETHER_API_KEY=unused
 export PYTORCH_ALLOC_CONF=expandable_segments:True
 
+# Training (fast, resumes from checkpoint)
 echo "========== SFT Training at $(date) =========="
 python scripts/sft_escalation.py --output-dir outputs/sft_esc --holdout MovieLens --n 5
 
-echo "========== SFT Eval (per format) at $(date) =========="
-for fmt in original dollar wording; do
-    for ds in HotelBookings LendingClub WikipediaToxicity MovieLens; do
-        echo "---------- EVAL: $ds ($fmt) ----------"
-        python scripts/dpo_eval_study3.py --adapter outputs/sft_esc --dataset $ds --n 5 --formats $fmt
-    done
-done
+# Eval: format and dataset passed as args
+FMT="${1:-original}"
+DS="${2:-HotelBookings}"
+NOHINT="${3:-}"
 
-echo "========== SFT Eval (nohint ablation) at $(date) =========="
-for ds in HotelBookings LendingClub; do
-    echo "---------- EVAL (nohint): $ds ----------"
-    python scripts/dpo_eval_study3.py --adapter outputs/sft_esc --dataset $ds --n 5 --formats original --nohint
-done
+if [ -n "$NOHINT" ]; then
+    echo "========== SFT Eval: $DS ($FMT, nohint) at $(date) =========="
+    python scripts/dpo_eval_study3.py --adapter outputs/sft_esc --dataset $DS --n 5 --formats $FMT --nohint
+else
+    echo "========== SFT Eval: $DS ($FMT) at $(date) =========="
+    python scripts/dpo_eval_study3.py --adapter outputs/sft_esc --dataset $DS --n 5 --formats $FMT
+fi
 
-echo "ALL DONE at $(date)"
+echo "DONE at $(date)"
