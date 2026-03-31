@@ -274,17 +274,17 @@ if (nrow(cost) > 0) {
 # ============================================================
 #
 # Browse the file index:
-#   View(file_index)
+  # View(file_index)
 #
 # See all variants for a model:
-#   file_index %>% filter(model == "gpt-5-mini") %>% count(variant)
+  # file_index %>% filter(model == "gpt-5-mini") %>% count(variant)
 #
 # Load full data for a specific file:
 #   df <- read_csv("results/study3/HotelBookings_has_special_requests_nothink_Qwen3.5-9B.csv")
 #   View(df)
 #
 # Show prompt for any sample:
-#   samples %>% filter(variant == "cost+think", model == "Qwen3.5-9B") %>% slice(1) %>% show_prompt()
+  # samples %>% filter(variant == "nothink+nohint", model == "Qwen3.5-9B") %>% slice(1) %>% show_prompt()
 #
 # Compare esc_prompt across variants:
 #   samples %>% select(model, dataset, variant, esc_prompt) %>% View()

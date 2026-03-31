@@ -32,10 +32,10 @@ if PROVIDER == "local":
     _model = AutoModelForCausalLM.from_pretrained(MODEL, **load_kwargs)
     client = None
 elif PROVIDER == "openai":
-    client = openai.OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+    client = openai.OpenAI(api_key=os.environ.get("OPENAI_API_KEY", ""))
 else:
     client = openai.OpenAI(
-        api_key=os.environ["TOGETHER_API_KEY"],
+        api_key=os.environ.get("TOGETHER_API_KEY", ""),
         base_url="https://api.together.xyz/v1",
     )
 

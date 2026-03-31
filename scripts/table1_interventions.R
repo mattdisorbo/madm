@@ -111,7 +111,7 @@ load_conditions <- function(tag, datasets) {
 }
 
 # Example: inspect Qwen baseline per condition
-# qwen_base <- load_conditions("nothink_Qwen3.5-9B", datasets_4)
+qwen_base <- load_conditions("nothink_Qwen3.5-9B", datasets_4)
 # View(qwen_base)
 
 # Compare baseline vs thinking + cost for Qwen
