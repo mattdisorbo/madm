@@ -13,10 +13,10 @@ OUT_PATH = '/Users/mdisorbo/madm/paper/figures/esc_vs_acc_nothink_5models.png'
 MODELS = [
     ('Qwen3.5-9B', 'Qwen3.5-9B'),
     ('GPT-5-nano', 'gpt-5-nano'),
-    ('Llama4-Maverick', 'Llama-4-Maverick-17B-128E-Instruct-FP8'),
-    ('Mixtral-8x7B', 'Mixtral-8x7B-Instruct-v0.1'),
     ('Qwen3.5-397B', 'Qwen3.5-397B-A17B'),
     ('GPT-5-mini', 'gpt-5-mini'),
+    ('Llama4-Maverick', 'Llama-4-Maverick-17B-128E-Instruct-FP8'),
+    ('Mixtral-8x7B', 'Mixtral-8x7B-Instruct-v0.1'),
     ('Llama3.3-70B', 'Llama-3.3-70B-Instruct-Turbo'),
     ('Mistral-Small-24B', 'Mistral-Small-24B-Instruct-2501'),
 ]
@@ -31,7 +31,7 @@ DATASETS = {
 # Auto-detect available datasets per model (excluding MoralMachine for main figures)
 ALL_DATASETS = ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens']
 
-fig, axes = plt.subplots(2, 4, figsize=(16, 8))
+fig, axes = plt.subplots(4, 2, figsize=(10, 18))
 axes_flat = axes.flatten()
 
 # Collect global ranges
@@ -73,14 +73,15 @@ for i, (short_name, tag) in enumerate(MODELS):
             continue
         label = ds if i == 0 else None
         se = np.sqrt(sub['esc_rate'] * (1 - sub['esc_rate']) / sub['n'])
-        ax.errorbar(sub['pred_acc'], sub['esc_rate'], yerr=se, fmt='o', c=color, ms=5, alpha=0.7, label=label, elinewidth=0.8, capsize=0)
+        ax.errorbar(sub['pred_acc'], sub['esc_rate'], yerr=se, fmt='o', c=color, ms=7, alpha=0.7, label=label, elinewidth=1.0, capsize=0)
     ax.set_xlim(xmin, xmax)
     ax.set_ylim(ymin, ymax)
-    ax.set_title(short_name, fontsize=12)
-    ax.set_xlabel('Predictive accuracy', fontsize=10)
-    ax.set_ylabel('Escalation rate', fontsize=10)
+    ax.set_title(short_name, fontsize=14, fontweight='bold')
+    ax.set_xlabel('Predictive accuracy', fontsize=12)
+    ax.set_ylabel('Escalation rate', fontsize=12)
+    ax.tick_params(labelsize=11)
     if i == 0:
-        ax.legend(fontsize=8, loc='best')
+        ax.legend(fontsize=10, loc='best')
 
 
 plt.tight_layout()
