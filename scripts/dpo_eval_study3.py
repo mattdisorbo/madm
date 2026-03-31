@@ -219,7 +219,8 @@ def main():
         os.makedirs(out_dir, exist_ok=True)
         tag = "dpo" if args.adapter else "baseline"
         hint_tag = "nohint" if args.nohint else "hint"
-        out_path = os.path.join(out_dir, f"{tag}_{args.dataset}_{hint_tag}.csv")
+        fmt_tag = "_".join(fmt_list) if fmt_list else "all"
+        out_path = os.path.join(out_dir, f"{tag}_{args.dataset}_{hint_tag}_{fmt_tag}.csv")
         pd.DataFrame(rows).to_csv(out_path, index=False)
         print(f"\nSaved {len(rows)} rows to {out_path}", flush=True)
 
