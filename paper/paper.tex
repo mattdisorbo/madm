@@ -28,7 +28,7 @@
 \maketitle
 
 \begin{abstract}
-Effective automation hinges on deciding when to act and when to escalate. We model this as a decision under uncertainty: an LLM forms a prediction, estimates its probability of being correct, and compares the expected costs of acting and escalating. Using this framework across five domains—demand forecasting, content recommendation, content moderation, loan approval, and autonomous driving—and across multiple model families, we find marked differences in the implicit thresholds models use to trade off these costs. These thresholds vary substantially and are not predicted by architecture or scale, while self-estimates are miscalibrated in model-specific ways. We then test interventions that target this decision process by varying cost ratios, providing explicit accuracy hints, and training models to follow the desired escalation rule. Prompting helps mainly for reasoning models. SFT on chain-of-thought targets yields the most robust policies, which generalize across datasets, cost ratios, prompt framings, and held-out domains. These results suggest that escalation behavior is a model-specific property that should be characterized before deployment, and that robust alignment benefits from training models to reason explicitly about uncertainty and decision costs.
+Effective automation hinges on deciding when to act and when to escalate. We model this as a decision under uncertainty: an LLM forms a prediction, estimates its probability of being correct, and compares the expected costs of acting and escalating. Using this framework across five domains of recorded human decisions—demand forecasting, content recommendation, content moderation, loan approval, and autonomous driving—and across multiple model families, we find marked differences in the implicit thresholds models use to trade off these costs. These thresholds vary substantially and are not predicted by architecture or scale, while self-estimates are miscalibrated in model-specific ways. We then test interventions that target this decision process by varying cost ratios, providing explicit accuracy hints, and training models to follow the desired escalation rule. Prompting helps mainly for reasoning models. SFT on chain-of-thought targets yields the most robust policies, which generalize across datasets, cost ratios, prompt framings, and held-out domains. These results suggest that escalation behavior is a model-specific property that should be characterized before deployment, and that robust alignment benefits from training models to reason explicitly about uncertainty and decision costs.
 \end{abstract}
 
 % ======================================================================
@@ -56,7 +56,7 @@ These dynamics, however, can be corrected. We test a series of interventions tha
 
 \subsection{The Escalation Decision}
 
-Consider a workflow in which a human delegates a binary task to an LLM-based agent. The agent observes a scenario $x$, produces a prediction $\hat{y} \in \{0, 1\}$; the ground truth is the human's latent preference $y \in \{0, 1\}$. The agent then decides whether to \emph{implement} (act on) its prediction or \emph{escalate} (defer to the human). Every action an agent takes in practice contains an implicit escalation decision: when it makes a tool call, generates a response, or commits a change, it is choosing to implement rather than escalate and ask for guidance. Figure~\ref{fig:workflow} illustrates this workflow.
+Consider a workflow in which a human delegates a binary task to an LLM-based agent. The agent observes a scenario $x$ and produces a prediction $\hat{y} \in \{0, 1\}$. The ground truth is the human's preference $y \in \{0, 1\}$. The agent then decides whether to \emph{implement} (act on) its prediction or \emph{escalate} (defer to the human). Every action an agent takes in practice contains an implicit escalation decision: when it makes a tool call, generates a response, or commits a change, it is choosing to implement rather than escalate and ask for guidance. Figure~\ref{fig:workflow} illustrates this workflow.
 
 \begin{figure}[t]
     \centering
@@ -107,15 +107,15 @@ Consider a workflow in which a human delegates a binary task to an LLM-based age
     \label{fig:workflow}
 \end{figure}
 
-We model the agent's behavior as follows. After producing its prediction, the agent forms an internal estimate $\hat{p}$ of its probability of being correct, or $P(\hat{y} = y)$. It then compares $\hat{p}$ to a threshold $\tau$ and escalates if $\hat{p} < \tau$.
+We model the agent's behavior as follows. After producing its prediction, the agent forms an internal estimate $\hat{p}$ of its probability of being correct $P(\hat{y} = y)$. It then compares $\hat{p}$ to a decision threshold $\tau$ (derived below) and escalates if $\hat{p} < \tau$.
 
 \subsection{Cost Structure}
 
-One of two costs can be incurred depending on the agent's action. If the agent escalates, the human pays a labor cost $c_\ell > 0$, which represents the time and effort of human review. If the agent implements and its prediction is wrong, the human pays an error cost $c_w > c_\ell$. Correct implementations incur zero cost.
+One of two costs can be incurred depending on the agent's action. If the agent escalates, the human pays a labor cost $c_\ell > 0$, which represents the time and effort required of the human. If the agent implements and its prediction is wrong, the human pays an error cost $c_w > c_\ell$. Correct implementations incur zero cost.
 
 \begin{theorem}[Uniqueness of the optimal threshold]
 \label{thm:threshold}
-Let the agent escalate whenever $\hat{p} < \tau$ for some threshold $\tau \in [0,1]$, and suppose $\hat{p}$ is perfectly calibrated (i.e., $\hat{p} = p$, the true probability of a correct prediction). Then $\tau^* = 1 - c_\ell / c_w$ is the unique threshold that minimizes expected cost.
+Let the agent escalate whenever $\hat{p} < \tau$ for some threshold $\tau \in [0,1]$, and suppose $\hat{p}$ is perfectly calibrated (i.e., $\hat{p} = p$). Then $\tau^* = 1 - c_\ell / c_w$ is the unique threshold that minimizes expected cost.
 \end{theorem}
 
 \begin{theorem}[Cost of miscalibration]
@@ -127,7 +127,7 @@ All proofs are in Appendix~\ref{app:proofs}.
 
 Theorem~\ref{thm:threshold} establishes that practitioners cannot avoid characterizing their model's threshold: any deviation from $\tau^*$ creates avoidable cost. Theorem~\ref{thm:calibration} shows that a systematic bias $\mu$ shifts the effective threshold to $\tau^* - \mu$, with overconfident models ($\mu > 0$) implementing too aggressively and underconfident models ($\mu < 0$) escalating too often. Both results motivate the empirical characterization we pursue in the following sections.
 
-To assess calibration, we compare the agent's behavior when it receives no signal about task difficulty (revealing its self-estimated accuracy $\hat{a}$) to its actual accuracy. To assess threshold alignment, we construct escalation curves by varying task difficulty and identify the accuracy level $p^*$ at which the agent's escalation rate crosses 50\%. If the agent were perfectly aligned for a cost ratio $R$, we would observe $p^* = \tau^* = 1 - 1/R$.
+To first assess calibration, we give the agent no signal about task difficulty, so that its escalation rate reflects only its prior belief about its own accuracy $\hat{a}$. We then compare $\hat{a}$ to its actual accuracy. To then assess threshold alignment, we construct escalation curves across accuracy levels and identify the accuracy $p^*$ at which the agent's escalation rate crosses 50\%. A perfectly aligned agent at cost ratio $R$ would have $p^* = \tau^* = 1 - 1/R$.
 
 
 % ======================================================================
@@ -137,17 +137,17 @@ To assess calibration, we compare the agent's behavior when it receives no signa
 
 \subsection{Datasets}
 
-We evaluate LLMs on four tasks, each drawn from a publicly available dataset. We also include a fifth dataset (MoralMachine) as a robustness check; because ethical dilemmas are not a typical agent task, we report those results in Appendix~\ref{app:moral}. Each setting centers around a binary decision for which we have real data on human preference. 
+We evaluate LLMs on four tasks, each drawn from a large-scale dataset of recorded human decisions. We also include a fifth dataset (\emph{MoralMachine}) as a robustness check; because ethical dilemmas are not a typical agent task, we report those results in Appendix~\ref{app:moral}. Each setting centers around a binary decision for which we have real data on human preference.
 
-\paragraph{Demand forecasting (`HotelBookings').} We predict whether a hotel booking will be kept or canceled, using features such as lead time, number of special requests, and guest history \citep{antonio2019hotel}. The dataset contains 119,390 bookings.
+\paragraph{Demand forecasting (\emph{HotelBookings}).} We predict whether a hotel booking will be kept or canceled, using features such as lead time, number of special requests, and guest history \citep{antonio2019hotel}. The dataset contains 119,390 bookings.
 
-\paragraph{Loan approval (`LendingClub').} We predict whether a loan application will be approved, using applicant features such as FICO score, debt-to-income ratio, and loan amount \citep{lending_data}. We sample 20,000 applications (10,000 accepted, 10,000 rejected) from the full dataset.
+\paragraph{Loan approval (\emph{LendingClub}).} We predict whether a loan application will be approved, using applicant features such as FICO score, debt-to-income ratio, and loan amount \citep{lending_data}. We sample 20,000 applications (10,000 accepted, 10,000 rejected) from the full dataset of approximately 2.26 million loans.
 
-\paragraph{Content moderation (`Wikipedia Toxicity').} We predict whether a Wikipedia discussion comment will be labeled toxic by crowd-workers \citep{wulczyn2017exmachina}. The dataset contains 159,686 unique comments.
+\paragraph{Content moderation (\emph{Wikipedia Toxicity}).} We predict whether a Wikipedia discussion comment will be labeled toxic by crowd-workers \citep{wulczyn2017exmachina}. The dataset contains 159,686 unique comments.
 
-\paragraph{Content recommendation (`MovieLens').} We predict which of two movies a user would rate more highly, given five prior ratings and average community ratings \citep{harper2015movielens}. We construct pairwise comparisons from a sample of 1,000,000 ratings by 6,307 users from the full MovieLens 25M dataset.
+\paragraph{Content recommendation (\emph{MovieLens}).} We predict which of two movies a user would rate more highly, given five prior ratings and average community ratings \citep{harper2015movielens}. We construct pairwise comparisons from a sample of 1,000,000 ratings by 6,307 users from the full \emph{MovieLens} 25M dataset.
 
-\paragraph{MoralMachine (Appendix).} We predict which group an autonomous vehicle should save in an ethical dilemma, based on the Moral Machine dataset, from which we sample 500,000 scenarios from the full 1M-response US survey. The dataset also includes demographic information about the human `driver' \citep{awad2018moral}.
+\paragraph{\emph{MoralMachine} (Appendix).} We predict which group an autonomous vehicle should save in an ethical dilemma, based on the \emph{Moral Machine} dataset, from which we sample 500,000 scenarios from the full 1M-response US survey. The dataset also includes demographic information about the human \emph{driver} \citep{awad2018moral}.
 
 Example scenarios for each dataset are provided in Appendix~\ref{app:examples}.
 
@@ -162,7 +162,7 @@ We evaluate eight models spanning four families, each with a smaller and larger 
     \item \textbf{Llama~4~Maverick / Llama~3.3~70B}: MoE (17B active / 128 experts) and dense models from Meta.
     \item \textbf{Mixtral~8x7B / Mistral~Small~24B}: Sparse MoE (12B active / 8 experts) and dense models from Mistral.
 \end{itemize}
-GPT-5-mini excludes MovieLens and MoralMachine due to content filter restrictions. GPT-5-nano excludes MoralMachine for the same reason. All other models are evaluated on all five datasets.
+GPT-5-mini excludes \emph{MovieLens} and \emph{MoralMachine} due to content filter restrictions. GPT-5-nano excludes \emph{MoralMachine} for the same reason. All other models are evaluated on all five datasets.
 
 \subsection{Prompting Protocol}
 
@@ -235,7 +235,7 @@ For each condition, we sample 250 scenarios (50 for thinking runs) and report me
     };
     \end{tikzpicture}%
     }
-    \caption{The multi-turn prompting protocol, illustrated with a LendingClub example. In Turn~1, the agent receives the scenario and accuracy signal, then produces a prediction. In Turn~2, the agent sees its own prediction and decides whether to implement or escalate. The accuracy signal provides the feature-based accuracy from a decision tree trained on the dataset.}
+    \caption{The multi-turn prompting protocol, illustrated with a \emph{LendingClub} example. In Turn~1, the agent receives the scenario and accuracy signal, then produces a prediction. In Turn~2, the agent sees its own prediction and decides whether to implement or escalate. The accuracy signal provides the feature-based accuracy from a decision tree trained on the dataset.}
     \label{fig:protocol}
 \end{figure}
 
@@ -250,7 +250,7 @@ Figure~\ref{fig:esc_curves} presents escalation rate versus predictive accuracy 
     \label{fig:esc_curves}
 \end{figure}
 
-First, every model exhibits a generally negative relationship between predictive accuracy and escalation rate: as the model becomes more accurate (due to stronger signals), it escalates less. This indicates that all models have a general understanding that lower certainty should lead to higher escalation, and vice versa. Second, the models differ dramatically in their overall escalation levels. The same accuracy level can produce vastly different escalation rates depending on the model. Third, several models' curves are non-monotonic: escalation does not always decrease as accuracy improves. This suggests that models incorporate factors beyond accuracy when deciding whether to escalate, or that escalation behavior is inherently noisy.
+First, every model escalates less as its predictive accuracy increases, so all models are at least somewhat sensitive to task difficulty. Second, however, the models differ dramatically in their overall escalation levels: the same accuracy can produce vastly different escalation rates depending on the model. Third, several models' curves are non-monotonic, suggesting that models incorporate factors beyond accuracy when deciding whether to escalate, or that escalation behavior is inherently noisy.
 
 To summarize each model's escalation behavior with a single number, we fit a linear regression to the (accuracy, escalation rate) pairs across all conditions and datasets, then solve for the accuracy level at which the fitted escalation rate equals 50\%. We call this the model's \emph{implicit threshold} $p^*$.
 
@@ -270,11 +270,9 @@ The no-signal condition, in which the model receives no information about task d
 
 When a model receives no signal, it escalates at a rate that reflects its default confidence level. We map this escalation rate onto the model's signal-based escalation curve (from Section~\ref{sec:results1}) to find the accuracy level that would produce the same escalation rate in the signal condition. This mapping yields the model's \emph{self-estimated accuracy} $\hat{a}$.
 
-Figure~\ref{fig:pstar} (Appendix~\ref{app:pstar}) reports these values. Self-estimates range from 76\% (Llama~3.3~70B) to 97\% (Mixtral~8x7B), while actual average accuracy ranges from 75\% to 80\%. The direction of miscalibration varies by model: Qwen3.5-9B overestimates its accuracy on 92\% of conditions, while Llama~3.3~70B and GPT-5-mini are underconfident on the majority of conditions.
+Figure~\ref{fig:overconfidence} presents self-estimated versus actual accuracy across all models and conditions. The direction and magnitude of miscalibration vary by both model and dataset. Qwen3.5-9B, Mixtral~8x7B, Mistral~Small~24B, and Llama~4~Maverick are overconfident on 75--92\% of conditions, while Llama~3.3~70B and GPT-5-mini are underconfident on the majority of conditions. Within the same family, scaling up can shift calibration in either direction.
 
-Aggregate self-estimated accuracies mask substantial domain-level variation. GPT-5-mini provides a striking example. Its average self-estimated accuracy of 80\% nearly matches its actual accuracy of 78\%, but individual condition gaps range from $-38$ percentage points (LendingClub) to $+27$ points (WikipediaToxicity). The model is not calibrated but simply has offsetting biases. Qwen3.5-9B shows a more consistent pattern: it is overconfident on nearly every condition, with gaps ranging from $-2$ to $+41$ points.
-
-Figure~\ref{fig:overconfidence} presents the full picture across all models and conditions. The direction and magnitude of miscalibration vary by both model and dataset. Qwen3.5-9B, Mixtral~8x7B, Mistral~Small~24B, and Llama~4~Maverick are overconfident on 75--92\% of conditions, while Llama~3.3~70B and GPT-5-mini are underconfident on the majority of conditions. Within the same family, scaling up can shift calibration in either direction.
+Figure~\ref{fig:pstar} (Appendix~\ref{app:pstar}) reports aggregate values. Self-estimates range from 76\% (Llama~3.3~70B) to 97\% (Mixtral~8x7B), while actual average accuracy ranges from 75\% to 80\%. Aggregate self-estimated accuracies mask substantial domain-level variation, however. GPT-5-mini provides a striking example. Its average self-estimated accuracy of 80\% nearly matches its actual accuracy of 78\%, but individual condition gaps range from $-38$ percentage points (\emph{LendingClub}) to $+27$ points (\emph{WikipediaToxicity}). The model is not calibrated but simply has offsetting biases. Qwen3.5-9B shows a more consistent pattern: it is overconfident on nearly every condition, with gaps ranging from $-2$ to $+41$ points.
 
 \begin{figure}[t]
     \centering
@@ -300,7 +298,7 @@ We evaluate Qwen3.5-9B under four conditions: baseline (signal, no thinking, no 
 
 \begin{table}[t]
     \centering
-    \caption{Sample-level escalation accuracy under different interventions, evaluated against the optimal policy for cost ratio $R = 4$ ($\tau^* = 75\%$, $c_w = 4 c_\ell$). For each sample, the correct action is to escalate if the condition's predictive accuracy is below 75\% and implement if above. MoralMachine is excluded from all rows. GPT-5-mini further excludes MovieLens due to content filter restrictions.}
+    \caption{Sample-level escalation accuracy under different interventions, evaluated against the optimal policy for cost ratio $R = 4$ ($\tau^* = 75\%$, $c_w = 4 c_\ell$). For each sample, the correct action is to escalate if the condition's predictive accuracy is below 75\% and implement if above. \emph{MoralMachine} is excluded from all rows. GPT-5-mini further excludes \emph{MovieLens} due to content filter restrictions.}
     \label{tab:interventions}
     \begin{tabular}{lcc}
         \toprule
@@ -329,7 +327,7 @@ GPT-5-mini uses built-in reasoning by default. With reasoning disabled, it achie
 
 Prompt-based interventions improve escalation accuracy but remain imperfect. We investigate whether fine-tuning can train a model to internalize cost-sensitive escalation behavior.
 
-\paragraph{SFT with chain-of-thought.} We train Qwen3.5-9B with SFT on chain-of-thought responses that explicitly extract the feature-based accuracy from the signal and compute the expected cost. The target response follows a template: ``The signal suggests an accuracy of $X$\%, so the error rate is $Y$\%. The expected cost of implementing is $R \times Y = Z$, which exceeds/is below 1.'' We train on three of the four main datasets (HotelBookings, LendingClub, WikipediaToxicity), four cost framings, and six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), holding out MovieLens entirely. The SFT model achieves near-perfect accuracy: 100\% on all datasets, cost ratios, and cost framings, with a single error at a boundary case where $R(1-p) = 1.00$ exactly (full results in Table~\ref{tab:sft_results}, Appendix~\ref{app:sft_table}). The held-out dataset (MovieLens) also achieves 100\%, demonstrating that the model learned a general procedure rather than memorizing dataset-specific decisions.
+\paragraph{SFT with chain-of-thought.} We train Qwen3.5-9B with SFT on chain-of-thought responses that explicitly extract the feature-based accuracy from the signal and compute the expected cost. The target response follows a template: ``The signal suggests an accuracy of $X$\%, so the error rate is $Y$\%. The expected cost of implementing is $R \times Y = Z$, which exceeds/is below 1.'' We train on three of the four main datasets (\emph{HotelBookings}, \emph{LendingClub}, \emph{WikipediaToxicity}), four cost framings, and six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), holding out \emph{MovieLens} entirely. The SFT model achieves near-perfect accuracy: 100\% on all datasets, cost ratios, and cost framings, with a single error at a boundary case where $R(1-p) = 1.00$ exactly (full results in Table~\ref{tab:sft_results}, Appendix~\ref{app:sft_table}). The held-out dataset (\emph{MovieLens}) also achieves 100\%, demonstrating that the model learned a general procedure rather than memorizing dataset-specific decisions.
 
 An ablation removing the feature signal confirms that the SFT model genuinely reads and uses it; without the signal, accuracy drops from 100\% to approximately 84\% as the model hallucinates accuracy estimates (Appendix~\ref{app:sft_ablation}). The chain-of-thought supervision is critical: SFT directly supervises a reasoning procedure that extracts the accuracy signal and computes expected cost, enabling generalization across datasets, cost framings, and held-out domains.
 
@@ -371,16 +369,16 @@ Several limitations suggest directions for future work. Our evaluation is limite
 
 % ======================================================================
 \appendix
-\section{MoralMachine Results}
+\section{\emph{MoralMachine} Results}
 \label{app:moral}
 
-MoralMachine presents ethical dilemmas rather than typical agent tasks, making it a robustness check for whether escalation patterns generalize beyond standard decision-making. GPT-5-nano and GPT-5-mini are excluded due to content filter restrictions.
+\emph{MoralMachine} presents ethical dilemmas rather than typical agent tasks, making it a robustness check for whether escalation patterns generalize beyond standard decision-making. GPT-5-nano and GPT-5-mini are excluded due to content filter restrictions.
 
 Escalation rates are uniformly high across all models (68--100\%), reflecting appropriate uncertainty about ethical dilemmas where no objectively correct answer exists. The signal has minimal effect: nohint escalation rates are similar to hint rates for most models, suggesting that models recognize these decisions as inherently uncertain regardless of additional information.
 
 \begin{table}[h]
     \centering
-    \caption{MoralMachine escalation behavior. All models escalate at high rates, recognizing the inherent uncertainty of ethical dilemmas.}
+    \caption{\emph{MoralMachine} escalation behavior. All models escalate at high rates, recognizing the inherent uncertainty of ethical dilemmas.}
     \begin{tabular}{lcccc}
         \toprule
         Model & \multicolumn{2}{c}{With signal} & \multicolumn{2}{c}{Without signal} \\
@@ -410,8 +408,8 @@ To verify that the SFT model relies on the feature signal rather than exploiting
         \toprule
         Dataset & With signal & Without signal \\
         \midrule
-        HotelBookings & 100\% & 84.7\% \\
-        LendingClub & 100\% & 84.0\% \\
+        \emph{HotelBookings} & 100\% & 84.7\% \\
+        \emph{LendingClub} & 100\% & 84.0\% \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -438,16 +436,16 @@ The agent escalates when $\hat{p} = p + \mu < \tau^*$, i.e., when $p < \tau^* - 
 
 \begin{table}[h]
     \centering
-    \caption{SFT with chain-of-thought reasoning on full scenario prompts. The model is trained on three datasets and evaluated on all four main datasets, including the held-out MovieLens. Accuracy is measured against the Bayes-optimal policy across six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), with 300 samples per dataset (50 per $R$). MoralMachine results are reported in Appendix~\ref{app:moral}.}
+    \caption{SFT with chain-of-thought reasoning on full scenario prompts. The model is trained on three datasets and evaluated on all four main datasets, including the held-out \emph{MovieLens}. Accuracy is measured against the Bayes-optimal policy across six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), with 300 samples per dataset (50 per $R$). \emph{MoralMachine} results are reported in Appendix~\ref{app:moral}.}
     \label{tab:sft_results}
     \begin{tabular}{lcccc}
         \toprule
         Dataset & Original & Dollar & Wording & Trained? \\
         \midrule
-        HotelBookings & 100\% & 98.3\% & 100\% & Yes \\
-        LendingClub & 100\% & 100\% & 100\% & Yes \\
-        WikipediaToxicity & 100\% & 100\% & 100\% & Yes \\
-        MovieLens & 100\% & 100\% & 100\% & No \\
+        \emph{HotelBookings} & 100\% & 98.3\% & 100\% & Yes \\
+        \emph{LendingClub} & 100\% & 100\% & 100\% & Yes \\
+        \emph{WikipediaToxicity} & 100\% & 100\% & 100\% & Yes \\
+        \emph{MovieLens} & 100\% & 100\% & 100\% & No \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -465,14 +463,14 @@ The agent escalates when $\hat{p} = p + \mu < \tau^*$, i.e., when $p < \tau^* - 
 \section{Example Scenarios}
 \label{app:examples}
 
-\paragraph{HotelBookings.} ``Person 1 has booked a hotel stay arriving on July 12, 2017 (week 28), with 2 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 1 car parking space(s) and made 2 special request(s).''
+\paragraph{\emph{HotelBookings}.} ``Person 1 has booked a hotel stay arriving on July 12, 2017 (week 28), with 2 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 1 car parking space(s) and made 2 special request(s).''
 
-\paragraph{LendingClub.} ``The applicant is requesting \$12,000 for debt consolidation. They have been employed for 5 years, a debt-to-income ratio of 14.3\%, and a credit score of 712.''
+\paragraph{\emph{LendingClub}.} ``The applicant is requesting \$12,000 for debt consolidation. They have been employed for 5 years, a debt-to-income ratio of 14.3\%, and a credit score of 712.''
 
-\paragraph{Wikipedia Toxicity.} ``This comment needs to be checked: `Please stop removing content from Wikipedia. It is considered vandalism.'\,''
+\paragraph{\emph{Wikipedia Toxicity}.} ``This comment needs to be checked: `Please stop removing content from Wikipedia. It is considered vandalism.'\,''
 
-\paragraph{MovieLens.} ``Person 1 has reviewed: Toy Story (4/5), Braveheart (5/5), Apollo 13 (4/5), Pulp Fiction (5/5), Forrest Gump (3/5). Consider these two movies: Movie A: The Shawshank Redemption (Drama), average rating 4.43/5 (311 ratings). Movie B: Twelve Monkeys (Mystery|Sci-Fi|Thriller), average rating 3.64/5 (229 ratings).''
+\paragraph{\emph{MovieLens}.} ``Person 1 has reviewed: Toy Story (4/5), Braveheart (5/5), Apollo 13 (4/5), Pulp Fiction (5/5), Forrest Gump (3/5). Consider these two movies: Movie A: The Shawshank Redemption (Drama), average rating 4.43/5 (311 ratings). Movie B: Twelve Monkeys (Mystery|Sci-Fi|Thriller), average rating 3.64/5 (229 ratings).''
 
-\paragraph{MoralMachine.} ``An autonomous vehicle is about to get in an accident. If the car doesn't swerve, 2 elderly pedestrians will die. If the car swerves, 3 passengers will die. The pedestrians are legally crossing the street. The person behind the wheel is a 34-year-old male with a Bachelor Degree.''
+\paragraph{\emph{MoralMachine}.} ``An autonomous vehicle is about to get in an accident. If the car doesn't swerve, 2 elderly pedestrians will die. If the car swerves, 3 passengers will die. The pedestrians are legally crossing the street. The person behind the wheel is a 34-year-old male with a Bachelor Degree.''
 
 \end{document}
