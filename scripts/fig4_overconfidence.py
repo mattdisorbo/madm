@@ -119,7 +119,7 @@ for i, (short_name, tag) in enumerate(MODELS):
         sub = df[df['dataset'] == ds]
         if sub.empty:
             continue
-        label = ds if i in (0, 4) else None
+        label = ds if i == 0 else None
         ax.scatter(sub['actual_acc'], sub['self_est_acc'], c=color, s=50, alpha=0.7,
                    label=label, edgecolors='none')
     ax.set_xlim(vmin, vmax)
@@ -131,8 +131,8 @@ for i, (short_name, tag) in enumerate(MODELS):
     ax.tick_params(labelsize=12)
 
 
-axes_flat[0].legend(fontsize=11, loc='lower right')
-axes_flat[4].legend(fontsize=11, loc='lower right')
-plt.tight_layout()
+handles, labels = axes_flat[0].get_legend_handles_labels()
+fig.legend(handles, labels, loc='lower center', ncol=4, fontsize=12, frameon=False)
+plt.tight_layout(rect=[0, 0.06, 1, 1])
 fig.savefig(OUT_PATH, dpi=300, bbox_inches='tight')
 print(f'Saved to {OUT_PATH}')

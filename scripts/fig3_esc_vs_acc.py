@@ -71,7 +71,7 @@ for i, (short_name, tag) in enumerate(MODELS):
         sub = df[df['dataset'] == ds]
         if sub.empty:
             continue
-        label = ds if i in (0, 4) else None
+        label = ds if i == 0 else None
         se = np.sqrt(sub['esc_rate'] * (1 - sub['esc_rate']) / sub['n'])
         ax.errorbar(sub['pred_acc'], sub['esc_rate'], yerr=se, fmt='o', c=color, ms=7, alpha=0.7, label=label, elinewidth=1.0, capsize=0)
     ax.set_xlim(xmin, xmax)
@@ -82,8 +82,9 @@ for i, (short_name, tag) in enumerate(MODELS):
     ax.tick_params(labelsize=12)
 
 
-axes_flat[0].legend(fontsize=11, loc='lower left')
-axes_flat[4].legend(fontsize=11, loc='lower left')
-plt.tight_layout()
+handles, labels = axes_flat[0].get_legend_handles_labels()
+fig.legend(handles, labels, loc='lower center', ncol=4, fontsize=12, frameon=False)
+fig.subplots_adjust(bottom=0.12)
+plt.tight_layout(rect=[0, 0.06, 1, 1])
 fig.savefig(OUT_PATH, dpi=300, bbox_inches='tight')
 print(f'Saved to {OUT_PATH}')
