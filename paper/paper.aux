@@ -33,27 +33,24 @@
 \@writefile{toc}{\contentsline {paragraph}{Content moderation (\emph  {Wikipedia Toxicity}).}{3}{section*.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Content recommendation (\emph  {MovieLens}).}{3}{section*.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{\emph  {MoralMachine} (Appendix).}{3}{section*.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Models}{4}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Models}{3}{subsection.3.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Prompting Protocol}{4}{subsection.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4}Escalation Personalities}{4}{section.4}\protected@file@percent }
-\newlabel{sec:results1}{{4}{4}{Escalation Personalities}{section.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Each Model Has a Distinct Escalation Curve}{4}{subsection.4.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces The multi-turn prompting protocol, illustrated with a \emph  {LendingClub} example. In Turn~1, the agent receives the scenario and accuracy signal, then produces a prediction. In Turn~2, the agent sees its own prediction and decides whether to implement or escalate. The accuracy signal provides the feature-based accuracy from a decision tree trained on the dataset.}}{5}{figure.caption.7}\protected@file@percent }
-\newlabel{fig:protocol}{{2}{5}{The multi-turn prompting protocol, illustrated with a \emph {LendingClub} example. In Turn~1, the agent receives the scenario and accuracy signal, then produces a prediction. In Turn~2, the agent sees its own prediction and decides whether to implement or escalate. The accuracy signal provides the feature-based accuracy from a decision tree trained on the dataset}{figure.caption.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Escalation rate versus predictive accuracy for all eight models across four datasets (with signals, no thinking). Same-family models are vertically aligned. Each model exhibits a distinct escalation personality, varying in both overall escalation level and sensitivity to accuracy. Error bars show $\pm 1$ standard error.}}{5}{figure.caption.8}\protected@file@percent }
-\newlabel{fig:esc_curves}{{3}{5}{Escalation rate versus predictive accuracy for all eight models across four datasets (with signals, no thinking). Same-family models are vertically aligned. Each model exhibits a distinct escalation personality, varying in both overall escalation level and sensitivity to accuracy. Error bars show $\pm 1$ standard error}{figure.caption.8}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Actual accuracy versus self-estimated accuracy for each model across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). Across 304 model $\times $ condition pairs, 201 (66\%) are overconfident. The direction of miscalibration varies by model: some are predominantly overconfident, others underconfident.}}{6}{figure.caption.9}\protected@file@percent }
-\newlabel{fig:overconfidence}{{4}{6}{Actual accuracy versus self-estimated accuracy for each model across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). Across 304 model $\times $ condition pairs, 201 (66\%) are overconfident. The direction of miscalibration varies by model: some are predominantly overconfident, others underconfident}{figure.caption.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Escalation Profiles}{4}{section.4}\protected@file@percent }
+\newlabel{sec:results1}{{4}{4}{Escalation Profiles}{section.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces The multi-turn prompting protocol, illustrated with a \emph  {LendingClub} example. In Turn~1, the agent receives the scenario and signal, then produces a prediction. In Turn~2, the agent sees its own prediction and decides whether to implement or escalate. The signal provides the feature split and predictive accuracy from a decision tree trained on the dataset.}}{5}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:protocol}{{2}{5}{The multi-turn prompting protocol, illustrated with a \emph {LendingClub} example. In Turn~1, the agent receives the scenario and signal, then produces a prediction. In Turn~2, the agent sees its own prediction and decides whether to implement or escalate. The signal provides the feature split and predictive accuracy from a decision tree trained on the dataset}{figure.caption.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Each model exhibits a distinct escalation profile. Escalation rate versus predictive accuracy for all eight models across four datasets (with signals, no thinking). Same-family models are vertically aligned. Models vary in both overall escalation level and sensitivity to the signal. Error bars show $\pm 1$ standard error.}}{5}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:esc_curves}{{3}{5}{Each model exhibits a distinct escalation profile. Escalation rate versus predictive accuracy for all eight models across four datasets (with signals, no thinking). Same-family models are vertically aligned. Models vary in both overall escalation level and sensitivity to the signal. Error bars show $\pm 1$ standard error}{figure.caption.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Most models overestimate their own accuracy. Actual versus self-estimated accuracy for each model across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). Across 304 model $\times $ condition pairs, 201 (66\%) are overconfident. The direction of miscalibration varies by model: some are predominantly overconfident, others underconfident.}}{6}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:overconfidence}{{4}{6}{Most models overestimate their own accuracy. Actual versus self-estimated accuracy for each model across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). Across 304 model $\times $ condition pairs, 201 (66\%) are overconfident. The direction of miscalibration varies by model: some are predominantly overconfident, others underconfident}{figure.caption.9}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Self-Estimated Accuracy}{6}{section.5}\protected@file@percent }
 \newlabel{sec:results2}{{5}{6}{Self-Estimated Accuracy}{section.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Mapping No-Signal Escalation to Self-Estimated Accuracy}{6}{subsection.5.1}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Sample-level escalation accuracy under different interventions, evaluated against the optimal policy for cost ratio $R = 4$ ($\tau ^* = 75\%$, $c_w = 4 c_\ell $). For each sample, the correct action is to escalate if the condition's predictive accuracy is below 75\% and implement if above. \emph  {MoralMachine} is excluded from all rows. GPT-5-mini further excludes \emph  {MovieLens} due to content filter restrictions.}}{7}{table.caption.10}\protected@file@percent }
 \newlabel{tab:interventions}{{1}{7}{Sample-level escalation accuracy under different interventions, evaluated against the optimal policy for cost ratio $R = 4$ ($\tau ^* = 75\%$, $c_w = 4 c_\ell $). For each sample, the correct action is to escalate if the condition's predictive accuracy is below 75\% and implement if above. \emph {MoralMachine} is excluded from all rows. GPT-5-mini further excludes \emph {MovieLens} due to content filter restrictions}{table.caption.10}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {6}Calibrating the Threshold}{7}{section.6}\protected@file@percent }
 \newlabel{sec:results3}{{6}{7}{Calibrating the Threshold}{section.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Prompting Interventions}{7}{subsection.6.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Fine-Tuning for Cost-Sensitive Escalation}{7}{subsection.6.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{SFT with chain-of-thought.}{7}{section*.11}\protected@file@percent }
 \citation{kadavath2022language}
 \citation{xiong2024can}
 \citation{guo2017calibration}
@@ -69,8 +66,8 @@
 \newlabel{sec:related}{{7}{8}{Related Work}{section.7}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {8}Conclusion}{8}{section.8}\protected@file@percent }
 \newlabel{sec:conclusion}{{8}{8}{Conclusion}{section.8}{}}
-\@writefile{toc}{\contentsline {paragraph}{LLM Disclosure.}{9}{section*.12}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Data and Code Availability.}{9}{section*.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{LLM Disclosure.}{9}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Data and Code Availability.}{9}{section*.12}\protected@file@percent }
 \bibdata{references}
 \bibcite{antonio2019hotel}{{1}{2019}{{Antonio et~al.}}{{Antonio, de~Almeida, and Nunes}}}
 \bibcite{awad2018moral}{{2}{2018}{{Awad et~al.}}{{Awad, Dsouza, Kim, Schulz, Henrich, Shariff, Bonnefon, and Rahwan}}}
@@ -99,26 +96,26 @@
 \bibstyle{colm2026_conference}
 \@writefile{toc}{\contentsline {section}{\numberline {A}\emph  {MoralMachine} Results}{11}{appendix.A}\protected@file@percent }
 \newlabel{app:moral}{{A}{11}{\emph {MoralMachine} Results}{appendix.A}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces \emph  {MoralMachine} escalation behavior. All models escalate at high rates, recognizing the inherent uncertainty of ethical dilemmas.}}{11}{table.caption.15}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces \emph  {MoralMachine} escalation behavior. All models escalate at high rates, recognizing the inherent uncertainty of ethical dilemmas.}}{11}{table.caption.14}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {B}SFT Signal Ablation}{11}{appendix.B}\protected@file@percent }
 \newlabel{app:sft_ablation}{{B}{11}{SFT Signal Ablation}{appendix.B}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces SFT model evaluated with and without the accuracy signal, on the original cost framing.}}{12}{table.caption.16}\protected@file@percent }
-\newlabel{tab:sft_nosignal}{{3}{12}{SFT model evaluated with and without the accuracy signal, on the original cost framing}{table.caption.16}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces SFT model evaluated with and without the signal, on the original cost framing.}}{12}{table.caption.15}\protected@file@percent }
+\newlabel{tab:sft_nosignal}{{3}{12}{SFT model evaluated with and without the signal, on the original cost framing}{table.caption.15}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {C}Proofs}{12}{appendix.C}\protected@file@percent }
 \newlabel{app:proofs}{{C}{12}{Proofs}{appendix.C}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {D}SFT Results}{12}{appendix.D}\protected@file@percent }
 \newlabel{app:sft_table}{{D}{12}{SFT Results}{appendix.D}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces SFT with chain-of-thought reasoning on full scenario prompts. The model is trained on three datasets and evaluated on all four main datasets, including the held-out \emph  {MovieLens}. Accuracy is measured against the Bayes-optimal policy across six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), with 300 samples per dataset (50 per $R$). \emph  {MoralMachine} results are reported in Appendix~\ref {app:moral}.}}{12}{table.caption.17}\protected@file@percent }
-\newlabel{tab:sft_results}{{4}{12}{SFT with chain-of-thought reasoning on full scenario prompts. The model is trained on three datasets and evaluated on all four main datasets, including the held-out \emph {MovieLens}. Accuracy is measured against the Bayes-optimal policy across six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), with 300 samples per dataset (50 per $R$). \emph {MoralMachine} results are reported in Appendix~\ref {app:moral}}{table.caption.17}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Implicit escalation threshold $p^*$ (left) and self-estimated accuracy $\hat  {a}$ (right) for each model. The threshold $p^*$ varies widely (53\% to over 100\%), while self-estimated accuracy ranges from 76\% to 97\%. The dotted lines show the optimal threshold $\tau ^* = 75\%$ at cost ratio $R = 4$ (left) and average actual accuracy (right).}}{13}{figure.caption.18}\protected@file@percent }
-\newlabel{fig:pstar}{{5}{13}{Implicit escalation threshold $p^*$ (left) and self-estimated accuracy $\hat {a}$ (right) for each model. The threshold $p^*$ varies widely (53\% to over 100\%), while self-estimated accuracy ranges from 76\% to 97\%. The dotted lines show the optimal threshold $\tau ^* = 75\%$ at cost ratio $R = 4$ (left) and average actual accuracy (right)}{figure.caption.18}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {E}Escalation Threshold and Self-Estimated Accuracy}{13}{appendix.E}\protected@file@percent }
-\newlabel{app:pstar}{{E}{13}{Escalation Threshold and Self-Estimated Accuracy}{appendix.E}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {F}Example Scenarios}{13}{appendix.F}\protected@file@percent }
-\newlabel{app:examples}{{F}{13}{Example Scenarios}{appendix.F}{}}
-\@writefile{toc}{\contentsline {paragraph}{\emph  {HotelBookings}.}{13}{section*.19}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{\emph  {LendingClub}.}{13}{section*.20}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{\emph  {Wikipedia Toxicity}.}{13}{section*.21}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{\emph  {MovieLens}.}{13}{section*.22}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{\emph  {MoralMachine}.}{13}{section*.23}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces SFT with chain-of-thought reasoning on full scenario prompts. The model is trained on three datasets and evaluated on all four main datasets, including the held-out \emph  {MovieLens}. Accuracy is measured against the Bayes-optimal policy across six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), with 300 samples per dataset (50 per $R$). \emph  {MoralMachine} results are reported in Appendix~\ref {app:moral}.}}{12}{table.caption.16}\protected@file@percent }
+\newlabel{tab:sft_results}{{4}{12}{SFT with chain-of-thought reasoning on full scenario prompts. The model is trained on three datasets and evaluated on all four main datasets, including the held-out \emph {MovieLens}. Accuracy is measured against the Bayes-optimal policy across six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), with 300 samples per dataset (50 per $R$). \emph {MoralMachine} results are reported in Appendix~\ref {app:moral}}{table.caption.16}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {E}Escalation Threshold and Self-Estimated Accuracy}{12}{appendix.E}\protected@file@percent }
+\newlabel{app:pstar}{{E}{12}{Escalation Threshold and Self-Estimated Accuracy}{appendix.E}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {F}Example Scenarios}{12}{appendix.F}\protected@file@percent }
+\newlabel{app:examples}{{F}{12}{Example Scenarios}{appendix.F}{}}
+\@writefile{toc}{\contentsline {paragraph}{\emph  {HotelBookings}.}{12}{section*.18}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Implicit escalation threshold $p^*$ (left) and self-estimated accuracy $\hat  {a}$ (right) for each model. The threshold $p^*$ varies widely (53\% to over 100\%), while self-estimated accuracy ranges from 76\% to 97\%. The dotted lines show the optimal threshold $\tau ^* = 75\%$ at cost ratio $R = 4$ (left) and average actual accuracy (right).}}{13}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:pstar}{{5}{13}{Implicit escalation threshold $p^*$ (left) and self-estimated accuracy $\hat {a}$ (right) for each model. The threshold $p^*$ varies widely (53\% to over 100\%), while self-estimated accuracy ranges from 76\% to 97\%. The dotted lines show the optimal threshold $\tau ^* = 75\%$ at cost ratio $R = 4$ (left) and average actual accuracy (right)}{figure.caption.17}{}}
+\@writefile{toc}{\contentsline {paragraph}{\emph  {LendingClub}.}{13}{section*.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\emph  {Wikipedia Toxicity}.}{13}{section*.20}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\emph  {MovieLens}.}{13}{section*.21}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\emph  {MoralMachine}.}{13}{section*.22}\protected@file@percent }
 \gdef \@abspage@last{13}

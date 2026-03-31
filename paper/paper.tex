@@ -44,7 +44,7 @@ We study escalation behavior across eight models spanning four model families, e
 
 First, LLMs are miscalibrated in their self-assessment. Some models systematically overestimate their accuracy while others underestimate it, and the direction of miscalibration varies by model and domain. Prior work has documented LLM overconfidence in factual knowledge \citep{kadavath2022language} and calibration failures in question answering \citep{xiong2024can}, but these studies measure confidence in isolation. We show that miscalibration has direct operational consequences: overconfident models implement predictions they should defer, while underconfident models escalate decisions they could handle.
 
-Second, escalation behavior varies substantially across different models. This variance is not associated with model architecture or size. Some models tend to prefer escalating (lower decision threshold), some generally favor implementing (higher decision threshold). This variation persists even within model families. Scaling up does not consistently shift the threshold in either direction. Together, this miscalibration and variance in escalation behavior constitute hidden model dynamics that could disrupt a larger workflow.
+Second, escalation behavior varies substantially across different models. This variance is not associated with model architecture or size. Some models tend to prefer escalating (lower decision threshold), some generally favor implementing (higher decision threshold). This variation persists even within model families. Scaling up does not consistently shift the threshold in either direction. Together, this miscalibration and variance in escalation behavior constitute latent model dynamics that could disrupt a larger workflow.
 
 These dynamics, however, can be corrected. We test a series of interventions that target the escalation decision. Prompt-based cost framing alone has no effect, but combining it with extended thinking produces improvement for reasoning models. Supervised fine-tuning (SFT) on chain-of-thought targets proves most effective: the resulting model makes near-optimal escalation decisions across all datasets, cost ratios, and prompt framings, and generalizes to held-out domains it was never trained on. Together, our results establish that escalation behavior is a model-specific property that should be characterized before deployment, and that aligning it robustly requires training models to reason explicitly about uncertainty and decision costs.
 
@@ -107,7 +107,7 @@ Consider a workflow in which a human delegates a binary task to an LLM-based age
     \label{fig:workflow}
 \end{figure}
 
-We model the agent's behavior as follows. After producing its prediction, the agent forms an internal estimate $\hat{p}$ of its probability of being correct $P(\hat{y} = y)$. It then compares $\hat{p}$ to a decision threshold $\tau$ (derived below) and escalates if $\hat{p} < \tau$.
+We model the agent's behavior as follows. After producing its prediction, the agent forms an internal estimate $\hat{p}$ of its probability of being correct $P(\hat{y} = y)$. The cost structure then determines an optimal decision threshold $\tau$ (derived below): the agent escalates if $\hat{p} < \tau$ and implements otherwise.
 
 \subsection{Cost Structure}
 
@@ -127,7 +127,7 @@ All proofs are in Appendix~\ref{app:proofs}.
 
 Theorem~\ref{thm:threshold} establishes that practitioners cannot avoid characterizing their model's threshold: any deviation from $\tau^*$ creates avoidable cost. Theorem~\ref{thm:calibration} shows that a systematic bias $\mu$ shifts the effective threshold to $\tau^* - \mu$, with overconfident models ($\mu > 0$) implementing too aggressively and underconfident models ($\mu < 0$) escalating too often. Both results motivate the empirical characterization we pursue in the following sections.
 
-To first assess calibration, we give the agent no signal about task difficulty, so that its escalation rate reflects only its prior belief about its own accuracy $\hat{a}$. We then compare $\hat{a}$ to its actual accuracy. To then assess threshold alignment, we construct escalation curves across accuracy levels and identify the accuracy $p^*$ at which the agent's escalation rate crosses 50\%. A perfectly aligned agent at cost ratio $R$ would have $p^* = \tau^* = 1 - 1/R$.
+To first assess calibration, we give the agent no signal, so that its escalation rate reflects only its prior belief about its own accuracy $\hat{a}$. We then compare $\hat{a}$ to its actual accuracy. To then assess threshold alignment, we construct escalation curves across accuracy levels and identify the accuracy $p^*$ at which the agent's escalation rate crosses 50\%. A perfectly aligned agent at cost ratio $R$ would have $p^* = \tau^* = 1 - 1/R$.
 
 
 % ======================================================================
@@ -151,8 +151,6 @@ We evaluate LLMs on four tasks, each drawn from a large-scale dataset of recorde
 
 Example scenarios for each dataset are provided in Appendix~\ref{app:examples}.
 
-Each condition is accompanied by a \emph{signal}: a natural-language description of the decision tree's accuracy for that feature-defined condition (e.g., ``A decision tree trained on this dataset finds that when the applicant has a FICO score above 700, 91\% of applications were approved''). This signal serves as a tool output that an agent might receive in a realistic deployment.
-
 \subsection{Models}
 
 We evaluate eight models spanning four families, each with a smaller and larger variant:
@@ -166,6 +164,8 @@ GPT-5-mini excludes \emph{MovieLens} and \emph{MoralMachine} due to content filt
 
 \subsection{Prompting Protocol}
 
+Each scenario is accompanied by a \emph{signal}: a natural-language summary of a decision tree's output for the scenario's feature-defined condition, including the feature split and its predictive accuracy (e.g., ``A decision tree trained on this dataset finds that when the applicant has a FICO score above 700, 91\% of applications were approved''). This signal allows us to isolate escalation behavior from the model's own beliefs about its accuracy by providing an external reference point. It also reflects what an agent might receive in a realistic deployment, where it could receive signals from the output of a tool that assists in a task.
+
 Each sample proceeds in two turns within a single conversation. In the first turn, the agent receives the scenario, the signal (when applicable), and a prediction prompt asking it to explain its reasoning in one sentence and conclude with \texttt{PREDICTION: 1} or \texttt{PREDICTION: 0}. In the second turn, the agent sees its own prediction and is asked whether to implement or escalate, concluding with \texttt{DECISION: 0} (implement) or \texttt{DECISION: 1} (escalate).
 
 We evaluate several variants of this protocol:
@@ -173,7 +173,7 @@ We evaluate several variants of this protocol:
     \item \textbf{Baseline}: Signal provided, no cost framing, no explicit thinking.
     \item \textbf{No signal}: The signal is omitted, revealing the model's default confidence.
     \item \textbf{Cost ratio 4}: The escalation prompt is prepended with ``Implementing a wrong answer costs 4$\times$ more than escalating.''
-    \item \textbf{Thinking}: For Qwen3.5-9B, we enable the model's extended thinking mode. GPT-5-mini uses built-in reasoning by default.
+    \item \textbf{Thinking}: For Qwen3.5-9B, we enable the model's extended thinking mode. For GPT-5-mini, we increase \texttt{reasoning\_effort} from \texttt{minimal} to \texttt{medium}.
     \item \textbf{Thinking + Cost 4}: Both thinking and cost framing are active.
 \end{itemize}
 
@@ -181,7 +181,7 @@ For each condition, we sample 250 scenarios (50 for thinking runs) and report me
 
 
 % ======================================================================
-\section{Escalation Personalities}
+\section{Escalation Profiles}
 \label{sec:results1}
 % ======================================================================
 
@@ -235,28 +235,26 @@ For each condition, we sample 250 scenarios (50 for thinking runs) and report me
     };
     \end{tikzpicture}%
     }
-    \caption{The multi-turn prompting protocol, illustrated with a \emph{LendingClub} example. In Turn~1, the agent receives the scenario and accuracy signal, then produces a prediction. In Turn~2, the agent sees its own prediction and decides whether to implement or escalate. The accuracy signal provides the feature-based accuracy from a decision tree trained on the dataset.}
+    \caption{The multi-turn prompting protocol, illustrated with a \emph{LendingClub} example. In Turn~1, the agent receives the scenario and signal, then produces a prediction. In Turn~2, the agent sees its own prediction and decides whether to implement or escalate. The signal provides the feature split and predictive accuracy from a decision tree trained on the dataset.}
     \label{fig:protocol}
 \end{figure}
 
-\subsection{Each Model Has a Distinct Escalation Curve}
-
-Figure~\ref{fig:esc_curves} presents escalation rate versus predictive accuracy for each model across all four datasets. Several patterns emerge.
+Models form internal beliefs about their own accuracy, and these beliefs shape their escalation decisions. To isolate escalation behavior from these beliefs, we provide an explicit signal that specifies the predictive accuracy for each scenario. Figure~\ref{fig:esc_curves} presents the resulting escalation rate versus predictive accuracy for each model across all four datasets. Several patterns emerge.
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=\textwidth]{figures/esc_vs_acc_nothink_5models.png}
-    \caption{Escalation rate versus predictive accuracy for all eight models across four datasets (with signals, no thinking). Same-family models are vertically aligned. Each model exhibits a distinct escalation personality, varying in both overall escalation level and sensitivity to accuracy. Error bars show $\pm 1$ standard error.}
+    \caption{Each model exhibits a distinct escalation profile. Escalation rate versus predictive accuracy for all eight models across four datasets (with signals, no thinking). Same-family models are vertically aligned. Models vary in both overall escalation level and sensitivity to the signal. Error bars show $\pm 1$ standard error.}
     \label{fig:esc_curves}
 \end{figure}
 
-First, every model escalates less as its predictive accuracy increases, so all models are at least somewhat sensitive to task difficulty. Second, however, the models differ dramatically in their overall escalation levels: the same accuracy can produce vastly different escalation rates depending on the model. Third, several models' curves are non-monotonic, suggesting that models incorporate factors beyond accuracy when deciding whether to escalate, or that escalation behavior is inherently noisy.
+First, every model escalates less as its predictive accuracy increases, so all models are at least somewhat sensitive to the signal. Second, however, the models differ dramatically in their overall escalation levels: the same accuracy can produce vastly different escalation rates depending on the model. Third, several models' curves are non-monotonic, suggesting that models incorporate factors beyond accuracy when deciding whether to escalate, or that escalation behavior is inherently noisy.
 
 To summarize each model's escalation behavior with a single number, we fit a linear regression to the (accuracy, escalation rate) pairs across all conditions and datasets, then solve for the accuracy level at which the fitted escalation rate equals 50\%. We call this the model's \emph{implicit threshold} $p^*$.
 
 Figure~\ref{fig:pstar} (Appendix~\ref{app:pstar}) summarizes these values and reveals striking variation. Qwen3.5-9B and GPT-5-mini have low thresholds ($p^* \approx 54\%$), meaning they prefer to implement even at low accuracy levels. GPT-5-nano, Llama~4~Maverick, Llama~3.3~70B, and Mixtral~8x7B have high thresholds ($p^* > 91\%$), preferring to escalate even when quite accurate. This variation persists within every model family we test. Qwen3.5-9B ($p^* = 56\%$) and Qwen3.5-397B ($p^* = 81\%$) differ by 25 percentage points. GPT-5-nano ($p^* = 91\%$) and GPT-5-mini ($p^* = 53\%$) differ by 38 points. Llama~4~Maverick ($p^* = 92\%$) and Llama~3.3~70B ($p^* > 100\%$) both escalate aggressively but at different rates. Mixtral~8x7B ($p^* > 100\%$) and Mistral~Small~24B ($p^* = 85\%$) show a 30+ point gap within the Mistral family.
 
-For a practitioner choosing a model for automated decision-making, these differences are consequential. A model with $p^* = 56\%$ will implement aggressively, accepting frequent errors in exchange for fewer escalations. A model with $p^* = 91\%$ will escalate most decisions, providing safety at the expense of automation. Neither behavior is inherently correct; the optimal threshold depends on the cost ratio $R$. These thresholds are hidden, model-specific properties that cannot be determined without empirical characterization.
+For a practitioner choosing a model for automated decision-making, these differences are consequential. A model with $p^* = 56\%$ will implement aggressively, accepting frequent errors in exchange for fewer escalations. A model with $p^* = 91\%$ will escalate most decisions, providing safety at the expense of automation. Neither behavior is inherently correct; the optimal threshold depends on the cost ratio $R$. These thresholds are latent, model-specific properties that cannot be determined without empirical characterization.
 
 
 % ======================================================================
@@ -264,25 +262,21 @@ For a practitioner choosing a model for automated decision-making, these differe
 \label{sec:results2}
 % ======================================================================
 
-The no-signal condition, in which the model receives no information about task difficulty and must rely entirely on its prior beliefs, allows us to recover the model's implicit estimate of its own accuracy.
+Having established signal-based escalation curves, we now recover what a model believes about its own accuracy. Without a signal, the model escalates at a rate that reflects only its prior beliefs. We map this no-signal escalation rate onto the signal-based curve to find the accuracy level that would produce the same escalation rate, yielding the model's \emph{self-estimated accuracy} $\hat{a}$.
 
-\subsection{Mapping No-Signal Escalation to Self-Estimated Accuracy}
+We find that most models are miscalibrated, and the direction of error varies across models and datasets (Figure~\ref{fig:overconfidence}). Qwen3.5-9B, Mixtral~8x7B, Mistral~Small~24B, and Llama~4~Maverick are overconfident on 75--92\% of conditions, while Llama~3.3~70B and GPT-5-mini are underconfident on the majority of conditions. Within the same family, scaling up can shift calibration in either direction.
 
-When a model receives no signal, it escalates at a rate that reflects its default confidence level. We map this escalation rate onto the model's signal-based escalation curve (from Section~\ref{sec:results1}) to find the accuracy level that would produce the same escalation rate in the signal condition. This mapping yields the model's \emph{self-estimated accuracy} $\hat{a}$.
-
-Figure~\ref{fig:overconfidence} presents self-estimated versus actual accuracy across all models and conditions. The direction and magnitude of miscalibration vary by both model and dataset. Qwen3.5-9B, Mixtral~8x7B, Mistral~Small~24B, and Llama~4~Maverick are overconfident on 75--92\% of conditions, while Llama~3.3~70B and GPT-5-mini are underconfident on the majority of conditions. Within the same family, scaling up can shift calibration in either direction.
-
-Figure~\ref{fig:pstar} (Appendix~\ref{app:pstar}) reports aggregate values. Self-estimates range from 76\% (Llama~3.3~70B) to 97\% (Mixtral~8x7B), while actual average accuracy ranges from 75\% to 80\%. Aggregate self-estimated accuracies mask substantial domain-level variation, however. GPT-5-mini provides a striking example. Its average self-estimated accuracy of 80\% nearly matches its actual accuracy of 78\%, but individual condition gaps range from $-38$ percentage points (\emph{LendingClub}) to $+27$ points (\emph{WikipediaToxicity}). The model is not calibrated but simply has offsetting biases. Qwen3.5-9B shows a more consistent pattern: it is overconfident on nearly every condition, with gaps ranging from $-2$ to $+41$ points.
+These aggregate numbers, however, understate the problem (Figure~\ref{fig:pstar}, Appendix~\ref{app:pstar}). Self-estimates range from 76\% (Llama~3.3~70B) to 97\% (Mixtral~8x7B), while actual average accuracy ranges from 75\% to 80\%. GPT-5-mini provides a striking example. Its average self-estimated accuracy of 80\% nearly matches its actual accuracy of 78\%, but individual condition gaps range from $-38$ percentage points (\emph{LendingClub}) to $+27$ points (\emph{WikipediaToxicity}). The model is not calibrated but simply has offsetting biases. Qwen3.5-9B shows a more consistent pattern: it is overconfident on nearly every condition, with gaps ranging from $-2$ to $+41$ points.
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=\textwidth]{figures/overconfidence_by_condition.png}
-    \caption{Actual accuracy versus self-estimated accuracy for each model across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). Across 304 model $\times$ condition pairs, 201 (66\%) are overconfident. The direction of miscalibration varies by model: some are predominantly overconfident, others underconfident.}
+    \caption{Most models overestimate their own accuracy. Actual versus self-estimated accuracy for each model across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). Across 304 model $\times$ condition pairs, 201 (66\%) are overconfident. The direction of miscalibration varies by model: some are predominantly overconfident, others underconfident.}
     \label{fig:overconfidence}
 \end{figure}
 
 
-Self-estimated accuracy spans a wide range (76\% to 97\%), as does the implicit threshold $p^*$ (53\% to over 100\%). These two dimensions of the escalation personality are largely independent: a model can be overconfident yet cautious (Mixtral~8x7B), or slightly underconfident yet aggressive (GPT-5-mini). Practitioners must characterize both dimensions before deployment.
+Even knowing a model's accuracy beliefs does not predict its escalation threshold. Self-estimated accuracy spans a wide range (76\% to 97\%), as does the implicit threshold $p^*$ (53\% to over 100\%), but the two are largely independent: a model can be overconfident yet cautious (Mixtral~8x7B), or slightly underconfident yet aggressive (GPT-5-mini). Practitioners must characterize both dimensions before deployment.
 
 
 % ======================================================================
@@ -294,7 +288,7 @@ We now test whether the escalation threshold can be aligned with a target cost r
 
 \subsection{Prompting Interventions}
 
-We evaluate Qwen3.5-9B under four conditions: baseline (signal, no thinking, no cost framing), cost framing alone, thinking alone, and thinking with cost framing. We measure the fraction of samples on which the model makes the correct escalation decision for a cost ratio of $R = 4$ (optimal threshold $\tau^* = 75\%$): escalate if the condition's predictive accuracy is below 75\%, implement if above.
+We evaluate Qwen3.5-9B under four conditions: baseline (signal, no thinking, no cost framing), cost framing alone, thinking alone, and thinking with cost framing. For each sample, we score whether the model makes the cost-optimal escalation decision at $R = 4$, which sets the optimal threshold at $\tau^* = 75\%$.
 
 \begin{table}[t]
     \centering
@@ -309,7 +303,7 @@ We evaluate Qwen3.5-9B under four conditions: baseline (signal, no thinking, no 
         \quad + thinking & 61.9\% & $-0.1$ \\
         \quad + thinking + cost framing & \textbf{78.8\%} & $+16.8$ \\
         \midrule
-        GPT-5-mini baseline (no reasoning) & 64.7\% & --- \\
+        GPT-5-mini baseline & 64.7\% & --- \\
         \quad + cost framing & 75.8\% & $+11.1$ \\
         \quad + reasoning & 73.2\% & $+8.5$ \\
         \quad + reasoning + cost framing & \textbf{87.1\%} & $+22.4$ \\
@@ -321,15 +315,13 @@ Table~\ref{tab:interventions} reveals a clear interaction effect. Cost framing a
 
 The combination of thinking and cost framing achieves 78.8\% accuracy, a substantial improvement over all other Qwen conditions. Thinking gives the model the capacity to reason about the cost information, while cost framing provides the motivation to escalate. Neither intervention is sufficient alone; they are complementary.
 
-GPT-5-mini uses built-in reasoning by default. With reasoning disabled, it achieves 64.7\%, comparable to the Qwen baseline. Unlike Qwen, cost framing alone improves GPT-5-mini to 75.8\% even without explicit reasoning, suggesting that the model retains some capacity to process cost information at the ``minimal'' reasoning level. Enabling full reasoning reaches 73.2\%, and the combination of reasoning and cost framing achieves 87.1\%.
+GPT-5-mini uses built-in reasoning controlled by OpenAI's \texttt{reasoning\_effort} parameter. At the \texttt{minimal} level, it achieves 64.7\%, comparable to the Qwen baseline. Unlike Qwen, cost framing alone improves GPT-5-mini to 75.8\% even at minimal reasoning, suggesting that the model retains some capacity to process cost information without extended reasoning. At \texttt{medium} reasoning, accuracy reaches 73.2\%, and the combination of medium reasoning and cost framing achieves 87.1\%.
 
 \subsection{Fine-Tuning for Cost-Sensitive Escalation}
 
-Prompt-based interventions improve escalation accuracy but remain imperfect. We investigate whether fine-tuning can train a model to internalize cost-sensitive escalation behavior.
+Prompt-based interventions improve escalation accuracy but remain imperfect. We investigate whether fine-tuning can train a model to internalize cost-sensitive escalation behavior. We train Qwen3.5-9B with SFT on chain-of-thought responses that explicitly extract the accuracy from the signal and compute the expected cost. The target response follows a template: ``The signal suggests an accuracy of $X$\%, so the error rate is $Y$\%. The expected cost of implementing is $R \times Y = Z$, which exceeds/is below 1.'' We train on three of the four main datasets (\emph{HotelBookings}, \emph{LendingClub}, \emph{WikipediaToxicity}), four cost framings, and six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), holding out \emph{MovieLens} entirely. The SFT model achieves near-perfect accuracy: 100\% on all datasets, cost ratios, and cost framings, with a single error at a boundary case where $R(1-p) = 1.00$ exactly (full results in Table~\ref{tab:sft_results}, Appendix~\ref{app:sft_table}). The held-out dataset (\emph{MovieLens}) also achieves 100\%, demonstrating that the model learned a general procedure rather than memorizing dataset-specific decisions.
 
-\paragraph{SFT with chain-of-thought.} We train Qwen3.5-9B with SFT on chain-of-thought responses that explicitly extract the feature-based accuracy from the signal and compute the expected cost. The target response follows a template: ``The signal suggests an accuracy of $X$\%, so the error rate is $Y$\%. The expected cost of implementing is $R \times Y = Z$, which exceeds/is below 1.'' We train on three of the four main datasets (\emph{HotelBookings}, \emph{LendingClub}, \emph{WikipediaToxicity}), four cost framings, and six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), holding out \emph{MovieLens} entirely. The SFT model achieves near-perfect accuracy: 100\% on all datasets, cost ratios, and cost framings, with a single error at a boundary case where $R(1-p) = 1.00$ exactly (full results in Table~\ref{tab:sft_results}, Appendix~\ref{app:sft_table}). The held-out dataset (\emph{MovieLens}) also achieves 100\%, demonstrating that the model learned a general procedure rather than memorizing dataset-specific decisions.
-
-An ablation removing the feature signal confirms that the SFT model genuinely reads and uses it; without the signal, accuracy drops from 100\% to approximately 84\% as the model hallucinates accuracy estimates (Appendix~\ref{app:sft_ablation}). The chain-of-thought supervision is critical: SFT directly supervises a reasoning procedure that extracts the accuracy signal and computes expected cost, enabling generalization across datasets, cost framings, and held-out domains.
+To confirm that the SFT model reads and uses the signal, we run an ablation that removes it entirely. Without the signal, accuracy drops from 100\% to approximately 84\% as the model hallucinates accuracy estimates (Appendix~\ref{app:sft_ablation}). The chain-of-thought supervision is critical: SFT directly supervises a reasoning procedure that extracts the accuracy from the signal and computes expected cost, enabling generalization across datasets, cost framings, and held-out domains.
 
 
 % ======================================================================
@@ -351,11 +343,11 @@ Our multi-turn prompting protocol is related to multi-agent debate \citep{du2023
 \label{sec:conclusion}
 % ======================================================================
 
-We have shown that LLM-based agents exhibit hidden, model-specific escalation personalities that vary dramatically across models and cannot be predicted from architecture or scale alone. Even within the same model family, scaling up produces unpredictable shifts: Qwen3.5-9B and Qwen3.5-397B differ by 25 percentage points in their implicit thresholds, while GPT-5-nano and GPT-5-mini differ by 38 points. Models also carry miscalibrated beliefs about their own accuracy, and the direction of miscalibration can reverse between a smaller and larger variant of the same family. These hidden decisions represent below-the-surface behavior that could disrupt a decision-making process without sufficient exploration.
+We have shown that LLM-based agents exhibit latent, model-specific escalation profiles that vary dramatically across models and cannot be predicted \emph{a priori} from architecture or scale alone. Even within the same model family, scaling up produces unpredictable shifts: Qwen3.5-9B and Qwen3.5-397B differ by 25 percentage points in their implicit thresholds, while GPT-5-nano and GPT-5-mini differ by 38 points. Models also carry miscalibrated beliefs about their own accuracy, and the direction of miscalibration can reverse between a smaller and larger variant of the same family. These latent decisions represent below-the-surface behavior that could disrupt a decision-making process without sufficient exploration.
 
-These findings have immediate and extensive practical implications. Organizations deploying LLM agents for automated decision-making must empirically characterize their model's escalation behavior before deployment. Our methodology, based on varying task difficulty through calibrated signals, provides a tractable approach for doing so.
+These findings have immediate and extensive practical implications. Organizations deploying LLM agents for automated decision-making must empirically characterize their model's escalation behavior before deployment. Our methodology, based on varying predictive accuracy through calibrated signals, provides a tractable approach for doing so.
 
-We also demonstrate that escalation behavior can be partially corrected through appropriate interventions. The combination of extended thinking and cost framing achieves near-optimal escalation decisions. However, the highest escalation accuracy can be achieved through supervised fine-tuning; this approach is robust to different domains, framings and costs.
+We also demonstrate that escalation behavior can be corrected through appropriate interventions. The combination of extended thinking and cost framing achieves near-optimal escalation decisions, and supervised fine-tuning pushes accuracy even higher while generalizing across domains, framings, and costs.
 
 Several limitations suggest directions for future work. Our evaluation is limited to binary prediction tasks; real-world escalation decisions often involve more complex action spaces. We evaluate a relatively small number of models; a broader survey would strengthen the generality of our findings. Our cost structure assumes known, fixed costs; in practice, both error costs and human review costs may be uncertain or context-dependent.
 
@@ -402,7 +394,7 @@ To verify that the SFT model relies on the feature signal rather than exploiting
 
 \begin{table}[h]
     \centering
-    \caption{SFT model evaluated with and without the accuracy signal, on the original cost framing.}
+    \caption{SFT model evaluated with and without the signal, on the original cost framing.}
     \label{tab:sft_nosignal}
     \begin{tabular}{lcc}
         \toprule
