@@ -14,10 +14,10 @@ OUT_PATH = '/Users/mdisorbo/madm/paper/figures/overconfidence_by_condition.png'
 MODELS = [
     ('Qwen3.5-9B', 'Qwen3.5-9B'),
     ('GPT-5-nano', 'gpt-5-nano'),
-    ('Qwen3.5-397B', 'Qwen3.5-397B-A17B'),
-    ('GPT-5-mini', 'gpt-5-mini'),
     ('Llama4-Maverick', 'Llama-4-Maverick-17B-128E-Instruct-FP8'),
     ('Mixtral-8x7B', 'Mixtral-8x7B-Instruct-v0.1'),
+    ('Qwen3.5-397B', 'Qwen3.5-397B-A17B'),
+    ('GPT-5-mini', 'gpt-5-mini'),
     ('Llama3.3-70B', 'Llama-3.3-70B-Instruct-Turbo'),
     ('Mistral-Small-24B', 'Mistral-Small-24B-Instruct-2501'),
 ]
@@ -31,7 +31,7 @@ DATASETS = {
 
 ALL_DATASETS = ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens']
 
-fig, axes = plt.subplots(4, 2, figsize=(10, 18))
+fig, axes = plt.subplots(2, 4, figsize=(16, 8))
 axes_flat = axes.flatten()
 
 all_vals = []
