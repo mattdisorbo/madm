@@ -320,7 +320,7 @@ Table~\ref{tab:interventions} reveals a clear interaction effect. Cost framing a
 
 The combination of thinking and cost framing achieves 78.8\% accuracy, a substantial improvement over all other Qwen conditions. Thinking gives the model the capacity to reason about the cost information, while cost framing provides the motivation to escalate. Neither intervention is sufficient alone; they are complementary.
 
-GPT-5-mini uses built-in reasoning controlled by OpenAI's \texttt{reasoning\_effort} parameter. At the \texttt{minimal} level, it achieves 64.7\%, comparable to the Qwen baseline. Unlike Qwen, cost framing alone improves GPT-5-mini to 75.8\% even at minimal reasoning, suggesting that the model retains some capacity to process cost information without extended reasoning. At \texttt{medium} reasoning, accuracy reaches 73.2\%, and the combination of medium reasoning and cost framing achieves 87.1\%.
+GPT-5-mini uses built-in reasoning controlled by OpenAI's \texttt{reasoning\_effort} parameter. The lowest available setting is \texttt{minimal} (OpenAI does not support disabling reasoning entirely), so some residual reasoning may contribute to the baseline. At the \texttt{minimal} level, it achieves 64.7\%, comparable to the Qwen baseline. Unlike Qwen, cost framing alone improves GPT-5-mini to 75.8\% even at minimal reasoning, suggesting that the model retains some capacity to process cost information without extended reasoning. At \texttt{medium} reasoning, accuracy reaches 73.2\%, and the combination of medium reasoning and cost framing achieves 87.1\%.
 
 \subsection{Fine-tuning for cost-sensitive escalation}
 
