@@ -36,17 +36,17 @@ Effective automation hinges on deciding when to act and when to escalate. We mod
 \label{sec:intro}
 % ======================================================================
 
-LLM-based agents are increasingly deployed to automate consequential decisions. Systems today use LLMs to perform autonomous tasks \citep{li2024agent_survey}, generate and execute code \citep{jimenez2024swebench}, and manage multi-step workflows in enterprise settings \citep{wu2023autogen}. It is natural to assess agents' capabilities based on speed, accuracy and cost-savings \citep{jimenez2024swebench, chiang2024chatbot_arena, trivedi2024appworld}. However, in each setting, an agent faces a choice that receives far less scrutiny: should it implement its own decision, or escalate to a human?
+Agents based on large language models (LLMs) are increasingly deployed to automate consequential decisions, from triaging customer support tickets \citep{li2024agent_survey} to generating code \citep{jimenez2024swebench} and managing enterprise workflows \citep{wu2023autogen}. Most evaluations focus on speed, accuracy, and cost-savings \citep{jimenez2024swebench, chiang2024chatbot_arena, trivedi2024appworld}. However, in each setting, an agent faces a choice that receives far less scrutiny: should it implement its own decision, or escalate to a human?
 
-Agent escalation behavior is fundamental to responsible automation. An agent that fails to escalate when it is uncertain, or incorrect, will implement wrong decisions at scale \citep{bai2024measuring_faithfulness}, while an agent that always escalates defeats the purpose of automation. Two parameters govern responsible escalation. First, the agent must have a calibrated sense of its own accuracy: it should recognize when its predictions are likely wrong (correct), and thus escalation is more (less) appropriate. Second, the agent must apply a consistent decision threshold — the predictive accuracy at which the agent is indifferent to escalating vs. implementing — that reflects the relative costs of implementing an error vs. human labor in a specific situation.
+Agent escalation behavior is fundamental to effective automation. An agent that fails to escalate when it is uncertain or incorrect will propagate errors at scale \citep{bai2024measuring_faithfulness}, while an agent that always escalates never reduces the human workload it was meant to replace. Two parameters govern effective escalation. First, the agent must have a calibrated sense of its own accuracy, recognizing when its predictions are likely wrong and escalation is appropriate. Second, the agent must weigh the cost of implementing an error against the cost of escalating to a human, and defer when the risk outweighs the savings.
 
-We study escalation behavior across eight models spanning four model families, each represented by a smaller and larger variant: Qwen3.5-9B and Qwen3.5-397B-A17B, GPT-5-nano and GPT-5-mini, Llama~4~Maverick and Llama~3.3~70B, and Mixtral~8x7B and Mistral~Small~24B. We evaluate these models on five decision-making tasks: demand forecasting, loan approval, content moderation, content recommendation and moral dilemmas (featured in the Appendix). Ultimately, we find that LLMs do not satisfy either condition for reliable escalation.
+We study escalation behavior across eight models spanning four model families, each represented by a smaller and larger variant: Qwen3.5-9B and Qwen3.5-397B-A17B, GPT-5-nano and GPT-5-mini, Llama~4~Maverick and Llama~3.3~70B, and Mixtral~8x7B and Mistral~Small~24B. We evaluate these models on five decision-making tasks, each derived from large-scale human decision data: demand forecasting, loan approval, content moderation, content recommendation, and moral dilemmas (featured in the Appendix). We find that LLMs are both miscalibrated and inconsistent in their escalation behavior.
 
-First, LLMs are miscalibrated in their self-assessment: some models systematically overestimate their accuracy while others underestimate it, and the direction of miscalibration varies by model and domain. Prior work has documented LLM overconfidence in factual knowledge \citep{kadavath2022language} and calibration failures in question answering \citep{xiong2024can}, but these studies measure confidence in isolation. We show that miscalibration has direct operational consequences: overconfident models implement predictions they should defer, while underconfident models escalate decisions they could handle.
+First, LLMs are miscalibrated in their self-assessment. Some models systematically overestimate their accuracy while others underestimate it, and the direction of miscalibration varies by model and domain. Prior work has documented LLM overconfidence in factual knowledge \citep{kadavath2022language} and calibration failures in question answering \citep{xiong2024can}, but these studies measure confidence in isolation. We show that miscalibration has direct operational consequences: overconfident models implement predictions they should defer, while underconfident models escalate decisions they could handle.
 
-Second, escalation behavior varies substantially across different models; this variance is not associated with model architecture or size. Some models tend to prefer escalating (lower decision threshold), some generally favor implementing (higher decision threshold). This variation persists even within model families: scaling up does not consistently shift the threshold in either direction. Together, this miscalibration and variance in escalation behavior constitute hidden model dynamics that could disrupt a larger workflow.
+Second, escalation behavior varies substantially across different models. This variance is not associated with model architecture or size. Some models tend to prefer escalating (lower decision threshold), some generally favor implementing (higher decision threshold). This variation persists even within model families. Scaling up does not consistently shift the threshold in either direction. Together, this miscalibration and variance in escalation behavior constitute hidden model dynamics that could disrupt a larger workflow.
 
-We test a series of interventions designed to control and align escalation behavior. Cost framing — specifying the relationship between the cost of labor and implementing a wrong prediction — alone has no effect, while the combination of cost framing and extended thinking produces substantial improvement. We then turn to fine-tuning: supervised fine-tuning (SFT) with chain-of-thought reasoning yields the best results, producing a model that makes optimal escalation decisions across all datasets, cost ratios, and framings, including held-out domains it was never trained on.
+These dynamics, however, can be corrected. We test a series of interventions that target the escalation decision. Prompt-based cost framing alone has no effect, but combining it with extended thinking produces improvement for reasoning models. Supervised fine-tuning (SFT) on chain-of-thought targets proves most effective: the resulting model makes near-optimal escalation decisions across all datasets, cost ratios, and prompt framings, and generalizes to held-out domains it was never trained on. Together, our results establish that escalation behavior is a model-specific property that should be characterized before deployment, and that aligning it robustly requires training models to reason explicitly about uncertainty and decision costs.
 
 
 % ======================================================================
@@ -63,41 +63,44 @@ Consider a workflow in which a human delegates a binary task to an LLM-based age
     \resizebox{0.6\textwidth}{!}{%
     \begin{tikzpicture}[
         box/.style={rounded corners=4pt, draw, line width=1.2pt, align=center},
-        arr/.style={-{Stealth[length=3mm]}, line width=1.2pt, color=gray!60},
-        node distance=1.6cm
+        arr/.style={-{Stealth[length=3mm]}, line width=1.2pt, color=gray!80},
+        node distance=1.8cm
     ]
     % Human Principal
     \node[box, fill=gray!10, draw=gray!60, text width=2.4cm, inner sep=8pt] (human) {
-        \textbf{\large Human\\Principal}\\[4pt]
-        {\small\itshape Ground truth $y$}
+        \textbf{\large Human\\Principal}\\[2pt]
+        \itshape Ground truth $y$
     };
-    % LLM Agent — single box with bullet points
-    \node[box, fill=gray!10, draw=gray!60, text width=3.8cm, inner sep=8pt, right=of human] (agent) {
-        \textbf{\large LLM Agent}\\[6pt]
-        {\small\begin{itemize}\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}\setlength{\topsep}{0pt}\setlength{\leftmargini}{12pt}
-            \item Predicts $\hat{y}$
-            \item Estimates $\hat{p}(\hat{y} {=} y)$
-            \item $\hat{p} < \tau$\,?
-        \end{itemize}}
+    % LLM Agent
+    \node[box, fill=gray!10, draw=gray!60, text width=3.4cm, inner sep=6pt, inner xsep=4pt, right=of human] (agent) {
+        \textbf{\large LLM Agent}\\[5pt]
+        Predicts $\hat{y}$\\[2pt]
+        Estimates $\hat{p}(\hat{y} {=} y)$\\[2pt]
+        $\hat{p} < \tau$\,?
     };
-    % Implement
-    \node[box, fill=green!10, draw=green!50!black, text width=1.8cm, inner sep=6pt, right=2.2cm of agent, yshift=0.6cm] (implement) {
-        \textbf{Implement}\\[2pt]
-        {\small $(1{-}p)\,c_w$}
+    % Junction point — split early
+    \coordinate (junction) at ($(agent.east) + (0.7,0)$);
+    % Escalate (top)
+    \node[box, fill=red!8, draw=red!50!black, text width=2cm, inner sep=6pt,
+          anchor=west] (escalate) at ($(junction) + (0.7, 0.9)$) {
+        \textbf{\large Escalate}\\[3pt]
+        $c_\ell$
     };
-    % Escalate
-    \node[box, fill=red!8, draw=red!50!black, text width=1.8cm, inner sep=6pt, right=2.2cm of agent, yshift=-0.6cm] (escalate) {
-        \textbf{Escalate}\\[2pt]
-        {\small $c_\ell$}
+    % Implement (bottom)
+    \node[box, fill=green!10, draw=green!50!black, text width=2cm, inner sep=6pt,
+          anchor=west] (implement) at ($(junction) + (0.7, -0.9)$) {
+        \textbf{\large Implement}\\[3pt]
+        $(1{-}p)\,c_w$
     };
     % Arrows
-    \draw[arr] (human) -- node[above, font=\footnotesize, color=gray!60] {delegates} (agent);
-    \draw[-{Stealth[length=3mm]}, line width=1.2pt, color=green!50!black]
-        (agent.east) ++(0,0.05) -- ++(0.6,0) |- (implement.west);
-    \node[font=\footnotesize\bfseries, color=green!50!black, anchor=south west] at ($(implement.west) + (-0.9, 0.05)$) {No};
+    \draw[arr] (human) -- node[above, font=\normalsize, color=black!60] {delegates} (agent);
     \draw[-{Stealth[length=3mm]}, line width=1.2pt, color=red!50!black]
-        (agent.east) ++(0,-0.05) -- ++(0.6,0) |- (escalate.west);
-    \node[font=\footnotesize\bfseries, color=red!50!black, anchor=north west] at ($(escalate.west) + (-0.9, -0.05)$) {Yes};
+        (agent.east) -- (junction) |- (escalate.west);
+    \draw[-{Stealth[length=3mm]}, line width=1.2pt, color=green!50!black]
+        (junction) |- (implement.west);
+    % Dotted return from Escalate to Human
+    \draw[-{Stealth[length=3mm]}, line width=1.2pt, color=red!50!black, densely dashed]
+        (escalate.north) -- ++(0,0.35) -| (human.north);
     \end{tikzpicture}%
     }
     \caption{The escalation decision. A human delegates a task to an LLM agent, which produces a prediction and then decides whether to implement (incurring error cost $c_w$ if wrong) or escalate (incurring labor cost $c_\ell$). The agent escalates when its estimated probability of being correct $\hat{p}$ falls below a threshold $\tau$.}
