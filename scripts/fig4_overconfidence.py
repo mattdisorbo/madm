@@ -119,20 +119,20 @@ for i, (short_name, tag) in enumerate(MODELS):
         sub = df[df['dataset'] == ds]
         if sub.empty:
             continue
-        label = ds if i == 0 else None
+        label = ds if i in (0, 4) else None
         ax.scatter(sub['actual_acc'], sub['self_est_acc'], c=color, s=50, alpha=0.7,
                    label=label, edgecolors='none')
     ax.set_xlim(vmin, vmax)
     ax.set_ylim(vmin, vmax)
     ax.set_aspect('equal', adjustable='box')
-    ax.set_title(short_name, fontsize=14, fontweight='bold')
-    ax.set_xlabel('Actual accuracy', fontsize=12)
-    ax.set_ylabel('Self-estimated accuracy', fontsize=12)
-    ax.tick_params(labelsize=11)
-    if i == 0:
-        ax.legend(fontsize=10, loc='best')
+    ax.set_title(short_name, fontsize=16, fontweight='bold')
+    ax.set_xlabel('Actual accuracy', fontsize=13)
+    ax.set_ylabel('Self-estimated accuracy', fontsize=13)
+    ax.tick_params(labelsize=12)
 
 
+axes_flat[0].legend(fontsize=11, loc='lower right')
+axes_flat[4].legend(fontsize=11, loc='lower right')
 plt.tight_layout()
 fig.savefig(OUT_PATH, dpi=300, bbox_inches='tight')
 print(f'Saved to {OUT_PATH}')

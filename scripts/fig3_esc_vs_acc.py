@@ -71,19 +71,19 @@ for i, (short_name, tag) in enumerate(MODELS):
         sub = df[df['dataset'] == ds]
         if sub.empty:
             continue
-        label = ds if i == 0 else None
+        label = ds if i in (0, 4) else None
         se = np.sqrt(sub['esc_rate'] * (1 - sub['esc_rate']) / sub['n'])
         ax.errorbar(sub['pred_acc'], sub['esc_rate'], yerr=se, fmt='o', c=color, ms=7, alpha=0.7, label=label, elinewidth=1.0, capsize=0)
     ax.set_xlim(xmin, xmax)
     ax.set_ylim(ymin, ymax)
-    ax.set_title(short_name, fontsize=14, fontweight='bold')
-    ax.set_xlabel('Predictive accuracy', fontsize=12)
-    ax.set_ylabel('Escalation rate', fontsize=12)
-    ax.tick_params(labelsize=11)
-    if i == 0:
-        ax.legend(fontsize=10, loc='best')
+    ax.set_title(short_name, fontsize=16, fontweight='bold')
+    ax.set_xlabel('Predictive accuracy', fontsize=13)
+    ax.set_ylabel('Escalation rate', fontsize=13)
+    ax.tick_params(labelsize=12)
 
 
+axes_flat[0].legend(fontsize=11, loc='lower left')
+axes_flat[4].legend(fontsize=11, loc='lower left')
 plt.tight_layout()
 fig.savefig(OUT_PATH, dpi=300, bbox_inches='tight')
 print(f'Saved to {OUT_PATH}')
