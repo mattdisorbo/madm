@@ -59,7 +59,7 @@ These dynamics, however, can be corrected. We test a series of interventions tha
 \label{sec:theory}
 % ======================================================================
 
-\subsection{The Escalation Decision}
+\subsection{The escalation decision}
 
 Consider a workflow in which a human delegates a binary task to an LLM-based agent. The agent observes a scenario $x$ and produces a prediction $\hat{y} \in \{0, 1\}$. The ground truth is the human's preference $y \in \{0, 1\}$. The agent then decides whether to \emph{implement} (act on) its prediction or \emph{escalate} (defer to the human). Every action an agent takes in practice contains an implicit escalation decision: when it makes a tool call, generates a response, or commits a change, it is choosing to implement rather than escalate and ask for guidance. Figure~\ref{fig:workflow} illustrates this workflow.
 
@@ -114,7 +114,7 @@ Consider a workflow in which a human delegates a binary task to an LLM-based age
 
 We model the agent's behavior as follows. After producing its prediction, the agent forms an internal estimate $\hat{p}$ of its probability of being correct $P(\hat{y} = y)$. The cost structure then determines an optimal decision threshold $\tau$ (derived below): the agent escalates if $\hat{p} < \tau$ and implements otherwise.
 
-\subsection{Cost Structure}
+\subsection{Cost structure}
 
 One of two costs can be incurred depending on the agent's action. If the agent escalates, the human pays a labor cost $c_\ell > 0$, which represents the time and effort required of the human. If the agent implements and its prediction is wrong, the human pays an error cost $c_w > c_\ell$. Correct implementations incur zero cost.
 
@@ -136,7 +136,7 @@ To first assess calibration, we give the agent no signal, so that its escalation
 
 
 % ======================================================================
-\section{Experimental Design}
+\section{Experimental design}
 \label{sec:design}
 % ======================================================================
 
@@ -167,7 +167,7 @@ We evaluate eight models spanning four families, each with a smaller and larger 
 \end{itemize}
 GPT-5-mini excludes \emph{MovieLens} and \emph{MoralMachine} due to content filter restrictions. GPT-5-nano excludes \emph{MoralMachine} for the same reason. All other models are evaluated on all five datasets.
 
-\subsection{Prompting Protocol}
+\subsection{Prompting protocol}
 
 Each scenario is accompanied by a \emph{signal}: a natural-language summary of a decision tree's output for the scenario's feature-defined condition, including the feature split and its predictive accuracy (e.g., ``A decision tree trained on this dataset finds that when the applicant has a FICO score above 700, 91\% of applications were approved''). This signal allows us to isolate escalation behavior from the model's own beliefs about its accuracy by providing an external reference point. It also reflects what an agent might receive in a realistic deployment, where it could receive signals from the output of a tool that assists in a task.
 
@@ -186,7 +186,7 @@ For each condition, we sample 250 scenarios (50 for thinking runs) and report me
 
 
 % ======================================================================
-\section{Escalation Profiles}
+\section{Escalation profiles}
 \label{sec:results1}
 % ======================================================================
 
@@ -263,7 +263,7 @@ For a practitioner choosing a model for automated decision-making, these differe
 
 
 % ======================================================================
-\section{Self-Estimated Accuracy}
+\section{Self-estimated accuracy}
 \label{sec:results2}
 % ======================================================================
 
@@ -285,13 +285,13 @@ Even knowing a model's accuracy beliefs does not predict its escalation threshol
 
 
 % ======================================================================
-\section{Calibrating the Threshold}
+\section{Calibrating the threshold}
 \label{sec:results3}
 % ======================================================================
 
 We now test whether the escalation threshold can be aligned with a target cost ratio through prompting interventions and fine-tuning.
 
-\subsection{Prompting Interventions}
+\subsection{Prompting interventions}
 
 We evaluate Qwen3.5-9B under four conditions: baseline (signal, no thinking, no cost framing), cost framing alone, thinking alone, and thinking with cost framing. For each sample, we score whether the model makes the cost-optimal escalation decision at $R = 4$, which sets the optimal threshold at $\tau^* = 75\%$.
 
@@ -322,7 +322,7 @@ The combination of thinking and cost framing achieves 78.8\% accuracy, a substan
 
 GPT-5-mini uses built-in reasoning controlled by OpenAI's \texttt{reasoning\_effort} parameter. At the \texttt{minimal} level, it achieves 64.7\%, comparable to the Qwen baseline. Unlike Qwen, cost framing alone improves GPT-5-mini to 75.8\% even at minimal reasoning, suggesting that the model retains some capacity to process cost information without extended reasoning. At \texttt{medium} reasoning, accuracy reaches 73.2\%, and the combination of medium reasoning and cost framing achieves 87.1\%.
 
-\subsection{Fine-Tuning for Cost-Sensitive Escalation}
+\subsection{Fine-tuning for cost-sensitive escalation}
 
 Prompt-based interventions improve escalation accuracy but remain imperfect. We investigate whether fine-tuning can train a model to internalize cost-sensitive escalation behavior. We train Qwen3.5-9B with SFT on chain-of-thought responses that explicitly extract the accuracy from the signal and compute the expected cost. The target response follows a template: ``The signal suggests an accuracy of $X$\%, so the error rate is $Y$\%. The expected cost of implementing is $R \times Y = Z$, which exceeds/is below 1.'' We train on three of the four main datasets (\emph{HotelBookings}, \emph{LendingClub}, \emph{WikipediaToxicity}), four cost framings, and six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), holding out \emph{MovieLens} entirely. The SFT model achieves near-perfect accuracy: 100\% on all datasets, cost ratios, and cost framings, with a single error at a boundary case where $R(1-p) = 1.00$ exactly (full results in Table~\ref{tab:sft_results}, Appendix~\ref{app:sft_table}). The held-out dataset (\emph{MovieLens}) also achieves 100\%, demonstrating that the model learned a general procedure rather than memorizing dataset-specific decisions.
 
@@ -330,7 +330,7 @@ To confirm that the SFT model reads and uses the signal, we run an ablation that
 
 
 % ======================================================================
-\section{Related Work}
+\section{Related work}
 \label{sec:related}
 % ======================================================================
 
@@ -392,7 +392,7 @@ Escalation rates are uniformly high across all models (68--100\%), reflecting ap
     \end{tabular}
 \end{table}
 
-\section{SFT Signal Ablation}
+\section{SFT signal ablation}
 \label{app:sft_ablation}
 
 To verify that the SFT model relies on the feature signal rather than exploiting some other signal, we evaluate it on prompts that omit the signal entirely. Table~\ref{tab:sft_nosignal} reports the results.
@@ -428,7 +428,7 @@ The agent should escalate when $c_\ell < (1-p) \, c_w$, i.e., when $p < 1 - c_\e
 The agent escalates when $\hat{p} = p + \mu < \tau^*$, i.e., when $p < \tau^* - \mu$. The agent therefore applies threshold $\tau^* - \mu$. The expected cost as a function of threshold $\tau$ is $C(\tau) = \int_0^\tau c_\ell \, f(p) \, dp + \int_\tau^1 (1-p) \, c_w \, f(p) \, dp$, with derivative $C'(\tau) = f(\tau) [c_\ell - (1-\tau) c_w]$. For $\tau < \tau^*$, we have $(1-\tau) > c_\ell / c_w$, so $C'(\tau) < 0$: moving the threshold further below $\tau^*$ increases cost. For $\tau > \tau^*$, $C'(\tau) > 0$: moving further above $\tau^*$ also increases cost. Therefore $C(\tau^* - \mu)$ is increasing in $|\mu|$.
 \end{proof}
 
-\section{SFT Results}
+\section{SFT results}
 \label{app:sft_table}
 
 \begin{table}[h]
@@ -447,7 +447,7 @@ The agent escalates when $\hat{p} = p + \mu < \tau^*$, i.e., when $p < \tau^* - 
     \end{tabular}
 \end{table}
 
-\section{Escalation Threshold and Self-Estimated Accuracy}
+\section{Escalation threshold and self-estimated accuracy}
 \label{app:pstar}
 
 \begin{figure}[h]
@@ -457,7 +457,7 @@ The agent escalates when $\hat{p} = p + \mu < \tau^*$, i.e., when $p < \tau^* - 
     \label{fig:pstar}
 \end{figure}
 
-\section{Example Scenarios}
+\section{Example scenarios}
 \label{app:examples}
 
 \paragraph{\emph{HotelBookings}.} ``Person 1 has booked a hotel stay arriving on July 12, 2017 (week 28), with 2 weekend night(s) and 3 weekday night(s). The party consists of 2 adult(s). Person 1 is not a repeated guest and has 0 previous cancellation(s). They have requested 1 car parking space(s) and made 2 special request(s).''
