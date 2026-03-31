@@ -83,7 +83,7 @@ for i, (short_name, tag) in enumerate(MODELS):
 
 
 handles, labels = axes_flat[0].get_legend_handles_labels()
-fig.legend(handles, labels, loc='lower center', ncol=4, fontsize=14, frameon=False)
+fig.legend(handles, labels, loc='lower center', ncol=4, fontsize=16, frameon=False)
 plt.tight_layout(rect=[0, 0.07, 1, 1], h_pad=4.0)
 fig.savefig(OUT_PATH, dpi=300, bbox_inches='tight')
 print(f'Saved to {OUT_PATH}')
