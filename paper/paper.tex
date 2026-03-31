@@ -41,7 +41,7 @@ Effective automation hinges on deciding when to act and when to escalate. We mod
 \label{sec:intro}
 % ======================================================================
 
-Agents based on large language models (LLMs) are increasingly deployed to automate consequential decisions, from triaging customer support tickets \citep{li2024agent_survey} to generating code \citep{jimenez2024swebench} and managing enterprise workflows \citep{wu2023autogen}. Most evaluations focus on speed, accuracy, and cost-savings \citep{jimenez2024swebench, chiang2024chatbot_arena, trivedi2024appworld}. However, in each setting, an agent faces a choice that receives far less scrutiny: should it implement its own decision, or escalate to a human?
+Agents based on large language models (LLMs) are increasingly deployed to automate consequential decisions, from performing autonomous tasks \citep{li2024agent_survey} to generating code \citep{jimenez2024swebench} and managing enterprise workflows \citep{wu2023autogen}. Most evaluations focus on speed, accuracy, and cost-savings \citep{jimenez2024swebench, chiang2024chatbot_arena, trivedi2024appworld}. However, in each setting, an agent faces a choice that receives far less scrutiny: should it implement its own decision, or escalate to a human?
 
 Agent escalation behavior is fundamental to effective automation. An agent that fails to escalate when it is uncertain or incorrect will propagate errors at scale \citep{bai2024measuring_faithfulness}, while an agent that always escalates never reduces the human workload it was meant to replace. Two parameters govern effective escalation. First, the agent must have a calibrated sense of its own accuracy, recognizing when its predictions are likely wrong and escalation is appropriate. Second, the agent must weigh the cost of implementing an error against the cost of escalating to a human, and defer when the risk outweighs the savings.
 
@@ -366,7 +366,7 @@ Several limitations suggest directions for future work. Our evaluation is limite
 
 % ======================================================================
 \appendix
-\section{\emph{MoralMachine} Results}
+\section{\emph{MoralMachine} results}
 \label{app:moral}
 
 \emph{MoralMachine} presents ethical dilemmas rather than typical agent tasks, making it a robustness check for whether escalation patterns generalize beyond standard decision-making. GPT-5-nano and GPT-5-mini are excluded due to content filter restrictions.
