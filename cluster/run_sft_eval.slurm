@@ -17,6 +17,7 @@ export TMPDIR=/work1/harangju/harang/.cache/tmp
 mkdir -p "$UV_CACHE_DIR" "$PIP_CACHE_DIR" "$TMPDIR"
 export TOGETHER_API_KEY=unused
 export PYTORCH_ALLOC_CONF=expandable_segments:True
+export HF_HUB_OFFLINE=1
 
 # Training (fast, resumes from checkpoint)
 echo "========== SFT Training at $(date) =========="
