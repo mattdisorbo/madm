@@ -21,6 +21,10 @@ models = [
     ('Llama3.3-70B', 'Llama-3.3-70B-Instruct-Turbo'),
     ('Mixtral-8x7B', 'Mixtral-8x7B-Instruct-v0.1'),
     ('Mistral-Small-24B', 'Mistral-Small-24B-Instruct-2501'),
+    ('Gemma3-4B', 'gemma-3-4b-it'),
+    ('Gemma3-12B', 'gemma-3-12b-it'),
+    ('Claude Sonnet 4.6', 'claude-sonnet-4-6'),
+    ('Claude Opus 4.7', 'claude-opus-4-7'),
 ]
 
 results = []
@@ -58,7 +62,7 @@ df = pd.DataFrame(results)
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
 
-colors = ['#4C72B0', '#4C72B0', '#DD8452', '#DD8452', '#55A868', '#55A868', '#C44E52', '#C44E52']
+colors = ['#4C72B0', '#4C72B0', '#DD8452', '#DD8452', '#55A868', '#55A868', '#C44E52', '#C44E52', '#8172B2', '#8172B2', '#937860', '#937860']
 bars1 = ax1.barh(df['name'], df['pstar'].clip(upper=1.2), color=colors, alpha=0.8)
 ax1.axvline(x=0.75, color='gray', linestyle=':', linewidth=1, label='$\\tau^*$ at $R=4$')
 ax1.set_xlabel('Implicit threshold $p^*$')
