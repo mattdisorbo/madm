@@ -45,7 +45,7 @@ Agents based on large language models (LLMs) are increasingly deployed to automa
 
 Agent escalation behavior is fundamental to effective automation. An agent that fails to escalate when it is uncertain or incorrect will propagate errors at scale \citep{bai2024measuring_faithfulness}, while an agent that always escalates never reduces the human workload it was meant to replace. Two parameters govern effective escalation. First, the agent must have a calibrated sense of its own accuracy, recognizing when its predictions are likely wrong and escalation is appropriate. Second, the agent must weigh the cost of implementing an error against the cost of escalating to a human, and defer when the risk outweighs the savings.
 
-We study escalation behavior across twelve models spanning six families, each represented by a smaller and larger variant: Qwen3.5-9B and Qwen3.5-397B-A17B, GPT-5-nano and GPT-5-mini, Llama~4~Maverick and Llama~3.3~70B, Mixtral~8x7B and Mistral~Small~24B, Gemma~3~4B and Gemma~3~12B, and Claude~Sonnet~4.6 and Claude~Opus~4.7. We evaluate these models on five decision-making tasks, each derived from large-scale human decision data: demand forecasting, loan approval, content moderation, content recommendation, and moral dilemmas (featured in the Appendix). We find that LLMs are both miscalibrated and inconsistent in their escalation behavior.
+In the main text we report results for six models in three families, each represented by a smaller and larger variant: Qwen3.5-9B and Qwen3.5-397B-A17B, Gemma~3~4B and Gemma~3~12B, and Claude~Sonnet~4.6 and Claude~Opus~4.7. The Appendix extends the analysis to six additional models from three more families: GPT-5-nano and GPT-5-mini, Llama~4~Maverick and Llama~3.3~70B, and Mixtral~8x7B and Mistral~Small~24B. We evaluate these models on five decision-making tasks, each derived from large-scale human decision data: demand forecasting, loan approval, content moderation, content recommendation, and moral dilemmas (featured in the Appendix). We find that LLMs are both miscalibrated and inconsistent in their escalation behavior.
 
 First, models differ widely in self-assessment. Some systematically overestimate their accuracy, others underestimate it, and others are well-calibrated. The direction and magnitude of miscalibration vary by model and domain. Prior work has documented LLM overconfidence in factual knowledge \citep{kadavath2022language} and calibration failures in question answering \citep{xiong2024can}, but these studies measure confidence in isolation. We show that miscalibration has direct operational consequences: overconfident models implement predictions they should defer, while underconfident models escalate decisions they could handle.
 
@@ -158,15 +158,14 @@ Example scenarios for each dataset are provided in Appendix~\ref{app:examples}.
 
 \subsection{Models}
 
-We evaluate twelve models spanning six families, each with a smaller and larger variant:
+The main text reports six models in three families, each with a smaller and larger variant:
 \begin{itemize}
     \item \textbf{Qwen3.5-9B / Qwen3.5-397B-A17B}: Dense and sparse MoE models from the Qwen3.5 family.
-    \item \textbf{GPT-5-nano / GPT-5-mini}: Closed-source reasoning models from OpenAI.
-    \item \textbf{Llama~4~Maverick / Llama~3.3~70B}: MoE (17B active / 128 experts) and dense models from Meta.
-    \item \textbf{Mixtral~8x7B / Mistral~Small~24B}: Sparse MoE (12B active / 8 experts) and dense models from Mistral.
     \item \textbf{Gemma~3~4B / Gemma~3~12B}: Dense models from Google.
     \item \textbf{Claude~Sonnet~4.6 / Claude~Opus~4.7}: Closed-source models from Anthropic.
 \end{itemize}
+The Appendix extends the analysis to three more families: GPT-5-nano / GPT-5-mini (OpenAI), Llama~4~Maverick / Llama~3.3~70B (Meta), and Mixtral~8x7B / Mistral~Small~24B (Mistral).
+
 GPT-5-mini excludes \emph{MovieLens} and \emph{MoralMachine} due to content filter restrictions. GPT-5-nano excludes \emph{MoralMachine} for the same reason. Gemma~3 and Claude models are evaluated on the four main datasets but not \emph{MoralMachine}. The remaining models are evaluated on all five datasets.
 
 \subsection{Prompting protocol}

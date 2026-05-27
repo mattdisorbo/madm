@@ -12,16 +12,10 @@ OUT_PATH = '/Users/mdisorbo/madm_colm/paper/figures/esc_vs_acc_nothink_5models.p
 
 MODELS = [
     ('Qwen3.5-9B', 'Qwen3.5-9B'),
-    ('GPT-5-nano', 'gpt-5-nano'),
-    ('Llama4-Maverick', 'Llama-4-Maverick-17B-128E-Instruct-FP8'),
-    ('Mixtral-8x7B', 'Mixtral-8x7B-Instruct-v0.1'),
-    ('Gemma3-4B', 'gemma-3-4b-it'),
+    ('Gemma 3 4B', 'gemma-3-4b-it'),
     ('Claude Sonnet 4.6', 'claude-sonnet-4-6'),
     ('Qwen3.5-397B', 'Qwen3.5-397B-A17B'),
-    ('GPT-5-mini', 'gpt-5-mini'),
-    ('Llama3.3-70B', 'Llama-3.3-70B-Instruct-Turbo'),
-    ('Mistral-Small-24B', 'Mistral-Small-24B-Instruct-2501'),
-    ('Gemma3-12B', 'gemma-3-12b-it'),
+    ('Gemma 3 12B', 'gemma-3-12b-it'),
     ('Claude Opus 4.7', 'claude-opus-4-7'),
 ]
 
@@ -35,7 +29,7 @@ DATASETS = {
 # Auto-detect available datasets per model (excluding MoralMachine for main figures)
 ALL_DATASETS = ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens']
 
-fig, axes = plt.subplots(2, 6, figsize=(22, 8))
+fig, axes = plt.subplots(2, 3, figsize=(13, 8))
 axes_flat = axes.flatten()
 
 # Collect global ranges
