@@ -14,9 +14,11 @@ MODELS = [
     ('Qwen3.5-9B', 'Qwen3.5-9B'),
     ('Gemma 3 4B', 'gemma-3-4b-it'),
     ('Claude Sonnet 4.6', 'claude-sonnet-4-6'),
+    ('GPT-5-nano', 'gpt-5-nano'),
     ('Qwen3.5-397B', 'Qwen3.5-397B-A17B'),
     ('Gemma 3 12B', 'gemma-3-12b-it'),
     ('Claude Opus 4.7', 'claude-opus-4-7'),
+    ('GPT-5-mini', 'gpt-5-mini'),
 ]
 
 DATASETS = {
@@ -29,7 +31,7 @@ DATASETS = {
 # Auto-detect available datasets per model (excluding MoralMachine for main figures)
 ALL_DATASETS = ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens']
 
-fig, axes = plt.subplots(2, 3, figsize=(13, 8))
+fig, axes = plt.subplots(2, 4, figsize=(17, 8))
 axes_flat = axes.flatten()
 
 # Collect global ranges
