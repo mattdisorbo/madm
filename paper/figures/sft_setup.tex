@@ -1,0 +1,60 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc, positioning, arrows.meta}
+\usepackage{mathpazo}
+\begin{document}
+\begin{tikzpicture}[
+    ubox/.style={rounded corners=3pt, draw=blue!50, fill=blue!6, line width=0.8pt, text width=5.2cm, inner sep=5pt, anchor=north west},
+    abox/.style={rounded corners=3pt, draw=orange!70, fill=orange!5, line width=0.8pt, text width=5.2cm, inner sep=5pt, anchor=north west},
+    cbox/.style={rounded corners=3pt, draw=red!60, fill=red!8, line width=0.8pt, text width=5.2cm, inner sep=5pt, anchor=north west},
+    tbox/.style={rounded corners=3pt, draw=green!50!black, fill=green!7, line width=1.2pt, text width=6.5cm, inner sep=8pt, anchor=north west},
+    ttl/.style={font=\normalsize\bfseries, anchor=south west},
+    arrow/.style={-{Stealth[length=4mm]}, line width=1.4pt, color=gray!70},
+]
+
+% === LEFT: Input conversation ===
+\node[ttl, color=blue!60] at (0, 0.2) {INPUT (conversation)};
+
+\node[ubox] (scenario) at (0, -0.3) {%
+    {\footnotesize\sffamily\bfseries Scenario + Signal}\\[2pt]
+    {\small\itshape Applicant requests \$35,000 for debt consolidation. Credit score 705. A decision tree finds that when FICO \textgreater{} 700, \textbf{91\%} were approved.}
+};
+\node[ubox] (task1) at ($(scenario.south west) + (0, -0.1)$) {%
+    {\footnotesize\sffamily\bfseries Task (prediction)}\\[2pt]
+    {\small\itshape Conclude with PREDICTION: 1 or 0.}
+};
+\node[abox] (pred) at ($(task1.south west) + (0, -0.1)$) {%
+    {\footnotesize\sffamily\bfseries Assistant prediction}\\[2pt]
+    {\small\itshape ... PREDICTION: 1}
+};
+\node[cbox] (cost) at ($(pred.south west) + (0, -0.1)$) {%
+    {\footnotesize\sffamily\bfseries Cost framing}\\[2pt]
+    {\small\itshape Implementing a wrong answer costs \textbf{4x} more than escalating.}
+};
+\node[ubox] (task2) at ($(cost.south west) + (0, -0.1)$) {%
+    {\footnotesize\sffamily\bfseries Task (escalation)}\\[2pt]
+    {\small\itshape Should we implement your prediction, or escalate? Conclude with DECISION: 0 or 1.}
+};
+
+% === Arrow ===
+\draw[arrow] (5.6, -4.5) -- node[above, font=\small\bfseries, text=gray!60!black]{SFT target} (8.6, -4.5);
+
+% === RIGHT: SFT target ===
+\node[ttl, color=green!40!black] at (8.6, 0.2) {SFT TARGET (Assistant response)};
+
+\node[tbox] (target) at (8.6, -0.3) {%
+    {\footnotesize\sffamily\bfseries Chain-of-thought template}\\[6pt]
+    {\small\itshape ``The signal suggests an accuracy of \textbf{\textcolor{blue!70!black}{X}}\%, so the error rate is \textbf{\textcolor{blue!70!black}{Y}}\%.}\\[4pt]
+    {\small\itshape The expected cost of implementing is \textbf{\textcolor{red!70!black}{R}} $\times$ \textbf{\textcolor{blue!70!black}{Y}} = \textbf{\textcolor{green!50!black}{Z}}, which exceeds/is below 1.\\}\\[4pt]
+    {\small\itshape DECISION: 0 (implement)~or~1 (escalate).''}
+};
+
+\node[tbox, fill=green!12, draw=green!60!black] (instance) at ($(target.south west) + (0, -0.4)$) {%
+    {\footnotesize\sffamily\bfseries Instantiation for this example}\\[6pt]
+    {\small\itshape ``The signal suggests an accuracy of \textbf{\textcolor{blue!70!black}{91}}\%, so the error rate is \textbf{\textcolor{blue!70!black}{9}}\%.}\\[4pt]
+    {\small\itshape The expected cost of implementing is \textbf{\textcolor{red!70!black}{4}} $\times$ \textbf{\textcolor{blue!70!black}{0.09}} = \textbf{\textcolor{green!50!black}{0.36}}, which is below 1.}\\[4pt]
+    {\small\itshape DECISION: 0 (implement).''}
+};
+
+\end{tikzpicture}
+\end{document}
