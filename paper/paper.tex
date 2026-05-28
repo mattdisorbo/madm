@@ -195,7 +195,7 @@ We use three accuracy measures throughout, and refer to each by its specific nam
 
 \textbf{Escalation accuracy} is the rate at which the agent's implement/escalate choice in Turn 2 agrees with the cost-optimal action for a given cost ratio $R$. An escalation is optimal when the prediction's expected error cost exceeds the labor cost, i.e., when $p < \tau^* = 1 - 1/R$. Escalation accuracy is therefore a property of the joint behavior across both turns, evaluated against the Bayes-optimal policy.
 
-\textbf{Self-estimated accuracy} ($\hat{a}$) is the agent's implicit belief about its own predictive accuracy, recovered by mapping its no-signal escalation rate onto the signal-based escalation curve (Section~\ref{sec:results2}).
+\textbf{Self-estimated predictive accuracy} ($\hat{a}$) is the agent's implicit belief about its own predictive accuracy, recovered by mapping its no-signal escalation rate onto the signal-based escalation curve (Section~\ref{sec:results2}).
 
 
 % ======================================================================
@@ -276,11 +276,11 @@ For a practitioner choosing a model for automated decision-making, these differe
 
 
 % ======================================================================
-\section{Self-estimated accuracy}
+\section{Self-estimated predictive accuracy}
 \label{sec:results2}
 % ======================================================================
 
-Having established signal-based escalation curves, we now recover what a model believes about its own predictive accuracy. Without a signal, the model escalates at a rate that reflects only its prior beliefs. We map this no-signal escalation rate onto the signal-based curve to find the predictive accuracy that would produce the same escalation rate, yielding the model's \emph{self-estimated accuracy} $\hat{a}$.
+Having established signal-based escalation curves, we now recover what a model believes about its own predictive accuracy. Without a signal, the model escalates at a rate that reflects only its prior beliefs. We map this no-signal escalation rate onto the signal-based curve to find the predictive accuracy that would produce the same escalation rate, yielding the model's \emph{self-estimated predictive accuracy} $\hat{a}$.
 
 We find that calibration varies markedly across our main-text models (Figure~\ref{fig:overconfidence}). Qwen3.5-9B is the most overconfident, with a 19-point gap between its self-estimated and actual predictive accuracy (94\% vs.\ 75\%). Its smaller sibling Qwen3.5-4B is only mildly overconfident (82\% vs.\ 77\%), so scaling the dense Qwen up from 4B to 9B sharply worsens calibration. Both Gemma~3 sizes are mildly underconfident (self-estimates of 68--69\% against actual 75--76\%). GPT-5-nano is moderately overconfident (85\% vs.\ 76\%). Claude Sonnet~4.6, Claude Opus~4.7, and GPT-5-mini sit close to calibrated, with self-estimates within 3 percentage points of actual. Within the same family, scaling up shifts calibration unpredictably: dense Qwen worsens, GPT-5 moves from overconfident to calibrated, and Gemma~3 stays underconfident at both sizes. Appendix~\ref{app:additional_models} extends this analysis to five additional models, including Qwen3.5-397B and the Llama and Mistral families.
 
@@ -289,12 +289,12 @@ These aggregate numbers, however, understate the problem (Figure~\ref{fig:pstar}
 \begin{figure}[t]
     \centering
     \includegraphics[width=\textwidth]{figures/overconfidence_by_condition.png}
-    \caption{Actual versus self-estimated accuracy for each of the eight main-text models across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). The direction and magnitude of miscalibration vary markedly by model: Qwen3.5-9B is consistently overconfident, Gemma~3 is underconfident, GPT-5-nano is moderately overconfident, and Claude and GPT-5-mini are close to calibrated. Appendix~\ref{app:additional_models} shows the same plot for the additional four models.}
+    \caption{Actual versus self-estimated predictive accuracy for each of the eight main-text models across four datasets. Points above the diagonal indicate overconfidence (self-estimated $>$ actual). The direction and magnitude of miscalibration vary markedly by model: Qwen3.5-9B is consistently overconfident, Gemma~3 is underconfident, GPT-5-nano is moderately overconfident, and Claude and GPT-5-mini are close to calibrated. Appendix~\ref{app:additional_models} shows the same plot for the additional four models.}
     \label{fig:overconfidence}
 \end{figure}
 
 
-Even knowing a model's self-estimated accuracy does not predict its escalation threshold. Self-estimated accuracy spans 68\% to 94\%, and $p^*$ spans 53\% to 98\%, but the two are largely independent. Gemma~3~12B is underconfident yet has the highest threshold (escalates aggressively), while GPT-5-mini is nearly calibrated yet has the lowest threshold (implements aggressively). Practitioners must characterize both dimensions before deployment.
+Even knowing a model's self-estimated predictive accuracy does not predict its escalation threshold. Self-estimated predictive accuracy spans 68\% to 94\%, and $p^*$ spans 53\% to 98\%, but the two are largely independent. Gemma~3~12B is underconfident yet has the highest threshold (escalates aggressively), while GPT-5-mini is nearly calibrated yet has the lowest threshold (implements aggressively). Practitioners must characterize both dimensions before deployment.
 
 
 % ======================================================================
@@ -519,22 +519,22 @@ The agent escalates when $\hat{p} = p + \mu < \tau^*$, i.e., when $p < \tau^* - 
     \end{tabular}
 \end{table}
 
-\section{Escalation threshold and self-estimated accuracy}
+\section{Escalation threshold and self-estimated predictive accuracy}
 \label{app:pstar}
 
-Figure~\ref{fig:pstar} summarizes the implicit threshold $p^*$ and self-estimated accuracy $\hat{a}$ for all thirteen models, as described in Sections~\ref{sec:results1} and~\ref{sec:results2}.
+Figure~\ref{fig:pstar} summarizes the implicit threshold $p^*$ and self-estimated predictive accuracy $\hat{a}$ for all thirteen models, as described in Sections~\ref{sec:results1} and~\ref{sec:results2}.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{figures/pstar_ahat_bars.png}
-    \caption{Implicit escalation threshold $p^*$ (left) and self-estimated accuracy $\hat{a}$ (right) for each of the thirteen models. The threshold $p^*$ spans 56\% (Qwen3.5-9B) to nearly 100\% (high-threshold models), while self-estimated accuracy ranges from 68\% to 97\%. The dotted lines show the optimal threshold $\tau^* = 75\%$ at cost ratio $R = 4$ (left) and average actual accuracy (right).}
+    \caption{Implicit escalation threshold $p^*$ (left) and self-estimated predictive accuracy $\hat{a}$ (right) for each of the thirteen models. The threshold $p^*$ spans 56\% (Qwen3.5-9B) to nearly 100\% (high-threshold models), while self-estimated predictive accuracy ranges from 68\% to 97\%. The dotted lines show the optimal threshold $\tau^* = 75\%$ at cost ratio $R = 4$ (left) and average actual accuracy (right).}
     \label{fig:pstar}
 \end{figure}
 
 \section{Additional models}
 \label{app:additional_models}
 
-The main text reports eight models in four families (Qwen3.5, Gemma~3, Claude, GPT-5). We additionally evaluated five models using the same protocol: the Qwen3.5-397B-A17B MoE flagship, plus Llama~4~Maverick and Llama~3.3~70B (Meta), and Mixtral~8x7B and Mistral~Small~24B (Mistral). The escalation-threshold and self-calibration patterns established in the main text extend to these models, with comparable within-family variation. Figure~\ref{fig:pstar} reports the implicit threshold $p^*$ and self-estimated accuracy $\hat{a}$ for all thirteen models side by side.
+The main text reports eight models in four families (Qwen3.5, Gemma~3, Claude, GPT-5). We additionally evaluated five models using the same protocol: the Qwen3.5-397B-A17B MoE flagship, plus Llama~4~Maverick and Llama~3.3~70B (Meta), and Mixtral~8x7B and Mistral~Small~24B (Mistral). The escalation-threshold and self-calibration patterns established in the main text extend to these models, with comparable within-family variation. Figure~\ref{fig:pstar} reports the implicit threshold $p^*$ and self-estimated predictive accuracy $\hat{a}$ for all thirteen models side by side.
 
 Qwen3.5-397B has $p^* = 81\%$, 25 percentage points above the dense Qwen3.5-9B ($p^* = 56\%$), the largest within-Qwen threshold gap and a useful contrast to the near-flat 4B-to-9B threshold shift in the main text. Among the Llama and Mistral models, $p^*$ exceeds 90\% for all four, with Llama~3.3~70B and Mixtral~8x7B above 100\%, and Mixtral~8x7B and Mistral~Small~24B differ by more than 30 percentage points within the Mistral family. On the calibration axis, Mixtral~8x7B and Mistral~Small~24B are strongly overconfident, Llama~3.3~70B is underconfident on aggregate but with offsetting per-condition biases, and Llama~4~Maverick falls in between. These results corroborate the main-text finding that escalation behavior is model-specific and unpredictable from architecture or scale.
 
