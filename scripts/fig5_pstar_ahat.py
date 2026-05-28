@@ -13,6 +13,7 @@ OUT_PATH = 'paper/figures/pstar_ahat_bars.png'
 ALL_DATASETS = ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens']
 
 models = [
+    ('Qwen3.5-4B', 'Qwen3.5-4B'),
     ('Qwen3.5-9B', 'Qwen3.5-9B'),
     ('Qwen3.5-397B', 'Qwen3.5-397B-A17B'),
     ('GPT-5-nano', 'gpt-5-nano'),
@@ -62,7 +63,7 @@ df = pd.DataFrame(results)
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
 
-colors = ['#4C72B0', '#4C72B0', '#DD8452', '#DD8452', '#55A868', '#55A868', '#C44E52', '#C44E52', '#8172B2', '#8172B2', '#937860', '#937860']
+colors = ['#4C72B0', '#4C72B0', '#4C72B0', '#DD8452', '#DD8452', '#55A868', '#55A868', '#C44E52', '#C44E52', '#8172B2', '#8172B2', '#937860', '#937860']
 bars1 = ax1.barh(df['name'], df['pstar'].clip(upper=1.2), color=colors, alpha=0.8)
 ax1.axvline(x=0.75, color='gray', linestyle=':', linewidth=1, label='$\\tau^*$ at $R=4$')
 ax1.set_xlabel('Implicit threshold $p^*$')
