@@ -124,14 +124,9 @@ One of two costs can be incurred depending on the agent's action. If the agent e
 Let the agent escalate whenever $\hat{p} < \tau$ for some threshold $\tau \in [0,1]$, and suppose $\hat{p}$ is perfectly calibrated (i.e., $\hat{p} = p$). Then $\tau^* = 1 - c_\ell / c_w$ is the unique threshold that minimizes expected cost.
 \end{theorem}
 
-\begin{theorem}[Cost of miscalibration]
-\label{thm:calibration}
-Let the agent use the optimal threshold $\tau^*$ but have a systematic bias $\mu$ in its probability estimates, so that $\hat{p} = p + \mu$. Then expected cost is increasing in $|\mu|$.
-\end{theorem}
+Proof in Appendix~\ref{app:proofs}. By straightforward extension, a calibration bias in which the agent perceives $\hat{p} = p + \mu$ shifts the effective threshold to $\tau^* - \mu$: overconfident models ($\mu > 0$) implement too aggressively and underconfident models ($\mu < 0$) escalate too often, and expected cost is increasing in $|\mu|$.
 
-All proofs are in Appendix~\ref{app:proofs}.
-
-Theorem~\ref{thm:threshold} establishes that practitioners cannot avoid characterizing their model's threshold: any deviation from $\tau^*$ creates avoidable cost. Theorem~\ref{thm:calibration} shows that a systematic bias $\mu$ shifts the effective threshold to $\tau^* - \mu$, with overconfident models ($\mu > 0$) implementing too aggressively and underconfident models ($\mu < 0$) escalating too often. Both results motivate the empirical characterization we pursue in the following sections.
+Theorem~\ref{thm:threshold} establishes that practitioners cannot avoid characterizing their model's threshold: any deviation from $\tau^*$ creates avoidable cost. Together with the calibration observation above, this motivates the empirical characterization we pursue in the following sections.
 
 To first assess calibration, we give the agent no signal, so that its escalation rate reflects only its prior belief about its own accuracy $\hat{a}$. We then compare $\hat{a}$ to its actual accuracy. To then assess threshold alignment, we construct escalation curves across accuracy levels and identify the accuracy $p^*$ at which the agent's escalation rate crosses 50\%. A perfectly aligned agent at cost ratio $R$ would have $p^* = \tau^* = 1 - 1/R$.
 
@@ -501,10 +496,6 @@ For a single instance with true accuracy $p$, the expected cost under threshold 
 C(p, \tau) = \begin{cases} c_\ell & \text{if } p < \tau \text{ (escalate)} \\ (1-p) \, c_w & \text{if } p \geq \tau \text{ (implement).} \end{cases}
 \]
 The agent should escalate when $c_\ell < (1-p) \, c_w$, i.e., when $p < 1 - c_\ell/c_w = \tau^*$. This threshold uniquely minimizes expected cost because it is the only value at which the agent is indifferent between escalating and implementing.
-\end{proof}
-
-\begin{proof}[Proof of Theorem~\ref{thm:calibration}]
-The agent escalates when $\hat{p} = p + \mu < \tau^*$, i.e., when $p < \tau^* - \mu$. The agent therefore applies threshold $\tau^* - \mu$. The expected cost as a function of threshold $\tau$ is $C(\tau) = \int_0^\tau c_\ell \, f(p) \, dp + \int_\tau^1 (1-p) \, c_w \, f(p) \, dp$, with derivative $C'(\tau) = f(\tau) [c_\ell - (1-\tau) c_w]$. For $\tau < \tau^*$, we have $(1-\tau) > c_\ell / c_w$, so $C'(\tau) < 0$: moving the threshold further below $\tau^*$ increases cost. For $\tau > \tau^*$, $C'(\tau) > 0$: moving further above $\tau^*$ also increases cost. Therefore $C(\tau^* - \mu)$ is increasing in $|\mu|$.
 \end{proof}
 
 \section{SFT results}
