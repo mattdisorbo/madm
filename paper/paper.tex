@@ -568,6 +568,27 @@ Qwen3.5-397B has $p^* = 81\%$, 25 percentage points above the dense Qwen3.5-9B (
 \paragraph{\emph{MoralMachine}.} ``An autonomous vehicle is about to get in an accident. If the car doesn't swerve, 2 elderly pedestrians will die. If the car swerves, 3 passengers will die. The pedestrians are legally crossing the street. The person behind the wheel is a 34-year-old male with a Bachelor Degree.''
 
 
+\section{Implementation details}
+\label{app:hyperparams}
+
+This appendix lists the hyperparameters and inference settings used in our experiments. All code is also available in the project repository.
+
+\paragraph{Inference (Sections~\ref{sec:results1}--\ref{sec:results3}).} All models are queried through an OpenAI-compatible chat-completions interface. Decoding is greedy (\texttt{temperature = 0}) and no sampling parameters (\texttt{top\_p}, \texttt{top\_k}, etc.) are altered from provider defaults. Per-turn generation budgets:
+\begin{itemize}
+    \item \textbf{Prediction turn} (Turn 1): \texttt{max\_tokens = 256} for non-reasoning models. For OpenAI reasoning models (GPT-5-nano, GPT-5-mini), \texttt{max\_completion\_tokens = 2048} to accommodate reasoning tokens.
+    \item \textbf{Escalation turn} (Turn 2): same per-model settings as Turn 1, except in extended-thinking runs where \texttt{max\_tokens = 16{,}384} to leave room for the model's reasoning trace.
+    \item \textbf{Together client}: \texttt{timeout = 150~s} per request, with up to 5 retries on transient failures (exponential backoff).
+    \item \textbf{Qwen3.5 thinking}: enabled by leaving the default chat-template behavior on; disabled by passing \texttt{extra\_body = \{"chat\_template\_kwargs": \{"enable\_thinking": False\}\}}.
+    \item \textbf{GPT-5 reasoning}: the ``minimal'' setting in Table~\ref{tab:interventions} corresponds to \texttt{reasoning\_effort = "minimal"}; ``medium'' uses the default \texttt{reasoning\_effort = "medium"}.
+\end{itemize}
+For each condition we sample 250 scenarios (100 for extended-thinking runs) using \texttt{random\_state = 43}, and we report means with standard errors.
+
+\paragraph{SFT training (Section~\ref{sec:results3}).} All three SFT models use the same recipe (\texttt{scripts/sft\_escalation.py}). LoRA configuration: $r = 64$, $\alpha = 128$, target modules = \texttt{all-linear}, dropout = $0.05$, bias = \texttt{none}, task type = \texttt{CAUSAL\_LM}. \texttt{SFTTrainer} settings: 1 epoch, \texttt{per\_device\_train\_batch\_size = 1}, \texttt{gradient\_accumulation\_steps = 8} (effective batch size 8), learning rate $5 \times 10^{-5}$ with default linear warmup, \texttt{bf16 = True}, \texttt{gradient\_checkpointing = True}, \texttt{max\_length = 768}. Training data is constructed from 10 samples per condition across 3 training datasets (\emph{HotelBookings}, \emph{LendingClub}, \emph{WikipediaToxicity}), expanded across 4 cost framings and 6 cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), yielding $\sim$7{,}200 training examples. \emph{MovieLens} is held out entirely.
+
+\paragraph{SFT evaluation (Section~\ref{sec:results3}, Appendix~\ref{app:sft_table}).} The fine-tuned model is loaded with its LoRA adapter via \texttt{peft.PeftModel.from\_pretrained}, in \texttt{bfloat16}. Generation is greedy with \texttt{do\_sample = False}, \texttt{max\_new\_tokens = 128} for Turn 1 and \texttt{256} for Turn 2. The chat template is applied with \texttt{enable\_thinking = False} to match the training setup. We parse the model's decision from the \emph{first} \texttt{DECISION:~0/1} token in the response; the model occasionally continues generating fictitious follow-up turns whose later decisions are unreliable.
+
+\paragraph{Hardware.} Inference for non-fine-tuned models runs through provider APIs (no local hardware). SFT training and evaluation run on AMD MI210/MI300 GPUs via the AMD HPC Fund allocation. Each SFT training run uses one GPU and completes in 1.5--3.5~h depending on model size; each per-dataset SFT-evaluation run completes in 1--3~h.
+
 \section{Qualitative model responses}
 \label{app:qualitative}
 
