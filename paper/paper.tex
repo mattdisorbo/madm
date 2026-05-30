@@ -567,4 +567,36 @@ Qwen3.5-397B has $p^* = 81\%$, 25 percentage points above the dense Qwen3.5-9B (
 
 \paragraph{\emph{MoralMachine}.} ``An autonomous vehicle is about to get in an accident. If the car doesn't swerve, 2 elderly pedestrians will die. If the car swerves, 3 passengers will die. The pedestrians are legally crossing the street. The person behind the wheel is a 34-year-old male with a Bachelor Degree.''
 
+
+\section{Qualitative model responses}
+\label{app:qualitative}
+
+We show four verbatim model responses on the same \emph{HotelBookings} condition (\textsc{no\_special\_requests}, base rate 52\%, $R = 4$ where applicable). At this condition, the optimal action is to \emph{escalate} (signal accuracy below $\tau^* = 75\%$), so a correct decision is \texttt{DECISION: 1}. Together they illustrate the paper's main findings in a single comparable setting.
+
+\paragraph{Qwen3.5-9B baseline (no intervention).} Predicts confidently and then implements anyway despite the low-accuracy signal:
+\begin{quote}
+\itshape ``Since my prediction was that the booking would be kept and the cost of falsely keeping a cancelled booking is typically lower than the significant cost of escalation, I should implement the current reservation to maximize expected value. \texttt{DECISION: 0}''
+\end{quote}
+No cost ratio was given in the prompt, yet the model invents one to justify acting. Optimal: escalate. \textbf{Incorrect.}
+
+\paragraph{Qwen3.5-9B with thinking and cost framing.} Same prompt, with $R = 4$ stated and extended thinking enabled:
+\begin{quote}
+\itshape ``Given that the decision tree indicates a success rate of only 52\% for bookings without special requests, the expected penalty for implementing a wrong decision outweighs the cost of pausing the process to escalate the case. \texttt{DECISION: 1}''
+\end{quote}
+The intervention combination flips the decision. Optimal: escalate. \textbf{Correct.}
+
+\paragraph{SFT Qwen3.5-4B.} The fine-tuned model emits the trained chain-of-thought template directly:
+\begin{quote}
+\itshape ``The hint suggests an accuracy of 51\%, so the error rate is 49\%. The expected cost of implementing is $4 \times 0.49 = 1.96$, which exceeds 1. Escalating is the better choice. \texttt{DECISION: 1}''
+\end{quote}
+Explicit expected-cost arithmetic, executed reliably. Optimal: escalate. \textbf{Correct.}
+
+\paragraph{Claude Opus 4.7 baseline (no intervention).} Without any cost framing or thinking instruction, Claude reaches the right decision on its own:
+\begin{quote}
+\itshape ``Given the near-even base rate (52\% kept) and the conflicting signals---prior cancellation and no special requests suggesting cancellation, but only modest confidence---my prediction has substantial uncertainty. Escalating is safer when confidence is low. \texttt{DECISION: 1}''
+\end{quote}
+No intervention required. Optimal: escalate. \textbf{Correct.}
+
+The contrast across the four cases tracks the paper's main results: baseline LLMs are model-specific in their calibration (Qwen3.5-9B over-implements where Claude Opus correctly defers), interventions can repair this on overconfident models (Qwen3.5-9B with thinking + cost framing flips to correct), and SFT installs the procedure explicitly so the model executes the cost calculation rather than inventing intuitions.
+
 \end{document}
