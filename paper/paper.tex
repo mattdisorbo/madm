@@ -5,6 +5,7 @@
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{booktabs}
+\usepackage{multirow}
 \usepackage{amsmath,amssymb,amsthm}
 \newtheorem{theorem}{Theorem}
 \usepackage{graphicx}
@@ -396,7 +397,9 @@ GPT-5-mini uses built-in reasoning controlled by OpenAI's \texttt{reasoning\_eff
 
 \subsection{Fine-tuning for cost-sensitive escalation}
 
-Prompt-based interventions improve escalation accuracy but remain imperfect. We investigate whether fine-tuning can train a model to internalize cost-sensitive escalation behavior. We train Qwen3.5-9B with SFT on chain-of-thought responses that explicitly extract the predictive accuracy from the signal and compute the expected cost. The target response follows a template: ``The signal suggests a predictive accuracy of $X$\%, so the error rate is $Y$\%. The expected cost of implementing is $R \times Y = Z$, which exceeds/is below 1.'' We train on three of the four main datasets (\emph{HotelBookings}, \emph{LendingClub}, \emph{WikipediaToxicity}), four cost framings, and six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), holding out \emph{MovieLens} entirely. The SFT model achieves near-perfect escalation accuracy: 100\% on all datasets, cost ratios, and cost framings, with a single error at a boundary case where $R(1-p) = 1.00$ exactly (full results in Table~\ref{tab:sft_results}, Appendix~\ref{app:sft_table}). The held-out dataset (\emph{MovieLens}) also achieves 100\%, demonstrating that the model learned a general procedure rather than memorizing dataset-specific decisions.
+Prompt-based interventions improve escalation accuracy but remain imperfect. We investigate whether fine-tuning can train a model to internalize cost-sensitive escalation behavior. We train three SFT models with chain-of-thought responses that explicitly extract the predictive accuracy from the signal and compute the expected cost: Qwen2.5-7B-Instruct, Qwen3.5-4B, and Qwen3.5-9B. The target response follows a template: ``The signal suggests a predictive accuracy of $X$\%, so the error rate is $Y$\%. The expected cost of implementing is $R \times Y = Z$, which exceeds/is below 1.'' We train on three of the four main datasets (\emph{HotelBookings}, \emph{LendingClub}, \emph{WikipediaToxicity}), four cost framings, and six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), holding out \emph{MovieLens} entirely.
+
+All three SFT models substantially outperform the prompt-only interventions in Table~\ref{tab:interventions}. Qwen2.5-7B-Instruct achieves near-perfect escalation accuracy: 100\% on most cells with a single error at a boundary case where $R(1-p) = 1.00$ exactly. Qwen3.5-4B reaches 95.7\% overall (held-out \emph{MovieLens} 96.7\%), and Qwen3.5-9B reaches 87.3\% overall (held-out 89.2\%). The held-out generalization across all three models indicates that SFT teaches a general procedure rather than memorizing dataset-specific decisions. The within-Qwen3.5 ranking is non-monotonic, with 4B exceeding 9B, suggesting the same recipe may benefit from per-model tuning. Full per-dataset and per-framing results appear in Table~\ref{tab:sft_results}, Appendix~\ref{app:sft_table}.
 
 To confirm that the SFT model reads and uses the signal, we run an ablation that removes it entirely. Without the signal, escalation accuracy drops from 100\% to approximately 84\% as the model hallucinates predictive-accuracy estimates instead of reading them from the signal (Appendix~\ref{app:sft_ablation}). The chain-of-thought supervision is critical: SFT directly supervises a reasoning procedure that extracts the predictive accuracy from the signal and computes expected cost, enabling generalization across datasets, cost framings, and held-out domains.
 
@@ -505,16 +508,29 @@ The agent escalates when $\hat{p} = p + \mu < \tau^*$, i.e., when $p < \tau^* - 
 
 \begin{table}[h]
     \centering
-    \caption{SFT with chain-of-thought reasoning on full scenario prompts. The model is trained on three datasets and evaluated on all four main datasets, including the held-out \emph{MovieLens}. Accuracy is measured against the Bayes-optimal policy across six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), with 300 samples per dataset (50 per $R$). \emph{MoralMachine} results are reported in Appendix~\ref{app:moral}.}
+    \caption{SFT escalation accuracy for three fine-tuned models. Each is trained on three datasets and evaluated on all four main datasets, including the held-out \emph{MovieLens}. Accuracy is measured against the Bayes-optimal policy across six cost ratios ($R \in \{2, 4, 8, 10, 20, 50\}$), with 60 samples per (dataset, framing). Cells marked --- were not evaluated (Qwen2.5-7B-Instruct predates the addition of the Study3 framing). \emph{MoralMachine} results are reported in Appendix~\ref{app:moral}.}
     \label{tab:sft_results}
-    \begin{tabular}{lcccc}
+    \begin{tabular}{llcccc}
         \toprule
-        Dataset & Original & Dollar & Wording & Trained? \\
+        Model & Dataset & Original & Dollar & Wording & Study3 \\
         \midrule
-        \emph{HotelBookings} & 100\% & 98.3\% & 100\% & Yes \\
-        \emph{LendingClub} & 100\% & 100\% & 100\% & Yes \\
-        \emph{WikipediaToxicity} & 100\% & 100\% & 100\% & Yes \\
-        \emph{MovieLens} & 100\% & 100\% & 100\% & No \\
+        \multirow{4}{*}{Qwen2.5-7B-Instruct}
+        & \emph{HotelBookings} (train) & 100\% & 98.3\% & 100\% & --- \\
+        & \emph{LendingClub} (train) & 100\% & 100\% & 100\% & --- \\
+        & \emph{WikipediaToxicity} (train) & 100\% & 100\% & 100\% & --- \\
+        & \emph{MovieLens} (held-out) & 100\% & 100\% & 100\% & --- \\
+        \midrule
+        \multirow{4}{*}{Qwen3.5-4B}
+        & \emph{HotelBookings} (train) & 98.3\% & 88.3\% & 98.3\% & 98.3\% \\
+        & \emph{LendingClub} (train) & 95.0\% & 95.0\% & 95.0\% & 90.0\% \\
+        & \emph{WikipediaToxicity} (train) & 96.7\% & 98.3\% & 95.0\% & 96.7\% \\
+        & \emph{MovieLens} (held-out) & 98.3\% & 91.7\% & 98.3\% & 98.3\% \\
+        \midrule
+        \multirow{4}{*}{Qwen3.5-9B}
+        & \emph{HotelBookings} (train) & 91.7\% & 98.3\% & 90.0\% & 88.3\% \\
+        & \emph{LendingClub} (train) & 93.3\% & 90.0\% & 86.7\% & 83.3\% \\
+        & \emph{WikipediaToxicity} (train) & 76.7\% & 93.3\% & 73.3\% & 75.0\% \\
+        & \emph{MovieLens} (held-out) & 93.3\% & 85.0\% & 85.0\% & 93.3\% \\
         \bottomrule
     \end{tabular}
 \end{table}
