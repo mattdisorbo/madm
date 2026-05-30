@@ -176,16 +176,16 @@ Each scenario is accompanied by a \emph{signal}: a natural-language summary of a
 
 Each sample proceeds in two turns within a single conversation. In the first turn, the agent receives the scenario, the signal (when applicable), and a prediction prompt asking it to explain its reasoning in one sentence and conclude with \texttt{PREDICTION: 1} or \texttt{PREDICTION: 0}. In the second turn, the agent sees its own prediction and is asked whether to implement or escalate, concluding with \texttt{DECISION: 0} (implement) or \texttt{DECISION: 1} (escalate).
 
-We evaluate several variants of this protocol:
+We evaluate several variants of this protocol. \textbf{Baseline} and \textbf{No signal} are used in Sections~\ref{sec:results1} and~\ref{sec:results2} to characterize each model's intrinsic escalation behavior. \textbf{Cost framing}, \textbf{Thinking}, and their combination are interventions evaluated in Section~\ref{sec:results3}.
 \begin{itemize}
     \item \textbf{Baseline}: Signal provided, no cost framing, no explicit thinking.
     \item \textbf{No signal}: The signal is omitted, revealing the model's default confidence.
-    \item \textbf{Cost ratio 4}: The escalation prompt is prepended with ``Implementing a wrong answer costs 4$\times$ more than escalating.''
+    \item \textbf{Cost framing} ($R = 4$): The escalation prompt is prepended with ``Implementing a wrong answer costs 4$\times$ more than escalating.''
     \item \textbf{Thinking}: For Qwen3.5-9B, we enable the model's extended thinking mode. For GPT-5-mini, we increase \texttt{reasoning\_effort} from \texttt{minimal} to \texttt{medium}.
-    \item \textbf{Thinking + Cost 4}: Both thinking and cost framing are active.
+    \item \textbf{Thinking + cost framing}: Both interventions are active.
 \end{itemize}
 
-For each condition, we sample 250 scenarios (50 for thinking runs) and report means with standard errors.
+For each condition, we sample 250 scenarios (100 for thinking runs) and report means with standard errors.
 
 \subsection{Metrics}
 \label{sec:metrics}
