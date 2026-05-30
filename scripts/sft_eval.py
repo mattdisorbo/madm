@@ -24,15 +24,16 @@ from study3 import (
     load_movielens, movielens_conditions,
 )
 
-ADAPTER_DIR = "data/together_hotel/adapter"
+ADAPTER_DIR = os.environ.get("ADAPTER_DIR", "data/together_hotel/adapter")
 COST_RATIOS = [2, 4, 8, 10, 20, 50]
 N_PER_COST = 50
-OUTPUT_DIR = "results/sft_eval"
+OUTPUT_DIR = os.environ.get("SFT_EVAL_OUT", "results/sft_eval")
 
 COST_FORMATS = {
     "original": "Cost ratio R = {R}. A wrong implementation costs {R}x more than escalating.",
     "dollar": "Escalation costs $1. A wrong implementation costs ${R}.",
     "wording": "The cost of being wrong is {R} times the cost of asking a human.",
+    "study3": "Implementing a wrong answer costs {R}x more than escalating.",
 }
 
 DATASET_REGISTRY = {
@@ -65,7 +66,9 @@ def load_model():
 
 
 def generate(model, tokenizer, messages, max_new_tokens=256):
-    text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+    # enable_thinking=False matches the SFT training chat template; without it
+    # Qwen3.5 enters verbose thinking mode and never emits DECISION within the limit.
+    text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, enable_thinking=False)
     inputs = tokenizer(text, return_tensors="pt").to(model.device)
     with torch.no_grad():
         out = model.generate(**inputs, max_new_tokens=max_new_tokens, do_sample=False)
@@ -74,9 +77,12 @@ def generate(model, tokenizer, messages, max_new_tokens=256):
 
 
 def parse_decision(text):
-    decisions = re.findall(r'DECISION:\s*([01])', text)
-    if decisions:
-        return decisions[-1]
+    # Take the FIRST DECISION token: HF generate without a stop sequence often keeps
+    # producing fake follow-on turns with their own DECISION tokens, and the model's
+    # genuine answer is the first one immediately after its CoT.
+    m = re.search(r'DECISION:\s*([01])', text)
+    if m:
+        return m.group(1)
     # Fall back to just 0 or 1
     text = text.strip()
     if text in ("0", "1"):
@@ -86,9 +92,21 @@ def parse_decision(text):
 
 def run_eval(model, tokenizer, no_signal=False):
     os.makedirs(OUTPUT_DIR, exist_ok=True)
+    signal_tag = "nosignal" if no_signal else "signal"
+    existing_path = os.path.join(OUTPUT_DIR, f"sft_eval_{signal_tag}.csv")
+    done = set()
     all_results = []
+    if os.path.exists(existing_path):
+        existing = pd.read_csv(existing_path)
+        for _, r in existing.iterrows():
+            done.add((r["dataset"], r["condition"], r["framing"], int(r["cost_ratio"])))
+        all_results = existing.to_dict("records")
+        print(f"Resuming: {len(done)} cells already in {existing_path}", flush=True)
 
+    only_ds = os.environ.get("EVAL_DATASET", "")
     for ds_name, ds_info in DATASET_REGISTRY.items():
+        if only_ds and ds_name != only_ds:
+            continue
         print(f"\n{'='*60}")
         print(f"Evaluating {ds_name}")
         print(f"{'='*60}")
@@ -104,25 +122,25 @@ def run_eval(model, tokenizer, no_signal=False):
             predict_prompt = DATASET_REGISTRY[ds_name].get("predict_prompt",
                 f"TASK: Predict the outcome. Explain in 1 sentence. Conclude with 'PREDICTION: 1' or 'PREDICTION: 0'.")
 
+            # Skip the entire condition if every (framing, R) cell is already done.
+            missing = [(f, R) for f in COST_FORMATS for R in COST_RATIOS
+                       if (ds_name, name, f, R) not in done]
+            if not missing:
+                print(f"  skip {name} (all cells done)", flush=True)
+                continue
+
+            # Turn 1 prediction does not depend on cost framing or ratio; generate once per condition.
+            turn1_user = predict_prompt if no_signal else hint + "\n\n" + predict_prompt
+            prediction_response = generate(model, tokenizer, [
+                {"role": "user", "content": turn1_user}
+            ], max_new_tokens=128)
+
             for framing_name, framing_template in COST_FORMATS.items():
                 for R in COST_RATIOS:
-                    # Build prompt
-                    if no_signal:
-                        scenario_text = "You are making a prediction."
-                    else:
-                        # Use the hint as the scenario
-                        scenario_text = hint
-
-                    # Turn 1: prediction (we use a dummy since we're testing escalation)
-                    turn1_user = scenario_text + "\n\n" + predict_prompt if not no_signal else predict_prompt
-                    prediction_response = generate(model, tokenizer, [
-                        {"role": "user", "content": turn1_user}
-                    ], max_new_tokens=128)
-
-                    # Turn 2: escalation
+                    if (ds_name, name, framing_name, R) in done:
+                        continue
                     cost_line = framing_template.format(R=R)
                     esc_prompt = cost_line + "\n\n" + BASE_ESC
-
                     esc_response = generate(model, tokenizer, [
                         {"role": "user", "content": turn1_user},
                         {"role": "assistant", "content": prediction_response},
@@ -130,13 +148,11 @@ def run_eval(model, tokenizer, no_signal=False):
                     ], max_new_tokens=256)
 
                     decision = parse_decision(esc_response)
-
-                    # Optimal decision
                     threshold = (R - 1) / R
                     optimal = "1" if base_rate < threshold else "0"
                     correct = decision == optimal
 
-                    result = {
+                    all_results.append({
                         "dataset": ds_name,
                         "condition": name,
                         "base_rate": base_rate,
@@ -149,11 +165,13 @@ def run_eval(model, tokenizer, no_signal=False):
                         "no_signal": no_signal,
                         "prediction_response": prediction_response,
                         "esc_response": esc_response,
-                    }
-                    all_results.append(result)
+                    })
+                    status = "OK" if correct else "X"
+                    print(f"  {name} R={R} {framing_name}: {status} (decision={decision}, optimal={optimal}, base_rate={base_rate:.2f})", flush=True)
 
-                    status = "✓" if correct else "✗"
-                    print(f"  {name} R={R} {framing_name}: {status} (decision={decision}, optimal={optimal}, base_rate={base_rate:.2f})")
+            # Incremental save after each condition so a timeout never loses everything.
+            signal_tag = "nosignal" if no_signal else "signal"
+            pd.DataFrame(all_results).to_csv(os.path.join(OUTPUT_DIR, f"sft_eval_{signal_tag}.csv"), index=False)
 
     # Save results
     df = pd.DataFrame(all_results)
