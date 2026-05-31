@@ -20,9 +20,9 @@ The authors assess the ability of LLMs to appropriately "escalate" a task to a h
 
 ## Response
 
-Thank you for the direct review. Your central question was what escalation adds beyond uncertainty estimation. We think the answer is our strongest result, so we address it first.
+Thank you for the direct review. Your central question was what escalation adds beyond uncertainty estimation. We think the answer is the main contribution of the paper, so we address it first.
 
-**Novelty and significance.** Escalation is not reducible to uncertainty estimation with a threshold. Two models can share predictive accuracy and calibration yet escalate at very different rates [FILL: name the pair and the two escalation rates]. Uncertainty estimation cannot account for that gap, since the uncertainty is matched. The difference comes from each model's implicit cost structure, which is set during training and does not appear in any capability or calibration metric. This is what the paper contributes. The axis matters for deployment, current benchmarks do not measure it, and we show it can be both characterized and corrected. We reframed the introduction:
+**Novelty and significance.** Escalation is not reducible to uncertainty estimation with a threshold. Two models can share predictive accuracy and calibration yet escalate at very different rates [FILL: name the pair and the two escalation rates]. Uncertainty estimation cannot account for that gap, since the uncertainty is matched. The difference comes from each model's implicit cost structure, which is set during training and does not appear in any capability or calibration metric. This is what the paper contributes. The axis matters for deployment, current benchmarks do not measure it, and we show it can be both characterized and corrected. We revised the introduction to read:
 
 > Existing LLM evaluations measure what models can do; we instead characterize what they choose to do under uncertainty. This is a model-specific property, orthogonal to capability, that can leave a high-accuracy model either propagating errors at scale or eliminating the value of automation.
 
@@ -32,8 +32,8 @@ And the conclusion:
 
 We also expanded the empirical base behind this claim, adding Claude and Gemma models to the main results, two more models to the fine-tuning experiments, and larger samples for the thinking runs.
 
-**Theorems.** We agree that Theorem 2, that bias increases cost, is not necessary, and we have replaced it with a short reference. We kept Theorem 1 because the threshold $\tau^*$ anchors the cost-sensitive decision throughout the paper, and the later analysis refers back to it.
+**Theorems.** We agree that Theorem 2, that bias increases cost, is not necessary, and we replaced it with a short reference. We kept Theorem 1 because the threshold $\tau^*$ sets the cost-sensitive decision throughout the paper and the later analysis refers back to it.
 
-**Language precision.** We tightened the imprecise phrasings. "The human workload it was meant to replace" now reads "an agent that always escalates provides no labor savings over manual review." This states the actual point. Autonomous agents in these settings are not meant to replace human judgment but to reduce how often it is needed, and an agent that escalates everything saves nothing.
+**Language precision.** We fixed the imprecise phrasings. "The human workload it was meant to replace" now reads "an agent that always escalates provides no labor savings over manual review." This states the actual point. Autonomous agents in these settings are not meant to replace human judgment but to reduce how often it is needed, and an agent that escalates everything saves nothing.
 
-Please do not hesitate to reach out with any other questions or comments during the 'Follow-up Discussion' period.
+Please let us know if you have any more questions before the end of the discussion period.

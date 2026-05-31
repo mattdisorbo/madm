@@ -56,4 +56,4 @@ Thank you for the detailed and constructive review. Your central concern was tha
 
 **Hyperparameters.** The appendix now reports generation and training details, including the full LoRA and fine-tuning setup (r = 64).
 
-Please do not hesitate to reach out with any other questions or comments during the 'Follow-up Discussion' period.
+Please let us know if you have any more questions before the end of the discussion period.

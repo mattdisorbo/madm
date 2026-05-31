@@ -45,8 +45,8 @@ Thank you for the careful review, and for the phrase "strange discrepancy," whic
 
 **Frontier models.** We added Claude Sonnet 4.6 and Claude Opus 4.7. Sonnet and Opus give a controlled capability comparison, since they share a developer and a generation, so the contrast reflects capability rather than differences in training pipeline. The more capable Opus escalates less than Sonnet, 59% vs. 66% threshold, and across the full model set capability still does not predict escalation [FILL: state the escalation-threshold spread across all models and the capability-escalation correlation, ideally pointing to a new summary figure]. We also added Gemma-3-4B and Gemma-3-12B at another reviewer's suggestion. They escalate at 76% vs. 98% and are much more underconfident. The frontier additions also revised one secondary claim. Confidence is not uniformly high, so we now report that calibration varies by model and still does not predict escalation, rather than that models are broadly overconfident.
 
-**Why Sonnet and Opus rather than Haiku or GPT-5.5.** We focused on the Sonnet-Opus pair because their shared lineage gives the clean capability contrast. Haiku 4.5 sits below both, and GPT-5.5 adds a cross-lab confound, so neither sharpens the gradient the way this pair does.
+**Why Sonnet and Opus rather than Haiku or GPT-5.5.** We focused on the Sonnet-Opus pair because they share a developer and generation, which gives the clean capability contrast. Haiku 4.5 sits below both, and GPT-5.5 adds a cross-lab confound, so neither sharpens the gradient the way this pair does.
 
 **Additional fine-tuned models.** We fine-tuned two more Qwen models and nearly matched the original result [FILL: per-model escalation accuracy before and after], which shows the fine-tuning aligns escalation behavior across models, not only the model from our original submission.
 
-Please do not hesitate to reach out with any other questions or comments during the 'Follow-up Discussion' period.
+Please let us know if you have any more questions before the end of the discussion period.
