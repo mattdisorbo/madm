@@ -36,19 +36,24 @@ I encourage improving the clarity of the paper. For example:
 
 ## Response
 
-Thank you for taking the time to read our paper, and for such useful suggestions. We believe your insight has really helped to strengthen our work. We made many updates directly based on your comments. First, we expanded our results:
+Thank you for the detailed and constructive review. Your central concern was that the Section 6 mitigation ran on a single model, and we have fixed that directly.
 
-- At your suggestion, we successfully tested the supervised fine-tuning (SFT) approach on two new Qwen models, and achieved high levels of escalation accuracy. The paper now includes results from Qwen2.5-7B-Instruct, Qwen3.5-4B and Qwen3.5-9B.
-- Training data was obtained from held-out instances in the datasets we used. Decision trees helped to construct each signal: for instance, in the held-out instances, 91% of FICO > 700 loans were approved.
-- Our main manuscript now includes model pairs that are more strongly related: specifically, Qwen3.5-4B / Qwen3.5-9B and Gemma-3-4B / Gemma-3-12B. We agree that our initial submission that compared Llama 3 to Llama 4, and Mistral to Mixtral, did not achieve the clean comparison we would hope for.
+**Fine-tuning across multiple models.** We now test supervised fine-tuning on three models, Qwen2.5-7B-Instruct, Qwen3.5-4B, and Qwen3.5-9B, and reach high escalation accuracy in each [FILL: per-model escalation accuracy before and after]. The claim that escalation dynamics can be corrected no longer rests on one model.
 
-We also made substantial changes to the manuscript for clarity and improved framing:
+**Training data.** We built each signal from held-out instances using a decision tree. In the held-out loan data, 91% of applicants with FICO above 700 were approved, which becomes the stated predictive accuracy for that signal.
 
-- In Section 4, we provide the LM with a signal that greatly simplifies the prediction (e.g., "there is a 91% chance of a positive outcome"), essentially rendering the LM's turn 1 prediction uninteresting, since prediction is much simpler with an explicit signal! The purpose of this section is to analyze LM escalation behavior in turn 2, and our main result is that different models exhibit vastly different escalation behavior. We merely used the signal in turn 1 to control LM predictive quality across models and isolate escalation behavior. Finally, we do test models without providing the signal in Section 5, which allow us to elicit how good each model believes its predictions are. We find that, like escalation behavior, confidence calibration (overconfident vs. underconfident vs. just right) varies across models.
-- Your point on accuracy is very well taken, and was reflected by other reviewers! We consider three primary accuracies. Prediction accuracy measures how often the model's turn 1 prediction is correct, and self-estimated predictive accuracy measures how often the model implicitly believes its turn 1 prediction is correct, based on how often it escalates. The most important metric is escalation accuracy: how often the model makes the correct escalation decision based on its predictive accuracy and the pertinent cost threshold. We have updated the paper to formally define the different accuracy metrics, and to be more specific throughout about the wording used.
-- The 'Dollar' and 'Wording' columns test our fine-tuned models with prompts that have the same meaning but are worded differently (e.g., Dollar is "Escalation costs $1. A wrong implementation costs $4"). This allows us to conclude that our fine-tuned models are not just learning patterns from the original wording, but understanding the underlying reason for escalating or implementing.
-- We have renamed "cost ratio 4" as "cost framing" throughout for clarity, and made clear in Section 3.3 that these variants will not appear until Section 6.
-- We have added qualitative examples of how different models exhibit very different behavior. For example, given a moderate signal, Opus implements while Sonnet escalates.
-- We have added an extensive section in the Appendix covering implementation details. For example, the full LoRA and SFT hyperparameters (e.g., r = 64, etc.).
+**Model family pairing.** We replaced the Llama 3 vs. Llama 4 and Mistral vs. Mixtral comparisons, which you correctly noted span very different models, with Qwen3.5-4B vs. Qwen3.5-9B and Gemma-3-4B vs. Gemma-3-12B. These hold architecture and training fixed and vary scale.
+
+**Role of turn 1 and the no-signal setting.** Your reading is right. The Section 4 signal makes the turn 1 prediction easy, for instance "there is a 91% chance of a positive outcome," so turn 1 mainly equalizes predictive quality across models and lets us isolate the turn 2 escalation decision. We do test the no-signal setting in Section 5, where the model must judge its own predictions, and we recover each model's self-estimated accuracy that way. We have clarified the role of each turn so this is explicit.
+
+**Accuracy terminology.** Three reviewers flagged this, so we now define the metrics formally. Prediction accuracy is how often the turn 1 prediction is correct. Self-estimated predictive accuracy is how correct the model implicitly believes it is, read off its escalation rate. Escalation accuracy, the metric we care about most, is how often the act-or-defer decision is correct given the predictive accuracy and the cost threshold. We use these terms consistently throughout now.
+
+**Dollar and Wording columns.** These test the fine-tuned models on prompts that carry the same meaning in different words. Dollar phrases the cost as "Escalation costs \$1. A wrong implementation costs \$4." When behavior matches across phrasings, the model has learned the underlying trade-off rather than the surface wording.
+
+**Cost framing.** We renamed "cost ratio 4" to "cost framing" throughout, and Section 3.3 now flags that these variants first appear in Section 6.
+
+**Qualitative examples.** We added examples of divergent behavior. On the same moderate signal, Opus implements while Sonnet escalates.
+
+**Hyperparameters.** The appendix now reports generation and training details, including the full LoRA and fine-tuning setup (r = 64).
 
 Please do not hesitate to reach out with any other questions or comments during the 'Follow-up Discussion' period.

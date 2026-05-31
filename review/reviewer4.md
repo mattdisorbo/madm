@@ -20,17 +20,20 @@ The authors assess the ability of LLMs to appropriately "escalate" a task to a h
 
 ## Response
 
-Thank you for taking the time to read our paper and to write this thoughtful review! We have substantially expanded our results based on the review team's feedback: Claude and Gemma models for the main results, two additional models for the supervised fine-tuning interventions and an enhanced sample size for the thinking runs. We also worked hard to incorporate your suggestions specifically:
+Thank you for the direct review. Your central question was what escalation adds beyond uncertainty estimation. We think the answer is our strongest result, so we lead with it.
 
-- We tried to better frame the novelty and significance of our paper. We agree that how models "score" on these tasks is not sufficient for a conference like COLM; instead, we tried to establish the broader insight that models have hidden escalation patterns that vary significantly, cannot be predicted and are non-trivial to control. For example, we added this to the introduction:
+**Novelty and significance.** Escalation is not reducible to uncertainty estimation plus a threshold. Two models can share predictive accuracy and calibration yet escalate at very different rates [FILL: name the pair and the two escalation rates]. Uncertainty estimation cannot explain that gap, because the uncertainty is matched. What differs is the model's implicit cost structure, a behavioral disposition set during training that is invisible to any capability or calibration metric. That is the new knowledge. We surface a deployment-relevant axis that current benchmarks do not measure, and we show it is both characterizable and correctable. We reframed the introduction:
 
 > Existing LLM evaluations measure what models can do; we instead characterize what they choose to do under uncertainty. This is a model-specific property, orthogonal to capability, that can leave a high-accuracy model either propagating errors at scale or eliminating the value of automation.
 
-And this to the conclusion:
+And the conclusion:
 
 > While most LLM evaluation focuses on capability (accuracy, throughput, cost-savings), our results characterize an orthogonal dimension that has received far less attention: how an agent decides to act or defer under uncertainty. This dimension is latent, model-specific, and not predicted by architecture or scale, but as we show it can be characterized empirically and corrected through targeted training. Capability-focused benchmarks miss this failure mode entirely: a high-accuracy model can still systematically act when it should defer or defer when it should act, undermining the automation it was deployed for.
 
-- We agree that Theorem 2 ("bias increases cost") is relatively unnecessary, and we have replaced it with a short reference. We decided to keep Theorem 1 because the threshold $\tau^*$ is at the centerpiece of the ensuing discussions.
-- We have added precision to multiple concepts and definitions (e.g., escalation accuracy vs. predictive accuracy). More specifically, we have replaced "the human workload it was meant to replace" as "an agent that always escalates provides no labor savings over manual review". This gets more to the crux of our argument: we agree that autonomous agents in these settings are not meant to replace humans, but to supplement them.
+We also expanded the empirical base behind this claim, adding Claude and Gemma models to the main results, two more models to the fine-tuning experiments, and larger samples for the thinking runs.
+
+**Theorems.** We agree that Theorem 2, that bias increases cost, did not earn its space, and we have replaced it with a short reference. We kept Theorem 1 because the threshold $\tau^*$ anchors the cost-sensitive decision throughout the paper, and the later analysis refers back to it.
+
+**Language precision.** We tightened the imprecise phrasings. "The human workload it was meant to replace" now reads "an agent that always escalates provides no labor savings over manual review." This states the actual point. Autonomous agents in these settings are not meant to replace human judgment but to reduce how often it is needed, and an agent that escalates everything saves nothing.
 
 Please do not hesitate to reach out with any other questions or comments during the 'Follow-up Discussion' period.
