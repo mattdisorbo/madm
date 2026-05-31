@@ -38,7 +38,7 @@ I encourage improving the clarity of the paper. For example:
 
 Thank you for the detailed and constructive review. Your central concern was that the Section 6 mitigation ran on a single model, and we have fixed that directly.
 
-**Fine-tuning across multiple models.** We now test supervised fine-tuning on three models, Qwen2.5-7B-Instruct, Qwen3.5-4B, and Qwen3.5-9B, and reach high escalation accuracy in each [FILL: per-model escalation accuracy before and after]. The claim that escalation dynamics can be corrected no longer rests on one model.
+**Fine-tuning across multiple models.** We now test supervised fine-tuning on three models, Qwen2.5-7B-Instruct, Qwen3.5-4B, and Qwen3.5-9B, and reach high escalation accuracy in each, near 100% for Qwen2.5-7B-Instruct, 95.7% for Qwen3.5-4B, and 87.3% for Qwen3.5-9B, with held-out MovieLens at 96.7% and 89.2% for the two Qwen3.5 models. The claim that escalation dynamics can be corrected no longer rests on one model.
 
 **Training data.** We built each signal from held-out instances using a decision tree. In the held-out loan data, 91% of applicants with FICO above 700 were approved, which becomes the stated predictive accuracy for that signal.
 
