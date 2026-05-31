@@ -46,11 +46,11 @@ Thank you for the detailed and constructive review. Your central concern was tha
 
 **Role of turn 1 and the no-signal setting.** Your reading is right. The Section 4 signal makes the turn 1 prediction easy, for instance "there is a 91% chance of a positive outcome," so turn 1 mainly equalizes predictive quality across models and lets us isolate the turn 2 escalation decision. We do test the no-signal setting in Section 5, where the model must judge its own predictions, and we recover each model's self-estimated accuracy that way. We have clarified the role of each turn so this is explicit.
 
-**Accuracy terminology.** Three reviewers flagged this, so we now define the metrics formally. Prediction accuracy is how often the turn 1 prediction is correct. Self-estimated predictive accuracy is how correct the model implicitly believes it is, read off its escalation rate. Escalation accuracy, the metric we care about most, is how often the act-or-defer decision is correct given the predictive accuracy and the cost threshold. We use these terms consistently throughout now.
+**Accuracy terminology.** Three reviewers raised this, so we now define the metrics formally. Prediction accuracy is how often the turn 1 prediction is correct. Self-estimated predictive accuracy is how correct the model implicitly believes it is, read off its escalation rate. Escalation accuracy, the metric we care about most, is how often the act-or-defer decision is correct given the predictive accuracy and the cost threshold. We use these terms consistently throughout now.
 
 **Dollar and Wording columns.** These test the fine-tuned models on prompts that carry the same meaning in different words. Dollar phrases the cost as "Escalation costs \$1. A wrong implementation costs \$4." When behavior matches across phrasings, the model has learned the underlying trade-off rather than the surface wording.
 
-**Cost framing.** We renamed "cost ratio 4" to "cost framing" throughout, and Section 3.3 now flags that these variants first appear in Section 6.
+**Cost framing.** We renamed "cost ratio 4" to "cost framing" throughout, and Section 3.3 now notes that these variants first appear in Section 6.
 
 **Qualitative examples.** We added examples of divergent behavior. On the same moderate signal, Opus implements while Sonnet escalates.
 

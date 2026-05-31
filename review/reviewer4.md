@@ -20,7 +20,7 @@ The authors assess the ability of LLMs to appropriately "escalate" a task to a h
 
 ## Response
 
-Thank you for the direct review. Your central question was what escalation adds beyond uncertainty estimation. We think the answer is our strongest result, so we lead with it.
+Thank you for the direct review. Your central question was what escalation adds beyond uncertainty estimation. We think the answer is our strongest result, so we address it first.
 
 **Novelty and significance.** Escalation is not reducible to uncertainty estimation with a threshold. Two models can share predictive accuracy and calibration yet escalate at very different rates [FILL: name the pair and the two escalation rates]. Uncertainty estimation cannot account for that gap, since the uncertainty is matched. The difference comes from each model's implicit cost structure, which is set during training and does not appear in any capability or calibration metric. This is what the paper contributes. The axis matters for deployment, current benchmarks do not measure it, and we show it can be both characterized and corrected. We reframed the introduction:
 
