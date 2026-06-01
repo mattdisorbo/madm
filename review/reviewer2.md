@@ -36,15 +36,17 @@ I encourage improving the clarity of the paper. For example:
 
 ## Response
 
-Thank you for the detailed and constructive review. Your central concern was that the Section 6 mitigation ran on a single model, and we have fixed that directly.
+Thank you for the detailed review and for identifying where the experimental setup needed clarification.
+
+We addressed the central empirical concern by expanding the mitigation experiments from one model to three models, and we revised the terminology and setup to make the paper easier to follow.
 
 **Fine-tuning across multiple models.** We now test supervised fine-tuning on three models, Qwen2.5-7B-Instruct, Qwen3.5-4B, and Qwen3.5-9B, and reach high escalation accuracy in each, near 100% for Qwen2.5-7B-Instruct, 95.7% for Qwen3.5-4B, and 87.3% for Qwen3.5-9B, with held-out MovieLens at 96.7% and 89.2% for the two Qwen3.5 models. The claim that escalation dynamics can be corrected no longer rests on one model.
 
-**Training data.** We built each signal from held-out instances using a decision tree. In the held-out loan data, 91% of applicants with FICO above 700 were approved, which becomes the stated predictive accuracy for that signal.
+**Training data.** We built each signal from a decision tree trained on the dataset. The tree defines feature conditions, and the empirical label frequency for that condition becomes the stated predictive accuracy. For example, if 91% of applicants with FICO above 700 were approved, the prompt reports that predictive accuracy in the signal.
 
-**Model family pairing.** We replaced the Llama 3 vs. Llama 4 and Mistral vs. Mixtral comparisons, which you correctly noted span very different models, with Qwen3.5-4B vs. Qwen3.5-9B and Gemma-3-4B vs. Gemma-3-12B. These hold architecture and training fixed and vary scale.
+**Model family pairing.** We replaced the Llama 3 vs. Llama 4 and Mistral vs. Mixtral comparisons with Qwen3.5-4B vs. Qwen3.5-9B and Gemma-3-4B vs. Gemma-3-12B. These hold architecture and training fixed and vary scale, which makes the scaling comparison cleaner.
 
-**Role of turn 1 and the no-signal setting.** Your reading is right. The Section 4 signal makes the turn 1 prediction easy, for instance "there is a 91% chance of a positive outcome," so turn 1 mainly equalizes predictive quality across models and lets us isolate the turn 2 escalation decision. We do test the no-signal setting in Section 5, where the model must judge its own predictions, and we recover each model's self-estimated accuracy that way. We have clarified the role of each turn so this is explicit.
+**Role of turn 1 and the no-signal setting.** In Section 4, the signal makes the turn 1 prediction easy, for instance "there is a 91% chance of a positive outcome," so turn 1 mainly equalizes predictive quality across models and lets us isolate the turn 2 escalation decision. We test the no-signal setting in Section 5, where the model must judge its own predictions, and we recover each model's self-estimated accuracy that way. For Section 6, our target is different: we train models to use an externally calibrated predictive-accuracy signal and apply the cost-sensitive decision rule. Training without the signal would instead train a self-uncertainty estimator, which is an important but separate objective. To check that the SFT model is not just learning a surface rule, we added a no-signal ablation. Removing the signal drops escalation accuracy from 100% to about 84%, confirming that the model reads and uses the signal rather than merely following a fixed template.
 
 **Accuracy terminology.** Three reviewers raised this, so we now define the metrics formally. Prediction accuracy is how often the turn 1 prediction is correct. Self-estimated predictive accuracy is how correct the model implicitly believes it is, read off its escalation rate. Escalation accuracy, the metric we care about most, is how often the act-or-defer decision is correct given the predictive accuracy and the cost threshold. We use these terms consistently throughout now.
 
@@ -56,4 +58,4 @@ Thank you for the detailed and constructive review. Your central concern was tha
 
 **Hyperparameters.** The appendix now reports generation and training details, including the full LoRA and fine-tuning setup (r = 64).
 
-Please let us know if you have any more questions before the end of the discussion period.
+These changes are included in the revised manuscript.

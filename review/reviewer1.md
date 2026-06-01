@@ -39,14 +39,16 @@ The number of samples is also quite low for each model, such that the confidence
 
 ## Response
 
-Thank you for the careful review, and for the phrase "strange discrepancy," which captures our central finding. We address both requests directly.
+Thank you for the careful review and concrete requests.
+
+We made the two requested changes: larger thinking-mode samples with confidence intervals, and new frontier-model evaluations. Both additions strengthen the paper's central claim that escalation behavior is a measurable, model-specific property that is not predicted by capability.
 
 **Confidence intervals (Table 1).** We raised the thinking-mode sample size to $n = 100$ and added Wilson confidence intervals to Table 1. The Qwen 9B effect remains significant. Baseline sits at $(58.3, 59.7)$ and thinking with cost framing at $(79.4, 81.5)$, and the improvement rose from 17% to about 20% with the larger samples. These intervals confirm that the effect is not an artifact of the small samples.
 
-**Frontier models.** We added Claude Sonnet 4.6 and Claude Opus 4.7. Sonnet and Opus give a controlled capability comparison, since they share a developer and the same Claude 4 generation, so the contrast reflects capability rather than differences in training pipeline. The more capable Opus escalates less than Sonnet, 59% vs. 66% threshold, and capability still does not predict escalation across the eight models, where the implicit threshold ranges from 53% (GPT-5-mini) to 98% (Gemma 3 12B). We show this in a new figure of per-model thresholds. We also added Gemma-3-4B and Gemma-3-12B at another reviewer's suggestion. They escalate at 76% vs. 98% and are much more underconfident. The frontier additions also revised one secondary claim. Confidence is not uniformly high, so we now report that calibration varies by model and still does not predict escalation, rather than that models are broadly overconfident.
+**Frontier models.** We added Claude Sonnet 4.6 and Claude Opus 4.7. Sonnet and Opus give a controlled capability comparison, since they share a developer and the same Claude 4 generation, so the contrast reflects capability rather than differences in training pipeline. The more capable Opus escalates less than Sonnet, 59% vs. 66% threshold, and capability still does not predict escalation across the eight models, where the implicit threshold ranges from 53% (GPT-5-mini) to 98% (Gemma 3 12B). We show this in a new figure of per-model thresholds. We also added Gemma-3-4B and Gemma-3-12B. They escalate at 76% vs. 98% and are much more underconfident. The frontier additions also revised one secondary claim. Confidence is not uniformly high, so we now report that calibration varies by model and still does not predict escalation, rather than that models are broadly overconfident.
 
-**Why Sonnet and Opus rather than Haiku or GPT-5.5.** We focused on the Sonnet-Opus pair because they share a developer and generation, which gives the clean capability contrast. Haiku 4.5 sits below both, and GPT-5.5 adds a cross-lab confound, so neither sharpens the gradient the way this pair does.
+**Why Sonnet and Opus.** To test the capability gradient cleanly, we prioritized the Sonnet-Opus pair because it holds developer and generation fixed while varying capability. The added pair gives the most direct controlled comparison.
 
-**Additional fine-tuned models.** We fine-tuned two more Qwen models and nearly matched the original result, reaching 95.7% escalation accuracy for Qwen3.5-4B and 87.3% for Qwen3.5-9B against near 100% for the original Qwen2.5-7B-Instruct, which shows the fine-tuning aligns escalation behavior across models, not only the model from our original submission.
+**Additional fine-tuned models.** We fine-tuned two more Qwen models and found the same qualitative result, reaching 95.7% escalation accuracy for Qwen3.5-4B and 87.3% for Qwen3.5-9B against near 100% for the original Qwen2.5-7B-Instruct. This shows the fine-tuning aligns escalation behavior across models, not only the model from our original submission.
 
-Please let us know if you have any more questions before the end of the discussion period.
+These additions are included in the revised manuscript.
