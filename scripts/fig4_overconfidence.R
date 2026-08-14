@@ -186,5 +186,5 @@ ggplot(overconf_all, aes(x = actual_acc, y = self_est_acc, color = dataset)) +
     panel.grid.minor = element_blank()
   )
 
-ggsave("paper/figures/fig4_R.png", width = 14, height = 7, dpi = 300)
-cat("Saved to paper/figures/fig4_R.png\n")
+ggsave("paper/colm/figures/fig4_R.png", width = 14, height = 7, dpi = 300)
+cat("Saved to paper/colm/figures/fig4_R.png\n")

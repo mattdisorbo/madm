@@ -9,7 +9,7 @@ matplotlib.use('Agg')
 from sklearn.linear_model import LinearRegression
 
 DATA_DIR = '/Users/mdisorbo/madm_colm/results/study3'
-OUT_PATH = '/Users/mdisorbo/madm_colm/paper/figures/overconfidence_by_condition.png'
+OUT_PATH = 'paper/colm/figures/overconfidence_by_condition.png'
 
 MODELS = [
     ('Qwen3.5-4B', 'Qwen3.5-4B'),

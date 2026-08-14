@@ -76,8 +76,8 @@ legend_elements = [Patch(facecolor="#2ecc71", label="Trained"),
 ax.legend(handles=legend_elements, fontsize=10)
 
 plt.tight_layout()
-plt.savefig("paper/figures/dpo_escalation_results.png", dpi=200, bbox_inches="tight")
-print("Saved to paper/figures/dpo_escalation_results.png")
+plt.savefig("paper/colm/figures/dpo_escalation_results.png", dpi=200, bbox_inches="tight")
+print("Saved to paper/colm/figures/dpo_escalation_results.png")
 plt.close()
 
 # --- Second figure: Escalation heatmap ---
@@ -111,6 +111,6 @@ cmap = ListedColormap(["#2ecc71", "#e74c3c"])
 im.set_cmap(cmap)
 
 plt.tight_layout()
-plt.savefig("paper/figures/dpo_escalation_heatmap.png", dpi=200, bbox_inches="tight")
-print("Saved to paper/figures/dpo_escalation_heatmap.png")
+plt.savefig("paper/colm/figures/dpo_escalation_heatmap.png", dpi=200, bbox_inches="tight")
+print("Saved to paper/colm/figures/dpo_escalation_heatmap.png")
 plt.close()

@@ -8,7 +8,7 @@ import matplotlib
 matplotlib.use('Agg')
 
 DATA_DIR = '/Users/mdisorbo/madm_colm/results/study3'
-OUT_PATH = '/Users/mdisorbo/madm_colm/paper/figures/esc_vs_acc_nothink_5models.png'
+OUT_PATH = 'paper/colm/figures/esc_vs_acc_nothink_5models.png'
 
 MODELS = [
     ('Qwen3.5-4B', 'Qwen3.5-4B'),

@@ -6,7 +6,7 @@ import glob, os
 
 MODEL = "Qwen3.5-9B"
 DATA_DIR = "results/study3"
-OUTPUT_DIR = "paper/figures"
+OUTPUT_DIR = "paper/colm/figures"
 THRESHOLD = 0.75
 
 # ── Load cost4 data only ──

@@ -139,5 +139,5 @@ ggplot(df, aes(x = pred_acc, y = esc_rate, color = dataset)) +
     panel.grid.minor = element_blank()
   )
 
-ggsave("paper/figures/fig3_R.png", width = 14, height = 7, dpi = 300)
-cat("Saved to paper/figures/fig3_R.png\n")
+ggsave("paper/colm/figures/fig3_R.png", width = 14, height = 7, dpi = 300)
+cat("Saved to paper/colm/figures/fig3_R.png\n")

@@ -8,7 +8,7 @@ matplotlib.use('Agg')
 from sklearn.linear_model import LinearRegression
 
 DATA_DIR = 'results/study3'
-OUT_PATH = 'paper/figures/pstar_ahat_bars.png'
+OUT_PATH = 'paper/colm/figures/pstar_ahat_bars.png'
 
 ALL_DATASETS = ['HotelBookings', 'LendingClub', 'WikipediaToxicity', 'MovieLens']
 

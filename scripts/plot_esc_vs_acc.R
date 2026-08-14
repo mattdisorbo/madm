@@ -56,7 +56,7 @@ ggplot(results, aes(x = pred_acc, y = esc_rate, color = dataset)) +
   theme_minimal() +
   theme(legend.position = "bottom")
 
-ggsave("paper/figures/esc_vs_acc_nothink_faceted.png", width = 14, height = 5, dpi = 150)
+ggsave("paper/colm/figures/esc_vs_acc_nothink_faceted.png", width = 14, height = 5, dpi = 150)
 
 # ── Chart 2: One facet per dataset, colored by model ──
 ggplot(results, aes(x = pred_acc, y = esc_rate, color = model_label)) +
@@ -76,4 +76,4 @@ ggplot(results, aes(x = pred_acc, y = esc_rate, color = model_label)) +
   theme_minimal() +
   theme(legend.position = "bottom")
 
-ggsave("paper/figures/esc_vs_acc_nothink_by_dataset_faceted.png", width = 14, height = 8, dpi = 150)
+ggsave("paper/colm/figures/esc_vs_acc_nothink_by_dataset_faceted.png", width = 14, height = 8, dpi = 150)
