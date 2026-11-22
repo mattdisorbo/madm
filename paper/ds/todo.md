@@ -25,6 +25,7 @@ We need to rewrite the paper around decision theory, formal hypotheses, and mana
   - Shift technical LLM calibration and alignment literature to secondary background.
   - Lead with literature on human delegation to algorithms, learning to defer, cost-sensitive classification, algorithm aversion, and overreliance in operational workflows.
   - Cite the special issue foundational papers (Zhang et al., 2026 for Type C agent experiments; Liu et al., 2026 for agent-native artifacts).
+  - Cite Kong et al. (2026, arXiv:2611.05870v1) on human-AI classification under correlation neglect and trust: contrast their human-side advice aggregation with our agent-side escalation choice, use their automation-regime result to motivate selective escalation over full human review, and reference it in limitations for imperfect post-escalation human fallback.
 
 - [ ] **Expand managerial and operational implications**
   - Explain how uncharacterized escalation thresholds create operational failure modes in automated pipelines (silent error propagation versus unnecessary labor bottlenecks).
