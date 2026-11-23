@@ -26,6 +26,7 @@ We need to rewrite the paper around decision theory, formal hypotheses, and mana
   - Lead with literature on human delegation to algorithms, learning to defer, cost-sensitive classification, algorithm aversion, and overreliance in operational workflows.
   - Cite the special issue foundational papers (Zhang et al., 2026 for Type C agent experiments; Liu et al., 2026 for agent-native artifacts).
   - Cite Kong et al. (2026, arXiv:2611.05870v1) on human-AI classification under correlation neglect and trust: contrast their human-side advice aggregation with our agent-side escalation choice, use their automation-regime result to motivate selective escalation over full human review, and reference it in limitations for imperfect post-escalation human fallback.
+  - Cite Zheng et al. (2026, arXiv:2610.21270v2, `healthcare-escalation-bench`) on escalation failures under healthcare workflow-state perturbations (missing, stale, conflicting, or late cues) as complementary operational evidence that high clean accuracy masks missed escalations and that verbalized confidence alone fails to guide deferral; contrast their external post-hoc routing toolkit (`calibroute`, `calibroute-ai`) with our characterization and training of the agent's internal act-or-escalate policy.
 
 - [ ] **Expand managerial and operational implications**
   - Explain how uncharacterized escalation thresholds create operational failure modes in automated pipelines (silent error propagation versus unnecessary labor bottlenecks).
@@ -88,7 +89,7 @@ We should author a structured reasoning document (`paper/ds/artifacts/level2_rea
   - Explain why supervised fine-tuning on chain-of-thought traces was selected as the primary intervention mechanism.
 
 - [ ] **Extension directions**
-  - Provide structured next steps, such as extending the binary escalation action space to continuous delegation or multi-agent escalation chains.
+  - Provide structured next steps, such as extending the binary escalation action space to multi-way actions (answer, clarify, abstain, escalate as in Zheng et al., 2026), non-stationary workflow states (missing, stale, or conflicting evidence), continuous delegation, or multi-agent escalation chains.
 
 ---
 
